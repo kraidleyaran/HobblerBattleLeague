@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba827aaa02fd068428e6bbc196313cf5, type: 3}
+  m_Name: Default Maze Minigame Settings
+  m_EditorClassIdentifier: 
+  ApplyOnVictory:
+  - {fileID: 11400000, guid: f5ee75ebe5ae587419b3ccf4a1719387, type: 2}
+  - {fileID: 11400000, guid: cad6bc5d513f17e42935f229955eb934, type: 2}
+  ApplyOnDefeat:
+  - {fileID: 11400000, guid: 3ed18062b24703141bf4077c5b442578, type: 2}
+  - {fileID: 11400000, guid: 37f50b2bcbbe83d429e46194a7d2fb71, type: 2}
+  MinigameWindows:
+  - {fileID: 3685243930854195869, guid: 994f332bab5894d4d9b3abceb766699e, type: 3}
+  - {fileID: 2840552611885456905, guid: bf7373ed66bf4a040be9baf0a8214f8d, type: 3}
+  - {fileID: 12064615652476387, guid: 762b14b081f19504685b6413188a6a25, type: 3}
+  Size: {x: 6, y: 6}
+  WallSize: 4
+  RoomSize: 5
+  EdgeBuffer: 10
+  DoorPerecent: 1
+  MonsterTemplates:
+  - {fileID: 11400000, guid: fa5cd723534b0124c9201dfe47d5f690, type: 2}
+  MonstersPerRoom:
+    Minimum: 1
+    Maximum: 1
+  ChestTemplates:
+  - {fileID: 11400000, guid: 0241fa02694d72f4ab95c0832a3bcf94, type: 2}
+  ChestLootTables:
+  - {fileID: 11400000, guid: c47f95499c0036f479c5dd1680661f76, type: 2}
+  MaximumChestsPerRoom: 3
+  ChestSpawnPercent: 0.33

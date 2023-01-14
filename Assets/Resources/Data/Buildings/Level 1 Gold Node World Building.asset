@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ad3fddeec03bef47a7b6e49beb70cd7, type: 3}
+  m_Name: Level 1 Gold Node World Building
+  m_EditorClassIdentifier: 
+  DisplayName: Gold Ore Patch
+  Description: Gain gold from Hobblers mining!
+  Icon: {fileID: 21300000, guid: 128828d70f8c2354c98000393aa17a26, type: 3}
+  Sprites:
+  - {fileID: 11400000, guid: ec252cb95f427f14ebf91c940032d5a7, type: 2}
+  RequiredTiles: []
+  BlockingTiles:
+  - {x: 0, y: 0}
+  Template: {fileID: 11400000, guid: 335fefa61322da345af70b0545be1723, type: 2}
+  Cost: 1

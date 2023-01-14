@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5daa7a20209fb73498f0f88cc8e18c75, type: 3}
+  m_Name: Green Wizard Hobbler Template
+  m_EditorClassIdentifier: 
+  DisplayName: Green Wizard
+  Description: 
+  Sprite: {fileID: 11400000, guid: 1c13b772a01f9f047a24f93d35fc99ca, type: 2}
+  StartingStats:
+    Health: 12
+    Mana: 5
+    Strength: 5
+    Agility: 5
+    Magic: 5
+    Faith: 5
+    Defense: 5
+    Spirit: 0
+  MinimumGenetics:
+    Health: 0.5
+    Mana: 0.6
+    Strength: 0.6
+    Agility: 0.6
+    Magic: 0.6
+    Faith: 0.6
+    Armor: 0.6
+    Spirit: 0.25
+  MaximumGenetics:
+    Health: 2
+    Mana: 2
+    Strength: 2
+    Agility: 2
+    Magic: 2
+    Faith: 2
+    Armor: 2
+    Spirit: 1
+  StartingAbilities:
+  - {fileID: 11400000, guid: 58239f48a8842ce479c2ad1c30059005, type: 2}
+  StartingWeapon: {fileID: 11400000, guid: ed8b807a138eb9347baaba21cc88cd5d, type: 2}
+  Cost: 0

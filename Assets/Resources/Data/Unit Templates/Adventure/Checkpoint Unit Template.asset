@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5effb3399ece932449bbf221a02e8565, type: 3}
+  m_Name: Checkpoint Unit Template
+  m_EditorClassIdentifier: 
+  _traits:
+  - {fileID: 11400000, guid: af266e5bc75c3bd4eaf6113c78f9d6df, type: 2}
+  - {fileID: 11400000, guid: 5f3596d0ed0f6be4eaa8b67fccd34a85, type: 2}
+  - {fileID: 11400000, guid: ea6cb6ee9db32554f9a3661c53b82731, type: 2}
+  - {fileID: 11400000, guid: f2eaf528787dda244966a0909fd179ee, type: 2}

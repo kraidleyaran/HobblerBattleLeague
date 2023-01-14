@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0febcd1996dc9454c8ae98f70da47f6e, type: 3}
+  m_Name: Maze End Apply On Tile Event Trait
+  m_EditorClassIdentifier: 
+  MaxStack: 1
+  _applyOnTile:
+  - {fileID: 11400000, guid: a6f2f9fa8c4c24c4e93c5933af66b809, type: 2}

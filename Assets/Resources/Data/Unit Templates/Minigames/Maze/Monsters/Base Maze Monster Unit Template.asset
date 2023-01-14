@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5effb3399ece932449bbf221a02e8565, type: 3}
+  m_Name: Base Maze Monster Unit Template
+  m_EditorClassIdentifier: 
+  _traits:
+  - {fileID: 11400000, guid: 1d0ffc01fed45f84c9f6010edcd069bd, type: 2}
+  - {fileID: 11400000, guid: 03b899503ba29374084407161478926e, type: 2}
+  - {fileID: 11400000, guid: bad0d8669c3c1a343af3f1c748eedb0f, type: 2}
+  - {fileID: 11400000, guid: 879802e0a29e9d2459b9daf7c4b136ed, type: 2}
+  - {fileID: 11400000, guid: b73a2ecf249f6a4498600df4fc10eb3a, type: 2}
+  - {fileID: 11400000, guid: c2c475d3af5977f45b88635727b77100, type: 2}
+  - {fileID: 11400000, guid: 550d58b413f214a4597b6b82e8900d90, type: 2}
+  - {fileID: 11400000, guid: c97c5597509eeaa4384f9b16d13db869, type: 2}
+  - {fileID: 11400000, guid: b670ca2b3aa9cb942981195a0720e20a, type: 2}

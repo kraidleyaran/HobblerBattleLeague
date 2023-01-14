@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b71ea679ab3e5f4287e0342036bb262, type: 3}
+  m_Name: Mining World Skill
+  m_EditorClassIdentifier: 
+  DisplayName: Mining
+  Verb: Mine
+  Description: 
+  Icon: {fileID: -8930745273272892969, guid: 2b8f0602ca246a843860ad4b1b843b9a, type: 3}
+  ExperienceMultiplier: 0.66
+  LevelExperience: 50
+  Command: {fileID: 0}
+  Items:
+  - {fileID: 11400000, guid: ee7cbe2a3dd07bd4791f6517be7eba67, type: 2}

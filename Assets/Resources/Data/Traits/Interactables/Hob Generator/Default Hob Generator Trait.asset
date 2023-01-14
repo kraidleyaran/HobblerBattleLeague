@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 326bb463435cc0045b212f2bfcb7e382, type: 3}
+  m_Name: Default Hob Generator Trait
+  m_EditorClassIdentifier: 
+  MaxStack: 1
+  _hobblers:
+  - {fileID: 11400000, guid: aff89634b191c394ca4e62bb4741a2fd, type: 2}
+  - {fileID: 11400000, guid: 7bb215706b626c24a86515ea8d88391b, type: 2}
+  _maxRoll: 5
+  _buyCommand: {fileID: 11400000, guid: f8ce02761ee69e346b5ad536dcefe469, type: 2}
+  _reRollCost: 0
+  _generationWorldTicks: 60
+  _spawnTileOffset: {x: 0, y: -1}

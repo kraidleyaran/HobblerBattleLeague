@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5effb3399ece932449bbf221a02e8565, type: 3}
+  m_Name: Default Hobbler Unit Template
+  m_EditorClassIdentifier: 
+  _traits:
+  - {fileID: 11400000, guid: e43367a91f0826c4ab0708c1c87b7fee, type: 2}
+  - {fileID: 11400000, guid: 3aebc839eba42f442a090e35ea79c0e1, type: 2}
+  - {fileID: 11400000, guid: b8620b300ec3066469755406dcd558f0, type: 2}
+  - {fileID: 11400000, guid: ce6b12224abc65547a382c712c2fe7ff, type: 2}
+  - {fileID: 11400000, guid: 3dddb82a9ea738f4aa4d864672f73ef1, type: 2}
+  - {fileID: 11400000, guid: f8aae256ed76c2448a07ec478589e673, type: 2}
+  - {fileID: 11400000, guid: bef78c84dec481846813989a1e6b65e3, type: 2}
+  - {fileID: 11400000, guid: 9de461190b16ff246ab81f5b8080d676, type: 2}
+  - {fileID: 11400000, guid: 2aca3fbe0a7067e4cbd7001ec51c631e, type: 2}
+  - {fileID: 11400000, guid: 8e0075e5112d7244d8604b4d1f206bfe, type: 2}
+  - {fileID: 11400000, guid: 287c03354415a2042898ad133c0ac0f2, type: 2}
+  - {fileID: 11400000, guid: dd708ec79c560d4438ab0e9fba703a4d, type: 2}
+  - {fileID: 11400000, guid: 9333e183d2f8cf94db173f9352011839, type: 2}
+  - {fileID: 11400000, guid: 27fddf43b54d31d459d2a3e3877bc1f3, type: 2}
+  - {fileID: 11400000, guid: 902edd5b98485064097ffe3dc2fff30a, type: 2}
+  - {fileID: 11400000, guid: c64bcaf1b648eca4aa9287a0ff90f9c7, type: 2}

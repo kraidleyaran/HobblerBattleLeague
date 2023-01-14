@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea4450e83a71306449ed0b70bae53f1f, type: 3}
+  m_Name: Default Adventure Trainer Trait
+  m_EditorClassIdentifier: 
+  MaxStack: 1
+  _encounter: {fileID: 11400000, guid: 6d553d9eb330c9144aa4278717a35c0b, type: 2}
+  _engagePlayerDistance: 2
+  _preBattleDialogue: {fileID: 11400000, guid: 36e623820bf623846bb02f267e0c905f, type: 2}
+  _defeatedDialogue: {fileID: 11400000, guid: f26878b1c319808458b307142cac9146, type: 2}

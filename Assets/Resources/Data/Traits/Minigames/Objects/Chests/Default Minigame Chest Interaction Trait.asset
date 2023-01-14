@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52f2ca5a59c544c468cf711abd620e60, type: 3}
+  m_Name: Default Minigame Chest Interaction Trait
+  m_EditorClassIdentifier: 
+  MaxStack: 1
+  _openSprite: {fileID: 11400000, guid: 2d600b30919974341867c43e45e01327, type: 2}
+  _lootTable: {fileID: 11400000, guid: c47f95499c0036f479c5dd1680661f76, type: 2}

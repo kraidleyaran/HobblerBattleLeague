@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5daa7a20209fb73498f0f88cc8e18c75, type: 3}
+  m_Name: Red Flying Hobbler Template
+  m_EditorClassIdentifier: 
+  DisplayName: Red Flying
+  Description: 
+  Sprite: {fileID: 11400000, guid: 8d4f46973cddb8f4fb821ad077a57739, type: 2}
+  StartingStats:
+    Health: 8
+    Mana: 5
+    Strength: 5
+    Agility: 5
+    Magic: 5
+    Faith: 5
+    Defense: 8
+    Spirit: 0
+  MinimumGenetics:
+    Health: 0
+    Mana: 0
+    Strength: 0
+    Agility: 0
+    Magic: 0
+    Faith: 0
+    Armor: 0
+    Spirit: 0
+  MaximumGenetics:
+    Health: 0
+    Mana: 0
+    Strength: 0
+    Agility: 0
+    Magic: 0
+    Faith: 0
+    Armor: 0
+    Spirit: 0
+  StartingAbilities:
+  - {fileID: 11400000, guid: 1c6e8fa34c2f2744b8ea139c66a59dcb, type: 2}
+  StartingWeapon: {fileID: 11400000, guid: ed8b807a138eb9347baaba21cc88cd5d, type: 2}
+  Cost: 0

@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2ca42006fc042947a51afc8a4612d6a, type: 3}
+  m_Name: Level 1 Tent - World Node Trait
+  m_EditorClassIdentifier: 
+  MaxStack: 1
+  _nodeType: 1
+  _requiredTicks: 5
+  _applyOnFinish:
+  - {fileID: 11400000, guid: f300ba10613df734bb9f6c59d8d77057, type: 2}
+  _stack: -1
+  _gatherArea: 0
+  _includeNodeTileForGathering: 1
+  _interactionType: 2
+  _nodeSprite: {fileID: 0}
+  _stopSelectCommand: {fileID: 11400000, guid: c9c426c506ba43946baeeec1b27246f1, type: 2}
+  _selectableHobblerCommandTemplate: {fileID: 11400000, guid: af1eb7e2af2ab89469177cdbacc2556c, type: 2}

@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5656c5e200a31c945b469abda4211525, type: 3}
+  m_Name: Origin Blue Leaf RandomBrush
+  m_EditorClassIdentifier: 
+  Tileset: {fileID: 11400000, guid: 565dd53c041fe624b85f659cf37c00e5, type: 2}
+  Params:
+    m_paramList: []
+  m_group: 0
+  m_autotilingMode: 1
+  m_showInPalette: 1
+  RandomTiles: 
+  RandomTileList:
+  - tileData: 1339
+    probabilityFactor: 1
+  - tileData: 1340
+    probabilityFactor: 1
+  - tileData: 1341
+    probabilityFactor: 1
+  - tileData: 1342
+    probabilityFactor: 1
+  - tileData: 1343
+    probabilityFactor: 1
+  - tileData: 1387
+    probabilityFactor: 1
+  - tileData: 1388
+    probabilityFactor: 1
+  - tileData: 1389
+    probabilityFactor: 1
+  - tileData: 1390
+    probabilityFactor: 1
+  - tileData: 1391
+    probabilityFactor: 1
+  RandomizeFlagMask: 0
+  RemoveBrushIdAfterRefresh: 0

@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2ca42006fc042947a51afc8a4612d6a, type: 3}
+  m_Name: Level 1 Food World Node Trait
+  m_EditorClassIdentifier: 
+  MaxStack: 1
+  _nodeType: 0
+  _requiredTicks: 3
+  _applyOnFinish:
+  - {fileID: 11400000, guid: 32dfeba97dbd1d843864e1a2122161e2, type: 2}
+  _stack: -1
+  _gatherArea: 1
+  _includeNodeTileForGathering: 0
+  _interactionType: 1
+  _nodeSprite: {fileID: 11400000, guid: 62afe65a7a23aae4d867159d0cf68d79, type: 2}
+  _stopSelectCommand: {fileID: 0}
+  _selectableHobblerCommandTemplate: {fileID: 0}

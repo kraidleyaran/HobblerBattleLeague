@@ -1,0 +1,107 @@
+﻿using System.Linq;
+using MessageBusLib;
+using UnityEngine;
+using UnityEngine.EventSystems;
+
+namespace Assets.Resources.Ancible_Tools.Scripts.System.Windows
+{
+    public class UiBaseWindow : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+    {
+        public virtual bool Movable => true;
+        public virtual bool Static => false;
+        public bool Instantiated { get; private set; }
+
+        public WorldState[] ActiveWorldStates = new []{WorldState.World};
+        public WorldState[] DisabledStates = new WorldState[0];
+
+        private bool _hovered = false;
+        private bool _selected = false;
+
+        private bool _destroyed = false;
+
+        public virtual void Awake()
+        {
+            Instantiated = true;
+            SubscribeToWindowMessages();
+        }
+
+        public void MoveDelta(Vector2 delta)
+        {
+            var pos = transform.localPosition.ToVector2();
+            pos += delta;
+            pos = pos.ToVector2Int(true);
+            transform.SetLocalPosition(pos);
+        }
+
+        public void FixPosition()
+        {
+            var pos = transform.localPosition;
+            var pixelPerfect = pos.ToVector2().ToVector2Int(true);
+            pos.x = pixelPerfect.x;
+            pos.y = pixelPerfect.y;
+            transform.localPosition = pos;
+        }
+
+        private void SubscribeToWindowMessages()
+        {
+            gameObject.Subscribe<UpdateWorldStateMessage>(UpdateWorldState);
+        }
+
+        protected internal virtual void UpdateWorldState(UpdateWorldStateMessage msg)
+        {
+            if (DisabledStates.Contains(msg.State))
+            {
+                if (gameObject.activeSelf)
+                {
+                    gameObject.SetActive(false);
+                }
+            }
+            else if (ActiveWorldStates.Contains(msg.State))
+            {
+                if (!gameObject.activeSelf)
+                {
+                    gameObject.SetActive(true);
+                }
+            }
+            else
+            {
+                Close();
+            }
+        }
+
+        public void OnPointerEnter(PointerEventData eventData)
+        {
+            UiWindowManager.SetHoveredWindow(this);
+            _hovered = true;
+        }
+
+        public void OnPointerExit(PointerEventData eventData)
+        {
+            _hovered = false;
+            UiWindowManager.RemoveHoveredWindow(this);
+        }
+
+        public virtual void Close()
+        {
+            UiWindowManager.CloseWindow(this);
+        }
+
+        public virtual void Destroy()
+        {
+            if (_hovered)
+            {
+                UiWindowManager.RemoveHoveredWindow(this);
+            }
+            gameObject.UnsubscribeFromAllMessages();
+            _destroyed = true;
+        }
+
+        void OnDestroy()
+        {
+            if (!_destroyed)
+            {
+                Destroy();
+            }
+        }
+    }
+}

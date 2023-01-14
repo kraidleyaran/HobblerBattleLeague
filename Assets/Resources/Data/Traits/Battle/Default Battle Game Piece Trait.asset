@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca1f68b45887b2b4aa9a49c2740477ac, type: 3}
+  m_Name: Default Battle Game Piece Trait
+  m_EditorClassIdentifier: 
+  MaxStack: 1
+  _hitbox: {fileID: 11400000, guid: 8ae08c8f7ccf71f4eb57b26706e334b5, type: 2}
+  _selectorSize: {x: 9, y: 9}
+  _selectorOffset: {x: 0, y: 0}

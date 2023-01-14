@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5effb3399ece932449bbf221a02e8565, type: 3}
+  m_Name: Maze Player Unit Template
+  m_EditorClassIdentifier: 
+  _traits:
+  - {fileID: 11400000, guid: 8b59e2a8004920c4792b38d50a6ed722, type: 2}
+  - {fileID: 11400000, guid: 1d0ffc01fed45f84c9f6010edcd069bd, type: 2}
+  - {fileID: 11400000, guid: c498185eef855ca4396dab3dd310c149, type: 2}
+  - {fileID: 11400000, guid: 19e2aba89eb7e984a868d90a76a5e033, type: 2}
+  - {fileID: 11400000, guid: 6f7bf1bd157123e4a8fc4799542e68d0, type: 2}
+  - {fileID: 11400000, guid: dd708ec79c560d4438ab0e9fba703a4d, type: 2}
+  - {fileID: 11400000, guid: 95341bb89689eee4299ac4905f8d6364, type: 2}
+  - {fileID: 11400000, guid: 7e3996a5bbc66ac45808de3197a73546, type: 2}
+  - {fileID: 11400000, guid: b08e4329767aa73459c5f30f6ffaed2c, type: 2}
+  - {fileID: 11400000, guid: ea76420d916a5f84aaefec16ee7a4947, type: 2}
+  - {fileID: 11400000, guid: b24853160b6f6c9438c148c5dc493400, type: 2}
+  - {fileID: 11400000, guid: f35120d90f07d864f8049f135c7e17c4, type: 2}
+  - {fileID: 11400000, guid: 550d58b413f214a4597b6b82e8900d90, type: 2}
+  - {fileID: 11400000, guid: c97c5597509eeaa4384f9b16d13db869, type: 2}
+  - {fileID: 11400000, guid: f29c7baf9fc56b94081c5d27f3b717dc, type: 2}

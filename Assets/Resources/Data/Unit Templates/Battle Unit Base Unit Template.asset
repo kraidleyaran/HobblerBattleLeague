@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5effb3399ece932449bbf221a02e8565, type: 3}
+  m_Name: Battle Unit Base Unit Template
+  m_EditorClassIdentifier: 
+  _traits:
+  - {fileID: 11400000, guid: fb14d30555b51264880c7559d25e55d2, type: 2}
+  - {fileID: 11400000, guid: 49638be3c8b187a418aefc25b7082f49, type: 2}
+  - {fileID: 11400000, guid: f0079cc2b5c042e4598416ff928e2cb1, type: 2}
+  - {fileID: 11400000, guid: 955ecb68a5e8fed46b3af6a0ac7b34da, type: 2}
+  - {fileID: 11400000, guid: a8a91e051b1d18843a316fd5d23353c6, type: 2}
+  - {fileID: 11400000, guid: e726a003d05b66545932062c39712135, type: 2}
+  - {fileID: 11400000, guid: 2830a599d6346bc429bbfbab1d2e0045, type: 2}
+  - {fileID: 11400000, guid: 2c4626d559c220040b78f52cfc205c91, type: 2}
+  - {fileID: 11400000, guid: 550d58b413f214a4597b6b82e8900d90, type: 2}
+  - {fileID: 11400000, guid: f4bd2a05ba798194da9159a890e6dc9a, type: 2}
