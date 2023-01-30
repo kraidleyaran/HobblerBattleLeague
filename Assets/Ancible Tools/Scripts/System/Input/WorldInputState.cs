@@ -19,12 +19,16 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Input
         public bool Stash;
         public bool Build;
         public bool Roster;
+        public bool SwitchMode;
 
         public bool Attack;
         public bool AbilitySlot0;
         public bool AbilitySlot1;
         public bool AbilitySlot2;
         public bool AbilitySlot3;
+
+        public bool Save;
+        public bool Load;
 
     }
 }

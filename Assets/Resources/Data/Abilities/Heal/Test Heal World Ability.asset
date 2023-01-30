@@ -17,11 +17,12 @@ MonoBehaviour:
   Description: 
   Range: 3
   CastTime: 150
+  ManaCost: 0
   ApplyToTarget:
   - {fileID: 11400000, guid: 8b80ef3131fd34149aa4c40a6d034d7e, type: 2}
   - {fileID: 11400000, guid: 1359703e173540142ae480bce8e8aabe, type: 2}
   Alignment: 0
-  Type: 1
+  Type: 2
   Cooldown: 420
   Conditions:
   - {fileID: 11400000, guid: 18bde5f573044ba428d8e9b713642181, type: 2}

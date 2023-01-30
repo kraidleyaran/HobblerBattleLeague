@@ -97,30 +97,38 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         protected internal override void SetFacingDirection(SetFaceDirectionMessage msg)
         {
             base.SetFacingDirection(msg);
-            switch (FlipSprite)
+            if (_currentDirection.x != 0)
             {
-                case FlipSprite.Negative:
-                    _alignmentController.FlipX(msg.Direction.x >= 0);
-                    break;
-                case FlipSprite.Positive:
-                    _alignmentController.FlipX(msg.Direction.x <= 0);
-                    break;
+                switch (FlipSprite)
+                {
+                    case FlipSprite.Negative:
+                        _alignmentController.FlipX(_currentDirection.x > 0);
+                        break;
+                    case FlipSprite.Positive:
+                        _alignmentController.FlipX(_currentDirection.x < 0);
+                        break;
+                }
             }
+
 
         }
 
         protected internal override void UpdateDirection(UpdateDirectionMessage msg)
         {
             base.UpdateDirection(msg);
-            switch (FlipSprite)
+            if (_currentDirection.x != 0)
             {
-                case FlipSprite.Negative:
-                    _alignmentController.FlipX(msg.Direction.x >= 0);
-                    break;
-                case FlipSprite.Positive:
-                    _alignmentController.FlipX(msg.Direction.x <= 0);
-                    break;
+                switch (FlipSprite)
+                {
+                    case FlipSprite.Negative:
+                        _alignmentController.FlipX(_currentDirection.x > 0);
+                        break;
+                    case FlipSprite.Positive:
+                        _alignmentController.FlipX(_currentDirection.x < 0);
+                        break;
+                }
             }
+
         }
 
         private void DoVictoryAnimation(DoVictoryAnimationMessage msg)

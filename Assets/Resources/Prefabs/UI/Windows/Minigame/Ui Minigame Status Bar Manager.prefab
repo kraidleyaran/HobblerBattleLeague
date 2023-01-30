@@ -51,3 +51,4 @@ MonoBehaviour:
   ActiveWorldStates: 01000000
   DisabledStates: 
   _statusBarTemplate: {fileID: 1915758204302069333, guid: 8641d099d51247a4f9f244f56cb30d32, type: 3}
+  _floatingTextTemplate: {fileID: 8635687466048578386, guid: dd45b6d8e881e9a4b920e46301b0074d, type: 3}

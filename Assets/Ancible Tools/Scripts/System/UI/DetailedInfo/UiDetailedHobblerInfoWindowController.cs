@@ -13,7 +13,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.DetailedInfo
 {
     public class UiDetailedHobblerInfoWindowController : UiBaseWindow
     {
-        private const string FILTER = "UI_DETAILED_HOBBLER_INFO_WINDOW";
+        public const string FILTER = "UI_DETAILED_HOBBLER_INFO_WINDOW";
 
         [SerializeField] private Text _nameText = null;
         [SerializeField] private Image _frameImage = null;
@@ -95,7 +95,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.DetailedInfo
 
         private void RefreshName(string unitName)
         {
-            _nameText.text = $"{name}";
+            _nameText.text = $"{unitName}";
         }
 
         private void SubscribeToMessages()

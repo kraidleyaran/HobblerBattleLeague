@@ -1,5 +1,6 @@
 ﻿using Assets.Ancible_Tools.Scripts.Traits;
 using Assets.Resources.Ancible_Tools.Scripts.System.Pathing;
+using Assets.Resources.Ancible_Tools.Scripts.System.SaveData;
 using MessageBusLib;
 using UnityEngine;
 
@@ -7,31 +8,37 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
 {
     public class DevController : MonoBehaviour
     {
-        [SerializeField] private Trait[] _devHobblerTraits = new Trait[0];
-        [SerializeField] private Vector2Int _startingTile = Vector2Int.zero;
-
-        void Start()
+        void Awake()
         {
-            //var startingTile = WorldController.Pathing.GetTileByPosition(_startingTile);
-            //if (startingTile != null)
-            //{
-            //    var unitController = Instantiate(FactoryController.UNIT_CONTROLLER, startingTile.World, Quaternion.identity);
+            SubscribeToMessages();
+        }
 
-            //    var addTraitToUnitMsg = MessageFactory.GenerateAddTraitToUnitMsg();
-            //    for (var i = 0; i < _devHobblerTraits.Length; i++)
-            //    {
-            //        addTraitToUnitMsg.Trait = _devHobblerTraits[i];
-            //        gameObject.SendMessageTo(addTraitToUnitMsg, unitController.gameObject);
-            //    }
+        private void SubscribeToMessages()
+        {
+            gameObject.Subscribe<UpdateInputStateMessage>(UpdateInputState);
+        }
 
-            //    MessageFactory.CacheMessage(addTraitToUnitMsg);
-
-            //    var setMapTileMsg = MessageFactory.GenerateSetMapTileMsg();
-            //    setMapTileMsg.Tile = startingTile;
-            //    gameObject.SendMessageTo(setMapTileMsg, unitController.gameObject);
-            //    MessageFactory.CacheMessage(setMapTileMsg);
-            //}
-            
+        private static void UpdateInputState(UpdateInputStateMessage msg)
+        {
+            if (!msg.Previous.Save && msg.Current.Save)
+            {
+                PlayerDataController.SaveData();
+            }
+            else if (!msg.Previous.Load && msg.Current.Load)
+            {
+                PlayerDataController.LoadData(PlayerDataController.DefaultPlayerName);
+            }
+            else if (!msg.Previous.SwitchMode && msg.Current.SwitchMode)
+            {
+                if (WorldController.State == WorldState.World)
+                {
+                    WorldController.SetWorldState(WorldState.Adventure);
+                }
+                else if (WorldController.State == WorldState.Adventure)
+                {
+                    WorldController.SetWorldState(WorldState.World);
+                }
+            }
         }
     }
 }

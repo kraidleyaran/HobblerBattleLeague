@@ -1,4 +1,5 @@
 ﻿using System;
+using Assets.Resources.Ancible_Tools.Scripts.System.SaveData;
 
 namespace Assets.Resources.Ancible_Tools.Scripts.System.Items
 {
@@ -11,6 +12,11 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Items
         public ItemStack Clone()
         {
             return new ItemStack {Item = Item, Stack = Stack};
+        }
+
+        public ItemStackData ToData()
+        {
+            return new ItemStackData {Item = Item.name, Stack = Stack};
         }
 
         public void Destroy()

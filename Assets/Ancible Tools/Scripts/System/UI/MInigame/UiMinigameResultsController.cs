@@ -105,21 +105,28 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.MInigame
                 MessageFactory.CacheMessage(addExperienceMsg);
             }
             //TODO: Add Gold
-            for (var i = 0; i < _items.Length; i++)
+            if (_items != null)
             {
-                WorldStashController.AddItem(_items[i].Item, _items[i].Stack);
-                _items[i].Destroy();
+                for (var i = 0; i < _items.Length; i++)
+                {
+                    WorldStashController.AddItem(_items[i].Item, _items[i].Stack);
+                    _items[i].Destroy();
+                }
+                _items = null;
             }
 
-            _items = null;
+            
             _experience = 0;
             _gold = 0;
-            for (var i = 0; i < _controllers.Length; i++)
+            if (_controllers != null)
             {
-                Destroy(_controllers[i].gameObject);
+                for (var i = 0; i < _controllers.Length; i++)
+                {
+                    Destroy(_controllers[i].gameObject);
+                }
+                _controllers = null;
             }
-
-            _controllers = null;
+            
             gameObject.SendMessage(TearDownMinigameMessage.INSTANCE);
             base.Close();
         }

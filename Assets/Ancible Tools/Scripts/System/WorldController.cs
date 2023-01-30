@@ -28,6 +28,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
 
             _instance = this;
             _pathing.Setup();
+            SubscribeToMessages();
         }
 
 
@@ -56,6 +57,25 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
                     return AdventureCameraController.Camera;
             }
             return WorldCameraController.Camera;
+        }
+
+        private void SubscribeToMessages()
+        {
+            gameObject.Subscribe<ClearWorldMessage>(ClearWorld);
+        }
+
+        private void ClearWorld(ClearWorldMessage msg)
+        {
+            _pathing.Clear();
+            if (State != WorldState.World)
+            {
+                SetWorldState(WorldState.World);
+            }
+        }
+
+        void OnDestroy()
+        {
+            gameObject.UnsubscribeFromAllMessages();
         }
     }
 }

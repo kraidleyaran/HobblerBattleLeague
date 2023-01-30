@@ -1,4 +1,5 @@
-﻿using Assets.Ancible_Tools.Scripts.Traits;
+﻿using System.Linq;
+using Assets.Ancible_Tools.Scripts.Traits;
 using Assets.Resources.Ancible_Tools.Scripts.System;
 using Assets.Resources.Ancible_Tools.Scripts.System.UI;
 using Assets.Resources.Ancible_Tools.Scripts.System.Windows;
@@ -119,11 +120,21 @@ namespace Assets.Ancible_Tools.Scripts.System.UI.UnitInfo
             RefreshInfo();
         }
 
-        
-
         private void RefreshUnit(RefreshUnitMessage msg)
         {
             RefreshInfo();
+        }
+
+        protected internal override void UpdateWorldState(UpdateWorldStateMessage msg)
+        {
+            if (_selectedUnit || DisabledStates.Contains(msg.State))
+            {
+                base.UpdateWorldState(msg);
+            }
+            else
+            {
+                gameObject.SetActive(false);
+            }
         }
 
         void OnDestroy()

@@ -7,7 +7,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Pathing
     public delegate void OnTileEntry(GameObject obj);
 
     [Serializable]
-    public class MapTile
+    public class MapTile : IDisposable
     {
         public Vector2Int Position;
         public ICell Cell;
@@ -25,7 +25,14 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Pathing
             Position = Vector2Int.zero;
             Cell = null;
             World = Vector2.zero;
-            
+            OnObjectEnteringTile = null;
+            Block = null;
+
+        }
+
+        public void Dispose()
+        {
+            Destroy();
         }
     }
 }

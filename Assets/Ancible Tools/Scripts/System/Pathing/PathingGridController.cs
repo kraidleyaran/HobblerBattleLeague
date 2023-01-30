@@ -242,6 +242,20 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Pathing
             return TilemapUtils.GetGridWorldPos(_tilemap, worldPos.x, worldPos.y).ToVector2();
         }
 
+        public void Clear()
+        {
+            var tiles = _tiles.ToArray();
+            foreach (var tile in tiles)
+            {
+                if (tile.Value.Block)
+                {
+                    var cell = tile.Value.Cell;
+                    _pathingMap.SetCellProperties(cell.X, cell.Y, true, true, true);
+                    tile.Value.Block = null;
+                }
+            }
+        }
+
         void Destroy()
         {
             var tiles = _tiles.Values.ToArray();

@@ -47,6 +47,8 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             _controller.transform.parent.gameObject.SubscribeWithFilter<QueryCombatStatsMessage>(QueryCombatStats, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<SetCombatStatsMessage>(SetCombatStats, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<LevelUpMessage>(LevelUp, _instanceId);
+            _controller.transform.parent.gameObject.SubscribeWithFilter<SetupHobblerCombatStatsMessage>(SetupCombatStats, _instanceId);
+            _controller.transform.parent.gameObject.SubscribeWithFilter<QueryHobblerGeneticsMessage>(QueryHobblerGenetics, _instanceId);
         }
 
         private void ApplyCombatStats(ApplyCombatStatsMessage msg)
@@ -88,6 +90,11 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             _baseStats = msg.Stats;
             _rolledGenetics = msg.Genetics;
             _accumulatedGenetics = msg.Accumulated;
+        }
+
+        private void QueryHobblerGenetics(QueryHobblerGeneticsMessage msg)
+        {
+            msg.DoAfter.Invoke(_rolledGenetics, _accumulatedGenetics);
         }
     }
 }

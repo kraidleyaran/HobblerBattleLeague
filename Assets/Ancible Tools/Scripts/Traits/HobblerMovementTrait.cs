@@ -157,5 +157,19 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             _controller.gameObject.SendMessageTo(updateDirectionMsg, _controller.transform.parent.gameObject);
             MessageFactory.CacheMessage(updateDirectionMsg);
         }
+
+        public override void Destroy()
+        {
+            if (_moveTween != null)
+            {
+                if (_moveTween.IsActive())
+                {
+                    _moveTween.Kill();
+                }
+
+                _moveTween = null;
+            }
+            base.Destroy();
+        }
     }
 }

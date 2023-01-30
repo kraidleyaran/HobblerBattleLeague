@@ -11,7 +11,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.HobblerGenerator
 {
     public class UiHobGeneratorWindowController : UiBaseWindow
     {
-        private const string FILTER = "UI_HOB_GENERATOR_WINDOW";
+        public const string FILTER = "UI_HOB_GENERATOR_WINDOW";
 
         public override bool Movable => true;
         public override bool Static => false;

@@ -48,6 +48,12 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         {
             _castingTimer?.Destroy();
             _castingTimer = new TickTimer(ability.Instance.CastTime, 0, () => {FinishCasting(ability, target);}, null, false);
+            var updateUnitCastingTimerMsg = MessageFactory.GenerateUpdateUnitCastTimerMsg();
+            updateUnitCastingTimerMsg.CastTimer = _castingTimer;
+            updateUnitCastingTimerMsg.Icon = ability.Instance.Icon;
+            updateUnitCastingTimerMsg.Name = string.Empty;
+            _controller.gameObject.SendMessageTo(updateUnitCastingTimerMsg, _controller.transform.parent.gameObject);
+            MessageFactory.CacheMessage(updateUnitCastingTimerMsg);
         }
 
         private void FinishCasting(AbilityInstance ability, GameObject target)
@@ -152,6 +158,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             {
                 _castingTimer.Destroy();
                 _castingTimer = null;
+                _controller.gameObject.SendMessageTo(CastInterruptedMessage.INSTANCE, _controller.transform.parent.gameObject);
             }
 
             if (_battleState == UnitBattleState.Cast)
@@ -274,6 +281,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
 
         public override void Destroy()
         {
+            _controller.gameObject.SendMessageTo(CastInterruptedMessage.INSTANCE, _controller.transform.parent.gameObject);
             _castingTimer?.Destroy();
             _castingTimer = null;
             var abilities = _abilities.ToArray();

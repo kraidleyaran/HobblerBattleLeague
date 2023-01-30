@@ -6,34 +6,24 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague
     [Serializable]
     public class HobblerBattleHistory
     {
-        public int Victories;
-        public int Defeats;
-        public int TotalMatches;
-        public List<int> DamageDone = new List<int>();
-        public List<int> HealingDone = new List<int>();
-        public List<int> DamageTaken = new List<int>();
-        public List<int> Deaths = new List<int>();
-        public List<int> RoundsPlayed = new List<int>();
+        public bool Victory;
+        public string Id;
+        public int DamageDone;
+        public int HealingDone;
+        public int DamageTaken;
+        public int Deaths;
+        public int RoundsPlayed;
 
-        public void ApplyUnitData(BattleUnitData data, BattleResult result)
+        public HobblerBattleHistory FromBattleData(BattleUnitData data, bool victory, string battleId)
         {
-            TotalMatches++;
-            switch (result)
-            {
-                case BattleResult.Victory:
-                    Victories++;
-                    break;
-                case BattleResult.Defeat:
-                    Defeats++;
-                    break;
-                case BattleResult.Abandon:
-                    break;
-            }
-            DamageDone.Add(data.TotalDamageDone);
-            DamageTaken.Add(data.TotalDamageTaken);
-            HealingDone.Add(data.TotalHeals);
-            Deaths.Add(data.Deaths);
-            RoundsPlayed.Add(data.RoundsPlayed);
+            Victory = victory;
+            Id = battleId;
+            DamageDone = data.TotalDamageDone;
+            HealingDone = data.TotalHeals;
+            DamageTaken = data.TotalDamageTaken;
+            Deaths = data.Deaths;
+            RoundsPlayed = data.RoundsPlayed;
+            return this;
         }
     }
 }

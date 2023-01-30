@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Assets.Resources.Ancible_Tools.Scripts.System.Combat;
+using UnityEngine;
 
 namespace Assets.Resources.Ancible_Tools.Scripts.System
 {
@@ -26,6 +27,13 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
         [SerializeField] private Color _healthBarColor = Color.red;
         [SerializeField] private Color _manaBarColor = Color.blue;
 
+        [Header("Status Effect Colors")]
+        [SerializeField] private Color _stunColor = Color.yellow;
+        [SerializeField] private Color _silenceColor = Color.blue;
+        [SerializeField] private Color _rootColor = Color.yellow;
+        [SerializeField] private Color _muteColor = Color.blue;
+        [SerializeField] private Color _disarmColor = Color.red;
+
         void Awake()
         {
             if (_instance)
@@ -35,6 +43,25 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
             }
 
             _instance = this;
+        }
+
+        public static Color GetColorForStatusEffect(StatusEffectType type)
+        {
+            switch (type)
+            {
+                case StatusEffectType.Stun:
+                    return _instance._stunColor;
+                case StatusEffectType.Silence:
+                    return _instance._silenceColor;
+                case StatusEffectType.Root:
+                    return _instance._rootColor;
+                case StatusEffectType.Mute:
+                    return _instance._muteColor;
+                case StatusEffectType.Disarm:
+                    return _instance._disarmColor;
+                default:
+                    return Color.white;
+            }
         }
     }
 }

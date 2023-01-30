@@ -36,6 +36,11 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.MInigame
             _castingFillBarController.Setup(0f, actionName, _fillColor);
         }
 
+        public void Interrupt()
+        {
+            OnTickFinish();
+        }
+
         private void OnTickUpdate(int current, int max)
         {
             var percent = (float) current / max;

@@ -53,3 +53,4 @@ MonoBehaviour:
   _leftSideHealthColor: {r: 0.039215688, g: 0.5372549, b: 1, a: 1}
   _rightSideHealthColor: {r: 0.8784314, g: 0.23529412, b: 0.15686275, a: 1}
   _unitStatusTemplate: {fileID: 942963287408170542, guid: 91e6568848d63e149bfe7b0fb1980102, type: 3}
+  _floatingTextTemplate: {fileID: 8635687466048578386, guid: dd45b6d8e881e9a4b920e46301b0074d, type: 3}

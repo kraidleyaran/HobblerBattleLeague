@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Assets.Ancible_Tools.Scripts.System.SaveData;
 using MessageBusLib;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -11,7 +12,9 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Windows
         public virtual bool Static => false;
         public bool Instantiated { get; private set; }
 
-        public WorldState[] ActiveWorldStates = new []{WorldState.World};
+        public string WorldName;
+
+        public WorldState[] ActiveWorldStates = {WorldState.World};
         public WorldState[] DisabledStates = new WorldState[0];
 
         private bool _hovered = false;
@@ -29,6 +32,8 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Windows
         {
             var pos = transform.localPosition.ToVector2();
             pos += delta;
+            pos.x = Mathf.Max(Mathf.Min(pos.x, Screen.width / 2f), Screen.width / 2 * -1);
+            pos.y = Mathf.Max(Mathf.Min(pos.y, Screen.height / 2f), Screen.height / 2 * -1);
             pos = pos.ToVector2Int(true);
             transform.SetLocalPosition(pos);
         }
@@ -54,6 +59,11 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Windows
                 if (gameObject.activeSelf)
                 {
                     gameObject.SetActive(false);
+                    if (_hovered)
+                    {
+                        _hovered = false;
+                        UiWindowManager.RemoveHoveredWindow(this);
+                    }
                 }
             }
             else if (ActiveWorldStates.Contains(msg.State))
@@ -83,7 +93,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Windows
 
         public virtual void Close()
         {
-            UiWindowManager.CloseWindow(this);
+            UiWindowManager.CloseWindow(this, WorldName);
         }
 
         public virtual void Destroy()
@@ -94,6 +104,11 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Windows
             }
             gameObject.UnsubscribeFromAllMessages();
             _destroyed = true;
+        }
+
+        public WindowData GetData()
+        {
+            return new WindowData {Id = WorldName, Window = name};
         }
 
         void OnDestroy()

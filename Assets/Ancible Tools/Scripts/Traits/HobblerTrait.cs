@@ -1,9 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Assets.Ancible_Tools.Scripts.System.Factories;
+using Assets.Ancible_Tools.Scripts.System.SaveData;
 using Assets.Resources.Ancible_Tools.Scripts.System;
+using Assets.Resources.Ancible_Tools.Scripts.System.Abilities;
 using Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague;
 using Assets.Resources.Ancible_Tools.Scripts.System.Combat;
 using Assets.Resources.Ancible_Tools.Scripts.System.Items;
+using Assets.Resources.Ancible_Tools.Scripts.System.Pathing;
+using Assets.Resources.Ancible_Tools.Scripts.System.SaveData;
+using Assets.Resources.Ancible_Tools.Scripts.System.Skills;
 using MessageBusLib;
 using UnityEditor;
 using UnityEngine;
@@ -16,14 +22,73 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         private string _name = string.Empty;
         private HobblerTemplate _template = null;
         private string _hobblerId = string.Empty;
-        private HobblerBattleHistory _battleHistory = new HobblerBattleHistory();
+
+        private MapTile _currentMapTile = null;
+
+        private List<HobblerBattleHistory> _battleHistory = new List<HobblerBattleHistory>();
 
         private MonsterState _monsterState = MonsterState.Idle;
+        private HobblerData _data = null;
 
         public override void SetupController(TraitController controller)
         {
             base.SetupController(controller);
             SubscribeToMessages();
+        }
+
+        private void ApplyEquipmentToData(EquippableInstance[] armor, EquippableInstance[] trinkets, EquippableInstance weapon)
+        {
+            var equipped = new List<EquippableItemData>();
+            for (var i = 0; i < armor.Length; i++)
+            {
+                if (armor[i] != null)
+                {
+                    equipped.Add(new EquippableItemData{Item = armor[i].Instance.name, Slot = i});
+                }
+            }
+
+            for (var i = 0; i < trinkets.Length; i++)
+            {
+                if (trinkets[i] != null)
+                {
+                    equipped.Add(new EquippableItemData{Item = trinkets[i].Instance.name, Slot = i});
+                }
+            }
+
+            if (weapon != null)
+            {
+                equipped.Add(new EquippableItemData{Item = weapon.Instance.name, Slot =  0});
+            }
+
+            _data.Equipped = equipped.ToArray();
+        }
+
+        private void ApplyCombatStatsToData(CombatStats baseStats, CombatStats bonus, GeneticCombatStats accumulated)
+        {
+            _data.Stats = baseStats;
+        }
+
+        private void ApplyGeneticsToData(GeneticCombatStats rolled, GeneticCombatStats accumulated)
+        {
+            _data.Genetics = rolled;
+            _data.Accumulated = accumulated;
+        }
+
+        private void ApplySkillsToData(KeyValuePair<int, SkillInstance>[] skills)
+        {
+            _data.Skills = skills.Select(kv => kv.ToData()).ToArray();
+        }
+
+        private void ApplyWellbeingToData(WellbeingStats wellbeing, WellbeingStats min, WellbeingStats max)
+        {
+            _data.Wellbeing = wellbeing;
+            _data.MinWellBeing = min;
+            _data.MaxWellbeing = max;
+        }
+
+        private void ApplyAbilitiesToData(KeyValuePair<int, WorldAbility>[] abilities)
+        {
+            _data.Abilities = abilities.Where(a => a.Value).Select(a => a.ToData()).ToArray();
         }
 
         private void SubscribeToMessages()
@@ -35,6 +100,9 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             _controller.transform.parent.gameObject.SubscribeWithFilter<QueryBattleUnitDataMessage>(QueryBattleUnitData, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<ApplyHobblerBattleDataMessage>(ApplyHobblerBattleData, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<UpdateMonsterStateMessage>(UpdateMonsterState, _instanceId);
+            _controller.transform.parent.gameObject.SubscribeWithFilter<QueryHobblerDataMessage>(QueryHobblerData, _instanceId);
+            _controller.transform.parent.gameObject.SubscribeWithFilter<SetupHobblerFromDataMessage>(SetupHobblerFromData, _instanceId);
+            _controller.transform.parent.gameObject.SubscribeWithFilter<UpdateMapTileMessage>(UpdateMapTile, _instanceId);
         }
 
         private void SetHobblerTemplate(SetHobblerTemplateMessage msg)
@@ -136,13 +204,14 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             querySpriteMsg.DoAfter = trait => data.Sprite = trait;
             _controller.gameObject.SendMessageTo(querySpriteMsg, _controller.transform.parent.gameObject);
             MessageFactory.CacheMessage(querySpriteMsg);
-
+            
             msg.DoAfter.Invoke(data);
         }
 
         private void ApplyHobblerBattleData(ApplyHobblerBattleDataMessage msg)
         {
-            _battleHistory.ApplyUnitData(msg.Data, msg.Result);
+            var history = new HobblerBattleHistory();
+            _battleHistory.Add(history.FromBattleData(msg.Data, msg.Result == BattleResult.Victory, msg.MatchId));
             if (_monsterState == MonsterState.Battle)
             {
                 var setMonsterStateMsg = MessageFactory.GenerateSetMonsterStateMsg();
@@ -182,6 +251,94 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                 MessageFactory.CacheMessage(setSelectableStateMsg);
             }
             _monsterState = msg.State;
+        }
+
+        private void QueryHobblerData(QueryHobblerDataMessage msg)
+        {
+            if (_data == null)
+            {
+                _data = new HobblerData { Id = _hobblerId, Template = _template.name, BattleHistory = _battleHistory.ToArray()};
+            }
+            //This needs to be outside of the intialization so we always apply the new name;
+            _data.Name = _name;
+            _data.Roster = WorldHobblerManager.Roster.Contains(_controller.transform.parent.gameObject);
+            _data.Position = _currentMapTile.Position.ToData();
+            var queryCombatStatsMsg = MessageFactory.GenerateQueryCombatStatsMsg();
+            queryCombatStatsMsg.DoAfter = ApplyCombatStatsToData;
+            _controller.gameObject.SendMessageTo(queryCombatStatsMsg, _controller.transform.parent.gameObject);
+            MessageFactory.CacheMessage(queryCombatStatsMsg);
+
+            var queryHobblerGeneticsMsg = MessageFactory.GenerateQueryHobblerGeneticsMsg();
+            queryHobblerGeneticsMsg.DoAfter = ApplyGeneticsToData;
+            _controller.gameObject.SendMessageTo(queryHobblerGeneticsMsg, _controller.transform.parent.gameObject);
+            MessageFactory.CacheMessage(queryHobblerGeneticsMsg);
+
+            var queryEquipmentMsg = MessageFactory.GenerateQueryHobblerEquipmentMsg();
+            queryEquipmentMsg.DoAfter = ApplyEquipmentToData;
+            _controller.gameObject.SendMessageTo(queryEquipmentMsg, _controller.transform.parent.gameObject);
+            MessageFactory.CacheMessage(queryEquipmentMsg);
+
+            var querySkillsMsg = MessageFactory.GenerateQuerySkillsByPriorityMsg();
+            querySkillsMsg.DoAfter = ApplySkillsToData;
+            _controller.gameObject.SendMessageTo(querySkillsMsg, _controller.transform.parent.gameObject);
+            MessageFactory.CacheMessage(querySkillsMsg);
+
+            var queryWellbeingStatsMsg = MessageFactory.GenerateQueryWellbeingStatsMsg();
+            queryWellbeingStatsMsg.DoAfter = ApplyWellbeingToData;
+            _controller.gameObject.SendMessageTo(queryWellbeingStatsMsg, _controller.transform.parent.gameObject);
+            MessageFactory.CacheMessage(queryWellbeingStatsMsg);
+
+            var queryAbilitiesMsg = MessageFactory.GenerateQueryAbilitiesMsg();
+            queryAbilitiesMsg.DoAfter = ApplyAbilitiesToData;
+            _controller.gameObject.SendMessageTo(queryAbilitiesMsg, _controller.transform.parent.gameObject);
+            MessageFactory.CacheMessage(queryAbilitiesMsg);
+            
+            msg.DoAfter.Invoke(_data);
+        }
+
+        private void SetupHobblerFromData(SetupHobblerFromDataMessage msg)
+        {
+            _data = msg.Data;
+            _name = _data.Name;
+            _hobblerId = _data.Id;
+
+            var setupCombatStatsMsg = MessageFactory.GenerateSetupHobblerCombatStatsMsg();
+            setupCombatStatsMsg.Stats = _data.Stats;
+            setupCombatStatsMsg.Accumulated = _data.Accumulated;
+            setupCombatStatsMsg.Genetics = _data.Genetics;
+            _controller.gameObject.SendMessageTo(setupCombatStatsMsg, _controller.transform.parent.gameObject);
+            MessageFactory.CacheMessage(setupCombatStatsMsg);
+
+            var addTraitToUnitMsg = MessageFactory.GenerateAddTraitToUnitMsg();
+
+            var template = WorldHobblerManager.GetTemplateByName(_data.Template);
+            if (template)
+            {
+                _template = template;
+                addTraitToUnitMsg.Trait = template.Sprite;
+                _controller.gameObject.SendMessageTo(addTraitToUnitMsg, _controller.transform.parent.gameObject);
+            }
+
+
+            var setAbilitiesFromDataMsg = MessageFactory.GenerateSetAbilitiesFromDataMsg();
+            setAbilitiesFromDataMsg.Abilities = _data.Abilities;
+            _controller.gameObject.SendMessageTo(setAbilitiesFromDataMsg, _controller.transform.parent.gameObject);
+            MessageFactory.CacheMessage(setupCombatStatsMsg);
+
+            var setSkillsFromDataMsg = MessageFactory.GenerateSetSkillsFromDataMsg();
+            setSkillsFromDataMsg.Skills = _data.Skills;
+            _controller.gameObject.SendMessageTo(setSkillsFromDataMsg, _controller.transform.parent.gameObject);
+            MessageFactory.CacheMessage(setSkillsFromDataMsg);
+
+            var setEquipmentFromDataMsg = MessageFactory.GenerateSetEquippableItemsFromDataMsg();
+            setEquipmentFromDataMsg.Items = _data.Equipped;
+            _controller.gameObject.SendMessageTo(setEquipmentFromDataMsg, _controller.transform.parent.gameObject);
+            MessageFactory.CacheMessage(setEquipmentFromDataMsg);
+        }
+
+        private void UpdateMapTile(UpdateMapTileMessage msg)
+        {
+            _currentMapTile = msg.Tile;
         }
     }
 }

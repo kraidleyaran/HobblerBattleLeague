@@ -30,6 +30,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         {
             _controller.transform.parent.gameObject.SubscribeWithFilter<ActivateGlobalCooldownMessage>(ActivateGlobalCooldown, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<UpdateUnitBattleStateMessage>(UpdateUnitBattleState, _instanceId);
+            _controller.transform.parent.gameObject.SubscribeWithFilter<QueryGlobalCooldownMessage>(QueryGlobalCooldown, _instanceId);
         }
 
         private void ActivateGlobalCooldown(ActivateGlobalCooldownMessage msg)
@@ -48,6 +49,11 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                 _globalCooldown?.Destroy();
                 _globalCooldown = null;
             }
+        }
+
+        private void QueryGlobalCooldown(QueryGlobalCooldownMessage msg)
+        {
+            msg.DoAfter.Invoke(_globalCooldown);
         }
 
         public override void Destroy()

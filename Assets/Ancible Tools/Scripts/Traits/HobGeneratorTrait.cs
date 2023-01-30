@@ -99,5 +99,12 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         {
             msg.DoAfter.Invoke(_currentHobblers.ToArray(), _generationTimer, _generationWorldTicks);
         }
+
+        public override void Destroy()
+        {
+            _generationTimer?.Destroy();
+            _generationTimer = null;
+            base.Destroy();
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Assets.Ancible_Tools.Scripts.System.SaveData;
 using Assets.Ancible_Tools.Scripts.System.UI.UnitInfo;
 using Assets.Ancible_Tools.Scripts.System.WorldNodes;
 using Assets.Ancible_Tools.Scripts.Traits;
@@ -15,6 +16,7 @@ using Assets.Resources.Ancible_Tools.Scripts.System.Minigame;
 using Assets.Resources.Ancible_Tools.Scripts.System.Minigame.AI;
 using Assets.Resources.Ancible_Tools.Scripts.System.Minigame.Settings;
 using Assets.Resources.Ancible_Tools.Scripts.System.Pathing;
+using Assets.Resources.Ancible_Tools.Scripts.System.SaveData;
 using Assets.Resources.Ancible_Tools.Scripts.System.Skills;
 using Assets.Resources.Ancible_Tools.Scripts.System.TickTimers;
 using Assets.Resources.Ancible_Tools.Scripts.System.UI.DetailedInfo;
@@ -494,6 +496,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
     {
         public WorldItem Item;
         public int Stack;
+        public bool Alert;
     }
 
     public class SetLootTableMessage : EventMessage
@@ -665,6 +668,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
     {
         //Current, Max
         public Action<int, int> DoAfter;
+        public bool DirectValues;
     }
 
     public class HealMessage : EventMessage
@@ -896,6 +900,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
     public class SetupBuildingMessage : EventMessage
     {
         public WorldBuilding Building;
+        public string Id;
     }
 
     public class WorldBuildingActiveMessage : EventMessage
@@ -1030,6 +1035,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
     {
         public BattleUnitData Data;
         public BattleResult Result;
+        public string MatchId;
     }
 
     public class CanMoveCheckMessage : EventMessage
@@ -1150,7 +1156,8 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
 
     public class SetPlayerCheckpointMessage : EventMessage
     {
-        public MapTile Tile;
+        public Vector2Int Position;
+        public AdventureMap Map;
     }
 
     public class RespawnPlayerMessage : EventMessage
@@ -1192,5 +1199,115 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
     public class SetPlayerInteractionObjectMessage : EventMessage
     {
         public GameObject Interact;
+    }
+
+    public class QueryHobblerDataMessage : EventMessage
+    {
+        public Action<HobblerData> DoAfter;
+    }
+
+    public class QueryHobblerGeneticsMessage : EventMessage
+    {
+        // Rolled, Accumulated
+        public Action<GeneticCombatStats, GeneticCombatStats> DoAfter;
+    }
+
+    public class QueryTrainerDataMessage : EventMessage
+    {
+        //Id
+        public Action<string> DoAfter;
+    }
+
+    public class QueryPlayerCheckpointMessage : EventMessage
+    {
+        //Map, Tile
+        public Action<string,Vector2Int> DoAfter;
+    }
+
+    public class QueryNodeMessage : EventMessage
+    {
+        //Id, stack remaining
+        public Action<string, int> DoAfter;
+    }
+
+    public class QueryBuildingMessge : EventMessage
+    {
+        //Template, Position, Id
+        public Action<WorldBuilding, MapTile, string> DoAfter;
+    }
+
+    public class ClearWorldMessage : EventMessage
+    {
+        public static ClearWorldMessage INSTANCE = new ClearWorldMessage();
+    }
+
+    public class SetupHobblerFromDataMessage : EventMessage
+    {
+        public HobblerData Data;
+    }
+
+    public class SetAbilitiesFromDataMessage : EventMessage
+    {
+        public AbilityData[] Abilities;
+    }
+
+    public class SetSkillsFromDataMessage : EventMessage
+    {
+        public SkillData[] Skills;
+    }
+
+    public class SetEquippableItemsFromDataMessage : EventMessage
+    {
+        public EquippableItemData[] Items;
+    }
+
+    public class LoadWorldDataMessage : EventMessage
+    {
+        public static LoadWorldDataMessage INSTANCE = new LoadWorldDataMessage();
+    }
+
+    public class SetBuildingIdMessage : EventMessage
+    {
+        public string Id;
+    }
+
+    public class UpdateBuildingIdMessage : EventMessage
+    {
+        public string Id;
+    }
+
+    public class SetupTrainerMessage : EventMessage
+    {
+        public string Id;
+        public BattleEncounter Encounter;
+        public DialogueData PreEncounterDialogue;
+        public DialogueData DefeatedDialogue;
+    }
+
+    public class MuteMessage : EventMessage
+    {
+        public static MuteMessage INSTANCE = new MuteMessage();
+    }
+
+    public class StatusEffectFinishedMessage : EventMessage
+    {
+        public StatusEffectType Type;
+    }
+
+    public class CastInterruptedMessage : EventMessage
+    {
+        public static CastInterruptedMessage INSTANCE = new CastInterruptedMessage();
+    }
+
+    public class ShowFloatingTextMessage : EventMessage
+    {
+        public string Text;
+        public Color Color;
+        public Vector2 World;
+    }
+
+    public class QueryGlobalCooldownMessage : EventMessage
+    {
+        public Action<TickTimer> DoAfter;
     }
 }

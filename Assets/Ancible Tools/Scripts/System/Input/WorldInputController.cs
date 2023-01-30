@@ -24,6 +24,11 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Input
         [SerializeField] private Key _abilitySlot2 = Key.Digit4;
         [SerializeField] private Key _abilitySlot3 = Key.Digit5;
 
+        [Header("System")]
+        [SerializeField] private Key _save = Key.F5;
+        [SerializeField] private Key _load = Key.F7;
+        [SerializeField] private Key _switchMode = Key.Backquote;
+
         private WorldInputState _previous = new WorldInputState();
         private UpdateInputStateMessage _updateInputStateMsg = new UpdateInputStateMessage();
 
@@ -65,7 +70,10 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Input
                 AbilitySlot0 = Keyboard.current[_abilitySlot0].isPressed,
                 AbilitySlot1 = Keyboard.current[_abilitySlot1].isPressed,
                 AbilitySlot2 = Keyboard.current[_abilitySlot2].isPressed,
-                AbilitySlot3 = Keyboard.current[_abilitySlot3].isPressed
+                AbilitySlot3 = Keyboard.current[_abilitySlot3].isPressed,
+                Save = Keyboard.current[_save].isPressed,
+                Load = Keyboard.current[_load].isPressed,
+                SwitchMode = Keyboard.current[_switchMode].isPressed
             };
             _updateInputStateMsg.Current = current;
             _updateInputStateMsg.Previous = _previous;

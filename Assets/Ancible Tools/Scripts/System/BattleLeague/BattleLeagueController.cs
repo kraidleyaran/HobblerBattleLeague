@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Assets.Resources.Ancible_Tools.Scripts.System.Combat;
 using Assets.Resources.Ancible_Tools.Scripts.System.Pathing;
@@ -7,6 +8,7 @@ using Assets.Resources.Ancible_Tools.Scripts.System.TickTimers;
 using Assets.Resources.Ancible_Tools.Scripts.System.UI.BattleLeague;
 using CreativeSpore.SuperTilemapEditor;
 using MessageBusLib;
+using UnityEditor;
 using UnityEngine;
 
 namespace Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague
@@ -29,6 +31,8 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague
         public static Transform Transform => _instance.transform;
 
         private static BattleLeagueController _instance = null;
+
+        public string MatchId { get; private set; }
 
         [SerializeField] private UnitTemplate _battleUnitTemplate;
         [SerializeField] private PathingGridController _pathingGrid = null;
@@ -111,6 +115,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague
             gameObject.SetActive(true);
             LeftBench.Setup(left);
             RightBench.Setup(right);
+            MatchId = GUID.Generate().ToString();
             StartPrepTimer();
         }
 
@@ -131,6 +136,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague
 
             LeftBench.Setup(player);
             _encounterBenchController.Setup(encounter);
+            MatchId = GUID.Generate().ToString();
             StartPrepTimer();
         }
 
@@ -144,6 +150,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague
             _rightPoints = 0;
             _round = 0;
             _maxRounds = 0;
+            MatchId = string.Empty;
         }
 
         public static void RemoveUnit(GameObject unit, BattleAlignment alignment, int spirit = 0)

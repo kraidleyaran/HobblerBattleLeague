@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Assets.Ancible_Tools.Scripts.System.SaveData;
 using Assets.Ancible_Tools.Scripts.Traits;
 using MessageBusLib;
 using UnityEngine;
@@ -44,6 +45,11 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Items
                 MessageFactory.CacheMessage(setBasictAttackSetupMsg);
             }
             
+        }
+
+        public EquippableItemData GetData(int slot)
+        {
+            return new EquippableItemData{Item = Instance.name};
         }
 
         public override void Destroy()

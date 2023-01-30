@@ -128,9 +128,11 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague
             addExperienceMsg.Amount = experience;
 
             _applyHobblerBattleDataMsg.Result = _result;
+            _applyHobblerBattleDataMsg.MatchId = _battleLeagueController.MatchId;
             for (var i = 0; i < objs.Length; i++)
             {
                 _applyHobblerBattleDataMsg.Data = objs[i].Key;
+
                 gameObject.SendMessageTo(addExperienceMsg, objs[i].Value);
                 gameObject.SendMessageTo(_applyHobblerBattleDataMsg, objs[i].Value);
                 objs[i].Key.Dispose();
@@ -145,7 +147,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague
             _currentEncounter = null;
             for (var i = 0; i < _openBattleWindows.Length; i++)
             {
-                UiWindowManager.CloseWindow(_openBattleWindows[i]);
+                UiWindowManager.CloseWindow(_openBattleWindows[i], _openBattleWindows[i].WorldName);
             }
             _openBattleWindows = new UiBaseWindow[0];
             BattleLeagueCameraController.SetActive(false);

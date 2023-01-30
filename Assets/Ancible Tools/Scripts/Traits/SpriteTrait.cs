@@ -76,7 +76,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                 _spriteController.SetSprite(sprite._sprite);
             }
             _spriteController.SetScale(sprite._scaling);
-            _spriteController.SetSortingOrder(sprite._sortingOrder);
+            //_spriteController.SetSortingOrder(sprite._sortingOrder);
             if (sprite._spriteLayer)
             {
                 _spriteController.SetSortingLayerFromSpriteLayer(sprite._spriteLayer);

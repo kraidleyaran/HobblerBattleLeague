@@ -27,14 +27,20 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             if (canApply)
             {
                 SubscribeToMessages();
+                var showFloatingTextMsg = MessageFactory.GenerateShowFloatingTextMsg();
+                showFloatingTextMsg.Color = ColorFactoryController.GetColorForStatusEffect(_type);
+                showFloatingTextMsg.Text = _type.ToFloatingText();
+                showFloatingTextMsg.World = _controller.transform.position.ToVector2();
+                _controller.gameObject.SendMessage(showFloatingTextMsg);
+                MessageFactory.CacheMessage(showFloatingTextMsg);
             }
             else
             {
-                RemoveStatusEffect();
+                RemoveStatusEffect(false);
             }
         }
 
-        private void RemoveStatusEffect()
+        private void RemoveStatusEffect(bool finished)
         {
             if (_statusEffectTimer != null)
             {
@@ -45,6 +51,13 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             removeTraitByControllerMsg.Controller = _controller;
             _controller.gameObject.SendMessageTo(removeTraitByControllerMsg, _controller.transform.parent.gameObject);
             MessageFactory.CacheMessage(removeTraitByControllerMsg);
+            if (finished)
+            {
+                var statusEffectFinishedMsg = MessageFactory.GenerateStatusEffectFinishedMsg();
+                statusEffectFinishedMsg.Type = _type;
+                _controller.gameObject.SendMessageTo(statusEffectFinishedMsg, _controller.transform.parent.gameObject);
+                MessageFactory.CacheMessage(statusEffectFinishedMsg);
+            }
         }
 
         private void SubscribeToMessages()
@@ -69,14 +82,16 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                     break;
                 case StatusEffectType.Mute:
                     _controller.transform.parent.gameObject.SubscribeWithFilter<CanActivateTrinketCheckMessage>(CanActivateTrinket, _instanceId);
+                    _controller.gameObject.SendMessageTo(MuteMessage.INSTANCE, _controller.transform.parent.gameObject);
                     break;
                 case StatusEffectType.Disarm:
                     _controller.transform.parent.gameObject.SubscribeWithFilter<CanAttackCheckMessage>(CanAttack, _instanceId);
+                    _controller.gameObject.SendMessageTo(DisarmMessage.INSTANCE, _controller.transform.parent.gameObject);
                     break;
             }
             if (_ticks > 0)
             {
-                _statusEffectTimer = new TickTimer(_ticks, -1, null, RemoveStatusEffect, false);
+                _statusEffectTimer = new TickTimer(_ticks, -1, null, () => {RemoveStatusEffect(true);}, false);
             }
         }
 
@@ -112,7 +127,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         {
             if (msg.Types.Contains(_type))
             {
-                RemoveStatusEffect();
+                RemoveStatusEffect(true);
             }
         }
     }

@@ -17,3 +17,4 @@ MonoBehaviour:
   _engagePlayerDistance: 2
   _preBattleDialogue: {fileID: 11400000, guid: 36e623820bf623846bb02f267e0c905f, type: 2}
   _defeatedDialogue: {fileID: 11400000, guid: f26878b1c319808458b307142cac9146, type: 2}
+  SaveId: 

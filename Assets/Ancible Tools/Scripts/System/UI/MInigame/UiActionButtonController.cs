@@ -1,6 +1,9 @@
 ﻿using Assets.Resources.Ancible_Tools.Scripts.System.Abilities;
+using Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague;
 using Assets.Resources.Ancible_Tools.Scripts.System.Combat;
 using Assets.Resources.Ancible_Tools.Scripts.System.Items;
+using Assets.Resources.Ancible_Tools.Scripts.System.Minigame;
+using Assets.Resources.Ancible_Tools.Scripts.System.TickTimers;
 using Assets.Resources.Ancible_Tools.Scripts.System.UI.Timer;
 using MessageBusLib;
 using UnityEngine;
@@ -11,14 +14,18 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.MInigame
 {
     public class UiActionButtonController : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
+        private const string FILTER = "ActionButton-";
+
         public AbilityInstance Ability { get; private set; }
         public BasicAttackSetup AttackSetup { get; private set; }
 
         [SerializeField] private UiTimerController _cooldownController = null;
+        [SerializeField] private UiTimerController _globalController = null;
         [SerializeField] private Image _icon = null;
 
         private GameObject _player = null;
         private bool _hovered = false;
+        private string _filter = string.Empty;
 
         public void SetupBasicAttack(GameObject player)
         {
@@ -34,7 +41,19 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.MInigame
             gameObject.SendMessageTo(queryBasicAttackMsg, player);
             MessageFactory.CacheMessage(queryBasicAttackMsg);
 
+            TickTimer globalCooldown = null;
+            var queryGlobalCooldownMsg = MessageFactory.GenerateQueryGlobalCooldownMsg();
+            queryGlobalCooldownMsg.DoAfter = cooldown => globalCooldown = cooldown;
+            gameObject.SendMessageTo(queryGlobalCooldownMsg, _player);
+            MessageFactory.CacheMessage(queryGlobalCooldownMsg);
+
+            if (globalCooldown != null)
+            {
+                _globalController.Setup(globalCooldown, TimerType.Cooldown, null);
+            }
+
             _icon.sprite = playerWeapon != null ? playerWeapon.Instance.Icon : IconFactoryController.DefaultBasicAttack;
+            SubscribeToMessages();
         }
 
         public void SetupAbility(AbilityInstance ability, GameObject player)
@@ -45,11 +64,24 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.MInigame
             {
                 _icon.sprite = Ability.Instance.Icon;
                 _cooldownController.Setup(Ability.CooldownTimer, TimerType.Cooldown, null);
+
+                TickTimer globalCooldown = null;
+                var queryGlobalCooldownMsg = MessageFactory.GenerateQueryGlobalCooldownMsg();
+                queryGlobalCooldownMsg.DoAfter = cooldown => globalCooldown = cooldown;
+                gameObject.SendMessageTo(queryGlobalCooldownMsg, _player);
+                MessageFactory.CacheMessage(queryGlobalCooldownMsg);
+
+                if (globalCooldown != null)
+                {
+                    _globalController.Setup(globalCooldown, TimerType.Cooldown, null);
+                }
+                SubscribeToMessages();
             }
             else
             {
                 _icon.gameObject.SetActive(false);
             }
+            
         }
 
         public void SetEmpty(GameObject player)
@@ -128,6 +160,56 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.MInigame
                 removeHoverInfoMsg.Owner = gameObject;
                 gameObject.SendMessage(removeHoverInfoMsg);
                 MessageFactory.CacheMessage(removeHoverInfoMsg);
+            }
+        }
+
+        private void CheckCooldowns()
+        {
+            if (Ability != null)
+            {
+                if (_cooldownController.Timer.State != TimerState.Stopped)
+                {
+                    var activeTimer = _globalController.Timer.State != TimerState.Stopped && _globalController.Timer.RemainingTicks > _cooldownController.Timer.RemainingTicks ? _globalController : _cooldownController;
+                    var inactiveTimer = activeTimer == _globalController ? _cooldownController : _globalController;
+                    activeTimer.gameObject.SetActive(true);
+                    inactiveTimer.gameObject.SetActive(false);
+                }
+                else if (!_globalController.gameObject.activeSelf)
+                {
+                    _globalController.gameObject.SetActive(true);
+                }
+            }
+        }
+
+        private void SubscribeToMessages()
+        {
+            _filter = $"{FILTER}{GetInstanceID()}";
+            _player.SubscribeWithFilter<UpdateMinigameUnitStateMessage>(UpdateUnitState, _filter);
+            _player.SubscribeWithFilter<ActivateGlobalCooldownMessage>(ActivateGlobalCooldown, _filter);
+        }
+
+        private void UpdateUnitState(UpdateMinigameUnitStateMessage msg)
+        {
+            if (msg.State == MinigameUnitState.Casting)
+            {
+                CheckCooldowns();
+            }
+
+        }
+
+        private void ActivateGlobalCooldown(ActivateGlobalCooldownMessage msg)
+        {
+            StartCoroutine(StaticMethods.WaitForFrames(1, CheckCooldowns));
+        }
+
+        void OnDestroy()
+        {
+            if (_player)
+            {
+                _player.UnsubscribeFromAllMessagesWithFilter(_filter);
+                _player = null;
+                Destroy(_cooldownController.gameObject);
+                Destroy(_globalController.gameObject);
             }
         }
     }

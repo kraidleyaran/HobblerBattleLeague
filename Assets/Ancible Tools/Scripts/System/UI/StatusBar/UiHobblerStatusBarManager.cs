@@ -45,7 +45,7 @@ namespace Assets.Ancible_Tools.Scripts.System.UI.StatusBar
 
         public static void UnregisterHobbler(GameObject obj)
         {
-            if (_instance._statusBars.TryGetValue(obj, out var controller))
+            if ( _instance && _instance._statusBars.TryGetValue(obj, out var controller))
             {
                 _instance._statusBars.Remove(obj);
                 if (controller)

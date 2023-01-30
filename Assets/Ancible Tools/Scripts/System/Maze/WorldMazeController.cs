@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Assets.Ancible_Tools.Scripts.Traits;
+using Assets.Resources.Ancible_Tools.Scripts.System.Abilities;
 using Assets.Resources.Ancible_Tools.Scripts.System.Combat;
 using Assets.Resources.Ancible_Tools.Scripts.System.Items;
 using Assets.Resources.Ancible_Tools.Scripts.System.Minigame;
@@ -57,9 +58,10 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Maze
         {
             _settings = settings;
             _maze = new ProceduralToolkit.Samples.Maze(settings.Size.x, settings.Size.y);
-            var edges = _maze.GetPossibleConnections(new ProceduralToolkit.Samples.Maze.Vertex(Vector2Int.zero, Directions.None, 0));
+            var startPoint = new Vector2Int(Random.Range(0, _settings.Size.x), Random.Range(0, _settings.Size.y));
+            var edges = _maze.GetPossibleConnections(new ProceduralToolkit.Samples.Maze.Vertex(startPoint, Directions.None, 0));
             var space = (settings.RoomSize / 2);
-            _playerSpawn = new Vector2Int(settings.WallSize + space, settings.WallSize + space);
+            
             Debug.Log($"Player Spawn: {_playerSpawn}");
             var draw = new List<ProceduralToolkit.Samples.Maze.Edge>();
             while (Generate(edges, draw, _mazeSteps))
@@ -73,6 +75,11 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Maze
             var rooms = DrawWalls(deadEnds, doors);
             var chests = SpawnChests(_settings, rooms);
             var monsters = SpawnMonsters(_settings, rooms);
+            var playerSpawnRoom = _rooms.FirstOrDefault(r => r.RoomId == startPoint);
+            if (playerSpawnRoom != null && playerSpawnRoom.SpawnableTiles.Count > 0)
+            {
+                _playerSpawn = playerSpawnRoom.SpawnableTiles.GetRandom();
+            }
             if (_tiles.TryGetValue(_playerSpawn, out var spawnTile))
             {
 
@@ -151,13 +158,30 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Maze
                     MessageFactory.CacheMessage(queryHobbleryEquipmentMsg);
 
                     var equipment = new List<EquippableInstance>();
-                    equipment.AddRange(armor);
-                    equipment.AddRange(trinkets);
-                    equipment.Add(weapon);
+                    equipment.AddRange(armor.Where(a => a != null));
+                    equipment.AddRange(trinkets.Where(t => t != null));
+                    if (weapon != null)
+                    {
+                        equipment.Add(weapon);
+                    }
                     var setMinigameEquipmentMsg = MessageFactory.GenerateSetMinigameEquipmentMsg();
                     setMinigameEquipmentMsg.Equipment = equipment.ToArray();
                     gameObject.SendMessageTo(setMinigameEquipmentMsg, unitController.gameObject);
                     MessageFactory.CacheMessage(setMinigameEquipmentMsg);
+
+                    var abilities = new KeyValuePair<int, WorldAbility>[0];
+                    var queryAbilitiesMsg = MessageFactory.GenerateQueryAbilitiesMsg();
+                    queryAbilitiesMsg.DoAfter = hobblerAbilities => abilities = hobblerAbilities;
+                    gameObject.SendMessageTo(queryAbilitiesMsg, proxy);
+                    MessageFactory.CacheMessage(queryAbilitiesMsg);
+
+                    var availableAbilities = abilities.Select(kv => kv.Value).ToArray();
+                    var setAbilitiesMsg = MessageFactory.GenerateSetAbilitiesMsg();
+                    setAbilitiesMsg.Abilities = availableAbilities;
+                    gameObject.SendMessageTo(setAbilitiesMsg, unitController.gameObject);
+                    MessageFactory.CacheMessage(setAbilitiesMsg);
+
+
                 }
                 else
                 {

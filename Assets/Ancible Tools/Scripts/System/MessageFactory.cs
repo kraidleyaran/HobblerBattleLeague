@@ -148,7 +148,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
         private static List<GainSkillExperienceMessage> _gainSkillExperienceCache = new List<GainSkillExperienceMessage>();
         private static List<SearchForResourceNodeMessage> _searchForResourceNodeCache = new List<SearchForResourceNodeMessage>();
         private static List<SkillCheckMessage> _skillCheckCache = new List<SkillCheckMessage>();
-        private static List<QuerySkillsByPriorityMessage> _querySkillByPriorityCache  = new List<QuerySkillsByPriorityMessage>();
+        private static List<QuerySkillsByPriorityMessage> _querySkillByPriorityCache = new List<QuerySkillsByPriorityMessage>();
         private static List<ChangeSkillPriorityMessage> _changeSkillPriorityCache = new List<ChangeSkillPriorityMessage>();
         private static List<SetEquipmentMessage> _setEquipmentCache = new List<SetEquipmentMessage>();
         private static List<SetUnitNameMessage> _setUnitNameCache = new List<SetUnitNameMessage>();
@@ -175,6 +175,21 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
         private static List<SetPlayerCheckpointMessage> _setPlayerCheckpointCache = new List<SetPlayerCheckpointMessage>();
         private static List<ShowDialogueMessage> _showDialogueCache = new List<ShowDialogueMessage>();
         private static List<SetPlayerInteractionObjectMessage> _setPlayerInteractionObjectCache = new List<SetPlayerInteractionObjectMessage>();
+        private static List<QueryHobblerDataMessage> _queryHobblerDataCache = new List<QueryHobblerDataMessage>();
+        private static List<QueryHobblerGeneticsMessage> _queryHobblerGeneticsCache = new List<QueryHobblerGeneticsMessage>();
+        private static List<QueryWellbeingStatsMessage> _queryWellbeingStatsCache = new List<QueryWellbeingStatsMessage>();
+        private static List<QueryPlayerCheckpointMessage> _queryPlayerCheckpointCache = new List<QueryPlayerCheckpointMessage>();
+        private static List<QueryTrainerDataMessage> _queryTrainerDataCache = new List<QueryTrainerDataMessage>();
+        private static List<QueryNodeMessage> _queryNodeCache = new List<QueryNodeMessage>();
+        private static List<QueryBuildingMessge> _queryBuildingCache = new List<QueryBuildingMessge>();
+        private static List<SetAbilitiesFromDataMessage> _setAbilitiesFromDataCache = new List<SetAbilitiesFromDataMessage>();
+        private static List<SetSkillsFromDataMessage> _setSkillsFromDataCache = new List<SetSkillsFromDataMessage>();
+        private static List<SetEquippableItemsFromDataMessage> _setEquippableItemsFromDataCache = new List<SetEquippableItemsFromDataMessage>();
+        private static List<UpdateBuildingIdMessage> _updateBuildingIdCache = new List<UpdateBuildingIdMessage>();
+        private static List<SetupTrainerMessage> _setupTrainerCache = new List<SetupTrainerMessage>();
+        private static List<StatusEffectFinishedMessage> _statusEffectFinishedCache = new List<StatusEffectFinishedMessage>();
+        private static List<ShowFloatingTextMessage> _showFloatingTextCache = new List<ShowFloatingTextMessage>();
+        private static List<QueryGlobalCooldownMessage> _queryGlobalCooldownCache = new List<QueryGlobalCooldownMessage>();
 
         public static AddTraitToUnitMessage GenerateAddTraitToUnitMsg()
         {
@@ -1009,7 +1024,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
             {
                 var message = _queryBasicAttackSetupCache[0];
                 _queryBasicAttackSetupCache.Remove(message);
-                return message;                
+                return message;
             }
 
             return new QueryBasicAttackSetupMessage();
@@ -2046,6 +2061,186 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
             return new SetPlayerInteractionObjectMessage();
         }
 
+        public static QueryHobblerDataMessage GenerateQueryHobblerDataMsg()
+        {
+            if (_queryHobblerDataCache.Count > 0)
+            {
+                var message = _queryHobblerDataCache[0];
+                _queryHobblerDataCache.Remove(message);
+                return message;
+            }
+
+            return new QueryHobblerDataMessage();
+        }
+
+        public static QueryHobblerGeneticsMessage GenerateQueryHobblerGeneticsMsg()
+        {
+            if (_queryHobblerGeneticsCache.Count > 0)
+            {
+                var message = _queryHobblerGeneticsCache[0];
+                _queryHobblerGeneticsCache.Remove(message);
+                return message;
+            }
+
+            return new QueryHobblerGeneticsMessage();
+        }
+
+        public static QueryWellbeingStatsMessage GenerateQueryWellbeingStatsMsg()
+        {
+            if (_queryWellbeingStatsCache.Count > 0)
+            {
+                var message = _queryWellbeingStatsCache[0];
+                _queryWellbeingStatsCache.Remove(message);
+                return message;
+            }
+
+            return new QueryWellbeingStatsMessage();
+        }
+
+        public static QueryPlayerCheckpointMessage GenerateQueryPlayerCheckpointMsg()
+        {
+            if (_queryPlayerCheckpointCache.Count > 0)
+            {
+                var message = _queryPlayerCheckpointCache[0];
+                _queryPlayerCheckpointCache.Remove(message);
+                return message;
+            }
+
+            return new QueryPlayerCheckpointMessage();
+        }
+
+        public static QueryTrainerDataMessage GenerateQueryTrainerDataMsg()
+        {
+            if (_queryTrainerDataCache.Count > 0)
+            {
+                var message = _queryTrainerDataCache[0];
+                _queryTrainerDataCache.Remove(message);
+                return message;
+            }
+
+            return new QueryTrainerDataMessage();
+        }
+
+        public static QueryNodeMessage GenerateQueryNodeMsg()
+        {
+            if (_queryNodeCache.Count > 0)
+            {
+                var message = _queryNodeCache[0];
+                _queryNodeCache.Remove(message);
+                return message;
+            }
+
+            return new QueryNodeMessage();
+        }
+
+        public static QueryBuildingMessge GenerateQueryBuildingMsg()
+        {
+            if (_queryBuildingCache.Count > 0)
+            {
+                var message = _queryBuildingCache[0];
+                _queryBuildingCache.Remove(message);
+                return message;
+            }
+
+            return new QueryBuildingMessge();
+        }
+
+        public static SetAbilitiesFromDataMessage GenerateSetAbilitiesFromDataMsg()
+        {
+            if (_setAbilitiesFromDataCache.Count > 0)
+            {
+                var message = _setAbilitiesFromDataCache[0];
+                _setAbilitiesFromDataCache.Remove(message);
+                return message;
+            }
+
+            return new SetAbilitiesFromDataMessage();
+        }
+
+        public static SetSkillsFromDataMessage GenerateSetSkillsFromDataMsg()
+        {
+            if (_setSkillsFromDataCache.Count > 0)
+            {
+                var message = _setSkillsFromDataCache[0];
+                _setSkillsFromDataCache.Remove(message);
+                return message;
+            }
+
+            return new SetSkillsFromDataMessage();
+        }
+
+        public static SetEquippableItemsFromDataMessage GenerateSetEquippableItemsFromDataMsg()
+        {
+            if (_setEquippableItemsFromDataCache.Count > 0)
+            {
+                var message = _setEquippableItemsFromDataCache[0];
+                _setEquippableItemsFromDataCache.Remove(message);
+                return message;
+            }
+
+            return new SetEquippableItemsFromDataMessage();
+        }
+
+        public static UpdateBuildingIdMessage GenerateUpdateBuildingIdMsg()
+        {
+            if (_updateBuildingIdCache.Count > 0)
+            {
+                var message = _updateBuildingIdCache[0];
+                _updateBuildingIdCache.Remove(message);
+                return message;
+            }
+
+            return new UpdateBuildingIdMessage();
+        }
+
+        public static SetupTrainerMessage GenerateSetupTrainerMsg()
+        {
+            if (_setupTrainerCache.Count > 0)
+            {
+                var message = _setupTrainerCache[0];
+                _setupTrainerCache.Remove(message);
+                return message;
+            }
+
+            return new SetupTrainerMessage();
+        }
+
+        public static StatusEffectFinishedMessage GenerateStatusEffectFinishedMsg()
+        {
+            if (_statusEffectFinishedCache.Count > 0)
+            {
+                var message = _statusEffectFinishedCache[0];
+                _statusEffectFinishedCache.Remove(message);
+                return message;
+            }
+
+            return new StatusEffectFinishedMessage();
+        }
+
+        public static ShowFloatingTextMessage GenerateShowFloatingTextMsg()
+        {
+            if (_showFloatingTextCache.Count > 0)
+            {
+                var message = _showFloatingTextCache[0];
+                _showFloatingTextCache.Remove(message);
+                return message;
+            }
+
+            return new ShowFloatingTextMessage();
+        }
+
+        public static QueryGlobalCooldownMessage GenerateQueryGlobalCooldownMsg()
+        {
+            if (_queryGlobalCooldownCache.Count > 0)
+            {
+                var message = _queryGlobalCooldownCache[0];
+                _queryGlobalCooldownCache.Remove(message);
+                return message;
+            }
+
+            return new QueryGlobalCooldownMessage();
+        }
+
         //TODO: Start Cache
 
         public static void CacheMessage(AddTraitToUnitMessage msg)
@@ -2278,7 +2473,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
         {
             msg.State = MinigameUnitState.Idle;
             msg.Sender = null;
-             _setMinigameUnitStateCache.Add(msg);
+            _setMinigameUnitStateCache.Add(msg);
         }
 
         public static void CacheMessage(UpdateMinigameUnitStateMessage msg)
@@ -2787,6 +2982,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
         public static void CacheMessage(QueryHealthMessage msg)
         {
             msg.DoAfter = null;
+            msg.DirectValues = false;
             msg.Sender = null;
             _queryHealthCache.Add(msg);
         }
@@ -3183,7 +3379,8 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
 
         public static void CacheMessage(SetPlayerCheckpointMessage msg)
         {
-            msg.Tile = null;
+            msg.Position = Vector2Int.zero;
+            msg.Map = null;
             msg.Sender = null;
             _setPlayerCheckpointCache.Add(msg);
         }
@@ -3201,6 +3398,116 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
             msg.Interact = null;
             msg.Sender = null;
             _setPlayerInteractionObjectCache.Add(msg);
+        }
+
+        public static void CacheMessage(QueryHobblerDataMessage msg)
+        {
+            msg.DoAfter = null;
+            msg.Sender = null;
+            _queryHobblerDataCache.Add(msg);
+        }
+
+        public static void CacheMessage(QueryHobblerGeneticsMessage msg)
+        {
+            msg.DoAfter = null;
+            msg.Sender = null;
+            _queryHobblerGeneticsCache.Add(msg);
+        }
+
+        public static void CacheMessage(QueryWellbeingStatsMessage msg)
+        {
+            msg.DoAfter = null;
+            msg.Sender = null;
+            _queryWellbeingStatsCache.Add(msg);
+        }
+
+        public static void CacheMessage(QueryPlayerCheckpointMessage msg)
+        {
+            msg.DoAfter = null;
+            msg.Sender = null;
+            _queryPlayerCheckpointCache.Add(msg);
+        }
+
+        public static void CacheMessage(QueryTrainerDataMessage msg)
+        {
+            msg.DoAfter = null;
+            msg.Sender = null;
+            _queryTrainerDataCache.Add(msg);
+        }
+
+        public static void CacheMessage(QueryNodeMessage msg)
+        {
+            msg.DoAfter = null;
+            msg.Sender = null;
+            _queryNodeCache.Add(msg);
+        }
+
+        public static void CacheMessage(QueryBuildingMessge msg)
+        {
+            msg.DoAfter = null;
+            msg.Sender = null;
+            _queryBuildingCache.Add(msg);
+        }
+
+        public static void CacheMessages(SetAbilitiesFromDataMessage msg)
+        {
+            msg.Abilities = null;
+            msg.Sender = null;
+            _setAbilitiesFromDataCache.Add(msg);
+        }
+
+        public static void CacheMessage(SetSkillsFromDataMessage msg)
+        {
+            msg.Skills = null;
+            msg.Sender = null;
+            _setSkillsFromDataCache.Add(msg);
+        }
+
+        public static void CacheMessage(SetEquippableItemsFromDataMessage msg)
+        {
+            msg.Items = null;
+            msg.Sender = null;
+            _setEquippableItemsFromDataCache.Add(msg);
+        }
+
+        public static void CacheMessage(UpdateBuildingIdMessage msg)
+        {
+            msg.Id = null;
+            msg.Sender = null;
+            _updateBuildingIdCache.Add(msg);
+        }
+
+        public static void CacheMessage(SetupTrainerMessage msg)
+        {
+            msg.Id = string.Empty;
+            msg.Encounter = null;
+            msg.PreEncounterDialogue = null;
+            msg.DefeatedDialogue = null;
+            msg.Sender = null;
+            _setupTrainerCache.Add(msg);
+        }
+
+        public static void CacheMessage(StatusEffectFinishedMessage msg)
+        {
+            msg.Type = StatusEffectType.Stun;
+            msg.Sender = null;
+            _statusEffectFinishedCache.Add(msg);
+        }
+
+        public static void CacheMessage(ShowFloatingTextMessage msg)
+        {
+            msg.Color = Color.white;
+            msg.Text = null;
+            msg.Sender = null;
+            _showFloatingTextCache.Add(msg);
+
+        }
+
+        public static void CacheMessage(QueryGlobalCooldownMessage msg)
+        {
+            msg.DoAfter = null;
+            msg.Sender = null;
+            _queryGlobalCooldownCache.Add(msg);
         }
     }
 }

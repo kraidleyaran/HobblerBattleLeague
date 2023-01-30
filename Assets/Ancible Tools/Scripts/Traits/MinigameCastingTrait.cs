@@ -34,6 +34,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             {
                 _castingTimer.Destroy();
                 _castingTimer = null;
+                _controller.gameObject.SendMessageTo(CastInterruptedMessage.INSTANCE, _controller.transform.parent.gameObject);
             }
 
             if (_unitState == MinigameUnitState.Casting)

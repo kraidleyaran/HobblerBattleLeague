@@ -24,7 +24,8 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             if (_spawnTile != null)
             {
                 var setPlayerCheckpointMsg = MessageFactory.GenerateSetPlayerCheckpointMsg();
-                setPlayerCheckpointMsg.Tile = _spawnTile;
+                setPlayerCheckpointMsg.Position = _spawnTile.Position;
+                setPlayerCheckpointMsg.Map = WorldAdventureController.Current;
                 _controller.gameObject.SendMessageTo(setPlayerCheckpointMsg, player);
                 MessageFactory.CacheMessage(setPlayerCheckpointMsg);
             }

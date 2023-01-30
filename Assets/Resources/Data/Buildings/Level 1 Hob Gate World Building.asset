@@ -20,6 +20,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 6afd088002a1ffa4fbbc12cbfd627ff0, type: 2}
   RequiredTiles:
   - {x: 0, y: -1}
-  BlockingTiles: []
+  - {x: 1, y: 0}
+  - {x: -1, y: 0}
+  BlockingTiles:
+  - {x: 1, y: 0}
+  - {x: -1, y: 0}
   Template: {fileID: 11400000, guid: 50f5390ac196b4a4a92515531223db7d, type: 2}
   Cost: 0

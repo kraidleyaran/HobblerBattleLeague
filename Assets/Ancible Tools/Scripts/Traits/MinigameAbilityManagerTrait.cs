@@ -29,11 +29,21 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         private void SubscribeToMessages()
         {
             _controller.transform.parent.gameObject.SubscribeWithFilter<QueryMinigameAbilitiesMessage>(QueryMinigameAbilities, _instanceId);
+            _controller.transform.parent.gameObject.SubscribeWithFilter<SetAbilitiesMessage>(SetAbilities, _instanceId);
         }
 
         private void QueryMinigameAbilities(QueryMinigameAbilitiesMessage msg)
         {
             msg.DoAfter.Invoke(_abilities.ToArray());
+        }
+
+        private void SetAbilities(SetAbilitiesMessage msg)
+        {
+            _abilities.Clear();
+            for (var i = 0; i < msg.Abilities.Length; i++)
+            {
+                _abilities.Add(i, msg.Abilities[i] ? new AbilityInstance(msg.Abilities[i]) : null);
+            }
         }
     }
 }

@@ -25,6 +25,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Templates
 
         public virtual UnitController GenerateUnit(Transform parent, Vector2 worldPos)
         {
+            
             var unitController = Instantiate(FactoryController.UNIT_CONTROLLER, parent);
             unitController.transform.SetLocalPosition(worldPos);
             unitController.gameObject.layer = parent.gameObject.layer;

@@ -2,6 +2,7 @@
 using System.Linq;
 using Assets.Resources.Ancible_Tools.Scripts.System;
 using Assets.Resources.Ancible_Tools.Scripts.System.Items;
+using Assets.Resources.Ancible_Tools.Scripts.System.UI.Alerts;
 using MessageBusLib;
 using UnityEngine;
 
@@ -58,6 +59,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             if (msg.Item.Type == WorldItemType.Gold)
             {
                 _gold += msg.Stack;
+                UiAlertManager.ShowAlert($"+{msg.Stack} Gold", IconFactoryController.Gold);
             }
             else
             {
@@ -69,14 +71,15 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                 }
 
                 itemStack.Stack += msg.Stack;
+                UiAlertManager.ShowAlert($"+{msg.Stack} {itemStack.Item.DisplayName}", itemStack.Item.Icon);
             }
 
         }
 
         private void QueryHobblerEquipment(QueryHobblerEquipmentMessage msg)
         {
-            var armor = _equippedItems.Where(e => e.Instance.Slot == EquipSlot.Armor).ToArray();
-            var trinkets = _equippedItems.Where(e => e.Instance.Slot == EquipSlot.Trinket).ToArray();
+            var armor = _equippedItems.Where(e => e != null && e.Instance.Slot == EquipSlot.Armor).ToArray();
+            var trinkets = _equippedItems.Where(e => e != null && e.Instance.Slot == EquipSlot.Trinket).ToArray();
             var weapon = _equippedItems.FirstOrDefault(e => e.Instance.Slot == EquipSlot.Weapon);
             msg.DoAfter.Invoke(armor, trinkets, weapon);
         }

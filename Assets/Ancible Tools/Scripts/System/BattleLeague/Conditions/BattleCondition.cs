@@ -10,5 +10,10 @@ namespace Assets.Ancible_Tools.Scripts.System.BattleLeague.Conditions
         {
             return true;
         }
+
+        public virtual string GetDescription()
+        {
+            return string.Empty;
+        }
     }
 }

@@ -32,6 +32,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         {
             _controller.transform.parent.gameObject.SubscribeWithFilter<ActivateGlobalCooldownMessage>(ActivateGlobalCooldown, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<UnitDiedMessage>(UnitDied, _instanceId);
+            _controller.transform.parent.gameObject.SubscribeWithFilter<QueryGlobalCooldownMessage>(QueryGlobalCooldown, _instanceId);
         }
 
         private void ActivateGlobalCooldown(ActivateGlobalCooldownMessage msg)
@@ -50,6 +51,11 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         {
             _cooldownTimer.Destroy();
             _cooldownTimer = null;
+        }
+
+        private void QueryGlobalCooldown(QueryGlobalCooldownMessage msg)
+        {
+            msg.DoAfter.Invoke(_cooldownTimer);
         }
 
 

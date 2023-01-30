@@ -35,11 +35,12 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Adventure
 
             if (_editorSprite && sprite)
             {
-                _editorSprite.SetSprite(sprite.Sprite);
-                _editorSprite.SetScale(sprite.Scaling);
-                _editorSprite.SetOffset(sprite.Offset, false);
-                _editorSprite.SetColorMask(sprite.ColorMask);
-                _editorSprite.SetSortingOrder(sprite.SortingOrder);
+                _editorSprite.SetFromEditor(sprite);
+                //_editorSprite.SetSprite(sprite.Sprite);
+                //_editorSprite.SetScale(sprite.Scaling);
+                //_editorSprite.SetOffset(sprite.Offset, false);
+                //_editorSprite.SetColorMask(sprite.ColorMask);
+                //_editorSprite.SetSortingOrder(sprite.SortingOrder);
             }
 #endif
         }

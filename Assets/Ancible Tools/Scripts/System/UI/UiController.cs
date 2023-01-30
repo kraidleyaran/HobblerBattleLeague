@@ -49,7 +49,16 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI
 
         private void ShowDetailedHobblerInfo(ShowDetailedHobblerInfoMessage msg)
         {
-            var window = UiWindowManager.OpenWindow(_detailedHobblerInfoTemplate, $"{msg.Unit.GetInstanceID()}");
+            var hobblerId = string.Empty;
+            var queryHobblerIdMsg = MessageFactory.GenerateQueryHobblerIdMsg();
+            queryHobblerIdMsg.DoAfter = id => hobblerId = id;
+            gameObject.SendMessageTo(queryHobblerIdMsg, msg.Unit);
+            MessageFactory.CacheMessage(queryHobblerIdMsg);
+            if (string.IsNullOrEmpty(hobblerId))
+            {
+                hobblerId = $"{GetInstanceID()}";
+            }
+            var window = UiWindowManager.OpenWindow(_detailedHobblerInfoTemplate, $"{UiDetailedHobblerInfoWindowController.FILTER}{hobblerId}");
             window.Setup(msg.Unit);
         }
 
@@ -84,7 +93,16 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI
 
         private void ShowHobGeneratorWindow(ShowHobGeneratorWindowMessage msg)
         {
-            var window = UiWindowManager.OpenWindow(_hobGeneratorWindowTemplate, $"{msg.Owner.GetInstanceID()}");
+            var id = string.Empty;
+            var queryBuildingMsg = MessageFactory.GenerateQueryBuildingMsg();
+            queryBuildingMsg.DoAfter = (building, tile, buildingId) => { id = buildingId; };
+            _instance.gameObject.SendMessageTo(queryBuildingMsg, msg.Owner);
+            MessageFactory.CacheMessage(queryBuildingMsg);
+            if (string.IsNullOrEmpty(id))
+            {
+                id = $"{msg.Owner.GetInstanceID()}";
+            }
+            var window = UiWindowManager.OpenWindow(_hobGeneratorWindowTemplate, $"{UiHobGeneratorWindowController.FILTER}{id}");
             window.Setup(msg.Owner);
         }
 

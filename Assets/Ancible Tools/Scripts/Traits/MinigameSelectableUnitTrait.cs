@@ -9,7 +9,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
     [CreateAssetMenu(fileName = "Minigame Selectable Unit Trait", menuName = "Ancible Tools/Traits/Minigame/Minigame Selectable Unit")]
     public class MinigameSelectableUnitTrait : Trait
     {
-        [SerializeField] private Resources.Ancible_Tools.Scripts.Hitbox.Hitbox _hitbox;
+        [SerializeField] private Hitbox _hitbox;
         [SerializeField] private Vector2 _offset = Vector2.zero;
         [SerializeField] private Vector2 _selectorSize = new Vector2(31.25f, 31.25f);
 
@@ -103,6 +103,8 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             {
                 MinigameUnitSelectController.RemoveHoveredUnit(_controller.transform.parent.gameObject);
             }
+
+
             if (_hitboxController)
             {
                 var unregisterCollisionMsg = MessageFactory.GenerateUnregisterCollisionMsg();

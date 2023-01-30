@@ -288,5 +288,29 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         {
             msg.DoAfter.Invoke(_currentTile);
         }
+
+        public override void Destroy()
+        {
+            if (_moveTween != null)
+            {
+                if (_moveTween.IsActive())
+                {
+                    _moveTween.Kill();
+                }
+
+                _moveTween = null;
+            }
+
+            if (_pathMoveTween != null)
+            {
+                if (_pathMoveTween.IsActive())
+                {
+                    _pathMoveTween.Kill();
+                }
+
+                _pathMoveTween = null;
+            }
+            base.Destroy();
+        }
     }
 }

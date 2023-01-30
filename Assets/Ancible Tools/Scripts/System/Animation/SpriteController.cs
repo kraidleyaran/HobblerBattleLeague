@@ -130,7 +130,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Animation
             transform.localRotation = Quaternion.Euler(localRotation);
         }
 
-        public void SetFromTrait(SpriteTrait trait)
+        public void SetFromTrait(SpriteTrait trait, bool pixelPerfect = true)
         {
             SetSprite(trait.Sprite);
             SetScale(trait.Scaling);
@@ -138,8 +138,18 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Animation
             {
                 SetRuntimeController(trait.RuntimeController);
             }
-            SetOffset(trait.Offset);
+            SetOffset(trait.Offset, pixelPerfect);
             SetSortingOrder(trait.SortingOrder);
+        }
+
+        public void SetFromEditor(SpriteTrait trait)
+        {
+#if UNITY_EDITOR
+            SetSprite(trait.Sprite);
+            SetScale(trait.Scaling);
+            SetOffset(trait.Offset, false);
+            SetColorMask(trait.ColorMask);
+#endif
         }
 
         public void SetAlpha(float alpha)

@@ -3,6 +3,7 @@ using System.Linq;
 using Assets.Resources.Ancible_Tools.Scripts.System;
 using Assets.Resources.Ancible_Tools.Scripts.System.Items;
 using Assets.Resources.Ancible_Tools.Scripts.System.Pathing;
+using MessageBusLib;
 using UnityEngine;
 
 namespace Assets.Ancible_Tools.Scripts.System.WorldNodes
@@ -24,6 +25,7 @@ namespace Assets.Ancible_Tools.Scripts.System.WorldNodes
             }
 
             _instance = this;
+            SubscribeToMessages();
         }
 
         public static RegisteredWorldNode RegisterNode(GameObject unit, MapTile tile, WorldNodeType type)
@@ -70,7 +72,7 @@ namespace Assets.Ancible_Tools.Scripts.System.WorldNodes
             }
             for (var i = 0; i < items.Length; i++)
             {
-                if (!_instance._resourceNodes.TryGetValue(items[i], out var nodes))
+                if (!_instance._resourceNodes.ContainsKey(items[i]))
                 {
                     _instance._resourceNodes.Add(items[i], new List<RegisteredWorldNode>());
                 }
@@ -160,6 +162,23 @@ namespace Assets.Ancible_Tools.Scripts.System.WorldNodes
         public static bool IsResourceAvailable(WorldItem item)
         {
             return _instance._resourceNodes.ContainsKey(item);
+        }
+
+        private void SubscribeToMessages()
+        {
+            gameObject.Subscribe<ClearWorldMessage>(ClearWorld);
+        }
+
+        private void ClearWorld(ClearWorldMessage msg)
+        {
+            _instance._allNodes.Clear();
+            _instance._resourceNodes.Clear();
+            _instance._nodes.Clear();
+        }
+
+        void OnDestroy()
+        {
+            gameObject.UnsubscribeFromAllMessages();
         }
     }
 }

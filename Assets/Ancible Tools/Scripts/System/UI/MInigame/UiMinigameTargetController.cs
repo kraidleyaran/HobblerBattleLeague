@@ -26,10 +26,24 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.MInigame
             gameObject.SetActive(false);
         }
 
+        protected internal override void UpdateWorldState(UpdateWorldStateMessage msg)
+        {
+            if (_target)
+            {
+                base.UpdateWorldState(msg);
+            }
+            else if (gameObject.activeSelf)
+            {
+                gameObject.SetActive(false);
+            }
+        }
+
         private void RefreshInfo()
         {
             var queryHealthMsg = MessageFactory.GenerateQueryHealthMsg();
             queryHealthMsg.DoAfter = UpdateHealth;
+            gameObject.SendMessageTo(queryHealthMsg, _target);
+            MessageFactory.CacheMessage(queryHealthMsg);
         }
 
         private void UpdateSprite(SpriteTrait sprite)
@@ -55,9 +69,11 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.MInigame
                 _target.UnsubscribeFromAllMessagesWithFilter(FILTER);
             }
             _target = msg.Unit;
-            _target.SubscribeWithFilter<RefreshUnitMessage>(RefreshUnit, FILTER);
+            
             if (_target)
             {
+                _target.SubscribeWithFilter<RefreshUnitMessage>(RefreshUnit, FILTER);
+
                 var querySpriteMsg = MessageFactory.GenerateQuerySpriteMsg();
                 querySpriteMsg.DoAfter = UpdateSprite;
                 gameObject.SendMessageTo(querySpriteMsg, _target);

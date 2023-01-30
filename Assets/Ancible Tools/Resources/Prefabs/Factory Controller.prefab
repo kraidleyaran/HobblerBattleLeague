@@ -50,6 +50,7 @@ MonoBehaviour:
   _projectileTemplate: {fileID: 3731733622339040813, guid: e2f512b18e4930441aa7cf2f48db863b, type: 3}
   _alignmentTemplate: {fileID: 2511679944663623019, guid: 971a6bff13178fb4a991bb5c8e6a98e2, type: 3}
   _visualFxTemplate: {fileID: 1515541866553932739, guid: 0e622e9e783d68946b1ad11d3acfa5e4, type: 3}
+  _invisible: {fileID: 2184414650740748188, guid: b21a097973c747b44b242a1185c77ed1, type: 3}
   _abilityControllerTemplate: {fileID: 8033676113623999637, guid: 554e40205956dd04ea55f7bf35090bf8, type: 3}
   _rosterUnitTemplate: {fileID: 1150956058914869169, guid: 31f7b6f78b8594949932c588759183b5, type: 3}
   _commandTemplate: {fileID: 11400000, guid: 98bbe191956740042bf3a514c30a0b3c, type: 2}

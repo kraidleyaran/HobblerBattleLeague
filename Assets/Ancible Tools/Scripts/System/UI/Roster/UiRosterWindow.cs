@@ -11,7 +11,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.Roster
 
         public void Battle()
         {
-            WorldAdventureController.Setup(WorldAdventureController.Default, WorldAdventureController.Default.DefaultTile);
+            WorldController.SetWorldState(WorldState.Adventure);
         }
     }
 }

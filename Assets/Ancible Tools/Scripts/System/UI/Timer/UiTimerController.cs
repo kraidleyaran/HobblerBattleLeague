@@ -7,29 +7,29 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.Timer
 {
     public class UiTimerController : MonoBehaviour
     {
+        public TickTimer Timer { get; private set; }
+
         [SerializeField] private Image _cooldownFillImage = null;
 
         private TimerType _timerType = TimerType.Timer;
-        private TickTimer _timer = null;
 
         private Action _onFinish = null;
 
         public void Setup(TickTimer timer, TimerType type, Action onFinish)
         {
             _timerType = type;
-            _timer = timer;
+            Timer = timer;
             _cooldownFillImage.fillClockwise = type == TimerType.Timer;
             _onFinish = onFinish;
-            _timer.OnTickUpdate += OnTickUpdate;
+            Timer.OnTickUpdate += OnTickUpdate;
             if (_onFinish != null)
             {
-                _timer.OnTickFinished += OnTickFinish;
+                Timer.OnTickFinished += OnTickFinish;
             }
         }
 
         private void OnTickUpdate(int currentTicks, int maxTicks)
         {
-            
             switch (_timerType)
             {
                 case TimerType.Timer:
@@ -52,11 +52,11 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.Timer
 
         void OnDestroy()
         {
-            if (_timer != null)
+            if (Timer != null)
             {
-                _timer.OnTickUpdate -= OnTickUpdate;
-                _timer.OnTickFinished -= OnTickFinish;
-                _timer = null;
+                Timer.OnTickUpdate -= OnTickUpdate;
+                Timer.OnTickFinished -= OnTickFinish;
+                Timer = null;
             }
             
         }

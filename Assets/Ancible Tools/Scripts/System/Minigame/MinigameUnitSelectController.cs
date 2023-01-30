@@ -75,74 +75,76 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Minigame
 
         private void UpdateInputState(UpdateInputStateMessage msg)
         {
-            var pos = MinigameCameraController.Camera.ScreenToWorldPoint(msg.Current.MousePos).ToVector2();
-            var results = new RaycastHit2D[5];
-
-            var hitCount = Physics2D.Raycast(pos, Vector2.zero, _contactFilter, results, 2f);
-            var hoveredUnit = hitCount > 0 ? results[0].transform.gameObject : null;
-            if (hoveredUnit && (!_hoveredUnit || _hoveredUnit != hoveredUnit))
+            if (WorldController.State == WorldState.Minigame)
             {
-                if (_hoveredUnit)
+                var pos = MinigameCameraController.Camera.ScreenToWorldPoint(msg.Current.MousePos).ToVector2();
+                var results = new RaycastHit2D[5];
+
+                var hitCount = Physics2D.Raycast(pos, Vector2.zero, _contactFilter, results, 2f);
+                var hoveredUnit = hitCount > 0 ? results[0].transform.gameObject : null;
+                if (hoveredUnit && (!_hoveredUnit || _hoveredUnit != hoveredUnit))
                 {
-                    _setHoveredStateMsg.Selector = null;
+                    if (_hoveredUnit)
+                    {
+                        _setHoveredStateMsg.Selector = null;
+                        gameObject.SendMessageTo(_setHoveredStateMsg, _hoveredUnit);
+                    }
+
+                    _hoveredUnit = hoveredUnit;
+                    Debug.Log("Hovering Unit");
+                    _setHoveredStateMsg.Selector = _hoveredController;
                     gameObject.SendMessageTo(_setHoveredStateMsg, _hoveredUnit);
                 }
-
-                _hoveredUnit = hoveredUnit;
-                Debug.Log("Hovering Unit");
-                _setHoveredStateMsg.Selector = _hoveredController;
-                gameObject.SendMessageTo(_setHoveredStateMsg, _hoveredUnit);
-            }
-            else if (_hoveredUnit && !hoveredUnit)
-            {
-                Debug.Log("Stopped Hovering Unit");
-                _setHoveredStateMsg.Selector = null;
-                gameObject.SendMessageTo(_setHoveredStateMsg, _hoveredUnit);
-                _hoveredUnit = null;
-                _hoveredController.SetParent(transform, Vector2.zero);
-                _hoveredController.gameObject.SetActive(false);
-            }
-
-            if (!UiWindowManager.Hovered)
-            {
-                if (_hoveredUnit)
+                else if (_hoveredUnit && !hoveredUnit)
                 {
-                    if (!msg.Previous.LeftClick && msg.Current.LeftClick && (!_selectedUnit || _selectedUnit != _hoveredUnit))
+                    Debug.Log("Stopped Hovering Unit");
+                    _setHoveredStateMsg.Selector = null;
+                    gameObject.SendMessageTo(_setHoveredStateMsg, _hoveredUnit);
+                    _hoveredUnit = null;
+                    _hoveredController.SetParent(transform, Vector2.zero);
+                    _hoveredController.gameObject.SetActive(false);
+                }
+
+                if (!UiWindowManager.Hovered)
+                {
+                    if (_hoveredUnit)
                     {
-                        if (_selectedUnit)
+                        if (!msg.Previous.LeftClick && msg.Current.LeftClick && (!_selectedUnit || _selectedUnit != _hoveredUnit))
                         {
-                            _setSelectStateMsg.Selector = null;
-                            gameObject.SendMessageTo(_setSelectStateMsg, _selectedUnit);
-                        }
-                        _selectedUnit = _hoveredUnit;
-                        if (_selectedUnit)
-                        {
-                            _setSelectStateMsg.Selector = _selectedController;
-                            gameObject.SendMessageTo(_setSelectStateMsg, _selectedUnit);
-                        }
-                        else
-                        {
-                            _selectedController.SetParent(transform, Vector2.zero);
-                            _selectedController.gameObject.SetActive(false);
-                        }
+                            if (_selectedUnit)
+                            {
+                                _setSelectStateMsg.Selector = null;
+                                gameObject.SendMessageTo(_setSelectStateMsg, _selectedUnit);
+                            }
+                            _selectedUnit = _hoveredUnit;
+                            if (_selectedUnit)
+                            {
+                                _setSelectStateMsg.Selector = _selectedController;
+                                gameObject.SendMessageTo(_setSelectStateMsg, _selectedUnit);
+                            }
+                            else
+                            {
+                                _selectedController.SetParent(transform, Vector2.zero);
+                                _selectedController.gameObject.SetActive(false);
+                            }
 
-                        _updateSelectedMinigameUnitMsg.Unit = _selectedUnit;
+                            _updateSelectedMinigameUnitMsg.Unit = _selectedUnit;
+                            gameObject.SendMessage(_updateSelectedMinigameUnitMsg);
+
+                        }
+                    }
+                    else if (!msg.Previous.LeftClick && msg.Current.LeftClick && _selectedUnit)
+                    {
+                        _selectedController.SetParent(transform, Vector2.zero);
+                        _selectedController.gameObject.SetActive(false);
+                        _setSelectStateMsg.Selector = null;
+                        gameObject.SendMessageTo(_setSelectStateMsg, _selectedUnit);
+                        _selectedUnit = null;
+                        _updateSelectedMinigameUnitMsg.Unit = null;
                         gameObject.SendMessage(_updateSelectedMinigameUnitMsg);
-
                     }
                 }
-                else if (!msg.Previous.LeftClick && msg.Current.LeftClick && _selectedUnit)
-                {
-                    _selectedController.SetParent(transform, Vector2.zero);
-                    _selectedController.gameObject.SetActive(false);
-                    _setSelectStateMsg.Selector = null;
-                    gameObject.SendMessageTo(_setSelectStateMsg, _selectedUnit);
-                    _selectedUnit = null;
-                    _updateSelectedMinigameUnitMsg.Unit = null;
-                    gameObject.SendMessage(_updateSelectedMinigameUnitMsg);
-                }
             }
-            
         }
 
         

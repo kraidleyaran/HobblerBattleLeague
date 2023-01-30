@@ -1,4 +1,5 @@
-﻿using MessageBusLib;
+﻿using Assets.Resources.Ancible_Tools.Scripts.System.SaveData;
+using MessageBusLib;
 using UnityEngine;
 
 namespace Assets.Resources.Ancible_Tools.Scripts.System.Skills
@@ -13,6 +14,13 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Skills
             Instance = skill;
             Level = 0;
             Experience = 0;
+        }
+
+        public SkillInstance(WorldSkill skill, SkillData data)
+        {
+            Instance = skill;
+            Level = data.Level;
+            Experience = data.Experience;
         }
 
         public int GainExperience(int amount)
@@ -78,6 +86,20 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Skills
         public void SetExperience(int experience)
         {
             Experience = experience;
+        }
+
+        public void SetFromData(SkillData data, GameObject owner = null)
+        {
+            Experience = data.Experience;
+            if (owner)
+            {
+                ApplyLevels(data.Level, owner);
+            }
+            else
+            {
+                Level = data.Level;
+            }
+
         }
     }
 }

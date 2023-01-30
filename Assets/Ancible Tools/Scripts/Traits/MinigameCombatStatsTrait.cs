@@ -1,6 +1,7 @@
 ﻿using Assets.Resources.Ancible_Tools.Scripts.System;
 using Assets.Resources.Ancible_Tools.Scripts.System.Combat;
 using Assets.Resources.Ancible_Tools.Scripts.System.Minigame;
+using Assets.Resources.Ancible_Tools.Scripts.System.UI.MInigame;
 using MessageBusLib;
 using UnityEngine;
 
@@ -12,6 +13,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         [SerializeField] private CombatStats _startingStats = CombatStats.Zero;
         [SerializeField] private CombatAlignment _alignment = CombatAlignment.Player;
         [SerializeField] private bool _disableOnDeath = false;
+        [SerializeField] private Vector2 _floatingTextOffset = Vector2.zero;
 
         private CombatStats _baseStats = CombatStats.Zero;
         private CombatStats _bonusStats = CombatStats.Zero;
@@ -53,6 +55,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             _controller.transform.parent.gameObject.SubscribeWithFilter<SetCombatAlignmentMessage>(SetCombatAlignment, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<QueryManaMessage>(QueryMana, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<QueryHealthMessage>(QueryHealth, _instanceId);
+            _controller.transform.parent.gameObject.SubscribeWithFilter<HealMessage>(Heal, _instanceId);
         }
 
         private void ApplyCombatStats(ApplyCombatStatsMessage msg)
@@ -76,6 +79,8 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         private void SetCombatStats(SetCombatStatsMessage msg)
         {
             _baseStats = msg.Stats;
+            _currentHealth = _baseStats.Health + _bonusStats.Health;
+            _currentMana = _baseStats.Mana + _bonusStats.Mana;
             UpdateStats(false);
         }
 
@@ -94,6 +99,13 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                     _controller.gameObject.SendMessageTo(reportDamageMsg, _controller.transform.parent.gameObject);
                     MessageFactory.CacheMessage(reportDamageMsg);
 
+                    var showFloatingTextMsg = MessageFactory.GenerateShowFloatingTextMsg();
+                    showFloatingTextMsg.Text = $"-{damage}";
+                    showFloatingTextMsg.Color = ColorFactoryController.NegativeStatColor;
+                    showFloatingTextMsg.World = _controller.transform.parent.position.ToVector2() + _floatingTextOffset;
+                    _controller.gameObject.SendMessage(showFloatingTextMsg);
+                    MessageFactory.CacheMessage(showFloatingTextMsg);
+
                     _currentHealth -= damage;
                     _controller.gameObject.SendMessageTo(RefreshUnitMessage.INSTANCE, _controller.transform.parent.gameObject);
 
@@ -107,9 +119,6 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                             _controller.gameObject.SendMessageTo(setUnitStateMsg, _controller.transform.parent.gameObject);
                             MessageFactory.CacheMessage(setUnitStateMsg);
                         }
-                        //TODO: Destroy depending on the unit type, probably need a message
-                        //TODO: Need to show the damage type too - just report the damage in case it's needed for other purposes
-                        Debug.Log("Unit has died");
                     }
                 }
             }
@@ -143,6 +152,30 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         private void QueryMana(QueryManaMessage msg)
         {
             msg.DoAfter.Invoke(_currentMana, _baseStats.Mana + _bonusStats.Mana);
+        }
+
+        private void Heal(HealMessage msg)
+        {
+            var trueAmount = msg.Amount;
+            var health = msg.Amount + _currentHealth;
+            var max = _baseStats.Health + _bonusStats.Health;
+            if (health > max)
+            {
+                trueAmount = msg.Amount - (health - max);
+                if (trueAmount < 0)
+                {
+                    trueAmount = 0;
+                }
+            }
+            _currentHealth = Mathf.Min(health, max);
+            var showFloatingTextMsg = MessageFactory.GenerateShowFloatingTextMsg();
+            showFloatingTextMsg.Text = $"+{trueAmount}";
+            showFloatingTextMsg.Color = ColorFactoryController.BonusStat;
+            showFloatingTextMsg.World = _controller.transform.parent.position.ToVector2() + _floatingTextOffset;
+            _controller.gameObject.SendMessage(showFloatingTextMsg);
+            MessageFactory.CacheMessage(showFloatingTextMsg);
+
+            _controller.gameObject.SendMessageTo(RefreshUnitMessage.INSTANCE, _controller.transform.parent.gameObject);
         }
 
     }

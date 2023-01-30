@@ -67,6 +67,11 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.TickTimers
             return this;
         }
 
+        public void SetCurrentTicks(int ticks)
+        {
+            _tickCount = ticks;
+        }
+
         public TickTimer Stop(bool applyOnFinish = false)
         {
             if (State != TimerState.Stopped)
@@ -167,7 +172,14 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.TickTimers
 
         public void Destroy()
         {
-            this.UnsubscribeFromAllMessages();
+            if (_world)
+            {
+                this.Unsubscribe<WorldTickMessage>();
+            }
+            else
+            {
+                this.Unsubscribe<UpdateTickMessage>();
+            }
             _applyAction = null;
             _onFinish = null;
             OnDestroyed?.Invoke();

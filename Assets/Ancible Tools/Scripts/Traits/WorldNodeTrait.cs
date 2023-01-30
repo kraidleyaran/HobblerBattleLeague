@@ -1,12 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Assets.Ancible_Tools.Scripts.System.WorldNodes;
 using Assets.Resources.Ancible_Tools.Scripts.System;
 using Assets.Resources.Ancible_Tools.Scripts.System.Animation;
 using Assets.Resources.Ancible_Tools.Scripts.System.Pathing;
+using Assets.Resources.Ancible_Tools.Scripts.System.SaveData;
 using Assets.Resources.Ancible_Tools.Scripts.System.UnitCommands;
 using MessageBusLib;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Assets.Ancible_Tools.Scripts.Traits
 {
@@ -23,11 +26,13 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         [SerializeField] private SpriteTrait _nodeSprite = null;
         [SerializeField] private UnitCommand _stopSelectCommand = null;
         [SerializeField] private UnitCommand _selectableHobblerCommandTemplate = null;
+        
 
         private int _currentStack = 0;
         protected internal RegisteredWorldNode _registeredNode = null;
         private MapTile[] _gatheringTiles = new MapTile[0];
         private MapTile _mapTile = null;
+        private string _buildingId = string.Empty;
 
         private SpriteController _nodeSpriteController = null;
 
@@ -180,6 +185,13 @@ namespace Assets.Ancible_Tools.Scripts.Traits
 
         private void SubscribeToMessages()
         {
+            if (_stack > 0)
+            {
+                _controller.gameObject.Subscribe<QueryNodeMessage>(QueryNode);
+                _controller.gameObject.Subscribe<LoadWorldDataMessage>(LoadWorldData);
+                _controller.transform.parent.gameObject.SubscribeWithFilter<UpdateBuildingIdMessage>(UpdateBuildingId, _instanceId);
+            }
+
             _controller.transform.parent.gameObject.SubscribeWithFilter<UpdateMapTileMessage>(UpdateMapTile, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<InteractMessage>(Interact, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<RefillNodeStacksMessage>(RefillNodeStacks, _instanceId);
@@ -188,6 +200,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                 _controller.transform.parent.gameObject.SubscribeWithFilter<QueryCommandsMessage>(QueryCommands, _instanceId);
             }
             _controller.transform.parent.gameObject.SubscribeWithFilter<UnregisterFromGatheringNodeMessage>(UnregisterFromNode, _instanceId);
+
         }
 
         private void UpdateMapTile(UpdateMapTileMessage msg)
@@ -210,6 +223,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                 {
                     _registeredNode.Tile = _mapTile;
                 }
+                _nodeSpriteController.SetSortingOrder((_mapTile.Position.y - 1) * -1 );
             }
             else if (_registeredNode != null)
             {
@@ -312,6 +326,26 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                     break;
                 }
             }
+        }
+
+        private void QueryNode(QueryNodeMessage msg)
+        {
+            msg.DoAfter.Invoke(_buildingId, _currentStack);
+        }
+
+        private void LoadWorldData(LoadWorldDataMessage msg)
+        {
+            var nodeData = PlayerDataController.GetNodeDataById(_buildingId);
+            if (nodeData != null)
+            {
+                _currentStack = nodeData.Stack;
+                RefreshNodeSprite(false);
+            }
+        }
+
+        private void UpdateBuildingId(UpdateBuildingIdMessage msg)
+        {
+            _buildingId = msg.Id;
         }
     }
 }

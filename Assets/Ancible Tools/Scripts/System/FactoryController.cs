@@ -22,6 +22,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
         public static UiRosterUnitController ROSTER_UNIT_CONTROLLER => _instance._rosterUnitTemplate;
         public static UnitCommand COMMAND_TEMPLATE => _instance._commandTemplate;
         public static UnitTemplate HOBBLER_TEMPLATE => _instance._hobblerTemplate;
+        public static GameObject INVISIBLE => _instance._invisible;
 
         private static FactoryController _instance;
 
@@ -32,6 +33,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
         [SerializeField] private ProjectileController _projectileTemplate;
         [SerializeField] private BattleLeagueAlignmentController _alignmentTemplate;
         [SerializeField] private VisualFxController _visualFxTemplate;
+        [SerializeField] private GameObject _invisible;
 
         [Header("Ui Templates")]
         [SerializeField] private UiAbilityController _abilityControllerTemplate;

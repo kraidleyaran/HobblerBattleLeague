@@ -11,8 +11,10 @@ namespace Assets.Ancible_Tools.Scripts.Traits
     [CreateAssetMenu(fileName = "Building Trait", menuName = "Ancible Tools/Traits/Building")]
     public class BuildingTrait : Trait
     {
+        private MapTile _currentTile = null;
         private MapTile[] _blockedTiles = new MapTile[0];
         private WorldBuilding _building = null;
+        private string _id = string.Empty;
 
         private TraitController[] _activeSprites = new TraitController[0];
 
@@ -27,6 +29,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             _controller.transform.parent.gameObject.SubscribeWithFilter<UpdateMapTileMessage>(UpdateMapTile, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<SetupBuildingMessage>(SetupBuilding, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<QueryUnitNameMessage>(QueryUnitName, _instanceId);
+            _controller.transform.parent.gameObject.SubscribeWithFilter<QueryBuildingMessge>(QueryBuilding, _instanceId);
         }
 
         private void UpdateMapTile(UpdateMapTileMessage msg)
@@ -39,7 +42,8 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                 }
             }
 
-            _blockedTiles = _building.RequiredTiles.Select(WorldController.Pathing.GetTileByPosition).ToArray();
+            _currentTile = msg.Tile;
+            _blockedTiles = _building.BlockingTiles.Select(p => WorldController.Pathing.GetTileByPosition(p + _currentTile.Position)).Where(t => t != null).ToArray();
             for (var i = 0; i < _blockedTiles.Length; i++)
             {
                 WorldController.Pathing.SetTileBlock(_controller.transform.parent.gameObject, _blockedTiles[i].Position);
@@ -49,6 +53,13 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         private void SetupBuilding(SetupBuildingMessage msg)
         {
             _building = msg.Building;
+            _id = msg.Id;
+
+            var updateBuildingIdMsg = MessageFactory.GenerateUpdateBuildingIdMsg();
+            updateBuildingIdMsg.Id = _id;
+            _controller.gameObject.SendMessageTo(updateBuildingIdMsg, _controller.transform.parent.gameObject);
+            MessageFactory.CacheMessage(updateBuildingIdMsg);
+
             if (_activeSprites.Length > 0)
             {
                 var removeTraitFromUnitByControllerMsg = MessageFactory.GenerateRemoveTraitFromUnitByControllerMsg();
@@ -75,6 +86,11 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         private void QueryUnitName(QueryUnitNameMessage msg)
         {
             msg.DoAfter.Invoke(_building.DisplayName);
+        }
+
+        private void QueryBuilding(QueryBuildingMessge msg)
+        {
+            msg.DoAfter.Invoke(_building, _currentTile, _id);
         }
     }
 }

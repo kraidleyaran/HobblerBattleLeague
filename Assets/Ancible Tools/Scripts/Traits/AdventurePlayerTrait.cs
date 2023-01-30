@@ -10,11 +10,15 @@ namespace Assets.Ancible_Tools.Scripts.Traits
     public class AdventurePlayerTrait : Trait
     {
         private AdventureUnitState _unitState = AdventureUnitState.Idle;
-        private MapTile _checkpoint = null;
+        private Vector2Int _checkpoint = Vector2Int.zero;
+        private AdventureMap _checkpointMap = null;
+        private MapTile _currentTile = null;
 
         public override void SetupController(TraitController controller)
         {
             base.SetupController(controller);
+            _checkpointMap = WorldAdventureController.Default;
+            _checkpoint = _checkpointMap.DefaultTile;
             SubscribeToMessages();
         }
 
@@ -26,14 +30,12 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             _controller.transform.parent.gameObject.SubscribeWithFilter<UpdateAdventureUnitStateMessage>(UpdateAdventureUnitState, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<SetPlayerCheckpointMessage>(SetPlayerCheckpoint, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<RespawnPlayerMessage>(RespawnPlayer, _instanceId);
+            _controller.transform.parent.gameObject.SubscribeWithFilter<QueryPlayerCheckpointMessage>(QueryPlayerCheckpoint, _instanceId);
         }
 
         private void UpdateMapTile(UpdateMapTileMessage msg)
         {
-            if (_checkpoint == null)
-            {
-                _checkpoint = msg.Tile;
-            }
+            _currentTile = msg.Tile;
             msg.Tile.ApplyEvent(_controller.transform.parent.gameObject);
         }
 
@@ -55,7 +57,8 @@ namespace Assets.Ancible_Tools.Scripts.Traits
 
         private void SetPlayerCheckpoint(SetPlayerCheckpointMessage msg)
         {
-            _checkpoint = msg.Tile;
+            _checkpoint = msg.Position;
+            _checkpointMap = msg.Map;
         }
 
         private void UpdatePosition(UpdatePositionMessage msg)
@@ -65,15 +68,23 @@ namespace Assets.Ancible_Tools.Scripts.Traits
 
         private void RespawnPlayer(RespawnPlayerMessage msg)
         {
-            var setMapTileMsg = MessageFactory.GenerateSetMapTileMsg();
-            setMapTileMsg.Tile = _checkpoint;
-            _controller.gameObject.SendMessageTo(setMapTileMsg, _controller.transform.parent.gameObject);
-            MessageFactory.CacheMessage(setMapTileMsg);
+            WorldAdventureController.Setup(_checkpointMap, _checkpoint);
+            //var setMapTileMsg = MessageFactory.GenerateSetMapTileMsg();
+            //setMapTileMsg.Tile = _checkpoint;
+            //_controller.gameObject.SendMessageTo(setMapTileMsg, _controller.transform.parent.gameObject);
+            //MessageFactory.CacheMessage(setMapTileMsg);
+
+            AdventureCameraController.SetCameraPosition(_currentTile.World.ToPixelPerfect());
 
             var setAdventureUnitStateMsg = MessageFactory.GenerateSetAdventureUnitStateMsg();
             setAdventureUnitStateMsg.State = AdventureUnitState.Idle;
             _controller.gameObject.SendMessageTo(setAdventureUnitStateMsg, _controller.transform.parent.gameObject);
             MessageFactory.CacheMessage(setAdventureUnitStateMsg);
+        }
+
+        private void QueryPlayerCheckpoint(QueryPlayerCheckpointMessage msg)
+        {
+            msg.DoAfter.Invoke(_checkpointMap.name, _checkpoint);
         }
     }
 }

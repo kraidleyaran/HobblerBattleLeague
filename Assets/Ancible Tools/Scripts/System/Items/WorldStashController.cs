@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Assets.Ancible_Tools.Scripts.System.Factories;
+using Assets.Resources.Ancible_Tools.Scripts.System.SaveData;
 using MessageBusLib;
 using UnityEngine;
 
@@ -28,6 +30,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Items
             {
                 AddItem(_startingItems[i].Item, _startingItems[i].Stack);
             }
+            SubscribeToMessages();
         }
 
         public static void AddItem(WorldItem item, int stack = 1)
@@ -114,6 +117,21 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Items
             return remainingStack < stack ? item : null;
         }
 
+        public static void SetStashFromData(ItemStackData[] items, int gold)
+        {
+            Clear();
+            SetGold(gold);
+            foreach (var item in items)
+            {
+                var worldItem = WorldItemFactory.GetItemByName(item.Item);
+                if (worldItem)
+                {
+                    AddItem(worldItem, item.Stack);
+                }
+            }
+            _instance.gameObject.SendMessage(StashUpdatedMessage.INSTANCE);
+        }
+
         public static ItemStack[] GetItems()
         {
             return _instance._items.ToArray();
@@ -129,6 +147,45 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Items
         {
             Gold = Mathf.Max(0, Gold - amount);
             _instance.gameObject.SendMessage(GoldUpdatedMessage.INSTANCE);
+        }
+
+
+
+        public static ItemStackData[] GetStashData()
+        {
+            return _instance._items.Select(i => i.ToData()).ToArray();
+        }
+
+        public static void Clear()
+        {
+            Gold = 0;
+            var items = _instance._items.ToArray();
+            foreach (var item in items)
+            {
+                item.Destroy();
+            }
+            _instance._items = new List<ItemStack>();
+        }
+
+        private static void SetGold(int amount)
+        {
+            Gold = amount;
+            _instance.gameObject.SendMessage(GoldUpdatedMessage.INSTANCE);
+        }
+
+        private void SubscribeToMessages()
+        {
+            gameObject.Subscribe<ClearWorldMessage>(ClearWorld);
+        }
+
+        private void ClearWorld(ClearWorldMessage msg)
+        {
+            Clear();
+        }
+
+        void OnDestroy()
+        {
+            gameObject.UnsubscribeFromAllMessages();
         }
     }
 }

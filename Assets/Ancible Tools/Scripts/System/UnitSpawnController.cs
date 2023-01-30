@@ -11,8 +11,8 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
         [SerializeField] protected internal UnitTemplate _template = null;
         [SerializeField] protected internal SpriteTrait _sprite = null;
         [SerializeField] protected internal Trait[] _additionalTraits = new Trait[0];
-
-        [Header("Editor Referenes")]
+        
+        [Header("Editor References")]
         [SerializeField] private SpriteRenderer _iconRenderer;
         [SerializeField] private Sprite _defaultIcon;
         [SerializeField] private Vector2 _defaultScaling = new Vector2(31.25f,31.25f);

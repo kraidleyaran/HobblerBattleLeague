@@ -738,6 +738,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3050018196472305868}
     m_Modifications:
+    - target: {fileID: 4129863622431350914, guid: f6ab60ea2ee53514ab5a3f76faaa0788, type: 3}
+      propertyPath: _defaultSize.x
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4129863622431350914, guid: f6ab60ea2ee53514ab5a3f76faaa0788, type: 3}
+      propertyPath: _defaultSize.y
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 4129863622431350924, guid: f6ab60ea2ee53514ab5a3f76faaa0788, type: 3}
       propertyPath: m_Name
       value: Selected Selector
@@ -823,9 +831,25 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 1947822106916237928, guid: 8e87f342e97bb384ea985027afe5be46, type: 3}
+      propertyPath: _defaultSize.x
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1947822106916237928, guid: 8e87f342e97bb384ea985027afe5be46, type: 3}
+      propertyPath: _defaultSize.y
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 1947822106916237929, guid: 8e87f342e97bb384ea985027afe5be46, type: 3}
       propertyPath: m_RootOrder
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1947822106916237929, guid: 8e87f342e97bb384ea985027afe5be46, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1947822106916237929, guid: 8e87f342e97bb384ea985027afe5be46, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1947822106916237929, guid: 8e87f342e97bb384ea985027afe5be46, type: 3}
       propertyPath: m_LocalPosition.x

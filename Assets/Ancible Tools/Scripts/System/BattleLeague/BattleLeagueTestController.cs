@@ -45,7 +45,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague
             _battleLeagueController.Clear();
             for (var i = 0; i < _openBattleWindows.Length; i++)
             {
-                UiWindowManager.CloseWindow(_openBattleWindows[i]);
+                UiWindowManager.CloseWindow(_openBattleWindows[i], _openBattleWindows[i].WorldName);
             }
             _openBattleWindows = new UiBaseWindow[0];
         }

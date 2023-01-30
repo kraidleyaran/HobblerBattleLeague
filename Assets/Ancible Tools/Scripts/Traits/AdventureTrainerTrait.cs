@@ -4,6 +4,7 @@ using Assets.Resources.Ancible_Tools.Scripts.System;
 using Assets.Resources.Ancible_Tools.Scripts.System.Adventure;
 using Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague;
 using Assets.Resources.Ancible_Tools.Scripts.System.Pathing;
+using Assets.Resources.Ancible_Tools.Scripts.System.SaveData;
 using MessageBusLib;
 using UnityEngine;
 
@@ -16,6 +17,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         [SerializeField] private int _engagePlayerDistance = 1;
         [SerializeField] private DialogueData _preBattleDialogue = null;
         [SerializeField] private DialogueData _defeatedDialogue = null;
+        public string SaveId = string.Empty;
 
         private MapTile[] _subscribedTiles = new MapTile[0];
         private Vector2Int _faceDirection = Vector2Int.zero;
@@ -30,6 +32,10 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         public override void SetupController(TraitController controller)
         {
             base.SetupController(controller);
+            if (!string.IsNullOrEmpty(SaveId))
+            {
+                _defeated = PlayerDataController.GetTrainerDataById(SaveId) != null;
+            }
             SubscribeToMessages();
         }
 
@@ -151,16 +157,30 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             {
                 tile.OnObjectEnteringTile -= ForceEncounter;
             }
-            _subscribedTiles = GenerateRelativePositions().Select(WorldAdventureController.MapController.PlayerPathing.GetTileByPosition).Where(t => t != null).ToArray();
-            foreach (var tile in _subscribedTiles)
+
+            if (_currentTile != null)
             {
-                tile.OnObjectEnteringTile += ForceEncounter;
+                _subscribedTiles = GenerateRelativePositions().Select(WorldAdventureController.MapController.PlayerPathing.GetTileByPosition).Where(t => t != null).ToArray();
+                foreach (var tile in _subscribedTiles)
+                {
+                    tile.OnObjectEnteringTile += ForceEncounter;
+                }
+            }
+            else
+            {
+                _subscribedTiles = new MapTile[0];
             }
         }
 
         private void Victory()
         {
-            _defeated = true;
+            //TODO: Repeatable rewards - trainers will have better rewards so they will only be fightable once a day?
+            if (!_defeated)
+            {
+                _defeated = true;
+                _controller.gameObject.Subscribe<QueryTrainerDataMessage>(QueryTrainerData);
+            }
+            
             foreach (var tile in _subscribedTiles)
             {
                 tile.OnObjectEnteringTile -= ForceEncounter;
@@ -189,10 +209,12 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         private void SubscribeToMessages()
         {
             _controller.gameObject.SubscribeWithFilter<DialogueClosedMessage>(DialogueClosed, _instanceId);
+
             _controller.transform.parent.gameObject.SubscribeWithFilter<UpdateFacingDirectionMessage>(UpdateFaceDirection, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<UpdateMapTileMessage>(UpdateMapTile, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<EncounterFinishedMessage>(EncounterFinished, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<PlayerInteractMessage>(PlayerInteract, _instanceId);
+            _controller.transform.parent.gameObject.SubscribeWithFilter<SetupTrainerMessage>(SetupTrainer, _instanceId);
         }
 
         private void UpdateFaceDirection(UpdateFacingDirectionMessage msg)
@@ -268,5 +290,40 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             }
             
         }
+
+        private void QueryTrainerData(QueryTrainerDataMessage msg)
+        {
+            if (_defeated)
+            {
+                msg.DoAfter.Invoke(SaveId);
+            }
+        }
+
+        private void SetupTrainer(SetupTrainerMessage msg)
+        {
+            _encounter = msg.Encounter;
+            _preBattleDialogue = msg.PreEncounterDialogue;
+            _defeatedDialogue = msg.DefeatedDialogue;
+            SaveId = msg.Id;
+            _defeated = PlayerDataController.GetTrainerDataById(SaveId) != null;
+            if (_defeated && _subscribedTiles.Length > 0)
+            {
+                foreach (var tile in _subscribedTiles)
+                {
+                    tile.OnObjectEnteringTile -= ForceEncounter;
+                }
+                _subscribedTiles = new MapTile[0];
+            }
+        }
+
+        public override void Destroy()
+        {
+            if (_dialogueRoutine != null)
+            {
+                _controller.StopCoroutine(_dialogueRoutine);
+            }
+            base.Destroy();
+        }
     }
+
 }

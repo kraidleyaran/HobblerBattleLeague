@@ -104,6 +104,13 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                         _controller.gameObject.SendMessageTo(reportDamageMsg, msg.Owner);
                     }
                     MessageFactory.CacheMessage(reportDamageMsg);
+
+                    var showFloatingTextMsg = MessageFactory.GenerateShowFloatingTextMsg();
+                    showFloatingTextMsg.Color = ColorFactoryController.NegativeStatColor;
+                    showFloatingTextMsg.Text = $"-{damage}";
+                    showFloatingTextMsg.World = _controller.transform.parent.position.ToVector2();
+                    _controller.gameObject.SendMessage(showFloatingTextMsg);
+                    MessageFactory.CacheMessage(showFloatingTextMsg);
                     if (_currentHealth <= 0)
                     {
                         _currentHealth = 0;
@@ -136,6 +143,12 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                     _controller.gameObject.SendMessageTo(reportHealMsg, msg.Owner);
                 }
                 MessageFactory.CacheMessage(reportHealMsg);
+                var showFloatingTextMsg = MessageFactory.GenerateShowFloatingTextMsg();
+                showFloatingTextMsg.Color = ColorFactoryController.BonusStat;
+                showFloatingTextMsg.Text = $"+{msg.Amount}";
+                showFloatingTextMsg.World = _controller.transform.position.ToVector2();
+                _controller.gameObject.SendMessage(showFloatingTextMsg);
+                MessageFactory.CacheMessage(showFloatingTextMsg);
                 _currentHealth = Mathf.Max(Mathf.Min(_currentHealth + msg.Amount, _baseStats.Health + _bonusStats.Health), 0);
                 _controller.gameObject.SendMessageTo(RefreshUnitMessage.INSTANCE, _controller.transform.parent.gameObject);
             }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Assets.Resources.Ancible_Tools.Scripts.System;
 using Assets.Resources.Ancible_Tools.Scripts.System.TickTimers;
 using MessageBusLib;
@@ -152,6 +153,17 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         private void QueryHobblerWellBeingStatus(QueryHobblerWellbeingStatusMessage msg)
         {
             msg.DoAfter.Invoke(_wellBeingStats.GetStatus());
+        }
+
+        public override void Destroy()
+        {
+            var timers = _wellbeingTimers.ToArray();
+            foreach (var timer in timers)
+            {
+                timer.Value.Destroy();
+            }
+            _wellbeingTimers.Clear();
+            base.Destroy();
         }
     }
 }

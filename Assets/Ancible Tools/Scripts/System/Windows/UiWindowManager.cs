@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Assets.Ancible_Tools.Scripts.System.SaveData;
 using MessageBusLib;
 using UnityEngine;
 
@@ -13,11 +14,15 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Windows
 
         private static UiWindowManager _instance = null;
 
+        [SerializeField] private string[] _windowFolders = new string[0];
+
         private UiBaseWindow _selected = null;
         
         private List<UiBaseWindow> _openWindows = new List<UiBaseWindow>();
         private Dictionary<string, UiBaseWindow> _staticWindows = new Dictionary<string, UiBaseWindow>();
         private List<GameObject> _windowBlocks = new List<GameObject>();
+
+        private Dictionary<string, WindowData> _windowData = new Dictionary<string, WindowData>();
 
         void Awake()
         {
@@ -56,7 +61,17 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Windows
                     if (!_instance._staticWindows.TryGetValue(template.name, out var window))
                     {
                         window = Instantiate(template, _instance.transform);
+                        
                         window.name = template.name;
+                        window.WorldName = template.name;
+                        if (_instance._windowData.TryGetValue(window.WorldName, out var data))
+                        {
+                            window.transform.SetLocalPosition(data.Position.ToVector());
+                        }
+                        else
+                        {
+                            _instance._windowData.Add(window.WorldName, new WindowData { Window = template.name, Id = window.WorldName, Position = Vector2Int.zero.ToData() });
+                        }
                         _instance._staticWindows.Add(template.name, window);
                     }
                     window.transform.SetAsLastSibling();
@@ -69,15 +84,25 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Windows
                         var window = Instantiate(template, _instance.transform);
                         _instance._openWindows.Add(window);
                         window.transform.SetAsLastSibling();
+
                         return window;
                     }
 
                     var windowName = $"{template.name} {id}";
-                    var openWindow = _instance._openWindows.FirstOrDefault(w => w.name == windowName);
+                    var openWindow = _instance._openWindows.FirstOrDefault(w => w.WorldName == windowName);
                     if (!openWindow)
                     {
                         openWindow = Instantiate(template, _instance.transform);
-                        openWindow.name = windowName;
+                        openWindow.name = template.name;
+                        openWindow.WorldName = windowName;
+                        if (_instance._windowData.TryGetValue(openWindow.WorldName, out var data))
+                        {
+                            openWindow.transform.SetLocalPosition(data.Position.ToVector());
+                        }
+                        else
+                        {
+                            _instance._windowData.Add(openWindow.WorldName, new WindowData{Window = template.name, Id = windowName, Position = Vector2Int.zero.ToData()});
+                        }
                         _instance._openWindows.Add(openWindow);
                     }
                     openWindow.transform.SetAsLastSibling();
@@ -96,8 +121,17 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Windows
             {
                 if (_instance._staticWindows.TryGetValue(window.name, out var openWindow))
                 {
-                    openWindow.Destroy();
+                    
                     _instance._staticWindows.Remove(window.name);
+                    if (_instance._windowData.TryGetValue(openWindow.WorldName, out var data))
+                    {
+                        data.Position = openWindow.transform.localPosition.ToVector2().ToVector2Int().ToData();
+                    }
+                    else
+                    {
+                        _instance._windowData.Add(openWindow.WorldName, new WindowData { Window = window.name, Id = window.name, Position = openWindow.transform.localPosition.ToVector2().ToVector2Int().ToData()});
+                    }
+                    openWindow.Destroy();
                     Destroy(openWindow.gameObject);
                     return true;
                 }
@@ -108,6 +142,15 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Windows
                 var openWindow = _instance._openWindows.FirstOrDefault(w => w.name == windowName);
                 if (openWindow)
                 {
+                    
+                    if (_instance._windowData.TryGetValue(openWindow.WorldName, out var data))
+                    {
+                        data.Position = openWindow.transform.localPosition.ToVector2().ToVector2Int().ToData();
+                    }
+                    else
+                    {
+                        _instance._windowData.Add(openWindow.WorldName, new WindowData { Window = window.name, Id = window.WorldName, Position = openWindow.transform.localPosition.ToVector2().ToVector2Int().ToData() });
+                    }
                     openWindow.Destroy();
                     _instance._openWindows.Remove(openWindow);
                     Destroy(openWindow.gameObject);
@@ -128,7 +171,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Windows
         {
             if (_instance._staticWindows.TryGetValue(template.name, out var window))
             {
-                CloseWindow(window);
+                CloseWindow(window, window.WorldName);
                 return null;
             }
 
@@ -153,11 +196,38 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Windows
             _instance._windowBlocks.Remove(block);
         }
 
+        public static WindowData[] GetWindowData()
+        {
+            var openWindows = _instance._openWindows.ToList();
+            openWindows.AddRange(_instance._staticWindows.Values);
+            for (var i = 0; i < openWindows.Count; i++)
+            {
+                if (_instance._windowData.TryGetValue(openWindows[i].WorldName, out var data))
+                {
+                    data.Position = openWindows[i].transform.localPosition.ToVector2().ToVector2Int().ToData();
+                }
+            }
+            return _instance._windowData.Values.ToArray();
+
+        }
+
+        public static void SetWindowData(WindowData[] data)
+        {
+            foreach (var windowData in data)
+            {
+                if (!_instance._windowData.ContainsKey(windowData.Id))
+                {
+                    _instance._windowData.Add(windowData.Id, windowData);
+                }
+            }
+        }
+
         private void SubscribeToMessages()
         {
             gameObject.Subscribe<UpdateInputStateMessage>(UpdateInputState);
             gameObject.Subscribe<WorldBuildingActiveMessage>(WorldBuildingActive);
             gameObject.Subscribe<WorldBuildingStoppedMessage>(WorldBuildingStopped);
+            gameObject.Subscribe<ClearWorldMessage>(ClearWorld);
         }
 
         private void UpdateInputState(UpdateInputStateMessage msg)
@@ -175,7 +245,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Windows
                 if (_selected && _selected.Movable && !WindowBlock)
                 {
                     Moving = true;
-                    _selected.MoveDelta(msg.Current.MouseDelta);
+                    _selected.MoveDelta(msg.Current.MousePos - msg.Previous.MousePos);
                     //var pos = msg.Current.MousePos - msg.Previous.MousePos;
                     //if (pos != Vector2.zero)
                     //{
@@ -206,6 +276,15 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Windows
         private void WorldBuildingStopped(WorldBuildingStoppedMessage msg)
         {
             gameObject.SetActive(true);
+        }
+
+        private void ClearWorld(ClearWorldMessage msg)
+        {
+            var windows = _openWindows.ToArray();
+            foreach (var window in windows)
+            {
+                window.Close();
+            }
         }
 
         void OnDestroy()

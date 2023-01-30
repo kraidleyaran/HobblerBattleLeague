@@ -1,6 +1,9 @@
-﻿using Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague;
+﻿using System.Collections.Generic;
+using Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague;
+using Assets.Resources.Ancible_Tools.Scripts.System.UI.MInigame;
 using MessageBusLib;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.BattleLeague.Status
 {
@@ -9,12 +12,21 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.BattleLeague.Status
         private const string FILTER = "Ui Battle Unit Status";
 
         [SerializeField] private UiFillBarController _healthBarController = null;
+        [SerializeField] private Image[] _allStatusEffects = new Image[0];
+        [SerializeField] private Image _silence;
+        [SerializeField] private Image _stun;
+        [SerializeField] private Image _mute;
+        [SerializeField] private Image _root;
+        [SerializeField] private Image _disarm;
+        [SerializeField] private UiMinigameCastingBarController _castinBarController = null;
+        [SerializeField] private Vector2 _floatingTextOffset = Vector2.zero;
 
         public GameObject Owner { get; private set; }
 
         private Transform _follow = null;
         private Color _healthBarColor = Color.red;
         private Vector2 _offset = Vector2.zero;
+        private List<UiFloatingTextController> _floatingText = new List<UiFloatingTextController>();
 
         public void Setup(GameObject owner, Transform follow, Color healthBar, Vector2 offset)
         {
@@ -25,7 +37,18 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.BattleLeague.Status
             _healthBarController.Setup(1f,string.Empty, _healthBarColor);
             var pos = BattleLeagueCameraController.Camera.WorldToScreenPoint(_follow.position.ToVector2() + _offset).ToVector2();
             transform.SetTransformPosition(pos);
+            _castinBarController.Interrupt();
+            foreach (var effect in _allStatusEffects)
+            {
+                effect.gameObject.SetActive(false);
+            }
             SubscribeToMessages();
+        }
+
+        private void FloatingTextFinished(UiFloatingTextController controller)
+        {
+            _floatingText.Remove(controller);
+            Destroy(controller.gameObject);
         }
 
         private void RefreshHealth(int current, int max)
@@ -40,6 +63,15 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.BattleLeague.Status
             gameObject.Subscribe<UpdateBattleStateMessage>(UpdateBattleState);
             Owner.SubscribeWithFilter<RefreshUnitMessage>(RefreshUnit, FILTER);
             Owner.SubscribeWithFilter<UpdateUnitBattleStateMessage>(UpdateUnitBattleState, FILTER);
+            Owner.SubscribeWithFilter<StatusEffectFinishedMessage>(StatusEffectFinished, FILTER);
+            Owner.SubscribeWithFilter<StunMessage>(Stun, FILTER);
+            Owner.SubscribeWithFilter<SilenceMessage>(Silence, FILTER);
+            Owner.SubscribeWithFilter<MuteMessage>(Mute, FILTER);
+            Owner.SubscribeWithFilter<RootMessage>(Root, FILTER);
+            Owner.SubscribeWithFilter<DisarmMessage>(Disarm, FILTER);
+            Owner.SubscribeWithFilter<UpdateUnitCastTimerMessage>(UpdateUnitCastingTimer, FILTER);
+            Owner.SubscribeWithFilter<CastInterruptedMessage>(CastInterrupted, FILTER);
+            //Owner.SubscribeWithFilter<ShowFloatingTextMessage>(ShowFloatingText, FILTER);
         }
 
         private void UpdateTick(UpdateTickMessage msg)
@@ -72,6 +104,8 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.BattleLeague.Status
                 _follow = null;
                 gameObject.Unsubscribe<UpdateTickMessage>();
                 gameObject.Unsubscribe<UpdateBattleStateMessage>();
+                Owner.UnsubscribeFromAllMessagesWithFilter(FILTER);
+                _castinBarController.Interrupt();
             }
         }
 
@@ -83,8 +117,83 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.BattleLeague.Status
             }
         }
 
+        private void StatusEffectFinished(StatusEffectFinishedMessage msg)
+        {
+            switch (msg.Type)
+            {
+                case Combat.StatusEffectType.Stun:
+                    _stun.gameObject.SetActive(false);
+                    break;
+                case Combat.StatusEffectType.Silence:
+                    _silence.gameObject.SetActive(false);
+                    break;
+                case Combat.StatusEffectType.Root:
+                    _root.gameObject.SetActive(false);
+                    break;
+                case Combat.StatusEffectType.Mute:
+                    _mute.gameObject.SetActive(false);
+                    break;
+                case Combat.StatusEffectType.Disarm:
+                    _disarm.gameObject.SetActive(false);
+                    break;
+            }
+        }
+
+        private void Stun(StunMessage msg)
+        {
+            _stun.gameObject.SetActive(true);
+        }
+
+        private void Silence(SilenceMessage msg)
+        {
+            _silence.gameObject.SetActive(true);
+        }
+
+        private void Root(RootMessage msg)
+        {
+            _root.gameObject.SetActive(true);
+        }
+
+        private void Mute(MuteMessage msg)
+        {
+            _mute.gameObject.SetActive(true);
+        }
+
+        private void Disarm(DisarmMessage msg)
+        {
+            _disarm.gameObject.SetActive(true);
+        }
+
+        private void UpdateUnitCastingTimer(UpdateUnitCastTimerMessage msg)
+        {
+            _castinBarController.Setup(msg.CastTimer, string.Empty, msg.Icon);
+        }
+
+        private void CastInterrupted(CastInterruptedMessage msg)
+        {
+            _castinBarController.Interrupt();
+        }
+
+        private void ShowFloatingText(ShowFloatingTextMessage msg)
+        {
+            var controller = Instantiate(UiBattleUnitStatusManager.FloatingText, transform);
+            var pos = transform.localPosition;
+            pos.x = _floatingTextOffset.x;
+            pos.y = _floatingTextOffset.y;
+            transform.localPosition = pos;
+            var right = _floatingText.Count > 0 && !_floatingText[_floatingText.Count - 1].IsRight;
+            _floatingText.Add(controller);
+            //controller.Setup(StaticMethods.ApplyColorToText(msg.Text, msg.Color), right, FloatingTextFinished);
+        }
+
         public void Destroy()
         {
+            _castinBarController.Interrupt();
+            for (var i = 0; i < _floatingText.Count; i++)
+            {
+                Destroy(_floatingText[i].gameObject);
+            }
+            _floatingText.Clear();
             Owner.UnsubscribeFromAllMessagesWithFilter(FILTER);
             Owner = null;
             _follow = null;

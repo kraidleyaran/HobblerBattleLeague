@@ -77,7 +77,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Minigame
         {
             for (var i = 0; i < _openWindows.Length; i++)
             {
-                UiWindowManager.CloseWindow(_openWindows[i]);
+                UiWindowManager.CloseWindow(_openWindows[i], _openWindows[i].WorldName);
             }
             _openWindows = null;
 

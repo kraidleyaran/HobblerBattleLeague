@@ -21,5 +21,10 @@ namespace Assets.Ancible_Tools.Scripts.System.BattleLeague.Conditions
 
             return targetHealthPercent.EqualityCompare(_comparison, _healthPercent);
         }
+
+        public override string GetDescription()
+        {
+            return $"Health {_comparison.ToDescription()} {_healthPercent:P}";
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Assets.Ancible_Tools.Scripts.System.Factories;
 using Assets.Resources.Ancible_Tools.Scripts.System;
 using Assets.Resources.Ancible_Tools.Scripts.System.Abilities;
 using MessageBusLib;
@@ -37,6 +38,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             _controller.transform.parent.gameObject.SubscribeWithFilter<LearnAbilityMessage>(LearnAbility, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<ForgetAbilityAtSlotMessage>(ForgetAbilityAtSlot, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<SetAbilitiesMessage>(SetAbilities, _instanceId);
+            _controller.transform.parent.gameObject.SubscribeWithFilter<SetAbilitiesFromDataMessage>(SetAbilitiesFromData, _instanceId);
         }
 
         private void QueryAbilities(QueryAbilitiesMessage msg)
@@ -87,6 +89,27 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             }
             _controller.gameObject.SendMessageTo(AbilitiesUpdatedMessage.INSTANCE, _controller.transform.parent.gameObject);
         }
-        
+
+        private void SetAbilitiesFromData(SetAbilitiesFromDataMessage msg)
+        {
+            var abilityKeys = _abilities.Keys.ToArray();
+            for (var i = 0; i < abilityKeys.Length; i++)
+            {
+                _abilities[abilityKeys[i]] = null;
+            }
+
+            foreach (var ability in msg.Abilities)
+            {
+                if (_abilities.Keys.Contains(ability.Priority))
+                {
+                    var worldAbility = WorldAbilityFactory.GetAbilityByName(ability.Name);
+                    if (worldAbility)
+                    {
+                        _abilities[ability.Priority] = worldAbility;
+                    }
+                }
+
+            }
+        }
     }
 }

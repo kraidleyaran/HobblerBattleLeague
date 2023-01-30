@@ -91,6 +91,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.MInigame
         {
             var queryHealthMsg = MessageFactory.GenerateQueryHealthMsg();
             queryHealthMsg.DoAfter = _instance.UpdateHealth;
+            queryHealthMsg.DirectValues = true;
             _instance.gameObject.SendMessageTo(queryHealthMsg, _player);
             MessageFactory.CacheMessage(queryHealthMsg);
 
@@ -115,8 +116,9 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.MInigame
             player.SubscribeWithFilter<RefreshUnitMessage>(RefreshUnit, FILTER);
             player.SubscribeWithFilter<UpdateMinigameUnitStateMessage>(UpdatePlayerMinigameUnitState, FILTER);
             player.SubscribeWithFilter<UpdateMapTileMessage>(UpdatePlayerMapTile, FILTER);
-            player.SubscribeWithFilter<UpdateSelectedMinigameUnitMessage>(UpdateSelectedMinigameUnit, FILTER);
+            //player.SubscribeWithFilter<UpdateSelectedMinigameUnitMessage>(UpdateSelectedMinigameUnit, FILTER);
             player.SubscribeWithFilter<UpdateUnitCastTimerMessage>(UpdatePlayerUnitCastTimer, FILTER);
+            player.SubscribeWithFilter<CastInterruptedMessage>(CastInterrupted, FILTER);
         }
 
 
@@ -216,7 +218,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.MInigame
                     {
                         var castAbilityMsg = MessageFactory.GenerateCastAbilityMsg();
                         castAbilityMsg.Ability = button.Ability;
-                        castAbilityMsg.Target = _selectedUnit;
+                        castAbilityMsg.Target = _player;
                         gameObject.SendMessageTo(castAbilityMsg, _player);
                         MessageFactory.CacheMessage(castAbilityMsg);
                     }
@@ -251,6 +253,11 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.MInigame
         private void UpdateSelectedMinigameUnit(UpdateSelectedMinigameUnitMessage msg)
         {
             _selectedUnit = msg.Unit;
+        }
+
+        private void CastInterrupted(CastInterruptedMessage msg)
+        {
+            _castingBarController.Interrupt();
         }
 
         public override void Destroy()

@@ -2,10 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Assets.Ancible_Tools.Scripts.System.SaveData.Buildings;
 using Assets.Ancible_Tools.Scripts.Traits;
 using Assets.Resources.Ancible_Tools.Scripts.Hitbox;
+using Assets.Resources.Ancible_Tools.Scripts.System.Abilities;
 using Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague;
+using Assets.Resources.Ancible_Tools.Scripts.System.Combat;
 using Assets.Resources.Ancible_Tools.Scripts.System.Maze;
+using Assets.Resources.Ancible_Tools.Scripts.System.SaveData;
 using Assets.Resources.Ancible_Tools.Scripts.System.Skills;
 using MessageBusLib;
 using ProceduralToolkit;
@@ -679,6 +683,27 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
             }
         }
 
+        public static string ToDescription(this ComparisonType type)
+        {
+            switch (type)
+            {
+                case ComparisonType.Equal:
+                    return "=";
+                case ComparisonType.NotEqual:
+                    return "!=";
+                case ComparisonType.GreaterThan:
+                    return ">";
+                case ComparisonType.GreaterThanOrEqual:
+                    return ">=";
+                case ComparisonType.LessThan:
+                    return "<";
+                case ComparisonType.LessThanOrEqual:
+                    return "<=";
+            }
+
+            return type.ToString();
+        }
+
         public static string GetResultsDescription(this BattleUnitData data)
         {
             var description = string.Empty;
@@ -718,6 +743,43 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
 
             return total / numbers.Length;
         }
+
+        public static AbilityData ToData(this KeyValuePair<int, WorldAbility> ability)
+        {
+            return new AbilityData {Name = ability.Value.name, Priority = ability.Key};
+        }
+
+        public static Vector2IntData ToData(this Vector2Int vector)
+        {
+            return new Vector2IntData {X = vector.x, Y = vector.y};
+        }
+
+        
+
+        public static SkillData ToData(this KeyValuePair<int, SkillInstance> skill)
+        {
+            return new SkillData { Skill = skill.Value.Instance.name, Experience = skill.Value.Instance.LevelExperience, Level = skill.Value.Level, Priority = skill.Key};
+        }
+
+        public static string ToFloatingText(this StatusEffectType type)
+        {
+            switch (type)
+            {
+                case StatusEffectType.Stun:
+                    return "Stunned!";
+                case StatusEffectType.Silence:
+                    return "Silenced!";
+                case StatusEffectType.Root:
+                    return "Rooted!";
+                case StatusEffectType.Mute:
+                    return "Muted!";
+                case StatusEffectType.Disarm:
+                    return "Disarmed!";
+                default:
+                    return string.Empty;
+            }
+        }
+
     }
 
 

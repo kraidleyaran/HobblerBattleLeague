@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Assets.Ancible_Tools.Scripts.System.Factories;
 using Assets.Ancible_Tools.Scripts.System.WorldNodes;
 using Assets.Resources.Ancible_Tools.Scripts.System;
 using Assets.Resources.Ancible_Tools.Scripts.System.Items;
 using Assets.Resources.Ancible_Tools.Scripts.System.Pathing;
 using Assets.Resources.Ancible_Tools.Scripts.System.Skills;
+using Assets.Resources.Ancible_Tools.Scripts.System.UI.Alerts;
 using Assets.Resources.Ancible_Tools.Scripts.System.UnitCommands;
 using MessageBusLib;
 using UnityEngine;
@@ -83,6 +85,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             _controller.transform.parent.gameObject.SubscribeWithFilter<QueryCommandsMessage>(QueryCommands, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<QuerySkillsByPriorityMessage>(QuerySkillsByPriority, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<ChangeSkillPriorityMessage>(ChangeSkillPriority, _instanceId);
+            _controller.transform.parent.gameObject.SubscribeWithFilter<SetSkillsFromDataMessage>(SetSkillsFromData, _instanceId);
         }
 
         private void GainSkillExperience(GainSkillExperienceMessage msg)
@@ -100,6 +103,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             if (levelsGained > 0)
             {
                 instance.ApplyLevels(levelsGained, _controller.transform.parent.gameObject);
+                UiAlertManager.ShowAlert($"+{levelsGained} {msg.Skill.DisplayName}", msg.Skill.Icon);
             }
             _controller.gameObject.SendMessageTo(RefreshUnitMessage.INSTANCE, _controller.transform.parent.gameObject);
         }
@@ -143,6 +147,27 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                 _prioritizedSkills[msg.Priority] = originSkill;
 
                 _controller.gameObject.SendMessageTo(RefreshUnitMessage.INSTANCE, _controller.transform.parent.gameObject);
+            }
+        }
+
+        private void SetSkillsFromData(SetSkillsFromDataMessage msg)
+        {
+            var skills = _skills.ToArray();
+            foreach (var skill in skills)
+            {
+                skill.Value.Destroy();
+            }
+            _skills.Clear();
+            _prioritizedSkills.Clear();
+            foreach (var skill in msg.Skills)
+            {
+                var worldSkill = WorldSkillFactory.GetSkillByName(skill.Skill);
+                if (worldSkill)
+                {
+                    var instance = new SkillInstance(worldSkill, skill);
+                    _skills.Add(worldSkill, instance);
+                    _prioritizedSkills.Add(skill.Priority, instance);
+                }
             }
         }
     }

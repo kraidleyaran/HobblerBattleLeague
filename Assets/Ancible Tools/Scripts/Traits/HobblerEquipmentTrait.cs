@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Assets.Ancible_Tools.Scripts.System.Factories;
 using Assets.Resources.Ancible_Tools.Scripts.System;
 using Assets.Resources.Ancible_Tools.Scripts.System.Items;
 using MessageBusLib;
@@ -53,6 +54,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             _controller.transform.parent.gameObject.SubscribeWithFilter<UnequipItemFromSlotMessage>(UnequipItemFromSlot, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<QueryHobblerEquipmentMessage>(QueryHobblerEquipment, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<SetEquipmentMessage>(SetEquipment, _instanceId);
+            _controller.transform.parent.gameObject.SubscribeWithFilter<SetEquippableItemsFromDataMessage>(SetEquipmentFromData, _instanceId);
         }
 
         private void EquipItemToSlot(EquipItemToSlotMessage msg)
@@ -171,6 +173,42 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                 _controller.gameObject.SendMessageTo(equipItemToSlotMsg, _controller.transform.parent.gameObject);
             }
             MessageFactory.CacheMessage(equipItemToSlotMsg);
+        }
+
+        private void SetEquipmentFromData(SetEquippableItemsFromDataMessage msg)
+        {
+            var armor = _armorSlots.ToArray();
+            foreach (var item in armor)
+            {
+                item.Value?.Destroy();
+                _armorSlots[item.Key] = null;
+            }
+
+            var trinkets = _trinketSlots.ToArray();
+            foreach (var item in trinkets)
+            {
+                item.Value?.Destroy();
+                _trinketSlots[item.Key] = null;
+            }
+
+            _weaponSlot?.Destroy();
+            _weaponSlot = null;
+
+            var equipItemToSlotMsg = MessageFactory.GenerateEquipItemToSlotMsg();
+
+            foreach (var item in msg.Items)
+            {
+                var equippableItem = WorldItemFactory.GetItemByName(item.Item);
+                if (equippableItem && equippableItem is EquippableItem equippable)
+                {
+                    equipItemToSlotMsg.Item = equippable;
+                    equipItemToSlotMsg.Index = item.Slot;
+                    _controller.gameObject.SendMessageTo(equipItemToSlotMsg, _controller.transform.parent.gameObject);
+                }
+            }
+            MessageFactory.CacheMessage(equipItemToSlotMsg);
+
+
         }
     }
 }

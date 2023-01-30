@@ -1,4 +1,5 @@
 ﻿using UnityEditor;
+using UnityEngine;
 
 namespace Assets.Resources.Ancible_Tools.Scripts.System.Editor
 {
@@ -12,7 +13,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Editor
             var unitSpawnController = serializedObject.targetObject as UnitSpawnController;
             if (unitSpawnController)
             {
-                unitSpawnController.RefreshSprite(); 
+                unitSpawnController.RefreshSprite();
             }
             serializedObject.ApplyModifiedProperties();
         }

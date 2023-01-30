@@ -75,6 +75,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
             gameObject.Subscribe<RemoveSelectedUnitMessage>(RemoveSelectedUnit);
             gameObject.Subscribe<WorldBuildingActiveMessage>(WorldBuildingActive);
             gameObject.Subscribe<UpdateWorldStateMessage>(UpdateWorldState);
+            gameObject.Subscribe<ClearWorldMessage>(ClearWorld);
         }
 
         private void UpdateInputState(UpdateInputStateMessage msg)
@@ -219,6 +220,29 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
                     _updateSelectedUnitMsg.Unit = null;
                     gameObject.SendMessage(_updateSelectedUnitMsg);
                 }
+            }
+        }
+
+        private void ClearWorld(ClearWorldMessage msg)
+        {
+            if (_hoveredUnit)
+            {
+                _setHoveredStateMsg.Selector = null;
+                gameObject.SendMessageTo(_setHoveredStateMsg, _hoveredUnit);
+                _hoveredUnit = null;
+                _hoveredSelector.ResetSelector(transform);
+                _hoveredSelector.gameObject.SetActive(false);
+            }
+
+            if (_selectedUnit)
+            {
+                _setSelectStateMsg.Selector = null;
+                gameObject.SendMessageTo(_setHoveredStateMsg, _selectedUnit);
+                _selectedUnit = null;
+                _selectedSelector.ResetSelector(transform);
+                _selectedSelector.gameObject.SetActive(false);
+                _updateSelectedUnitMsg.Unit = null;
+                gameObject.SendMessage(_updateSelectedUnitMsg);
             }
         }
 
