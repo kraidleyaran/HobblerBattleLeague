@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using Assets.Ancible_Tools.Scripts.System.Factories;
 using Assets.Ancible_Tools.Scripts.System.SaveData;
+using Assets.Ancible_Tools.Scripts.System.SaveData.Buildings;
 using Assets.Ancible_Tools.Scripts.Traits;
 using Assets.Resources.Ancible_Tools.Scripts.System.Adventure;
 using Assets.Resources.Ancible_Tools.Scripts.System.Building;
@@ -206,6 +207,11 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.SaveData
         public static TrainerData GetTrainerDataById(string id)
         {
             return _instance._playerData?.Trainers.FirstOrDefault(t => t.Id == id);
+        }
+
+        public static BuildingData GetBuildingData(string id)
+        {
+            return _instance._playerData?.Buildings.FirstOrDefault(t => t.Id == id);
         }
 
         private static void ApplySpriteToData(SpriteTrait trait)

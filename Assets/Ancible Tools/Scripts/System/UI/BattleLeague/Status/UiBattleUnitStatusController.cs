@@ -174,18 +174,6 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.BattleLeague.Status
             _castinBarController.Interrupt();
         }
 
-        private void ShowFloatingText(ShowFloatingTextMessage msg)
-        {
-            var controller = Instantiate(UiBattleUnitStatusManager.FloatingText, transform);
-            var pos = transform.localPosition;
-            pos.x = _floatingTextOffset.x;
-            pos.y = _floatingTextOffset.y;
-            transform.localPosition = pos;
-            var right = _floatingText.Count > 0 && !_floatingText[_floatingText.Count - 1].IsRight;
-            _floatingText.Add(controller);
-            //controller.Setup(StaticMethods.ApplyColorToText(msg.Text, msg.Color), right, FloatingTextFinished);
-        }
-
         public void Destroy()
         {
             _castinBarController.Interrupt();

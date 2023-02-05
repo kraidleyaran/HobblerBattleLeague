@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30e8612c61c8c9241ae34a17fbe843ab, type: 3}
+  m_Name: Default Building Trait
+  m_EditorClassIdentifier: 
+  MaxStack: 1
+  _moveBuilding: {fileID: 11400000, guid: 24514464b73e757469f1b493e5a0d168, type: 2}
+  _upgradeCommand: {fileID: 11400000, guid: 66c7030a7f3a54d4b8c0e9e3dd701308, type: 2}
+  _sellBuildingTemplate: {fileID: 11400000, guid: 3b76cafcbf03a82439e74b12487a089f, type: 2}

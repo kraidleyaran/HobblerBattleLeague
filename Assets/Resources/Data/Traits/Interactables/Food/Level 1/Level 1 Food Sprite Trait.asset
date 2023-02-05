@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Level 1 Food Sprite Trait
   m_EditorClassIdentifier: 
   MaxStack: 1
-  _sprite: {fileID: 4299298042458230270, guid: 2b8f0602ca246a843860ad4b1b843b9a, type: 3}
+  _sprite: {fileID: 7554081255881643696, guid: 2b8f0602ca246a843860ad4b1b843b9a, type: 3}
   _runtimeAnimator: {fileID: 0}
   _scaling: {x: 31.25, y: 31.25}
   _spriteLayer: {fileID: 11400000, guid: c6a1960323536384baa5acd7c37e3599, type: 2}
@@ -21,8 +21,10 @@ MonoBehaviour:
   _offset: {x: -0.625, y: 2.1875}
   _colorMask: {r: 1, g: 1, b: 1, a: 1}
   _rotation: 0
-  _flipX: 1
-  _flipY: 1
+  _flipX: 0
+  _flipY: 0
   _flipSprite: 0
   _bumpDistance: 1
   _bumpTicks: 1
+  _animationStates: 0
+  _overrideMapTileSorting: 0

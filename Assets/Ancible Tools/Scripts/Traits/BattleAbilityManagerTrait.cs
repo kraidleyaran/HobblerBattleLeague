@@ -178,6 +178,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             _controller.transform.parent.gameObject.SubscribeWithFilter<SetAbilitiesMessage>(SetAbilities, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<StunMessage>(Stun, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<SilenceMessage>(Silence, _instanceId);
+            _controller.transform.parent.gameObject.SubscribeWithFilter<QueryCastingMessage>(QueryCasting, _instanceId);
         }
 
         private void BattleAbilityCheck(BattleAbilityCheckMessage msg)
@@ -277,6 +278,14 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         private void Stun(StunMessage msg)
         {
             InterruptCasting();
+        }
+
+        private void QueryCasting(QueryCastingMessage msg)
+        {
+            if (_castingTimer != null && _castingTimer.State == TimerState.Playing)
+            {
+                msg.DoAfter.Invoke();
+            }
         }
 
         public override void Destroy()

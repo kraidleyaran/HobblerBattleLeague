@@ -23,6 +23,8 @@ MonoBehaviour:
   - tileData: 25
     probabilityFactor: 1
   - tileData: 26
-    probabilityFactor: 1
-  RandomizeFlagMask: 0
+    probabilityFactor: 0.5
+  - tileData: 596
+    probabilityFactor: 0.5
+  RandomizeFlagMask: 1073741824
   RemoveBrushIdAfterRefresh: 0

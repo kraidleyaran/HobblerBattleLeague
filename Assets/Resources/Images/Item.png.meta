@@ -4,7 +4,7 @@ TextureImporter:
   internalIDToNameTable:
   - first:
       213: 7322885499304307244
-    second: Item_0
+    second: Cookie
   - first:
       213: -1463922387993793746
     second: Item_1
@@ -19,10 +19,10 @@ TextureImporter:
     second: Item_4
   - first:
       213: 5725823211702991844
-    second: Item_5
+    second: Soup
   - first:
       213: 3202866767410423347
-    second: Item_6
+    second: Sushi
   - first:
       213: -4803117450337365706
     second: Item_7
@@ -49,10 +49,10 @@ TextureImporter:
     second: Item_14
   - first:
       213: -4334099628143986456
-    second: Item_15
+    second: Potato
   - first:
       213: -2855609931191849184
-    second: Item_16
+    second: Eggs
   - first:
       213: -8642592949141513419
     second: Item_17
@@ -61,13 +61,13 @@ TextureImporter:
     second: Item_18
   - first:
       213: 792612381030369307
-    second: Item_19
+    second: Bacon
   - first:
       213: 1334190586553207169
     second: Item_20
   - first:
       213: 2344620692848397661
-    second: Item_21
+    second: Steak
   - first:
       213: -4814175365877213284
     second: Item_22
@@ -76,13 +76,13 @@ TextureImporter:
     second: Item_23
   - first:
       213: -4175181605319068748
-    second: Item_24
+    second: Cheese
   - first:
       213: 8960105370296569872
-    second: Item_25
+    second: Item_25Turkey
   - first:
       213: 7554081255881643696
-    second: Item_26
+    second: Bread
   - first:
       213: -4707817244046040815
     second: Item_27
@@ -547,10 +547,10 @@ TextureImporter:
     second: Item_180
   - first:
       213: -7423044474389600858
-    second: Item_181
+    second: Mana Shrooms 1
   - first:
       213: 190549420146046300
-    second: Item_182
+    second: Mana Shrooms 0
   - first:
       213: 1405489201597148549
     second: Item_183
@@ -1165,7 +1165,7 @@ TextureImporter:
     second: Item_386
   - first:
       213: 4602134775418844753
-    second: Item_387
+    second: Mana Berry
   - first:
       213: 6517496145459823942
     second: Item_388
@@ -1453,7 +1453,7 @@ TextureImporter:
     second: Item_482
   - first:
       213: 1514049779320286944
-    second: Item_483
+    second: Stone Mallet
   - first:
       213: 227499192886884146
     second: Item_484
@@ -2125,7 +2125,7 @@ TextureImporter:
     second: Item_706
   - first:
       213: -8243885289853102134
-    second: Item_707
+    second: Leather Brigandine
   - first:
       213: 5026735523732107756
     second: Item_708
@@ -2236,7 +2236,7 @@ TextureImporter:
     second: Item_743
   - first:
       213: 3193007201146769419
-    second: Item_744
+    second: Iron Mallet
   - first:
       213: 3671390876100913593
     second: Item_745
@@ -2278,7 +2278,7 @@ TextureImporter:
     second: Item_757
   - first:
       213: 3771692918947791538
-    second: Item_758
+    second: Apprentice Cloak
   - first:
       213: 6703537975157026687
     second: Item_759
@@ -2347,7 +2347,7 @@ TextureImporter:
     second: Item_780
   - first:
       213: 3021282411507275391
-    second: Item_781
+    second: Apprentice Cap
   - first:
       213: 8727658568133382563
     second: Item_782
@@ -2389,7 +2389,7 @@ TextureImporter:
     second: Item_794
   - first:
       213: 1755818987577765057
-    second: Item_795
+    second: Iron Dagger
   - first:
       213: -5069104586812714553
     second: Item_796
@@ -2521,10 +2521,10 @@ TextureImporter:
     second: Item_838
   - first:
       213: -6107959289380677720
-    second: Item_839
+    second: Silver Bow
   - first:
       213: 2558079456638693845
-    second: Item_840
+    second: Steel Jagged Axe
   - first:
       213: -5921265649936300525
     second: Item_841
@@ -2779,7 +2779,7 @@ TextureImporter:
     second: Item_924
   - first:
       213: -9078803945688416015
-    second: Item_925
+    second: Royal Dagger
   - first:
       213: 3932956905003212575
     second: Item_926
@@ -2791,13 +2791,13 @@ TextureImporter:
     second: Item_928
   - first:
       213: -7459897415084740757
-    second: Item_929
+    second: Kris
   - first:
       213: 4810117495212637360
-    second: Item_930
+    second: Bow
   - first:
       213: 2460188978533904509
-    second: Item_931
+    second: Jagged Axe
   - first:
       213: 4057737179899707984
     second: Stamina Icon
@@ -2917,7 +2917,7 @@ TextureImporter:
     second: Item_970
   - first:
       213: -5174796354032165978
-    second: Item_971
+    second: Gold Dagger
   - first:
       213: 3734664841732294303
     second: Item_972
@@ -3061,16 +3061,16 @@ TextureImporter:
     second: Item_1018
   - first:
       213: 7707165942720557590
-    second: Item_1019
+    second: Enchanted Twig
   - first:
       213: 7276692227602403460
-    second: Item_1020
+    second: Bow Staff
   - first:
       213: 3006215599022934071
     second: Item_1021
   - first:
       213: 3722369981820110879
-    second: Item_1022
+    second: Ice Scepter
   - first:
       213: -166042045263711769
     second: Item_1023
@@ -3106,7 +3106,7 @@ TextureImporter:
     second: Item_1033
   - first:
       213: 658400303894976428
-    second: Item_1034
+    second: Kukri
   - first:
       213: 4115241426043995957
     second: Item_1035
@@ -3830,7 +3830,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Item_0
+      name: Cookie
       rect:
         serializedVersion: 2
         x: 0
@@ -3935,7 +3935,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Item_5
+      name: Soup
       rect:
         serializedVersion: 2
         x: 80
@@ -3956,7 +3956,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Item_6
+      name: Sushi
       rect:
         serializedVersion: 2
         x: 96
@@ -4145,7 +4145,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Item_15
+      name: Potato
       rect:
         serializedVersion: 2
         x: 240
@@ -4166,7 +4166,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Item_16
+      name: Eggs
       rect:
         serializedVersion: 2
         x: 256
@@ -4229,7 +4229,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Item_19
+      name: Bacon
       rect:
         serializedVersion: 2
         x: 304
@@ -4271,7 +4271,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Item_21
+      name: Steak
       rect:
         serializedVersion: 2
         x: 336
@@ -4334,7 +4334,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Item_24
+      name: Cheese
       rect:
         serializedVersion: 2
         x: 384
@@ -4355,7 +4355,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Item_25
+      name: Item_25Turkey
       rect:
         serializedVersion: 2
         x: 400
@@ -4376,7 +4376,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Item_26
+      name: Bread
       rect:
         serializedVersion: 2
         x: 416
@@ -7631,7 +7631,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Item_181
+      name: Mana Shrooms 1
       rect:
         serializedVersion: 2
         x: 64
@@ -7652,7 +7652,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Item_182
+      name: Mana Shrooms 0
       rect:
         serializedVersion: 2
         x: 80
@@ -11957,7 +11957,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Item_387
+      name: Mana Berry
       rect:
         serializedVersion: 2
         x: 464
@@ -13973,7 +13973,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Item_483
+      name: Stone Mallet
       rect:
         serializedVersion: 2
         x: 608
@@ -18677,7 +18677,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Item_707
+      name: Leather Brigandine
       rect:
         serializedVersion: 2
         x: 528
@@ -19454,7 +19454,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Item_744
+      name: Iron Mallet
       rect:
         serializedVersion: 2
         x: 160
@@ -19748,7 +19748,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Item_758
+      name: Apprentice Cloak
       rect:
         serializedVersion: 2
         x: 416
@@ -20231,7 +20231,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Item_781
+      name: Apprentice Cap
       rect:
         serializedVersion: 2
         x: 400
@@ -20525,7 +20525,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Item_795
+      name: Iron Dagger
       rect:
         serializedVersion: 2
         x: 96
@@ -21449,7 +21449,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Item_839
+      name: Silver Bow
       rect:
         serializedVersion: 2
         x: 176
@@ -21470,7 +21470,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Item_840
+      name: Steel Jagged Axe
       rect:
         serializedVersion: 2
         x: 192
@@ -23255,7 +23255,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Item_925
+      name: Royal Dagger
       rect:
         serializedVersion: 2
         x: 96
@@ -23339,7 +23339,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Item_929
+      name: Kris
       rect:
         serializedVersion: 2
         x: 160
@@ -23360,7 +23360,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Item_930
+      name: Bow
       rect:
         serializedVersion: 2
         x: 176
@@ -23381,7 +23381,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Item_931
+      name: Jagged Axe
       rect:
         serializedVersion: 2
         x: 192
@@ -24221,7 +24221,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Item_971
+      name: Gold Dagger
       rect:
         serializedVersion: 2
         x: 96
@@ -25229,7 +25229,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Item_1019
+      name: Enchanted Twig
       rect:
         serializedVersion: 2
         x: 336
@@ -25250,7 +25250,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Item_1020
+      name: Bow Staff
       rect:
         serializedVersion: 2
         x: 352
@@ -25292,7 +25292,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Item_1022
+      name: Ice Scepter
       rect:
         serializedVersion: 2
         x: 384
@@ -25544,7 +25544,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Item_1034
+      name: Kukri
       rect:
         serializedVersion: 2
         x: 96

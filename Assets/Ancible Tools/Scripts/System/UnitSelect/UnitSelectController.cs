@@ -170,6 +170,8 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
                 _selectedUnit = null;
                 _selectedSelector.ResetSelector(transform);
                 _selectedSelector.gameObject.SetActive(false);
+                _updateSelectedUnitMsg.Unit = null;
+                gameObject.SendMessage(_updateSelectedUnitMsg);
             }
         }
 

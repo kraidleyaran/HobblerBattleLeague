@@ -23,18 +23,8 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Maze
     {
         [SerializeField] private STETilemap _tilemap;
         [SerializeField] private STETilemap _terrain;
-        [SerializeField] private STETilemap _spawnablesMap;
-        [SerializeField] private int[] _groundTiles = new int[0];
-        [SerializeField] private int _wallTileId = 1;
-        [SerializeField] private MinigameUnitSpawnController _verticalDoorSpawn;
-        [SerializeField] private MinigameUnitSpawnController _horizontalDoorSpawn;
         [SerializeField] private uint _deadEndId = 1;
         [SerializeField] private uint _possibleEndId = 0;
-        [SerializeField] private UnitTemplate _upEndTemplate;
-        [SerializeField] private UnitTemplate _downEndTemplate;
-        [SerializeField] private UnitTemplate _leftEndTemplate;
-        [SerializeField] private UnitTemplate _rightEndTemplate;
-        [SerializeField] private uint _spawnableId = 0;
         [SerializeField] private int _mazeSteps = 100;
         [SerializeField] private PathingGridController _pathingGrid = null;
         [SerializeField] private MinigameFogOfWarController _fogofWar = null;
@@ -60,8 +50,8 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Maze
             _maze = new ProceduralToolkit.Samples.Maze(settings.Size.x, settings.Size.y);
             var startPoint = new Vector2Int(Random.Range(0, _settings.Size.x), Random.Range(0, _settings.Size.y));
             var edges = _maze.GetPossibleConnections(new ProceduralToolkit.Samples.Maze.Vertex(startPoint, Directions.None, 0));
-            var space = (settings.RoomSize / 2);
-            
+            _tilemap.Tileset = _settings.Ground;
+            _terrain.Tileset = _settings.Terrain;
             Debug.Log($"Player Spawn: {_playerSpawn}");
             var draw = new List<ProceduralToolkit.Samples.Maze.Edge>();
             while (Generate(edges, draw, _mazeSteps))
@@ -368,10 +358,10 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Maze
                 for (var t = 0; t < room.PathableTiles.Length; t++)
                 {
                     var tile = room.PathableTiles[t];
-                    _tilemap.SetTile(tile.x, tile.y, 0, _groundTiles[currentGroundTileIndex], eTileFlags.Updated);
+                    _tilemap.SetTile(tile.x, tile.y, 0, _settings.GroundTiles[currentGroundTileIndex], eTileFlags.Updated);
                 }
                 currentGroundTileIndex++;
-                if (currentGroundTileIndex >= _groundTiles.Length)
+                if (currentGroundTileIndex >= _settings.GroundTiles.Length)
                 {
                     currentGroundTileIndex = 0;
                 }
@@ -421,7 +411,11 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Maze
                         //_deadEnds.Add(door.Key);
                         //_possibleEnds.Add(door.Value);
                     }
-                    _tilemap.SetTile(pos.x, pos.y, 0, _wallTileId, eTileFlags.Updated);
+                    _terrain.SetTile(pos.x, pos.y, 0, _settings.WallTileId, eTileFlags.Updated);
+                    if (_settings.PaintGroundForWall)
+                    {
+                        _tilemap.SetTile(pos.x, pos.y,0, _settings.GroundTiles[0]);
+                    }
                 }
                 else if (!_tiles.ContainsKey(pos))
                 {
@@ -453,10 +447,10 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Maze
                 switch (door.Rotation.ToDoorRotation())
                 {
                     case DoorRotation.Horizontal:
-                        spawnController = _horizontalDoorSpawn;
+                        spawnController = _settings.HorizontalDoorSpawn;
                         break;
                     case DoorRotation.Vertical:
-                        spawnController = _verticalDoorSpawn;
+                        spawnController = _settings.VerticalDoorSpawn;
                         break;
                 }
 
@@ -494,7 +488,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Maze
                 _spawnableTiles.Remove(wallPos + Vector2Int.left);
                 _spawnableTiles.Remove(wallPos + Vector2Int.right);
 
-                _tilemap.SetTile(wallPos.x, wallPos.y, 0, _wallTileId, eTileFlags.Updated);
+                _tilemap.SetTile(wallPos.x, wallPos.y, 0, _settings.WallTileId, eTileFlags.Updated);
                 
             }
             
@@ -515,16 +509,16 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Maze
                 switch (end.Rotation)
                 {
                     case Directions.Left:
-                        endTemplate = _rightEndTemplate;
+                        endTemplate = _settings.RightEndTemplate;
                         break;
                     case Directions.Right:
-                        endTemplate = _leftEndTemplate;
+                        endTemplate = _settings.LeftEndTemplate;
                         break;
                     case Directions.Down:
-                        endTemplate = _upEndTemplate;
+                        endTemplate = _settings.UpEndTemplate;
                         break;
                     case Directions.Up:
-                        endTemplate = _downEndTemplate;
+                        endTemplate = _settings.DownEndTemplate;
                         break;
                 }
 
@@ -565,20 +559,14 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Maze
             //}
             Debug.Log($"{deadEnds.Count} Dead Ends");
 
-            //for (var i = 0; i < _spawnableTiles.Count; i++)
-            //{
-            //    _spawnablesMap.SetTile(_spawnableTiles[i].x, _spawnableTiles[i].y, (int)_spawnableId);
-            //}
-
 
 
             MinigameController.SetPathingGrid(_pathingGrid);
-            _fogofWar.Setup(_pathingGrid.GetAllMapTiles(), _pathingGrid.Size, _pathingGrid.Offset, new Vector2Int(_tilemap.MinGridX, _tilemap.MinGridY),  new Vector2Int(_tilemap.MaxGridX, _tilemap.MaxGridY));
+            _fogofWar.Setup(_pathingGrid.GetAllMapTiles(), _pathingGrid.Size, _pathingGrid.Offset, new Vector2Int(_tilemap.MinGridX - _settings.EdgeBuffer, _tilemap.MinGridY - _settings.EdgeBuffer),  new Vector2Int(_tilemap.MaxGridX + _settings.EdgeBuffer, _tilemap.MaxGridY + _settings.EdgeBuffer));
             
 
             _terrain.Refresh(true, true, true, true);
             _tilemap.Refresh(true, true, true, true);
-            _spawnablesMap.Refresh(true,true,true,true);
             Debug.Log($"{_tiles.Count} Pathing Tiles");
             return _rooms.Where(r => r.Depth > 2).ToArray();
         }

@@ -14,8 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MaxStack: 1
   _hobblers:
-  - {fileID: 11400000, guid: aff89634b191c394ca4e62bb4741a2fd, type: 2}
-  - {fileID: 11400000, guid: 7bb215706b626c24a86515ea8d88391b, type: 2}
+  - {fileID: 11400000, guid: b9ca885ec50aa2b46856995f17196636, type: 2}
+  - {fileID: 11400000, guid: b00a6be533ab9fa4d84f0872f9e27984, type: 2}
+  - {fileID: 11400000, guid: a9b67095f3d69a84ebbf6a5ec97c5355, type: 2}
+  - {fileID: 11400000, guid: d218506b2c91e6f4db1c755430b41922, type: 2}
   _maxRoll: 5
   _buyCommand: {fileID: 11400000, guid: f8ce02761ee69e346b5ad536dcefe469, type: 2}
   _reRollCost: 0

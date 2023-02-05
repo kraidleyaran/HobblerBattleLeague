@@ -166,7 +166,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Pathing
 
         public void SetTileBlock(GameObject obj, Vector2Int pos, bool blockPathing = true)
         {
-            if (_tiles.TryGetValue(pos, out var tile) && !tile.Block)
+            if (_tiles.TryGetValue(pos, out var tile))
             {
                 tile.Block = obj;
                 if (blockPathing)

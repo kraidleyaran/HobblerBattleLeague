@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Assets.Ancible_Tools.Scripts.System.SaveData.Buildings;
 using Assets.Resources.Ancible_Tools.Scripts.System;
 using Assets.Resources.Ancible_Tools.Scripts.System.Items;
 using Assets.Resources.Ancible_Tools.Scripts.System.Pathing;
+using Assets.Resources.Ancible_Tools.Scripts.System.SaveData;
 using Assets.Resources.Ancible_Tools.Scripts.System.TickTimers;
 using Assets.Resources.Ancible_Tools.Scripts.System.UnitCommands;
 using MessageBusLib;
@@ -25,6 +27,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         private TickTimer _generationTimer = null;
         private MapTile _spawnTile = null;
         private CommandInstance _buyInstance = null;
+        private HobGateParameterData _data = new HobGateParameterData();
 
         public override void SetupController(TraitController controller)
         {
@@ -43,8 +46,44 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                 var hobbler = _hobblers.GetRandom();
                 _currentHobblers.Add(i, hobbler);
             }
-            _generationTimer.Restart();
+            
+            _generationTimer?.Restart();
+            RefreshData();
             _controller.gameObject.SendMessageTo(RefreshUnitMessage.INSTANCE, _controller.transform.parent.gameObject);
+        }
+
+        private void SetHobblersFromdata(string[] hobblers)
+        {
+            _currentHobblers.Clear();
+            for (var i = 0; i < hobblers.Length; i++)
+            {
+                if (string.IsNullOrEmpty(hobblers[i]))
+                {
+                    _currentHobblers.Add(i, null);
+                }
+                else
+                {
+                    var template = WorldHobblerManager.GetTemplateByName(hobblers[i]);
+                    if (template)
+                    {
+                        _currentHobblers.Add(i, template);
+                    }
+                }
+
+            }
+        }
+
+        private void RefreshData()
+        {
+            var keys = _currentHobblers.Keys.ToArray();
+            var hobs = new List<string>();
+            foreach (var key in keys)
+            {
+                hobs.Add(_currentHobblers[key] ? _currentHobblers[key].name : string.Empty);
+            }
+            _data.Hobs = hobs.ToArray();
+            _data.RemainingTicks = _generationTimer.RemainingTicks;
+            _data.MaxTicks = _generationTimer.TicksPerCycle;
         }
 
         private void SubscribeToMessages()
@@ -54,6 +93,8 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             _controller.transform.parent.gameObject.SubscribeWithFilter<UpdateMapTileMessage>(UpdateMapTile, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<QueryCommandsMessage>(QueryCommands, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<QueryHobGeneratorMessage>(QueryHobGenerator, _instanceId);
+            _controller.transform.parent.gameObject.SubscribeWithFilter<QueryBuildingParamterDataMessage>(QueryBuidingParmeterData, _instanceId);
+            _controller.transform.parent.gameObject.SubscribeWithFilter<UpdateBuildingIdMessage>(UpdateBuildingId, _instanceId);
         }
 
         private void RerollHobblers(RerollHobblersMessage msg)
@@ -100,10 +141,34 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             msg.DoAfter.Invoke(_currentHobblers.ToArray(), _generationTimer, _generationWorldTicks);
         }
 
+        private void UpdateBuildingId(UpdateBuildingIdMessage msg)
+        {
+            var data = PlayerDataController.GetBuildingData(msg.Id);
+            if (data != null && data.Parameter is HobGateParameterData gateData)
+            {
+                SetHobblersFromdata(gateData.Hobs);
+                _generationTimer = new TickTimer(gateData.MaxTicks, -1, GenerateNewHobblers, null);
+                _generationTimer.SetCurrentTicks(gateData.MaxTicks - gateData.RemainingTicks);
+                _data = gateData;
+            }
+            else if (_data == null)
+            {
+                RefreshData();
+            }
+        }
+
+        private void QueryBuidingParmeterData(QueryBuildingParamterDataMessage msg)
+        {
+            RefreshData();
+            msg.DoAfter.Invoke(_data);
+        }
+
         public override void Destroy()
         {
             _generationTimer?.Destroy();
             _generationTimer = null;
+            _data?.Dispose();
+            _data = null;
             base.Destroy();
         }
     }

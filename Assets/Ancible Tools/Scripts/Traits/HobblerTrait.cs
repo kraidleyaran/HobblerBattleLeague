@@ -25,6 +25,9 @@ namespace Assets.Ancible_Tools.Scripts.Traits
 
         private MapTile _currentMapTile = null;
 
+        private int _currentLevel = 0;
+        private int _experience = 0;
+
         private List<HobblerBattleHistory> _battleHistory = new List<HobblerBattleHistory>();
 
         private MonsterState _monsterState = MonsterState.Idle;
@@ -103,6 +106,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             _controller.transform.parent.gameObject.SubscribeWithFilter<QueryHobblerDataMessage>(QueryHobblerData, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<SetupHobblerFromDataMessage>(SetupHobblerFromData, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<UpdateMapTileMessage>(UpdateMapTile, _instanceId);
+            _controller.transform.parent.gameObject.SubscribeWithFilter<UpdateHobblerExperienceMessage>(UpdateHobblerExperience, _instanceId);
         }
 
         private void SetHobblerTemplate(SetHobblerTemplateMessage msg)
@@ -263,6 +267,9 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             _data.Name = _name;
             _data.Roster = WorldHobblerManager.Roster.Contains(_controller.transform.parent.gameObject);
             _data.Position = _currentMapTile.Position.ToData();
+            _data.Level = _currentLevel;
+            _data.Experience = _experience;
+
             var queryCombatStatsMsg = MessageFactory.GenerateQueryCombatStatsMsg();
             queryCombatStatsMsg.DoAfter = ApplyCombatStatsToData;
             _controller.gameObject.SendMessageTo(queryCombatStatsMsg, _controller.transform.parent.gameObject);
@@ -301,6 +308,8 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             _data = msg.Data;
             _name = _data.Name;
             _hobblerId = _data.Id;
+            _currentLevel = _data.Level;
+            _experience = _data.Experience;
 
             var setupCombatStatsMsg = MessageFactory.GenerateSetupHobblerCombatStatsMsg();
             setupCombatStatsMsg.Stats = _data.Stats;
@@ -334,11 +343,39 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             setEquipmentFromDataMsg.Items = _data.Equipped;
             _controller.gameObject.SendMessageTo(setEquipmentFromDataMsg, _controller.transform.parent.gameObject);
             MessageFactory.CacheMessage(setEquipmentFromDataMsg);
+
+            var setHobblerExperienceMsg = MessageFactory.GenerateSetHobblerExperienceMsg();
+            setHobblerExperienceMsg.Experience = _experience;
+            setHobblerExperienceMsg.Level = _currentLevel;
+            _controller.gameObject.SendMessageTo(setHobblerExperienceMsg, _controller.transform.parent.gameObject);
+            MessageFactory.CacheMessage(setHobblerExperienceMsg);
         }
 
         private void UpdateMapTile(UpdateMapTileMessage msg)
         {
             _currentMapTile = msg.Tile;
+        }
+
+        private void UpdateHobblerExperience(UpdateHobblerExperienceMessage msg)
+        {
+            if (_currentLevel != msg.Level)
+            {
+                if (_template.Evolution.Template && _template.Evolution.RequiredLevel <= _currentLevel)
+                {
+                    _template = _template.Evolution.Template;
+                    var setSpriteTraitMsg = MessageFactory.GenerateSetSpriteMsg();
+                    setSpriteTraitMsg.Sprite = _template.Sprite;
+                    _controller.gameObject.SendMessageTo(setSpriteTraitMsg, _controller.transform.parent.gameObject);
+                    MessageFactory.CacheMessage(setSpriteTraitMsg);
+                }
+
+
+                //TODO: Set combat stats? Available abilities? Unlock Talent tier?
+
+                _currentLevel = msg.Level;
+            }
+
+            _experience = msg.Experience;
         }
     }
 }

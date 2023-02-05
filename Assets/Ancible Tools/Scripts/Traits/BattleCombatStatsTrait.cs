@@ -94,37 +94,57 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                 if (resisted < msg.Amount)
                 {
                     var damage = msg.Amount - resisted;
-                    _currentHealth -= damage;
-                    var reportDamageMsg = MessageFactory.GenerateReportDamageMsg();
-                    reportDamageMsg.Amount = damage;
-                    reportDamageMsg.Owner = msg.Owner && msg.Owner != _controller.transform.parent.gameObject  ? msg.Owner : null;
-                    _controller.gameObject.SendMessageTo(reportDamageMsg, _controller.transform.parent.gameObject);
-                    if (msg.Owner)
+                    var instanceDamage = new WorldInstance<int> {Instance = damage};
+                    var absorbDamageCheckMsg = MessageFactory.GenerateAbsorbedDamageCheckMsg();
+                    absorbDamageCheckMsg.Instance = instanceDamage;
+                    absorbDamageCheckMsg.Type = msg.Type;
+                    _controller.gameObject.SendMessageTo(absorbDamageCheckMsg, _controller.transform.parent.gameObject);
+                    var absorbed = damage - instanceDamage.Instance;
+                    //TODO: Show absorbed damage
+                    damage = instanceDamage.Instance;
+                    MessageFactory.CacheMessage(absorbDamageCheckMsg);
+                    
+                    if (damage > 0)
                     {
-                        _controller.gameObject.SendMessageTo(reportDamageMsg, msg.Owner);
-                    }
-                    MessageFactory.CacheMessage(reportDamageMsg);
+                        _currentHealth -= damage;
+                        var reportDamageMsg = MessageFactory.GenerateReportDamageMsg();
+                        reportDamageMsg.Amount = damage;
+                        reportDamageMsg.Owner = msg.Owner && msg.Owner != _controller.transform.parent.gameObject ? msg.Owner : null;
+                        _controller.gameObject.SendMessageTo(reportDamageMsg, _controller.transform.parent.gameObject);
+                        if (msg.Owner)
+                        {
+                            _controller.gameObject.SendMessageTo(reportDamageMsg, msg.Owner);
+                        }
+                        MessageFactory.CacheMessage(reportDamageMsg);
 
-                    var showFloatingTextMsg = MessageFactory.GenerateShowFloatingTextMsg();
-                    showFloatingTextMsg.Color = ColorFactoryController.NegativeStatColor;
-                    showFloatingTextMsg.Text = $"-{damage}";
-                    showFloatingTextMsg.World = _controller.transform.parent.position.ToVector2();
-                    _controller.gameObject.SendMessage(showFloatingTextMsg);
-                    MessageFactory.CacheMessage(showFloatingTextMsg);
-                    if (_currentHealth <= 0)
-                    {
-                        _currentHealth = 0;
-                        _controller.gameObject.SendMessageTo(UnitDiedMessage.INSTANCE, _controller.transform.parent.gameObject);
+                        var showFloatingTextMsg = MessageFactory.GenerateShowFloatingTextMsg();
+                        showFloatingTextMsg.Color = ColorFactoryController.NegativeStatColor;
+                        showFloatingTextMsg.Text = $"-{damage}";
+                        showFloatingTextMsg.World = _controller.transform.parent.position.ToVector2();
+                        _controller.gameObject.SendMessage(showFloatingTextMsg);
+                        MessageFactory.CacheMessage(showFloatingTextMsg);
+                        if (_currentHealth <= 0)
+                        {
+                            _currentHealth = 0;
+                            _controller.gameObject.SendMessageTo(UnitDiedMessage.INSTANCE, _controller.transform.parent.gameObject);
 
-                        var setUnitStateMsg = MessageFactory.GenerateSetUnitBattleStateMsg();
-                        setUnitStateMsg.State = UnitBattleState.Dead;
-                        _controller.gameObject.SendMessageTo(setUnitStateMsg, _controller.transform.parent.gameObject);
-                        MessageFactory.CacheMessage(setUnitStateMsg);
+                            var setUnitStateMsg = MessageFactory.GenerateSetUnitBattleStateMsg();
+                            setUnitStateMsg.State = UnitBattleState.Dead;
+                            _controller.gameObject.SendMessageTo(setUnitStateMsg, _controller.transform.parent.gameObject);
+                            MessageFactory.CacheMessage(setUnitStateMsg);
+                        }
+                        else
+                        {
+                            _controller.gameObject.SendMessageTo(RefreshUnitMessage.INSTANCE, _controller.transform.parent.gameObject);
+                        }
                     }
-                    else
-                    {
-                        _controller.gameObject.SendMessageTo(RefreshUnitMessage.INSTANCE, _controller.transform.parent.gameObject);
-                    }
+
+
+
+                }
+                else
+                {
+                    //TODO: Show resisted
                 }
             }
             

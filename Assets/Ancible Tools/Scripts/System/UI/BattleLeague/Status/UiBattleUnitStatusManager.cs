@@ -74,7 +74,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.BattleLeague.Status
         private void ShowFloatingText(ShowFloatingTextMessage msg)
         {
             var controller = Instantiate(FloatingText, transform);
-            var right = _floatingText.Count > 0 && !_floatingText[_floatingText.Count - 1];
+            var right = _floatingText.Count > 0 && !_floatingText[_floatingText.Count - 1].IsRight;
             _floatingText.Add(controller);
             var placeHolder = Instantiate(FactoryController.INVISIBLE, msg.World, Quaternion.identity);
             _placeHolders.Add(controller, placeHolder);

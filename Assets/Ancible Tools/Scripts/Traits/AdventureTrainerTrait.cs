@@ -17,11 +17,15 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         [SerializeField] private int _engagePlayerDistance = 1;
         [SerializeField] private DialogueData _preBattleDialogue = null;
         [SerializeField] private DialogueData _defeatedDialogue = null;
+        [SerializeField] private Color _exclamationColor = Color.red;
+        [SerializeField] private Vector2Int _exclamationOffset = Vector2Int.zero;
+        [SerializeField] private int _exclamationTicks = 30;
         public string SaveId = string.Empty;
 
         private MapTile[] _subscribedTiles = new MapTile[0];
         private Vector2Int _faceDirection = Vector2Int.zero;
         private MapTile _currentTile = null;
+        private AdventureBattleExclamationController _exclamationController = null;
 
         private bool _defeated = false;
 
@@ -66,10 +70,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
 
             if (playerTile != null)
             {
-                var setUnitStateMsg = MessageFactory.GenerateSetAdventureUnitStateMsg();
-                setUnitStateMsg.State = AdventureUnitState.Interaction;
-                _controller.gameObject.SendMessageTo(setUnitStateMsg, obj);
-                MessageFactory.CacheMessage(setUnitStateMsg);
+
                 var distance = _currentTile.Position.DistanceTo(playerTile.Position);
                 if (distance > 1)
                 {
@@ -155,7 +156,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         {
             foreach (var tile in _subscribedTiles)
             {
-                tile.OnObjectEnteringTile -= ForceEncounter;
+                tile.OnObjectEnteringTile -= StartExclamation;
             }
 
             if (_currentTile != null)
@@ -163,7 +164,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                 _subscribedTiles = GenerateRelativePositions().Select(WorldAdventureController.MapController.PlayerPathing.GetTileByPosition).Where(t => t != null).ToArray();
                 foreach (var tile in _subscribedTiles)
                 {
-                    tile.OnObjectEnteringTile += ForceEncounter;
+                    tile.OnObjectEnteringTile += StartExclamation;
                 }
             }
             else
@@ -183,7 +184,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             
             foreach (var tile in _subscribedTiles)
             {
-                tile.OnObjectEnteringTile -= ForceEncounter;
+                tile.OnObjectEnteringTile -= StartExclamation;
             }
 
             if (_defeatedDialogue)
@@ -204,6 +205,25 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         private void Defeat()
         {
             _controller.gameObject.SendMessageTo(RespawnPlayerMessage.INSTANCE, WorldAdventureController.Player);
+        }
+
+        private void StartExclamation(GameObject obj)
+        {
+            var setUnitStateMsg = MessageFactory.GenerateSetAdventureUnitStateMsg();
+            setUnitStateMsg.State = AdventureUnitState.Interaction;
+            _controller.gameObject.SendMessageTo(setUnitStateMsg, obj);
+            MessageFactory.CacheMessage(setUnitStateMsg);
+
+            _exclamationController = Instantiate(FactoryController.BATTLE_EXCLAMATION, _controller.transform);
+            var offset = new Vector2(_exclamationOffset.x * DataController.Interpolation, _exclamationOffset.y * DataController.Interpolation);
+            _exclamationController.transform.SetLocalPosition(offset);
+            _exclamationController.Setup(_exclamationTicks, FinishExclamation, _exclamationColor);
+        }
+
+        private void FinishExclamation()
+        {
+            Destroy(_exclamationController.gameObject);
+            ForceEncounter(WorldAdventureController.Player);
         }
 
         private void SubscribeToMessages()
@@ -310,7 +330,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             {
                 foreach (var tile in _subscribedTiles)
                 {
-                    tile.OnObjectEnteringTile -= ForceEncounter;
+                    tile.OnObjectEnteringTile -= StartExclamation;
                 }
                 _subscribedTiles = new MapTile[0];
             }

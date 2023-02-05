@@ -61,6 +61,21 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                 _gold += msg.Stack;
                 UiAlertManager.ShowAlert($"+{msg.Stack} Gold", IconFactoryController.Gold);
             }
+            else if (msg.Item.Type == WorldItemType.Instant)
+            {
+                if (msg.Item is InstantItem instantItem)
+                {
+                    var uses = 0;
+                    while (uses < msg.Stack)
+                    {
+                        instantItem.Use(_controller.transform.parent.gameObject);
+                        uses++;
+                    }
+                    UiAlertManager.ShowAlert($"{msg.Item.DisplayName}", msg.Item.Icon);
+                }
+                
+
+            }
             else
             {
                 if (!_items.TryGetValue(msg.Item, out var itemStack))

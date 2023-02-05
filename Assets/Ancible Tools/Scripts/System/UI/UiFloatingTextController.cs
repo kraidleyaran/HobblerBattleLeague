@@ -45,7 +45,8 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI
         {
             if (_parent)
             {
-                var pos = MinigameCameraController.Camera.WorldToScreenPoint(_parent.transform.position.ToVector2()).ToVector2();
+                
+                var pos = WorldController.GetCurrentCamera().WorldToScreenPoint(_parent.transform.position.ToVector2()).ToVector2();
                 if (pos != transform.position.ToVector2())
                 {
                     var transformPos = transform.position;

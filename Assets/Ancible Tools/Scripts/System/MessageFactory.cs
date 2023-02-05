@@ -190,6 +190,17 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
         private static List<StatusEffectFinishedMessage> _statusEffectFinishedCache = new List<StatusEffectFinishedMessage>();
         private static List<ShowFloatingTextMessage> _showFloatingTextCache = new List<ShowFloatingTextMessage>();
         private static List<QueryGlobalCooldownMessage> _queryGlobalCooldownCache = new List<QueryGlobalCooldownMessage>();
+        private static List<QueryBuildingParamterDataMessage> _queryBuildingParameterCache = new List<QueryBuildingParamterDataMessage>();
+        private static List<SetSelectedMazeSettingsControllerMessage> _setSelectedMazeSettingsControllerCache = new List<SetSelectedMazeSettingsControllerMessage>();
+        private static List<ShowMazeSelectionWindowMessage> _showMazeSelectionWindowCache = new List<ShowMazeSelectionWindowMessage>();
+        private static List<ApplyManaMessage> _applyManaCache = new List<ApplyManaMessage>();
+        private static List<SetSpriteAlphaMessage> _setSpriteAlphaCache = new List<SetSpriteAlphaMessage>();
+        private static List<UpdateHobblerExperienceMessage> _updateHobblerExperienceCache = new List<UpdateHobblerExperienceMessage>();
+        private static List<SetHobblerExperienceMessage> _setHobblerExperienceCache = new List<SetHobblerExperienceMessage>();
+        private static List<QueryCastingMessage> _queryCastingCache = new List<QueryCastingMessage>();
+        private static List<QueryTimerMessage> _queryTimerCache = new List<QueryTimerMessage>();
+        private static List<RefreshTimerMessage> _refreshTimerCache = new List<RefreshTimerMessage>();
+        private static List<AbsorbedDamageCheckMessage> _absorbedDamageCheckCache = new List<AbsorbedDamageCheckMessage>();
 
         public static AddTraitToUnitMessage GenerateAddTraitToUnitMsg()
         {
@@ -2229,6 +2240,18 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
             return new ShowFloatingTextMessage();
         }
 
+        public static QueryBuildingParamterDataMessage GenerateQueryBuildingParamterDataMsg()
+        {
+            if (_queryBuildingParameterCache.Count > 0)
+            {
+                var message = _queryBuildingParameterCache[0];
+                _queryBuildingParameterCache.Remove(message);
+                return message;
+            }
+
+            return new QueryBuildingParamterDataMessage();
+        }
+
         public static QueryGlobalCooldownMessage GenerateQueryGlobalCooldownMsg()
         {
             if (_queryGlobalCooldownCache.Count > 0)
@@ -2239,6 +2262,127 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
             }
 
             return new QueryGlobalCooldownMessage();
+        }
+
+        public static SetSelectedMazeSettingsControllerMessage GenerateSetSelectedMazeSettingsControllerMsg()
+        {
+            if (_setSelectedMazeSettingsControllerCache.Count > 0)
+            {
+                var message = _setSelectedMazeSettingsControllerCache[0];
+                _setSelectedMazeSettingsControllerCache.Remove(message);
+                return message;
+            }
+
+            return new SetSelectedMazeSettingsControllerMessage();
+        }
+
+        public static ShowMazeSelectionWindowMessage GenerateShowMazeSelectionWindowMsg()
+        {
+            if (_showMazeSelectionWindowCache.Count > 0)
+            {
+                var message = _showMazeSelectionWindowCache[0];
+                _showMazeSelectionWindowCache.Remove(message);
+                return message;
+            }
+
+            return new ShowMazeSelectionWindowMessage();
+        }
+
+        public static ApplyManaMessage GenerateApplyManaMsg()
+        {
+            if (_applyManaCache.Count > 0)
+            {
+                var message = _applyManaCache[0];
+                _applyManaCache.Remove(message);
+                return message;
+            }
+
+            return new ApplyManaMessage();
+        }
+
+        public static SetSpriteAlphaMessage GenerateSetSpriteAlphaMsg()
+        {
+            if (_setSpriteAlphaCache.Count > 0)
+            {
+                var message = _setSpriteAlphaCache[0];
+                _setSpriteAlphaCache.Remove(message);
+                return message;
+            }
+
+            return new SetSpriteAlphaMessage();
+            
+        }
+
+        public static UpdateHobblerExperienceMessage GenerateUpdateHobblerExperienceMsg()
+        {
+            if (_updateHobblerExperienceCache.Count > 0)
+            {
+                var message = _updateHobblerExperienceCache[0];
+                _updateHobblerExperienceCache.Remove(message);
+                return message;
+            }
+
+            return new UpdateHobblerExperienceMessage();
+        }
+
+        public static SetHobblerExperienceMessage GenerateSetHobblerExperienceMsg()
+        {
+            if (_setHobblerExperienceCache.Count > 0)
+            {
+                var message = _setHobblerExperienceCache[0];
+                _setHobblerExperienceCache.Remove(message);
+                return message;
+            }
+
+            return new SetHobblerExperienceMessage();
+        }
+
+        public static QueryCastingMessage GenerateQueryCastingMsg()
+        {
+            if (_queryCastingCache.Count > 0)
+            {
+                var message = _queryCastingCache[0];
+                _queryCastingCache.Remove(message);
+                return message;
+            }
+
+            return new QueryCastingMessage();
+        }
+
+        public static QueryTimerMessage GenerateQueryTimerMsg()
+        {
+            if (_queryTimerCache.Count > 0)
+            {
+                var message = _queryTimerCache[0];
+                _queryTimerCache.Remove(message);
+                return message;
+            }
+
+            return new QueryTimerMessage();
+        }
+
+        public static RefreshTimerMessage GenerateRefreshTimerMsg()
+        {
+            if (_refreshTimerCache.Count > 0)
+            {
+                var message = _refreshTimerCache[0];
+                _refreshTimerCache.Remove(message);
+                return message;
+            }
+
+            return new RefreshTimerMessage();
+        }
+
+        public static AbsorbedDamageCheckMessage GenerateAbsorbedDamageCheckMsg()
+        {
+            if (_absorbedDamageCheckCache.Count > 0)
+            {
+                var message = _absorbedDamageCheckCache[0];
+                _absorbedDamageCheckCache.Remove(message);
+                return message;
+            }
+
+            return new AbsorbedDamageCheckMessage();
         }
 
         //TODO: Start Cache
@@ -2806,6 +2950,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
             msg.World = false;
             msg.Position = Vector2.zero;
             msg.ColorMask = Color.white;
+            msg.Gold = -1;
             msg.Sender = null;
             _showHoverInfoCache.Add(msg);
         }
@@ -3449,7 +3594,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
             _queryBuildingCache.Add(msg);
         }
 
-        public static void CacheMessages(SetAbilitiesFromDataMessage msg)
+        public static void CacheMessage(SetAbilitiesFromDataMessage msg)
         {
             msg.Abilities = null;
             msg.Sender = null;
@@ -3508,6 +3653,89 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
             msg.DoAfter = null;
             msg.Sender = null;
             _queryGlobalCooldownCache.Add(msg);
+        }
+
+        public static void CacheMessage(QueryBuildingParamterDataMessage msg)
+        {
+            msg.DoAfter = null;
+            msg.Sender = null;
+            _queryBuildingParameterCache.Add(msg);
+        }
+
+        public static void CacheMessage(SetSelectedMazeSettingsControllerMessage msg)
+        {
+            msg.Controller = null;
+            msg.Sender = null;
+            _setSelectedMazeSettingsControllerCache.Add(msg);
+        }
+
+        public static void CacheMessage(ShowMazeSelectionWindowMessage msg)
+        {
+            msg.Hobbler = null;
+            msg.Sender = null;
+            _showMazeSelectionWindowCache.Add(msg);
+        }
+
+        public static void CacheMessage(ApplyManaMessage msg)
+        {
+            msg.Amount = 0;
+            msg.Sender = null;
+            _applyManaCache.Add(msg);
+        }
+
+        public static void CacheMessage(SetSpriteAlphaMessage msg)
+        {
+            msg.Alpha = 0f;
+            msg.Sender = null;
+            _setSpriteAlphaCache.Add(msg);
+        }
+
+        public static void CacheMessage(UpdateHobblerExperienceMessage msg)
+        {
+            msg.Experience = 0;
+            msg.Level = 0;
+            msg.ExperienceToNextLevel = 0;
+            msg.Sender = null;
+            _updateHobblerExperienceCache.Add(msg);
+        }
+
+        public static void CacheMessage(SetHobblerExperienceMessage msg)
+        {
+            msg.Experience = 0;
+            msg.Level = 0;
+            msg.Sender = null;
+            _setHobblerExperienceCache.Add(msg);
+        }
+
+        public static void CacheMessage(QueryCastingMessage msg)
+        {
+            msg.DoAfter = null;
+            msg.Sender = null;
+            _queryCastingCache.Add(msg);
+        }
+
+        public static void CacheMessage(QueryTimerMessage msg)
+        {
+            msg.DoAfter = null;
+            msg.Trait = null;
+            msg.Sender = null;
+            _queryTimerCache.Add(msg);
+        }
+
+        public static void CacheMessage(RefreshTimerMessage msg)
+        {
+            msg.Trait = null;
+            msg.Sender = null;
+            _refreshTimerCache.Add(msg);
+        }
+
+        public static void CacheMessage(AbsorbedDamageCheckMessage msg)
+        {
+            msg.Type = DamageType.Physical;
+            msg.Instance?.Destroy();
+            msg.Instance = null;
+            msg.Sender = null;
+            _absorbedDamageCheckCache.Add(msg);
         }
     }
 }

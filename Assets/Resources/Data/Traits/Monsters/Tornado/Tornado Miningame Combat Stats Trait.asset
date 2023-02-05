@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MaxStack: 1
   _startingStats:
-    Health: 10
+    Health: 15
     Mana: 0
     Strength: 0
     Agility: 0
@@ -24,3 +24,4 @@ MonoBehaviour:
     Spirit: 0
   _alignment: 1
   _disableOnDeath: 1
+  _floatingTextOffset: {x: 0, y: 0}

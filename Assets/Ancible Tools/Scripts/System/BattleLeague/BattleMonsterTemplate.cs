@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Assets.Ancible_Tools.Scripts.Traits;
 using UnityEngine;
 
 namespace Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague
@@ -8,6 +9,8 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague
     {
         public BattleUnitData Data = null;
         public Vector2Int[] PreferredPositions = new Vector2Int[0];
+        public MinigameCombatStatsTrait MinigameStats = null;
+        public BasicAttackTrait BasicAttack = null;
 
         public Vector2Int[] GetRelativePreferredPositions(Vector2Int offset)
         {
@@ -19,5 +22,22 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague
 
             return returnValues;
         }
+
+        public BattleUnitData GetData()
+        {
+            var data = Data.Clone();
+            if (MinigameStats)
+            {
+                data.Stats = MinigameStats.StartingStats;
+            }
+
+            if (BasicAttack)
+            {
+                data.BasicAttack = BasicAttack.AttackSetup;
+            }
+
+            return data;
+        }
+        
     }
 }

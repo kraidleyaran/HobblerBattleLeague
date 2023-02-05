@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba827aaa02fd068428e6bbc196313cf5, type: 3}
+  m_Name: Forest Level 1 Maze Minigame Settings
+  m_EditorClassIdentifier: 
+  ApplyOnVictory:
+  - {fileID: 11400000, guid: f5ee75ebe5ae587419b3ccf4a1719387, type: 2}
+  - {fileID: 11400000, guid: cad6bc5d513f17e42935f229955eb934, type: 2}
+  ApplyOnDefeat:
+  - {fileID: 11400000, guid: 3ed18062b24703141bf4077c5b442578, type: 2}
+  - {fileID: 11400000, guid: 37f50b2bcbbe83d429e46194a7d2fb71, type: 2}
+  MinigameWindows:
+  - {fileID: 3685243930854195869, guid: 994f332bab5894d4d9b3abceb766699e, type: 3}
+  - {fileID: 2840552611885456905, guid: bf7373ed66bf4a040be9baf0a8214f8d, type: 3}
+  - {fileID: 12064615652476387, guid: 762b14b081f19504685b6413188a6a25, type: 3}
+  DisplayName: Forest of Avalon
+  Icon: {fileID: -7179496123588461096, guid: 6edd03865b1992649bb8475f4d60c5fb, type: 3}
+  Size: {x: 4, y: 6}
+  Ground: {fileID: 11400000, guid: b528b1ad4d954184e92444e843e67c7e, type: 2}
+  GroundTiles: 01000000020000000400000006000000
+  Terrain: {fileID: 11400000, guid: b528b1ad4d954184e92444e843e67c7e, type: 2}
+  WallTileId: 3
+  WallSize: 4
+  RoomSize: 5
+  PaintGroundForWall: 1
+  EdgeBuffer: 20
+  VerticalDoorSpawn: {fileID: 5753810329028742340, guid: b3b03e638ecc9e549b3c041724c5986a, type: 3}
+  HorizontalDoorSpawn: {fileID: 5753810329028742340, guid: e707c7cb47b786a4f92f5bac246433e3, type: 3}
+  UpEndTemplate: {fileID: 11400000, guid: db5306f84a519ee4b98f5bbae9d7923b, type: 2}
+  DownEndTemplate: {fileID: 11400000, guid: 3a1bd8468c2e3f9498c7acb73058a81b, type: 2}
+  LeftEndTemplate: {fileID: 11400000, guid: db5306f84a519ee4b98f5bbae9d7923b, type: 2}
+  RightEndTemplate: {fileID: 11400000, guid: 3a1bd8468c2e3f9498c7acb73058a81b, type: 2}
+  DoorPerecent: 0
+  MonsterTemplates:
+  - {fileID: 11400000, guid: fa5cd723534b0124c9201dfe47d5f690, type: 2}
+  - {fileID: 11400000, guid: 91f9d30055ee1ef42b54417d48cf8c67, type: 2}
+  - {fileID: 11400000, guid: 5bd70a798a5a8d148b6ced1f59fc7c60, type: 2}
+  - {fileID: 11400000, guid: 9a0e13d7f80eea14399cb2cd251fc261, type: 2}
+  - {fileID: 11400000, guid: c80c80c60d9e6bc4fb3a4ae0160444ab, type: 2}
+  MonstersPerRoom:
+    Minimum: 1
+    Maximum: 1
+  ChestTemplates:
+  - {fileID: 11400000, guid: 0241fa02694d72f4ab95c0832a3bcf94, type: 2}
+  ChestLootTables:
+  - {fileID: 11400000, guid: c47f95499c0036f479c5dd1680661f76, type: 2}
+  MaximumChestsPerRoom: 3
+  ChestSpawnPercent: 0.33

@@ -50,7 +50,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.HoverInfo
                 var quadrant = StaticMethods.GetMouseQuadrant(screenPos);
 
                 _generalInfoController.transform.SetLocalPosition(screenPos);
-                _generalInfoController.Setup(msg.Icon, msg.Title, msg.Description);
+                _generalInfoController.Setup(msg.Icon, msg.Title, msg.Description, msg.Gold);
                 _generalInfoController.SetPivot(quadrant);
                 _generalInfoController.gameObject.SetActive(true);
             }

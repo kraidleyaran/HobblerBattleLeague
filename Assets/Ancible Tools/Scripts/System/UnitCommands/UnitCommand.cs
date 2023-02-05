@@ -14,6 +14,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UnitCommands
         public Trait[] OnCommand = new Trait[0];
         public SubCommandTree Tree = new SubCommandTree();
         public Action DoAfter = null;
+        public int GoldValue = -1;
 
         public void ApplyCommand(GameObject obj)
         {
@@ -39,7 +40,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UnitCommands
         {
             Icons = null;
             OnCommand = null;
-            Tree.Destroy();
+            Tree?.Destroy();
             Tree = null;
             DoAfter = null;
         }

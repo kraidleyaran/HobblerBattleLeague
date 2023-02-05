@@ -102,6 +102,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             _controller.transform.parent.gameObject.SubscribeWithFilter<DoBumpOverPixelsPerSecondMessage>(DoBumpOverPixelsPerSecond, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<SetSpriteMessage>(SetSprite, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<SetFaceDirectionMessage>(SetFacingDirection, _instanceId);
+            _controller.transform.parent.gameObject.SubscribeWithFilter<SetSpriteAlphaMessage>(SetSpriteAlpha, _instanceId);
             if (!_overrideMapTileSorting)
             {
                 _controller.transform.parent.gameObject.SubscribeWithFilter<UpdateMapTileMessage>(UpdateMapTile, _instanceId);
@@ -241,6 +242,11 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         protected internal virtual void UpdateMapTile(UpdateMapTileMessage msg)
         {
             _spriteController.SetSortingOrder(msg.Tile.Position.y * -1 + _currentSprite.SortingOrder);
+        }
+
+        private void SetSpriteAlpha(SetSpriteAlphaMessage msg)
+        {
+            _spriteController.SetAlpha(msg.Alpha);
         }
 
         public override void Destroy()

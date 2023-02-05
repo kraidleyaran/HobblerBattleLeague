@@ -22,6 +22,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         {
             _controller.transform.parent.gameObject.SubscribeWithFilter<SetMapTileMessage>(SetMapTile, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<QueryMapTileMessage>(QueryMapTile, _instanceId);
+            _controller.transform.parent.gameObject.SubscribeWithFilter<ResetPositionMessage>(ResetPosition, _instanceId);
         }
 
         private void SetMapTile(SetMapTileMessage msg)
@@ -47,6 +48,11 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         private void QueryMapTile(QueryMapTileMessage msg)
         {
             msg.DoAfter.Invoke(_mapTile);
+        }
+
+        private void ResetPosition(ResetPositionMessage msg)
+        {
+            _controller.transform.parent.SetTransformPosition(_mapTile.World);
         }
     }
 }

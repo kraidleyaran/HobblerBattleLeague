@@ -19,6 +19,8 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Combat
         private Trait[] _applyOnContact = new Trait[0];
         private Action _doAfter = null;
         private bool _active = false;
+        private bool _rotate = false;
+        private float _rotationOffset = 0f;
 
 
         public void Setup(SpriteTrait trait, Trait[] applyOnContact, int pixelsPerSecond, GameObject target, GameObject owner, Action doAfter = null)
@@ -50,6 +52,12 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Combat
             SubscribeToMessages();
         }
 
+        public void SetRotation(bool rotate, float rotationOffset)
+        {
+            _rotate = rotate;
+            _rotationOffset = _rotate ? rotationOffset : 0f;
+        }
+
         private void SubscribeToMessages()
         {
             if (!_active)
@@ -70,6 +78,10 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Combat
             if (diff.magnitude > speed + _detectDistance)
             {
                 _rigidBody.position += speed * diff.normalized;
+                if (_rotate)
+                {
+                    _rigidBody.rotation = _rotationOffset + diff.ToZRotation();
+                }
             }
             else
             {

@@ -12,12 +12,12 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Windows
         public virtual bool Static => false;
         public bool Instantiated { get; private set; }
 
-        public string WorldName;
+        [HideInInspector] public string WorldName;
 
         public WorldState[] ActiveWorldStates = {WorldState.World};
         public WorldState[] DisabledStates = new WorldState[0];
 
-        private bool _hovered = false;
+        protected internal bool _hovered = false;
         private bool _selected = false;
 
         private bool _destroyed = false;

@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 992dfd0a50edcf0448772bf6f6355dd1, type: 3}
+  m_Name: Maze Yellow Slime Extended Unit Template
+  m_EditorClassIdentifier: 
+  _traits:
+  - {fileID: 11400000, guid: 55f507342a69db84d8dc367454c793bf, type: 2}
+  - {fileID: 11400000, guid: 4ed38bf9994e57c49986de7b7fc7c086, type: 2}
+  - {fileID: 11400000, guid: fa739bc95a28fef45b7ae5e89ed97781, type: 2}
+  - {fileID: 11400000, guid: 6f785c5c8613bd346b5d2ade6f6f5434, type: 2}
+  - {fileID: 11400000, guid: d72b3cfb62aa087488132d42b2e44992, type: 2}
+  - {fileID: 11400000, guid: 4e644d1d8fed44249b53639d4a0a7e01, type: 2}
+  - {fileID: 11400000, guid: fe88a4a1b5add914e805417dda11e127, type: 2}
+  - {fileID: 11400000, guid: ccfc3f09fba01f64d88a3eb1f8d5074d, type: 2}
+  - {fileID: 11400000, guid: 02b95e8bd813af040a051aa05aaeb45d, type: 2}
+  _baseTemplate: {fileID: 11400000, guid: 3cde5ed5379d8c54fbb0e536e7cf94b6, type: 2}

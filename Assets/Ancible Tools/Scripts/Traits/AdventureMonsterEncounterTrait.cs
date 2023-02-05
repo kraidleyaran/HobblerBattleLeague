@@ -13,8 +13,12 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         private MapTile _playerMapTile = null;
 
         [SerializeField] private BattleEncounter[] _encounters = new BattleEncounter[0];
+        [SerializeField] private Color _exclamationColor = Color.red;
+        [SerializeField] private Vector2Int _exclamationOffset = Vector2Int.zero;
+        [SerializeField] private int _exclamationTicks = 30;
 
         private GameObject _spawner = null;
+        private AdventureBattleExclamationController _exclamationController = null;
 
         public override void SetupController(TraitController controller)
         {
@@ -26,11 +30,6 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         {
             if (WorldController.State == WorldState.Adventure && _encounters.Length > 0)
             {
-                var setUnitStateMsg = MessageFactory.GenerateSetAdventureUnitStateMsg();
-                setUnitStateMsg.State = AdventureUnitState.Interaction;
-                _controller.gameObject.SendMessageTo(setUnitStateMsg, player);
-                _controller.gameObject.SendMessageTo(setUnitStateMsg, _controller.transform.parent.gameObject);
-                MessageFactory.CacheMessage(setUnitStateMsg);
 
                 var diff = player.transform.position.ToVector2() - _controller.transform.parent.position.ToVector2();
                 var doBumpPixelsMsg = MessageFactory.GenerateDoBumpOverPixelsPerSecondMsg();
@@ -50,12 +49,32 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             BattleLeagueManager.SetupEncounter(encounter, _controller.transform.parent.gameObject);
         }
 
+        private void StartExclamation(GameObject player)
+        {
+            var setUnitStateMsg = MessageFactory.GenerateSetAdventureUnitStateMsg();
+            setUnitStateMsg.State = AdventureUnitState.Interaction;
+            _controller.gameObject.SendMessageTo(setUnitStateMsg, player);
+            _controller.gameObject.SendMessageTo(setUnitStateMsg, _controller.transform.parent.gameObject);
+            MessageFactory.CacheMessage(setUnitStateMsg);
+
+            _exclamationController = Instantiate(FactoryController.BATTLE_EXCLAMATION, _controller.transform);
+            var offset = new Vector2(_exclamationOffset.x * DataController.Interpolation, _exclamationOffset.y * DataController.Interpolation);
+            _exclamationController.transform.SetLocalPosition(offset);
+            _exclamationController.Setup(_exclamationTicks, () => {FinishExclamation(player);}, _exclamationColor);
+        }
+
+        private void FinishExclamation(GameObject player)
+        {
+            Destroy(_exclamationController.gameObject);
+            StartBump(player);
+        }
+
         private void ProcessObstacle(GameObject obj, AdventureUnitType type)
         {
             switch (type)
             {
                 case AdventureUnitType.Player:
-                    StartBump(obj);
+                    StartExclamation(obj);
                     break;
                 case AdventureUnitType.NPC:
                     break;
@@ -142,6 +161,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             _controller.gameObject.SendMessageTo(setAdventureUnitStateMsg, _controller.transform.parent.gameObject);
             _controller.gameObject.SendMessageTo(setAdventureUnitStateMsg, msg.Owner);
             MessageFactory.CacheMessage(setAdventureUnitStateMsg);
+            
 
             var diff = _controller.transform.parent.position.ToVector2() - msg.Owner.transform.position.ToVector2();
             var doBumpPixelsMsg = MessageFactory.GenerateDoBumpOverPixelsPerSecondMsg();

@@ -13,8 +13,11 @@ MonoBehaviour:
   m_Name: Default Adventure Trainer Trait
   m_EditorClassIdentifier: 
   MaxStack: 1
-  _encounter: {fileID: 11400000, guid: 6d553d9eb330c9144aa4278717a35c0b, type: 2}
+  _encounter: {fileID: 11400000, guid: 46d45014159b2144fb8eac50dff16553, type: 2}
   _engagePlayerDistance: 2
   _preBattleDialogue: {fileID: 11400000, guid: 36e623820bf623846bb02f267e0c905f, type: 2}
   _defeatedDialogue: {fileID: 11400000, guid: f26878b1c319808458b307142cac9146, type: 2}
+  _exclamationColor: {r: 0.8784314, g: 0.23529412, b: 0.15686275, a: 1}
+  _exclamationOffset: {x: 0, y: 20}
+  _exclamationTicks: 30
   SaveId: 

@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Default Maze - Start Minigame Trait
   m_EditorClassIdentifier: 
   MaxStack: 1
-  _settings: {fileID: 11400000, guid: 747aa00e7eba4284a89a08341fcc8159, type: 2}
+  _settings: {fileID: 11400000, guid: 5b4202015b73d19418e1ee0dbb98be6e, type: 2}

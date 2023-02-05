@@ -13,14 +13,44 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.HoverInfo
         [SerializeField] private RectOffset _padding = new RectOffset();
         [SerializeField] private VerticalLayoutGroup _grid;
         [SerializeField] private float _maxWidth = 0f;
+        [SerializeField] private Text _goldAmountText = null;
+        [SerializeField] private RectTransform _goldGroup;
+        [SerializeField] private Image _goldIcon = null;
 
-        public void Setup(Sprite icon, string title, string description)
+        private float _maxGoldWidth = 0f;
+        private float _goldSpacing = 0;
+
+        void Awake()
+        {
+            _maxGoldWidth = _goldGroup.rect.width;
+            var goldGroup = _goldGroup.gameObject.GetComponent<HorizontalLayoutGroup>();
+            if (goldGroup)
+            {
+                _goldSpacing = goldGroup.spacing;
+            }
+            
+        }
+
+        public void Setup(Sprite icon, string title, string description, int amount = -1)
         {
             _iconImage.sprite = icon;
             _iconImage.gameObject.SetActive(_iconImage.sprite);
             _titleText.text = title;
             var width = Mathf.Max((float)title.Length * _titleText.fontSize + _iconImage.rectTransform.rect.width, (float)description.Length * _descriptionText.fontSize);
+            if (amount >= 0)
+            {
+                var goldText = $"{amount:n0}";
+                var goldTextWidth = goldText.Length * _goldAmountText.fontSize + _goldSpacing + _goldIcon.rectTransform.rect.width;
+                goldTextWidth = Mathf.Min(_maxGoldWidth, goldTextWidth);
+                if (goldTextWidth > width)
+                {
+                    width = goldTextWidth;
+                }
+                _goldGroup.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, goldTextWidth);
+                _goldAmountText.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, (float) goldText.Length * _goldAmountText.fontSize);
+            }
             width =  Mathf.Min(_maxWidth, width + _padding.left + _padding.right);
+
             if (!_iconImage.sprite)
             {
                 _titleText.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, _iconImage.rectTransform.rect.width + _titleText.rectTransform.rect.width);
@@ -34,9 +64,17 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.HoverInfo
             {
                 height += _grid.spacing * 2;
             }
+            if (amount >= 0)
+            {
+                _goldAmountText.text = $"{amount:n0}";
+                height += _goldGroup.rect.height;
+            }
+            
+            _goldGroup.gameObject.SetActive(amount >= 0);
             Debug.Log($"Total Height: {height}");
             _rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, Mathf.Round(height + 1));
             _rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, width);
+
         }
 
         public void SetPivot(Vector2 pivot)

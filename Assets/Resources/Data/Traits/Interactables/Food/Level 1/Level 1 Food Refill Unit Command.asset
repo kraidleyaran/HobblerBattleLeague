@@ -15,7 +15,7 @@ MonoBehaviour:
   Command: Refill Food
   Description: 
   Icons:
-  - Sprite: {fileID: 4299298042458230270, guid: 2b8f0602ca246a843860ad4b1b843b9a, type: 3}
+  - Sprite: {fileID: 7554081255881643696, guid: 2b8f0602ca246a843860ad4b1b843b9a, type: 3}
     Offset: {x: 0, y: 0}
     ColorMask: {r: 1, g: 1, b: 1, a: 1}
     FlipX: 1
@@ -24,3 +24,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 9d3e81ac1307c444fa7056bdddcbc055, type: 2}
   Tree:
     SubCommands: []
+  GoldValue: -1

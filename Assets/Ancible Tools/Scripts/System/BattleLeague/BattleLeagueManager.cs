@@ -26,6 +26,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague
         private BattleResult _result = BattleResult.Abandon;
         private int _pointsScored = 0;
         private int _roundsPlayed = 0;
+        private bool _repeat = false;
 
         private Dictionary<BattleUnitData, GameObject> _hobblers = new Dictionary<BattleUnitData, GameObject>();
 
@@ -98,22 +99,19 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague
                 case BattleResult.Victory:
                     if (_currentEncounter)
                     {
-                        if (_currentEncounter.RepeatableLoot || _currentEncounter.InitialVictoryLoot.Length > 0)
+                        var loot = _currentEncounter.GenerateLoot(_currentEncounter.Save && _finishedEncounters.Contains(_currentEncounter));
+                        if (loot.Length > 0)
                         {
-                            var loot = _finishedEncounters.Contains(_currentEncounter) || _currentEncounter.InitialVictoryLoot.Length <= 0 ? _currentEncounter.RepeatableLoot.GenerateLoot() : _currentEncounter.InitialVictoryLoot.ToArray();
-                            if (loot.Length > 0)
+                            for (var i = 0; i < loot.Length; i++)
                             {
-                                for (var i = 0; i < loot.Length; i++)
-                                {
-                                    WorldStashController.AddItem(loot[i].Item, loot[i].Stack);
-                                }
+                                WorldStashController.AddItem(loot[i].Item, loot[i].Stack);
                             }
                         }
                         experience = Mathf.Max(1, Mathf.RoundToInt(_currentEncounter.VictoryExperiencePerPoint * _pointsScored));
                     }
                     break;
                 case BattleResult.Defeat:
-                    experience = Mathf.Max(1, Mathf.RoundToInt(_currentEncounter.VictoryExperiencePerPoint * _pointsScored));
+                    experience = Mathf.Max(1, Mathf.RoundToInt(_currentEncounter.DefeatExperiencePerPoint * _pointsScored));
                     break;
                 case BattleResult.Abandon:
                     break;

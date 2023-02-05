@@ -15,3 +15,6 @@ MonoBehaviour:
   MaxStack: 1
   _encounters:
   - {fileID: 11400000, guid: dc3bc983e05a167448a965edeff4265e, type: 2}
+  _exclamationColor: {r: 0.9647059, g: 0.56078434, b: 0.21568628, a: 1}
+  _exclamationOffset: {x: 0, y: 20}
+  _exclamationTicks: 30

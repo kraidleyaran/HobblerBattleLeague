@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 992dfd0a50edcf0448772bf6f6355dd1, type: 3}
+  m_Name: Maze Red Eyed Dark Cloud Extended Unit Template
+  m_EditorClassIdentifier: 
+  _traits:
+  - {fileID: 11400000, guid: 5c4861b455023174d8c3a30e3bbb0ab3, type: 2}
+  - {fileID: 11400000, guid: 75af6424623e3f34b91e8a4a711d0492, type: 2}
+  - {fileID: 11400000, guid: b1308119c749f3349845d7603a883760, type: 2}
+  - {fileID: 11400000, guid: 9ff4ca04a4ec9684b8edb83488e07d87, type: 2}
+  - {fileID: 11400000, guid: 205b46fbb33a61d4d8021f3163d23c90, type: 2}
+  - {fileID: 11400000, guid: db0aa16c1c8be304ea2add95feabc817, type: 2}
+  - {fileID: 11400000, guid: 3cf2d5bb750fa76438e6008c1a0ce9df, type: 2}
+  - {fileID: 11400000, guid: 5c051b2fcf96ec14cb297bae8a1a5328, type: 2}
+  - {fileID: 11400000, guid: a312af35a1d66984fa555bb7a88dfc50, type: 2}
+  _baseTemplate: {fileID: 11400000, guid: 3cde5ed5379d8c54fbb0e536e7cf94b6, type: 2}

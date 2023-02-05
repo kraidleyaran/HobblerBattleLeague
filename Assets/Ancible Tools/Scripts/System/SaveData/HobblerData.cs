@@ -25,6 +25,8 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.SaveData
         public SkillData[] Skills = new SkillData[0];
         public EquippableItemData[] Equipped = new EquippableItemData[0];
         public HobblerBattleHistory[] BattleHistory = new HobblerBattleHistory[0];
+        public int Level = 0;
+        public int Experience = 0;
 
         public void Dispose()
         {
@@ -41,6 +43,8 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.SaveData
             Skills = null;
             Equipped = null;
             BattleHistory = null;
+            Level = 0;
+            Experience = 0;
         }
     }
 }

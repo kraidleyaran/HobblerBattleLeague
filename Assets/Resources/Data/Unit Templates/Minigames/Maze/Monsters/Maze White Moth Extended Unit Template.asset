@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 992dfd0a50edcf0448772bf6f6355dd1, type: 3}
+  m_Name: Maze White Moth Extended Unit Template
+  m_EditorClassIdentifier: 
+  _traits:
+  - {fileID: 11400000, guid: b12976366667ccd44918a4641e9bf282, type: 2}
+  - {fileID: 11400000, guid: 03380dabc9d0ffd43932bcc40c83502e, type: 2}
+  - {fileID: 11400000, guid: d24502eb6fe59c944827b763f5b0c701, type: 2}
+  - {fileID: 11400000, guid: 6508a4b478942864fbed5e31b6011346, type: 2}
+  - {fileID: 11400000, guid: 7a028229f927d864794a54f4964e0b08, type: 2}
+  - {fileID: 11400000, guid: 511d511d3b582d54ebf8798631b9afdd, type: 2}
+  - {fileID: 11400000, guid: 73ea99cfc783eb041a59216018a3a6f3, type: 2}
+  - {fileID: 11400000, guid: 83696ec2714f61e409c610ed9869e45f, type: 2}
+  - {fileID: 11400000, guid: 111d649cb364930498dd99aa8d880960, type: 2}
+  _baseTemplate: {fileID: 11400000, guid: 3cde5ed5379d8c54fbb0e536e7cf94b6, type: 2}

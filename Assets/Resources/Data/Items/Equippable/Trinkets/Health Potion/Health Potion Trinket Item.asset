@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DisplayName: Health Potion
   Description: 
-  Icon: {fileID: -2720909398857985119, guid: 2b8f0602ca246a843860ad4b1b843b9a, type: 3}
+  _icon: {fileID: -2720909398857985119, guid: 2b8f0602ca246a843860ad4b1b843b9a, type: 3}
   MaxStack: 1
+  GoldValue: -1
   _applyOnEquip:
   - {fileID: 11400000, guid: 54a94f680c9594f4ea9a2275a77fc811, type: 2}

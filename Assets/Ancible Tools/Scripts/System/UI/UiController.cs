@@ -4,6 +4,7 @@ using Assets.Resources.Ancible_Tools.Scripts.System.UI.Building;
 using Assets.Resources.Ancible_Tools.Scripts.System.UI.DetailedInfo;
 using Assets.Resources.Ancible_Tools.Scripts.System.UI.Dialogue;
 using Assets.Resources.Ancible_Tools.Scripts.System.UI.HobblerGenerator;
+using Assets.Resources.Ancible_Tools.Scripts.System.UI.MInigame.MazeSelector;
 using Assets.Resources.Ancible_Tools.Scripts.System.UI.Roster;
 using Assets.Resources.Ancible_Tools.Scripts.System.UI.Stash;
 using Assets.Resources.Ancible_Tools.Scripts.System.Windows;
@@ -24,6 +25,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI
         [SerializeField] private UiHobGeneratorWindowController _hobGeneratorWindowTemplate;
         [SerializeField] private UiRosterWindow _rosterWindowTemplate;
         [SerializeField] private UiDialogueWindowController _dialogueWindowTemplate;
+        [SerializeField] private UiMazeSelectionWindowController _mazeSettingsWindowTemplate;
 
         void Awake()
         {
@@ -45,6 +47,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI
             gameObject.Subscribe<ShowBattleResultsWindowMessage>(ShowBattleResultsWindow);
             gameObject.Subscribe<ShowHobGeneratorWindowMessage>(ShowHobGeneratorWindow);
             gameObject.Subscribe<ShowDialogueMessage>(ShowDialogue);
+            gameObject.Subscribe<ShowMazeSelectionWindowMessage>(ShowMazeSelectionWindow);
         }
 
         private void ShowDetailedHobblerInfo(ShowDetailedHobblerInfoMessage msg)
@@ -115,6 +118,23 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI
         {
             var window = UiWindowManager.OpenWindow(_dialogueWindowTemplate);
             window.Setup(msg.Dialogue, msg.Owner);
+        }
+
+        private void ShowMazeSelectionWindow(ShowMazeSelectionWindowMessage msg)
+        {
+            var id = string.Empty;
+            var queryHobblerIdMsg = MessageFactory.GenerateQueryHobblerIdMsg();
+            queryHobblerIdMsg.DoAfter = hobblerId => id = hobblerId;
+            gameObject.SendMessageTo(queryHobblerIdMsg, msg.Hobbler);
+            MessageFactory.CacheMessage(queryHobblerIdMsg);
+
+            if (string.IsNullOrEmpty(id))
+            {
+                id = $"{msg.Hobbler.GetInstanceID()}";
+            }
+
+            var window = UiWindowManager.OpenWindow(_mazeSettingsWindowTemplate, $"{UiMazeSelectionWindowController.FILTER}{id}");
+            window.Setup(msg.Hobbler);
         }
 
         void OnDestroy()

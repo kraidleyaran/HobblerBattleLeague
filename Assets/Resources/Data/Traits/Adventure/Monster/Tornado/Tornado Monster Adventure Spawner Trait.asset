@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c44509396da22f9488d374d2b7100202, type: 3}
+  m_Name: Tornado Monster Adventure Spawner Trait
+  m_EditorClassIdentifier: 
+  MaxStack: 1
+  _template: {fileID: 0}
+  _additionalTraits:
+  - {fileID: 11400000, guid: c0f896e871f51874aa0f7ab77aeff79f, type: 2}
+  - {fileID: 11400000, guid: f6b644a82d5011d4d9cfcb339d8332e6, type: 2}
+  - {fileID: 11400000, guid: d1872b497d9a7b942a9e1adcf30b32c6, type: 2}
+  - {fileID: 11400000, guid: 031bbdc2d66986f489e7d03a4b21b703, type: 2}
+  - {fileID: 11400000, guid: 5b6ffb5dfb969d2479143aa908f1eeb6, type: 2}
+  - {fileID: 11400000, guid: b32bfd6cbb83ba44f8c5393f06996f47, type: 2}
+  _spawnCooldown: 18000
+  _chanceToSpawn: 1
+  _spawnCheckCooldown: 0
+  _isMonster: 1
+  _spawnArea: 1

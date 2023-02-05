@@ -16,6 +16,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Building
         public Vector2Int[] BlockingTiles;
         public UnitTemplate Template;
         public int Cost;
+        public BuildingUpgrades Upgrades = new BuildingUpgrades();
 
         public Vector2Int[] GetRequiredPositions(Vector2Int origin)
         {

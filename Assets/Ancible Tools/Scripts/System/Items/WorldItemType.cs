@@ -2,6 +2,6 @@
 {
     public enum WorldItemType
     {
-        Generic,Resource,Equippable,Ability,Gold
+        Generic,Resource,Equippable,Ability,Gold,Instant
     }
 }

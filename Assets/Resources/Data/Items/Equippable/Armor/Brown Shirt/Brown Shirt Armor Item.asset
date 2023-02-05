@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DisplayName: Brown Shirt
   Description: 
-  Icon: {fileID: 428874087846238263, guid: 2b8f0602ca246a843860ad4b1b843b9a, type: 3}
+  _icon: {fileID: 428874087846238263, guid: 2b8f0602ca246a843860ad4b1b843b9a, type: 3}
   MaxStack: 1
+  GoldValue: 2
   _applyOnEquip:
   - {fileID: 11400000, guid: bf68db415341276418ec5592e26ec921, type: 2}

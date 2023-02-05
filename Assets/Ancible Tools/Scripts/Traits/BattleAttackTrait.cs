@@ -25,11 +25,23 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         private void ApplyAttack(GameObject target)
         {
             var addTraitToUnitMsg = MessageFactory.GenerateAddTraitToUnitMsg();
-            for (var i = 0; i < _currentAttackSetup.ApplyToTarget.Length; i++)
+
+            if (_currentAttackSetup.ApplyToOwner.Length > 0)
             {
-                addTraitToUnitMsg.Trait = _currentAttackSetup.ApplyToTarget[i];
+                foreach (var trait in _currentAttackSetup.ApplyToOwner)
+                {
+                    addTraitToUnitMsg.Trait = trait;
+                    _controller.transform.parent.gameObject.SendMessageTo(addTraitToUnitMsg, _controller.transform.parent.gameObject);
+                }
+            }
+
+            foreach (var trait in _currentAttackSetup.ApplyToTarget)
+            {
+                addTraitToUnitMsg.Trait = trait;
                 _controller.transform.parent.gameObject.SendMessageTo(addTraitToUnitMsg, target);
             }
+
+
             MessageFactory.CacheMessage(addTraitToUnitMsg);
         }
 
@@ -61,6 +73,8 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             _controller.transform.parent.gameObject.SubscribeWithFilter<ClearBasicAttackSetupMessage>(ClearBasicAttackSetup, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<QueryBasicAttackSetupMessage>(QueryBasicAttackSetup, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<UpdateUnitBattleStateMessage>(UpdateUnitBattleState, _instanceId);
+            _controller.transform.parent.gameObject.SubscribeWithFilter<StunMessage>(Stun, _instanceId);
+            _controller.transform.parent.gameObject.SubscribeWithFilter<DisarmMessage>(Disarm, _instanceId);
         }
 
         private void DoBasicAttack(DoBasicAttackMessage msg)
@@ -99,7 +113,13 @@ namespace Assets.Ancible_Tools.Scripts.Traits
 
         private void BasicAttackCheck(BasicAttackCheckMessage msg)
         {
-            if (_currentAttackSetup.Range >= msg.Distance)
+            var canAttack = true;
+            var canAttackCheckMsg = MessageFactory.GenerateCanAttackCheckMsg();
+            canAttackCheckMsg.DoAfter = () => canAttack = false;
+            _controller.gameObject.SendMessageTo(canAttackCheckMsg, _controller.transform.parent.gameObject);
+            MessageFactory.CacheMessage(canAttackCheckMsg);
+            
+            if (canAttack && _currentAttackSetup.Range >= msg.Distance)
             {
                 var doBasicAttackMsg = MessageFactory.GenerateDoBasicAttackMsg();
                 doBasicAttackMsg.Direction = (msg.TargetTile.Position - msg.Origin.Position).Normalize();

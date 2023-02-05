@@ -35,6 +35,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.Stash
             showHoverInfoMsg.World = false;
             showHoverInfoMsg.Owner = gameObject;
             showHoverInfoMsg.Position = transform.position.ToVector2();
+            showHoverInfoMsg.Gold = _stack.Item.GoldValue;
             gameObject.SendMessage(showHoverInfoMsg);
             MessageFactory.CacheMessage(showHoverInfoMsg);
             _borderImage.color = ColorFactoryController.HoveredItem;

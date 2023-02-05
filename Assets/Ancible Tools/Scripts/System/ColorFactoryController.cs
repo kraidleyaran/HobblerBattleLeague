@@ -14,6 +14,9 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
         public static Color Neutral => _instance._neutralColor;
         public static Color HealthBar => _instance._healthBarColor;
         public static Color ManaBar => _instance._manaBarColor;
+        public static Color ManaText => _instance._manaTextColor;
+        public static Color DefaultAlertText => _instance._defaultAlertTextColor;
+        public static Color ErrorAlertText => _instance._errorAlertTextColor;
 
         private static ColorFactoryController _instance = null;
 
@@ -26,6 +29,9 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
         [SerializeField] private Color _neutralColor = Color.white;
         [SerializeField] private Color _healthBarColor = Color.red;
         [SerializeField] private Color _manaBarColor = Color.blue;
+        [SerializeField] private Color _manaTextColor = Color.blue;
+        [SerializeField] private Color _defaultAlertTextColor = Color.yellow;
+        [SerializeField] private Color _errorAlertTextColor = Color.red;
 
         [Header("Status Effect Colors")]
         [SerializeField] private Color _stunColor = Color.yellow;

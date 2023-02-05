@@ -310,6 +310,11 @@ namespace Assets.Ancible_Tools.Scripts.Traits
 
                 _pathMoveTween = null;
             }
+
+            if (_currentTile != null)
+            {
+                WorldAdventureController.MapController?.RemoveBlockingTile(_controller.transform.parent.gameObject, _currentTile.Position);
+            }
             base.Destroy();
         }
     }

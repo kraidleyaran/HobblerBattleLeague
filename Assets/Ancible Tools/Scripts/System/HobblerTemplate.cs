@@ -19,12 +19,14 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
         public GeneticCombatStats MaximumGenetics = GeneticCombatStats.Zero;
         public WorldAbility[] StartingAbilities = new WorldAbility[0];
         public WeaponItem StartingWeapon = null;
+        public HobblerEvolution Evolution = new HobblerEvolution();
         public int Cost;
 
-        public GeneticCombatStats GenerateGeneticStats()
+        public GeneticCombatStats GenerateGeneticStats(int bonus = 0)
         {
             var maxRoll = WorldCombatController.MaxGeneticRoll;
             var range = new IntNumberRange {Minimum = 1, Maximum = maxRoll};
+            range.Minimum = Math.Min(range.Maximum, range.Minimum + bonus);
             var stats = GeneticCombatStats.Zero;
             stats.Health =  RollStat(MinimumGenetics.Health, MaximumGenetics.Health, range);
             stats.Mana = RollStat(MinimumGenetics.Mana, MaximumGenetics.Mana, range);

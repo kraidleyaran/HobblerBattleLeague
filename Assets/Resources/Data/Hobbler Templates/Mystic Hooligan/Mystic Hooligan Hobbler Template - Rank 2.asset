@@ -1,0 +1,51 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5daa7a20209fb73498f0f88cc8e18c75, type: 3}
+  m_Name: Mystic Hooligan Hobbler Template - Rank 2
+  m_EditorClassIdentifier: 
+  DisplayName: Mystic Hooligan
+  Description: 
+  Sprite: {fileID: 11400000, guid: 734da7b870e60fe4987a6ebab85ddfa5, type: 2}
+  StartingStats:
+    Health: 14
+    Mana: 10
+    Strength: 2
+    Agility: 4
+    Magic: 7
+    Faith: 3
+    Defense: 2
+    Spirit: 1
+  MinimumGenetics:
+    Health: 0.45
+    Mana: 0.75
+    Strength: 0.2
+    Agility: 0.5
+    Magic: 0.7
+    Faith: 0.4
+    Armor: 0.5
+    Spirit: 0.25
+  MaximumGenetics:
+    Health: 1.5
+    Mana: 2.5
+    Strength: 0.8
+    Agility: 1.4
+    Magic: 2.5
+    Faith: 0.5
+    Armor: 1.8
+    Spirit: 1.25
+  StartingAbilities:
+  - {fileID: 11400000, guid: 58239f48a8842ce479c2ad1c30059005, type: 2}
+  StartingWeapon: {fileID: 11400000, guid: ed8b807a138eb9347baaba21cc88cd5d, type: 2}
+  Evolution:
+    RequiredLevel: 20
+    Template: {fileID: 11400000, guid: 6579b3995328e2041ad916ac46576af9, type: 2}
+  Cost: 0

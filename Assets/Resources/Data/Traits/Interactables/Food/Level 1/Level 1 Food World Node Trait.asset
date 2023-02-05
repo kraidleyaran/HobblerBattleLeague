@@ -17,7 +17,7 @@ MonoBehaviour:
   _requiredTicks: 3
   _applyOnFinish:
   - {fileID: 11400000, guid: 32dfeba97dbd1d843864e1a2122161e2, type: 2}
-  _stack: -1
+  _stack: 10
   _gatherArea: 1
   _includeNodeTileForGathering: 0
   _interactionType: 1

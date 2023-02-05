@@ -12,6 +12,8 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         [SerializeField] private Trait[] _applyOnContact = new Trait[0];
         [SerializeField] private int _pixelsPerSecond = 0;
         [SerializeField] private float _offset = 0f;
+        [SerializeField] private bool _rotate = false;
+        [SerializeField] private float _rotationOffset = 0f;
 
         private ProjectileController _projectile = null;
 

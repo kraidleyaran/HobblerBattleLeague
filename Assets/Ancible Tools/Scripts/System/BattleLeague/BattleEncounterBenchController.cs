@@ -32,20 +32,19 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague
         {
             _encounter = encounter;
             _dataInstances = _encounter.GenerateInstances();
-            var units = _encounter.Monsters.ToArray();
             var addTraitToUnitMsg = MessageFactory.GenerateAddTraitToUnitMsg();
             var setGamePieceDataMsg = MessageFactory.GenerateSetGamePieceDataMsg();
             var setFacingDirectionMsg = MessageFactory.GenerateSetFaceDirectionMsg();
             setFacingDirectionMsg.Direction = Vector2.left;
             setGamePieceDataMsg.Alignment = BattleAlignment.Right;
-            for (var i = 0; i < units.Length && i < _benchControllers.Length; i++)
+            for (var i = 0; i < _dataInstances.Length && i < _benchControllers.Length; i++)
             {
                 var bench = _benchControllers[i];
                 var unitController = BattleLeagueController.GamePieceTemplate.GenerateUnit(transform, bench.transform.position.ToVector2());
                 setGamePieceDataMsg.Data = _dataInstances[i];
                 gameObject.SendMessageTo(setGamePieceDataMsg, unitController.gameObject);
 
-                addTraitToUnitMsg.Trait = units[i].Template.Data.Sprite;
+                addTraitToUnitMsg.Trait = _dataInstances[i].Sprite;
                 gameObject.SendMessageTo(addTraitToUnitMsg, unitController.gameObject);
 
                 gameObject.SendMessageTo(setFacingDirectionMsg, unitController.gameObject);
@@ -61,9 +60,10 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague
         {
             var returnUnits = new Dictionary<MapTile, BattleUnitData>();
             var encounters = _encounter.GetBattleUnits(_min, _availableTiles);
+            var totalUnits = _encounter.TotalUnits;
             for (var i = 0; i < encounters.Length; i++)
             {
-                if (_encounter.Monsters.Length > encounters[i].Value)
+                if (totalUnits > encounters[i].Value)
                 {
                     returnUnits.Add(encounters[i].Key, _dataInstances[i]);
                     gameObject.SendMessageTo(EnterBattleMessage.INSTANCE, _encounterPieces[encounters[i].Value]);

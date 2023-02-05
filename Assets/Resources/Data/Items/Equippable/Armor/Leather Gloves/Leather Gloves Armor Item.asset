@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DisplayName: Leather Gloves
   Description: 
-  Icon: {fileID: 1120308398965176382, guid: 2b8f0602ca246a843860ad4b1b843b9a, type: 3}
+  _icon: {fileID: 1120308398965176382, guid: 2b8f0602ca246a843860ad4b1b843b9a, type: 3}
   MaxStack: 1
+  GoldValue: -1
   _applyOnEquip:
   - {fileID: 11400000, guid: 65cacb95332afb942a4332056a0ebee9, type: 2}

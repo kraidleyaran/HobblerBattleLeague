@@ -9,8 +9,10 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Items
 
         public string DisplayName;
         [TextArea(3, 10)] public string Description;
-        public Sprite Icon;
+        public virtual Sprite Icon => _icon;
+        [SerializeField] private Sprite _icon = null;
         public int MaxStack = 1;
+        public int GoldValue = -1;
 
         public virtual string GetDescription()
         {

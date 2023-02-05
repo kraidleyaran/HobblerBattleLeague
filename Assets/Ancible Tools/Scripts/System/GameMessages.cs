@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Assets.Ancible_Tools.Scripts.System.SaveData;
+using Assets.Ancible_Tools.Scripts.System.SaveData.Buildings;
 using Assets.Ancible_Tools.Scripts.System.UI.UnitInfo;
 using Assets.Ancible_Tools.Scripts.System.WorldNodes;
 using Assets.Ancible_Tools.Scripts.Traits;
@@ -21,6 +22,7 @@ using Assets.Resources.Ancible_Tools.Scripts.System.Skills;
 using Assets.Resources.Ancible_Tools.Scripts.System.TickTimers;
 using Assets.Resources.Ancible_Tools.Scripts.System.UI.DetailedInfo;
 using Assets.Resources.Ancible_Tools.Scripts.System.UI.MInigame;
+using Assets.Resources.Ancible_Tools.Scripts.System.UI.MInigame.MazeSelector;
 using Assets.Resources.Ancible_Tools.Scripts.System.UI.Stash;
 using Assets.Resources.Ancible_Tools.Scripts.System.UnitCommands;
 using MessageBusLib;
@@ -196,6 +198,11 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
     public class SetSpriteVisibilityMessage : EventMessage
     {
         public bool Visible;
+    }
+
+    public class SetSpriteAlphaMessage : EventMessage
+    {
+        public float Alpha;
     }
 
     public class SetMinigameUnitStateMessage : EventMessage
@@ -518,6 +525,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
         public string Description;
         public Vector2 Position;
         public bool World;
+        public int Gold = -1;
     }
 
     public class RemoveHoverInfoMessage : EventMessage
@@ -1309,5 +1317,65 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
     public class QueryGlobalCooldownMessage : EventMessage
     {
         public Action<TickTimer> DoAfter;
+    }
+
+    public class QueryBuildingParamterDataMessage : EventMessage
+    {
+        public Action<BuildingParameterData> DoAfter;
+    }
+
+    public class SetSelectedMazeSettingsControllerMessage : EventMessage
+    {
+        public UiMazeSettingsController Controller;
+    }
+
+    public class ShowMazeSelectionWindowMessage : EventMessage
+    {
+        public GameObject Hobbler;
+    }
+
+    public class ApplyManaMessage : EventMessage
+    {
+        public int Amount;
+    }
+
+    public class ResetPositionMessage : EventMessage
+    {
+        public static ResetPositionMessage INSTANCE = new ResetPositionMessage();
+    }
+
+    public class UpdateHobblerExperienceMessage : EventMessage
+    {
+        public int Level;
+        public int Experience;
+        public int ExperienceToNextLevel;
+    }
+
+    public class SetHobblerExperienceMessage : EventMessage
+    {
+        public int Level;
+        public int Experience;
+    }
+
+    public class QueryCastingMessage : EventMessage
+    {
+        public Action DoAfter;
+    }
+
+    public class QueryTimerMessage : EventMessage
+    {
+        public TimerTrait Trait;
+        public Action DoAfter;
+    }
+
+    public class RefreshTimerMessage : EventMessage
+    {
+        public TimerTrait Trait;
+    }
+
+    public class AbsorbedDamageCheckMessage : EventMessage
+    {
+        public DamageType Type;
+        public WorldInstance<int> Instance;
     }
 }

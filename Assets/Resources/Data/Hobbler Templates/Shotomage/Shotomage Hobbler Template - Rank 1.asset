@@ -1,0 +1,51 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5daa7a20209fb73498f0f88cc8e18c75, type: 3}
+  m_Name: Shotomage Hobbler Template - Rank 1
+  m_EditorClassIdentifier: 
+  DisplayName: Shotomage
+  Description: 
+  Sprite: {fileID: 11400000, guid: 71845ff702dc8b841b59ef2c2e2860d3, type: 2}
+  StartingStats:
+    Health: 15
+    Mana: 5
+    Strength: 4
+    Agility: 6
+    Magic: 3
+    Faith: 1
+    Defense: 4
+    Spirit: 1
+  MinimumGenetics:
+    Health: 0.65
+    Mana: 0.25
+    Strength: 0.5
+    Agility: 0.45
+    Magic: 0.1
+    Faith: 0.1
+    Armor: 0.33
+    Spirit: 0.25
+  MaximumGenetics:
+    Health: 1.5
+    Mana: 1.4
+    Strength: 1.6
+    Agility: 2.2
+    Magic: 1.8
+    Faith: 0.5
+    Armor: 1.2
+    Spirit: 1.25
+  StartingAbilities:
+  - {fileID: 11400000, guid: 58239f48a8842ce479c2ad1c30059005, type: 2}
+  StartingWeapon: {fileID: 11400000, guid: ed8b807a138eb9347baaba21cc88cd5d, type: 2}
+  Evolution:
+    RequiredLevel: 10
+    Template: {fileID: 11400000, guid: 47643721578c7164290b37bd4b1e884b, type: 2}
+  Cost: 0

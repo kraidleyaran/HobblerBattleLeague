@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91f915509e6e2704988fe6d0a7ab8366, type: 3}
+  m_Name: Yellow Slime Battle Monster Template
+  m_EditorClassIdentifier: 
+  Data:
+    Name: 
+    Id: 
+    Stats:
+      Health: 7
+      Mana: 0
+      Strength: 3
+      Agility: 3
+      Magic: 3
+      Faith: 3
+      Defense: 0
+      Spirit: 1
+    Abilities: []
+    EquippedItems: []
+    Sprite: {fileID: 11400000, guid: fa739bc95a28fef45b7ae5e89ed97781, type: 2}
+    BasicAttack:
+      Range: 1
+      AttackSpeed: 30
+      ApplyToTarget:
+      - {fileID: 11400000, guid: c7a254c2b147f1549b65e3468f96f061, type: 2}
+    TotalDamageDone: 0
+    TotalHeals: 0
+    TotalDamageTaken: 0
+    Deaths: 0
+    RoundsPlayed: 0
+  PreferredPositions:
+  - {x: 0, y: 0}
+  - {x: 0, y: 1}
+  - {x: 0, y: 2}
+  - {x: 0, y: 3}
+  - {x: 0, y: 4}
+  - {x: 0, y: 5}
+  - {x: 0, y: 6}
+  - {x: 0, y: 7}
+  - {x: 1, y: 0}
+  - {x: 1, y: 1}
+  - {x: 1, y: 2}
+  - {x: 1, y: 3}
+  - {x: 1, y: 4}
+  - {x: 1, y: 5}
+  - {x: 1, y: 6}
+  - {x: 1, y: 7}
+  MinigameStats: {fileID: 11400000, guid: 4ed38bf9994e57c49986de7b7fc7c086, type: 2}
+  BasicAttack: {fileID: 11400000, guid: 4e644d1d8fed44249b53639d4a0a7e01, type: 2}

@@ -50,6 +50,12 @@ TextureImporter:
   - first:
       213: 95148611192760218
     second: Small Hover Selector
+  - first:
+      213: -8576446251591955589
+    second: Raw Exclamation
+  - first:
+      213: 7540325789107514010
+    second: White Square Fill
   externalObjects: {}
   serializedVersion: 12
   mipmaps:
@@ -495,6 +501,48 @@ TextureImporter:
       bones: []
       spriteID: a9724036829025100800000000000000
       internalID: 95148611192760218
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: White Square Fill
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 124
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 2, y: 2, z: 2, w: 2}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a9a6876da5e94a860800000000000000
+      internalID: 7540325789107514010
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Raw Exclamation
+      rect:
+        serializedVersion: 2
+        x: 49
+        y: 33
+        width: 14
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b7b81aaf2975af880800000000000000
+      internalID: -8576446251591955589
       vertices: []
       indices: 
       edges: []

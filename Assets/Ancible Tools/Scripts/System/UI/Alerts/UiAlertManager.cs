@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using Assets.Resources.Ancible_Tools.Scripts.System.TickTimers;
 using Assets.Resources.Ancible_Tools.Scripts.System.Windows;
+using DG.Tweening;
 using UnityEngine;
+using UnityEngine.UI;
 using static UnityEngine.Object;
 
 namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.Alerts
@@ -20,7 +22,9 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.Alerts
         private List<UiAlertController> _controllers = new List<UiAlertController>();
         private List<CachedAlert> _alerts = new List<CachedAlert>();
         private TickTimer _alertCooldownTimer = null;
+
         private bool _onCooldown = false;
+        
 
         public override void Awake()
         {
@@ -32,6 +36,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.Alerts
 
             _instance = this;
             _alertCooldownTimer = new TickTimer(_alertCooldownTime, 0, AlertCooldownFinished, null, false, false);
+
             base.Awake();
         }
 
@@ -70,6 +75,14 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.Alerts
         {
             _instance._controllers.Remove(controller);
             Destroy(controller.gameObject);
+        }
+
+        public override void Destroy()
+        {
+
+            _alertCooldownTimer.Destroy();
+            _alertCooldownTimer = null;
+            base.Destroy();
         }
     }
 }

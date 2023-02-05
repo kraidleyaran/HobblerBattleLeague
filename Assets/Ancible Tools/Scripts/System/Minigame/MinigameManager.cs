@@ -9,10 +9,13 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Minigame
 {
     public class MinigameManager : MonoBehaviour
     {
+        public static MazeMinigameSettings[] AvailableMazeSettings => _instance._availableMazeSettings;
+
         private static MinigameManager _instance = null;
 
         [SerializeField] private MazeMinigameController _mazeTemplate;
         [SerializeField] private UiMinigameResultsController _resultsTemplate;
+        [SerializeField] private MazeMinigameSettings[] _availableMazeSettings = new MazeMinigameSettings[0];
 
         private MinigameController _minigameController = null;
         private MinigameSettings _currentSettings = null;
@@ -27,6 +30,8 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Minigame
                 Destroy(gameObject);
                 return;
             }
+
+            _instance = this;
             gameObject.layer = CollisionLayerFactory.Minigame.ToLayer();
             SubscribeToMessages();
         }

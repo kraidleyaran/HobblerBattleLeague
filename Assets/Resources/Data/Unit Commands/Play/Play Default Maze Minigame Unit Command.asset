@@ -21,6 +21,6 @@ MonoBehaviour:
     FlipX: 0
     FlipY: 0
   OnCommand:
-  - {fileID: 11400000, guid: 04172caaf88067144a82abbcbd5fad3f, type: 2}
+  - {fileID: 11400000, guid: 534d05a82ce266d47a2da1b822e4347a, type: 2}
   Tree:
     SubCommands: []

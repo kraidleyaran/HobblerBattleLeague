@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DisplayName: Leather Boots
   Description: 
-  Icon: {fileID: -6201107019143491926, guid: 2b8f0602ca246a843860ad4b1b843b9a, type: 3}
+  _icon: {fileID: -6201107019143491926, guid: 2b8f0602ca246a843860ad4b1b843b9a, type: 3}
   MaxStack: 1
+  GoldValue: -1
   _applyOnEquip:
   - {fileID: 11400000, guid: c157ae30c092a7b419e405b0de1dee72, type: 2}

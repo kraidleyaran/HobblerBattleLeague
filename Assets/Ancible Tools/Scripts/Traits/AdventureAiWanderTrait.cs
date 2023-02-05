@@ -2,6 +2,7 @@
 using Assets.Resources.Ancible_Tools.Scripts.System;
 using Assets.Resources.Ancible_Tools.Scripts.System.Adventure;
 using Assets.Resources.Ancible_Tools.Scripts.System.Pathing;
+using Assets.Resources.Ancible_Tools.Scripts.System.TickTimers;
 using MessageBusLib;
 using UnityEngine;
 
@@ -12,17 +13,44 @@ namespace Assets.Ancible_Tools.Scripts.Traits
     {
         [SerializeField] private int _area = 1;
         [SerializeField] private bool _isMonster = false;
+        [SerializeField] private IntNumberRange _idleTicks = IntNumberRange.One;
+        [SerializeField] [Range(0f, 1f)] private float _chanceToIdle = 0f;
 
         private MapTile _currentTile = null;
 
         private List<MapTile> _path = new List<MapTile>();
 
         private AdventureUnitState _unitState = AdventureUnitState.Idle;
+        private TickTimer _idleTimer = null;
 
         public override void SetupController(TraitController controller)
         {
             base.SetupController(controller);
             SubscribeToMessages();
+        }
+
+        private bool IsIdle()
+        {
+            var idle = _chanceToIdle >= Random.Range(0f, 1f);
+            if (idle)
+            {
+                if (_idleTimer != null)
+                {
+                    _idleTimer.Destroy();
+                    _idleTimer = null;
+                }
+
+                _idleTimer = new TickTimer(_idleTicks.Roll(), 0, IdleFinished, null, false, true);
+                return true;
+            }
+
+            return false;
+        }
+
+        private void IdleFinished()
+        {
+            _idleTimer.Destroy();
+            _idleTimer = null;
         }
 
         private void SubscribeToMessages()
@@ -64,28 +92,33 @@ namespace Assets.Ancible_Tools.Scripts.Traits
 
         private void UpdateTick(UpdateTickMessage msg)
         {
-            if (_unitState == AdventureUnitState.Idle && _path.Count <= 0)
+            if (_unitState == AdventureUnitState.Idle && _path.Count <= 0 && _idleTimer == null)
             {
-                var pathingGrid = _isMonster ? WorldAdventureController.MapController.MonsterPathing : WorldAdventureController.MapController.PlayerPathing;
-                var mapTiles = pathingGrid.GetMapTilesInArea(_currentTile.Position, _area);
-                if (mapTiles.Length > 0)
+                var idle = IsIdle();
+                if (!idle)
                 {
-                    var tile = mapTiles.GetRandom();
-                    var path = pathingGrid.GetPath(_currentTile.Position, tile.Position, false);
-                    if (path.Length > 0)
+                    var pathingGrid = _isMonster ? WorldAdventureController.MapController.MonsterPathing : WorldAdventureController.MapController.PlayerPathing;
+                    var mapTiles = pathingGrid.GetMapTilesInArea(_currentTile.Position, _area);
+                    if (mapTiles.Length > 0)
                     {
-                        var nextTile = path[0];
+                        var tile = mapTiles.GetRandom();
+                        var path = pathingGrid.GetPath(_currentTile.Position, tile.Position, false);
+                        if (path.Length > 0)
+                        {
+                            var nextTile = path[0];
 
-                        var setDirectionMsg = MessageFactory.GenerateSetDirectionMsg();
-                        setDirectionMsg.Direction = nextTile.Position - _currentTile.Position;
-                        _controller.gameObject.SendMessageTo(setDirectionMsg, _controller.transform.parent.gameObject);
-                        MessageFactory.CacheMessage(setDirectionMsg);
+                            var setDirectionMsg = MessageFactory.GenerateSetDirectionMsg();
+                            setDirectionMsg.Direction = nextTile.Position - _currentTile.Position;
+                            _controller.gameObject.SendMessageTo(setDirectionMsg, _controller.transform.parent.gameObject);
+                            MessageFactory.CacheMessage(setDirectionMsg);
+                        }
+                    }
+                    else
+                    {
+                        _controller.gameObject.SendMessageTo(ActivateGlobalCooldownMessage.INSTANCE, _controller.transform.parent.gameObject);
                     }
                 }
-                else
-                {
-                    _controller.gameObject.SendMessageTo(ActivateGlobalCooldownMessage.INSTANCE, _controller.transform.parent.gameObject);
-                }
+
             }
         }
 
@@ -103,6 +136,13 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             MessageFactory.CacheMessage(setDirectionMsg);
         }
 
-
+        private void OnDestroy()
+        {
+            if (_idleTimer != null)
+            {
+                _idleTimer.Destroy();
+                _idleTimer = null;
+            }
+        }
     }
 }

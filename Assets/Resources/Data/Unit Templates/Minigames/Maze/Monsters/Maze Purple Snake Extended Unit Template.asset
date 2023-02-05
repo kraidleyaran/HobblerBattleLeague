@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 992dfd0a50edcf0448772bf6f6355dd1, type: 3}
+  m_Name: Maze Purple Snake Extended Unit Template
+  m_EditorClassIdentifier: 
+  _traits:
+  - {fileID: 11400000, guid: b7e75e197be5a5b43bf2de7ba5aef551, type: 2}
+  - {fileID: 11400000, guid: cbcf0ffaf9e8a0a4ebe142b83c4cda51, type: 2}
+  - {fileID: 11400000, guid: 3ae08c8bb4de22d4e8876eaeef4af475, type: 2}
+  - {fileID: 11400000, guid: 68e27dd58adf033469b061fe6d8b008e, type: 2}
+  - {fileID: 11400000, guid: 5b20c02c33853f345b11031d543b215a, type: 2}
+  - {fileID: 11400000, guid: ed32f2806fa9d9a48ab9c13ba3278d0b, type: 2}
+  - {fileID: 11400000, guid: a4d9b35b09dc61944a2b642b1e98d0c0, type: 2}
+  - {fileID: 11400000, guid: 3ddb14891f7103349851863633ae9cfa, type: 2}
+  - {fileID: 11400000, guid: af0c496f0a31e8e4cae301a96262a2de, type: 2}
+  _baseTemplate: {fileID: 11400000, guid: 3cde5ed5379d8c54fbb0e536e7cf94b6, type: 2}

@@ -10,6 +10,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Combat
         public int Range = 0;
         public int AttackSpeed = 0;
         public Trait[] ApplyToTarget = new Trait[0];
+        public Trait[] ApplyToOwner = new Trait[0];
 
         public string GetDescription()
         {

@@ -63,6 +63,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI
             showHoverinfoMsg.Position = transform.position.ToVector2();
             showHoverinfoMsg.World = false;
             showHoverinfoMsg.Owner = gameObject;
+            showHoverinfoMsg.Gold = _command.Command.GoldValue;
             gameObject.SendMessage(showHoverinfoMsg);
             MessageFactory.CacheMessage(showHoverinfoMsg);
         }

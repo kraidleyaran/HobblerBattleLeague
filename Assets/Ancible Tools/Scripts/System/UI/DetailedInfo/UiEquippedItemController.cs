@@ -47,6 +47,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.DetailedInfo
             showHoveredInfoMsg.Owner = gameObject;
             showHoveredInfoMsg.World = false;
             showHoveredInfoMsg.Position = transform.position.ToVector2();
+            showHoveredInfoMsg.Gold = _equipped ? _equipped.GoldValue : -1;
             gameObject.SendMessage(showHoveredInfoMsg);
             MessageFactory.CacheMessage(showHoveredInfoMsg);
 

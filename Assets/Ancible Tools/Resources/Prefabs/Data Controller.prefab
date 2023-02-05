@@ -323,7 +323,7 @@ GameObject:
   - component: {fileID: 6188231109556941837}
   - component: {fileID: 4969853798769540647}
   - component: {fileID: 643765868735125865}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: 0_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -846,7 +846,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _defaultBasicAttackIcon: {fileID: 5624228601591108982, guid: b517b78c34263c74f96c57bab7594846, type: 3}
-  _goldIcon: {fileID: 0}
+  _goldIcon: {fileID: 3081139055754718085, guid: 2b8f0602ca246a843860ad4b1b843b9a, type: 3}
 --- !u!1 &927397491008855899
 GameObject:
   m_ObjectHideFlags: 0
@@ -2080,7 +2080,7 @@ GameObject:
   - component: {fileID: 8045219035340544492}
   - component: {fileID: 1514424410853622889}
   - component: {fileID: 398539501515500725}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Battle Pathing Grid Tilemap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2184,7 +2184,7 @@ GameObject:
   - component: {fileID: 610807923390027000}
   - component: {fileID: 4327326178944746904}
   - component: {fileID: 6041250076891415993}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: -1_-1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2440,6 +2440,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 82e864679bcd311449933e8ead99e0dc, type: 2}
   - {fileID: 11400000, guid: ea090aa4c11da2140933cccf8abe057a, type: 2}
   _buildingFolder: 
+  _sellBackPercentage: 0.5
 --- !u!1 &2382719844781140610
 GameObject:
   m_ObjectHideFlags: 0
@@ -2452,7 +2453,7 @@ GameObject:
   - component: {fileID: 1685851114869575932}
   - component: {fileID: 675435181773060634}
   - component: {fileID: 2557975759160352069}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: -1_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3094,7 +3095,7 @@ GameObject:
   - component: {fileID: 9149653896155202364}
   - component: {fileID: 4467104958846441037}
   - component: {fileID: 8715673420762850957}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: 0_-1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5076,7 +5077,7 @@ GameObject:
   - component: {fileID: 257880808343189425}
   - component: {fileID: 1211103628453371914}
   m_Layer: 0
-  m_Name: ColorFactoryController
+  m_Name: Color Factory Controller
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5117,6 +5118,9 @@ MonoBehaviour:
   _neutralColor: {r: 1, g: 1, b: 1, a: 1}
   _healthBarColor: {r: 0.8784314, g: 0.23529412, b: 0.15686275, a: 1}
   _manaBarColor: {r: 0.039215688, g: 0.5372549, b: 1, a: 1}
+  _manaTextColor: {r: 0, g: 0, b: 1, a: 1}
+  _defaultAlertTextColor: {r: 1, g: 0.90588236, b: 0.21568628, a: 1}
+  _errorAlertTextColor: {r: 0.8784314, g: 0.23529412, b: 0.15686275, a: 1}
   _stunColor: {r: 1, g: 0.73333335, b: 0.19215687, a: 1}
   _silenceColor: {r: 0.039215688, g: 0.59607846, b: 0.6745098, a: 1}
   _rootColor: {r: 0.68235296, g: 0.42352942, b: 0.21568628, a: 1}
@@ -5835,6 +5839,7 @@ MonoBehaviour:
     Stack: 1
   - Item: {fileID: 11400000, guid: f54646a62797a70409291c5350ed8405, type: 2}
     Stack: 1
+  _startingGold: 1000
 --- !u!1 &6722785230403697433
 GameObject:
   m_ObjectHideFlags: 0
@@ -6233,6 +6238,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mazeTemplate: {fileID: -7158530223152834975, guid: 5c22f33245762a940b3c6920f5016ec4, type: 3}
   _resultsTemplate: {fileID: 6200484368607971220, guid: 3f05023b570057840af384b3eac12a62, type: 3}
+  _availableMazeSettings:
+  - {fileID: 11400000, guid: 747aa00e7eba4284a89a08341fcc8159, type: 2}
+  - {fileID: 11400000, guid: 5b4202015b73d19418e1ee0dbb98be6e, type: 2}
 --- !u!1 &7170527154084787975
 GameObject:
   m_ObjectHideFlags: 0
@@ -6367,10 +6375,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerTemplate: {fileID: 11400000, guid: 4bf7eece3e6bd264992dbbb1a15f7277, type: 2}
-  _defaultMap: {fileID: 11400000, guid: cbf910900e074d8498ef7b2f72016eb3, type: 2}
-  _battleBumpSpeed: 35
+  _defaultMap: {fileID: 11400000, guid: d4e4e2e0fd794f5419f174b31dd3998c, type: 2}
+  _battleBumpSpeed: 25
   _battleBumpDistance: 5
-  _mapFolderPath: 
+  _mapFolderPath: Data/Adventure Maps
 --- !u!1 &7621776885593679687
 GameObject:
   m_ObjectHideFlags: 0

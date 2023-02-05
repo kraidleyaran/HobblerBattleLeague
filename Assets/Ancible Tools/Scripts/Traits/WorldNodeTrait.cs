@@ -173,11 +173,14 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         {
             if (_interactingHobblers.ContainsKey(owner))
             {
-                var commandInstance = _interactingHobblers[owner];
+                if (_interactionType == NodeInteractionType.Invisible)
+                {
+                    var commandInstance = _interactingHobblers[owner];
+                    _nodeCommandInstance.Tree.SubCommands.Remove(commandInstance);
+                    commandInstance.Command.Destroy();
+                    Destroy(commandInstance.Command);
+                }
                 _interactingHobblers.Remove(owner);
-                _nodeCommandInstance.Tree.SubCommands.Remove(commandInstance);
-                commandInstance.Command.Destroy();
-                Destroy(commandInstance.Command);
                 _controller.gameObject.SendMessageTo(RefreshUnitMessage.INSTANCE, _controller.transform.parent.gameObject);
             }
 
@@ -206,6 +209,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         private void UpdateMapTile(UpdateMapTileMessage msg)
         {
             _mapTile = msg.Tile;
+            
             var gatheringTiles = WorldController.Pathing.GetMapTilesInArea(msg.Tile.Position, _gatherArea).Where(t => !t.Block).ToList();
             if (!_includeNodeTileForGathering)
             {
@@ -231,7 +235,29 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                 
             }
 
+            var hobblers = _interactingHobblers.Values.ToArray();
+            if (_interactionType != NodeInteractionType.Invisible)
+            {
+                var stopGatheringMsg = MessageFactory.GenerateStopGatheringMsg();
+                stopGatheringMsg.Node = _controller.transform.parent.gameObject;
+                foreach (var hobbler in hobblers)
+                {
+                    _controller.gameObject.SendMessageTo(stopGatheringMsg, hobbler);
+                }
+                MessageFactory.CacheMessage(stopGatheringMsg);
 
+                _interactingHobblers.Clear();
+            }
+            else
+            {
+                var setMapTileMsg = MessageFactory.GenerateSetMapTileMsg();
+                foreach (var hobbler in hobblers)
+                {
+                    setMapTileMsg.Tile = _gatheringTiles.Length > 1 ? _gatheringTiles[Random.Range(0, _gatheringTiles.Length)] : _gatheringTiles[0];
+                    _controller.gameObject.SendMessageTo(setMapTileMsg, hobbler);
+                }
+                MessageFactory.CacheMessage(setMapTileMsg);
+            }
         }
 
         private void Interact(InteractMessage msg)
@@ -257,7 +283,11 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                 {
                     var owner = msg.Owner;
                     var unitCommand = Instantiate(_selectableHobblerCommandTemplate, _controller.transform);
-                    unitCommand.Command = "Hobbler";
+                    var queryNameMsg = MessageFactory.GenerateQueryUnitNameMsg();
+                    queryNameMsg.DoAfter = unitName => unitCommand.Command = unitName;
+                    _controller.gameObject.SendMessageTo(queryNameMsg, owner);
+                    MessageFactory.CacheMessage(queryNameMsg);
+                    //unitCommand.Command = "Hobbler";
                     unitCommand.Icons = new[]
                     {
                         new CommandIcon {Sprite = spriteTrait.Sprite}
@@ -273,6 +303,10 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                     _controller.gameObject.SendMessageTo(ResetCommandCardMessage.INSTANCE, _controller.transform.parent.gameObject);
                     //_controller.gameObject.SendMessageTo(RefreshUnitMessage.INSTANCE, _controller.transform.parent.gameObject);
                 }
+            }
+            else if (!_interactingHobblers.ContainsKey(msg.Owner))
+            {
+                _interactingHobblers.Add(msg.Owner, null);
             }
 
         }
@@ -298,34 +332,39 @@ namespace Assets.Ancible_Tools.Scripts.Traits
 
         private void UnregisterFromNode(UnregisterFromGatheringNodeMessage msg)
         {
-            switch (_interactionType)
-            {
-                case NodeInteractionType.Invisible when _interactingHobblers.ContainsKey(msg.Unit):
-                    RemoveFromInteractingObjects(msg.Unit);
-                    {
-                        var stopGatheringMsg = MessageFactory.GenerateStopGatheringMsg();
-                        stopGatheringMsg.Node = _controller.transform.parent.gameObject;
-                        _controller.gameObject.SendMessageTo(stopGatheringMsg, msg.Unit);
-                        MessageFactory.CacheMessage(stopGatheringMsg);
-                    }
-                    break;
-                case NodeInteractionType.Invisible:
-                {
-                    var stopGatheringMsg = MessageFactory.GenerateStopGatheringMsg();
-                    stopGatheringMsg.Node = _controller.transform.parent.gameObject;
-                    _controller.gameObject.SendMessageTo(stopGatheringMsg, msg.Unit);
-                    MessageFactory.CacheMessage(stopGatheringMsg);
-                    break;
-                }
-                default:
-                {
-                    var stopGatheringMsg = MessageFactory.GenerateStopGatheringMsg();
-                    stopGatheringMsg.Node = _controller.transform.parent.gameObject;
-                    _controller.gameObject.SendMessageTo(stopGatheringMsg, msg.Unit);
-                    MessageFactory.CacheMessage(stopGatheringMsg);
-                    break;
-                }
-            }
+            RemoveFromInteractingObjects(msg.Unit);
+            var stopGatheringMsg = MessageFactory.GenerateStopGatheringMsg();
+            stopGatheringMsg.Node = _controller.transform.parent.gameObject;
+            _controller.gameObject.SendMessageTo(stopGatheringMsg, msg.Unit);
+            MessageFactory.CacheMessage(stopGatheringMsg);
+            //switch (_interactionType)
+            //{
+            //    case NodeInteractionType.Invisible when _interactingHobblers.ContainsKey(msg.Unit):
+                    
+            //        {
+            //            var stopGatheringMsg = MessageFactory.GenerateStopGatheringMsg();
+            //            stopGatheringMsg.Node = _controller.transform.parent.gameObject;
+            //            _controller.gameObject.SendMessageTo(stopGatheringMsg, msg.Unit);
+            //            MessageFactory.CacheMessage(stopGatheringMsg);
+            //        }
+            //        break;
+            //    case NodeInteractionType.Invisible:
+            //    {
+            //        var stopGatheringMsg = MessageFactory.GenerateStopGatheringMsg();
+            //        stopGatheringMsg.Node = _controller.transform.parent.gameObject;
+            //        _controller.gameObject.SendMessageTo(stopGatheringMsg, msg.Unit);
+            //        MessageFactory.CacheMessage(stopGatheringMsg);
+            //        break;
+            //    }
+            //    default:
+            //    {
+            //        var stopGatheringMsg = MessageFactory.GenerateStopGatheringMsg();
+            //        stopGatheringMsg.Node = _controller.transform.parent.gameObject;
+            //        _controller.gameObject.SendMessageTo(stopGatheringMsg, msg.Unit);
+            //        MessageFactory.CacheMessage(stopGatheringMsg);
+            //        break;
+            //    }
+            //}
         }
 
         private void QueryNode(QueryNodeMessage msg)
@@ -346,6 +385,21 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         private void UpdateBuildingId(UpdateBuildingIdMessage msg)
         {
             _buildingId = msg.Id;
+        }
+
+        public override void Destroy()
+        {
+            var keys = _interactingHobblers.Keys.ToArray();
+            var stopGatheringMsg = MessageFactory.GenerateStopGatheringMsg();
+            stopGatheringMsg.Node = _controller.transform.parent.gameObject;
+            foreach (var key in keys)
+            {
+                RemoveFromInteractingObjects(key);
+                _controller.gameObject.SendMessageTo(stopGatheringMsg, key);
+            }
+            MessageFactory.CacheMessage(stopGatheringMsg);
+            _interactingHobblers.Clear();
+            base.Destroy();
         }
     }
 }

@@ -11,6 +11,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
     {
         [SerializeField] private SpriteTrait _openSprite = null;
         [SerializeField] private LootTable _lootTable = null;
+        [SerializeField] private bool _skipSpawnCount = false;
 
         private MinigameUnitState _unitState = MinigameUnitState.Idle;
         private bool _open = false;
@@ -66,7 +67,12 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                     }
                     MessageFactory.CacheMessage(addItemMsg);
                 }
-                _controller.gameObject.SendMessageTo(ClaimChestMessage.INSTANCE, owner);
+
+                if (!_skipSpawnCount)
+                {
+                    _controller.gameObject.SendMessageTo(ClaimChestMessage.INSTANCE, owner);
+                }
+                
 
                 Debug.Log($"Player given {loot.Length} items");
             }
@@ -79,6 +85,10 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             setUnitStateMsg.State = MinigameUnitState.Idle;
             _controller.gameObject.SendMessageTo(setUnitStateMsg, owner);
             MessageFactory.CacheMessage(setUnitStateMsg);
+            if (_skipSpawnCount)
+            {
+                MinigameController.UnregisterMinigameObject(_controller.transform.parent.gameObject);
+            }
         }
 
         private void UpdateMinigameUnitState(UpdateMinigameUnitStateMessage msg)

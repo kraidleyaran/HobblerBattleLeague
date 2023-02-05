@@ -13,20 +13,24 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Items
 
         public ItemStack[] GenerateLoot()
         {
-            var returnItems = new List<ItemStack>();
+            var returnItems = new Dictionary<WorldItem, int>();
             var items = _itemRolls.Roll();
             for (var i = 0; i < items; i++)
             {
                 var itemRoll = (Random.Range(0f, 1f) + _rollBonus);
-                var availableItems = _items.Where(it => it.ChanceToDrop <= itemRoll).ToArray();
+                var availableItems = _items.Where(it => it.ChanceToDrop >= itemRoll).ToArray();
                 if (availableItems.Length > 0)
                 {
                     var item = availableItems.Length > 1 ? availableItems[Random.Range(0, availableItems.Length)] : availableItems[0];
-                    returnItems.Add(new ItemStack{Item = item.Item, Stack = item.Stack.Roll()});
+                    if (!returnItems.ContainsKey(item.Item))
+                    {
+                        returnItems.Add(item.Item, 0);
+                    }
+                    returnItems[item.Item] += item.Stack.Roll();
                 }
             }
 
-            return returnItems.ToArray();
+            return returnItems.Select(kv => new ItemStack {Item = kv.Key, Stack = kv.Value}).ToArray();
         }
 
 

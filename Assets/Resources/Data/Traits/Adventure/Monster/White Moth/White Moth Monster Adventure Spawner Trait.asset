@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c44509396da22f9488d374d2b7100202, type: 3}
+  m_Name: White Moth Monster Adventure Spawner Trait
+  m_EditorClassIdentifier: 
+  MaxStack: 1
+  _template: {fileID: 0}
+  _additionalTraits:
+  - {fileID: 11400000, guid: c53f0d9856a56224d9b0b229e9c08196, type: 2}
+  - {fileID: 11400000, guid: 34e5b9e1ed7c25448889d5c1a04cb755, type: 2}
+  - {fileID: 11400000, guid: 5bb0fb5f9f178644da9d2cd9f88acec6, type: 2}
+  - {fileID: 11400000, guid: d4f263db1abe73f4c97fd8a53d689069, type: 2}
+  - {fileID: 11400000, guid: d24502eb6fe59c944827b763f5b0c701, type: 2}
+  - {fileID: 11400000, guid: b32bfd6cbb83ba44f8c5393f06996f47, type: 2}
+  _spawnCooldown: 18000
+  _chanceToSpawn: 1
+  _spawnCheckCooldown: 0
+  _isMonster: 1
+  _spawnArea: 1

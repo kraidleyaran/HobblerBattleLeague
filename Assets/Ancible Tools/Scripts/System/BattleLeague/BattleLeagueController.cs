@@ -6,6 +6,7 @@ using Assets.Resources.Ancible_Tools.Scripts.System.Pathing;
 using Assets.Resources.Ancible_Tools.Scripts.System.Templates;
 using Assets.Resources.Ancible_Tools.Scripts.System.TickTimers;
 using Assets.Resources.Ancible_Tools.Scripts.System.UI.BattleLeague;
+using Assets.Resources.Ancible_Tools.Scripts.System.UI.BattleLeague.Status;
 using CreativeSpore.SuperTilemapEditor;
 using MessageBusLib;
 using UnityEditor;
@@ -150,6 +151,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague
             _rightPoints = 0;
             _round = 0;
             _maxRounds = 0;
+            UiBattleUnitStatusManager.Clear();
             MatchId = string.Empty;
         }
 
@@ -341,7 +343,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague
             _deadUnits.Clear();
             _allUnits = new Dictionary<GameObject, BattleAlignment>();
             _deadUnits = new Dictionary<GameObject, BattleAlignment>();
-
+            UiBattleUnitStatusManager.Clear();
             LeftBench.Prepare();
             switch (_type)
             {
@@ -353,7 +355,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague
                     break;
             }
             // If one side has enough points to reach the goal or we're over on the max rounds AND one of the players is ahead of the other, then we finish - otherwise, keep going
-            if (_leftPoints >= _goalPoints || _rightPoints >= _goalPoints || _maxRounds > 0 && _round < _maxRounds && (_leftPoints > _rightPoints || _rightPoints > _leftPoints))
+            if (_leftPoints >= _goalPoints || _rightPoints >= _goalPoints || _maxRounds > 0 && _round >= _maxRounds && (_leftPoints > _rightPoints || _rightPoints > _leftPoints))
             {
                 State = BattleState.End;
                 _updatebattleStateMsg.State = State;

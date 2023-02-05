@@ -227,9 +227,9 @@ MonoBehaviour:
   ColliderGenerationMethod: 0
   m_sortingLayer: 247060445
   m_sortingLayerName: Default
-  m_orderInLayer: 0
+  m_orderInLayer: 1
   m_material: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  m_tintColor: {r: 0.1254902, g: 0.70980394, b: 0.38431373, a: 0.83137256}
+  m_tintColor: {r: 0.1254902, g: 0.70980394, b: 0.38431373, a: 0.6745098}
   m_pixelSnap: 0
   m_maskInteraction: 0
   m_isVisible: 1

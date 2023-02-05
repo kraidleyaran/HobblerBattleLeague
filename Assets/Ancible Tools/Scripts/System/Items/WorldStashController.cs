@@ -14,6 +14,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Items
         private static WorldStashController _instance = null;
 
         [SerializeField] private ItemStack[] _startingItems = new ItemStack[0];
+        [SerializeField] private int _startingGold = 0;
 
         private List<ItemStack> _items = new List<ItemStack>();
 
@@ -30,6 +31,12 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Items
             {
                 AddItem(_startingItems[i].Item, _startingItems[i].Stack);
             }
+
+            Gold = _startingGold;
+            StartCoroutine(StaticMethods.WaitForFrames(5, () =>
+            {
+                gameObject.SendMessage(GoldUpdatedMessage.INSTANCE);
+            }));
             SubscribeToMessages();
         }
 
@@ -38,6 +45,10 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Items
             if (item.Type == WorldItemType.Gold)
             {
                 AddGold(stack);
+            }
+            else if (item.Type == WorldItemType.Instant)
+            {
+                //TODO: One day use this?
             }
             else
             {

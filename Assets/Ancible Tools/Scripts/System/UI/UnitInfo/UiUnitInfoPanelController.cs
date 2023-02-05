@@ -95,6 +95,10 @@ namespace Assets.Ancible_Tools.Scripts.System.UI.UnitInfo
             else
             {
                 Destroy(_infoController);
+                if (_hovered)
+                {
+                    UiWindowManager.RemoveHoveredWindow(this);
+                }
                 Clear();
             }
             

@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using Assets.Ancible_Tools.Scripts.System.SaveData.Buildings;
+using Assets.Resources.Ancible_Tools.Scripts.System.Items;
 using Assets.Resources.Ancible_Tools.Scripts.System.Pathing;
 using Assets.Resources.Ancible_Tools.Scripts.System.Templates;
+using Assets.Resources.Ancible_Tools.Scripts.System.UI;
+using Assets.Resources.Ancible_Tools.Scripts.System.UI.Alerts;
 using CreativeSpore.SuperTilemapEditor;
 using MessageBusLib;
 using UnityEngine;
@@ -14,6 +18,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Building
     {
         public static WorldBuilding[] Available => _instance._availableBuildings.ToArray();
         public static bool Active => _instance._buildingController.gameObject.activeSelf;
+        public static float SellBackPerecent => _instance._sellBackPercentage;
 
         private static WorldBuildingManager _instance = null;
 
@@ -22,6 +27,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Building
         [SerializeField] private STETilemap _invalidBuildingTilemap;
         [SerializeField] private WorldBuilding[] _startingBuildings = new WorldBuilding[0];
         [SerializeField] private string _buildingFolder = string.Empty;
+        [SerializeField] private float _sellBackPercentage = 0f;
 
         private Vector2 _mousePos = Vector2.zero;
         private MapTile _currentMapTile = null;
@@ -35,6 +41,10 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Building
 
         private Dictionary<BuildingData, GameObject> _currentBuildings = new Dictionary<BuildingData, GameObject>();
         private List<Vector2Int> _passiveBuildingTiles = new List<Vector2Int>();
+
+        private GameObject _movingBuilding = null;
+        private MapTile[] _movingOriginTiles = new MapTile[0];
+        private WorldBuilding _movingTemplate = null;
 
         void Awake()
         {
@@ -78,12 +88,19 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Building
         {
             var buildings = _instance._currentBuildings.ToArray();
             var queryMapTileMsg = MessageFactory.GenerateQueryMapTileMsg();
+            var queryBuildingParameterDataMsg = MessageFactory.GenerateQueryBuildingParamterDataMsg();
             foreach (var building in buildings)
             {
                 queryMapTileMsg.DoAfter = tile => building.Key.Position = tile.Position.ToData();
                 _instance.gameObject.SendMessageTo(queryMapTileMsg, building.Value);
+
+                queryBuildingParameterDataMsg.DoAfter = data => building.Key.Parameter = data;
+                _instance.gameObject.SendMessageTo(queryBuildingParameterDataMsg, building.Value);
             }
             MessageFactory.CacheMessage(queryMapTileMsg);
+
+            
+            
 
             return buildings.Select(kv => kv.Key).ToArray();
         }
@@ -121,6 +138,94 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Building
             }
         }
 
+        public static void SetupMovingBuilding(GameObject obj, MapTile[] tiles, WorldBuilding worldBuilding)
+        {
+            _instance._movingTemplate = worldBuilding;
+            _instance._movingBuilding = obj;
+            _instance._movingOriginTiles = tiles;
+            _instance.UpdateMovingBuildingTiles();
+
+            var setSpriteAlphaMsg = MessageFactory.GenerateSetSpriteAlphaMsg();
+            setSpriteAlphaMsg.Alpha = .5f;
+            _instance.gameObject.SendMessageTo(setSpriteAlphaMsg, obj);
+            MessageFactory.CacheMessage(setSpriteAlphaMsg);
+
+            _instance.gameObject.SendMessage(WorldBuildingActiveMessage.INSTANCE);
+        }
+
+        public static void AddPassivePositions(Vector2Int[] positions)
+        {
+            _instance._passiveBuildingTiles.AddRange(positions.Where(p => !_instance._passiveBuildingTiles.Contains(p)));
+        }
+
+        public static void RemovePassivePositions(Vector2Int[] positions)
+        {
+            _instance._passiveBuildingTiles.RemoveAll(positions.Contains);
+        }
+
+        public static void SellBuilding(GameObject obj)
+        {
+            WorldBuilding building = null;
+            var queryBuildingMsg = MessageFactory.GenerateQueryBuildingMsg();
+            queryBuildingMsg.DoAfter = (worldBuilding, tile, id) =>
+            {
+                building = worldBuilding;
+            };
+            _instance.gameObject.SendMessageTo(queryBuildingMsg, obj);
+            MessageFactory.CacheMessage(queryBuildingMsg);
+
+            if (building)
+            {
+                var pair = _instance._currentBuildings.FirstOrDefault(kv => kv.Value == obj);
+                if (pair.Value)
+                {
+                    WorldStashController.AddGold(CalculateSellbackValue(building.Cost));
+                    pair.Key.Dispose();
+                    _instance._currentBuildings.Remove(pair.Key);
+                    Destroy(obj);
+                }
+            }
+        }
+
+        public static int CalculateSellbackValue(int gold)
+        {
+            return Mathf.RoundToInt(gold * SellBackPerecent);
+        }
+
+        public static void UpgradeBuilding(GameObject obj, MapTile tile, WorldBuilding baseBuilding, WorldBuilding upgrade)
+        {
+            if (baseBuilding.Upgrades.Buildings.Contains(upgrade))
+            {
+                var pair = _instance._currentBuildings.FirstOrDefault(kv => kv.Value == obj);
+                if (pair.Value == obj)
+                {
+                    Destroy(pair.Value);
+                    _instance._currentBuildings.Remove(pair.Key);
+                    GenerateBuildingAtPosition(upgrade, tile);
+                }
+            }
+        }
+
+        private static void GenerateBuildingAtPosition(WorldBuilding building, MapTile tile, string id = "")
+        {
+            var template = building.Template;
+            var buildingUnit = template.GenerateUnit(_instance.transform, tile.World);
+            if (string.IsNullOrEmpty(id))
+            {
+                id = Guid.NewGuid().ToString();
+            }
+            _instance._setupBuildingMsg.Building = building;
+            _instance._setupBuildingMsg.Id = id;
+            _instance.gameObject.SendMessageTo(_instance._setupBuildingMsg, buildingUnit.gameObject);
+
+            var setMapTileMsg = MessageFactory.GenerateSetMapTileMsg();
+            setMapTileMsg.Tile = tile;
+            _instance.gameObject.SendMessageTo(setMapTileMsg, buildingUnit.gameObject);
+            MessageFactory.CacheMessage(setMapTileMsg);
+
+            _instance._currentBuildings.Add(new BuildingData { Building = building.name, Id = id, Position = tile.Position.ToData() }, buildingUnit.gameObject);
+        }
+
         private void UpdateBuildingTile()
         {
             var pos = WorldCameraController.Camera.ScreenToWorldPoint(_mousePos).ToVector2();
@@ -152,40 +257,38 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Building
             }
         }
 
-        private static void GenerateBuildingAtPosition(WorldBuilding building, MapTile tile, string id = "")
+        private void UpdateMovingBuildingTiles()
         {
-            var template = building.Template;
-            var buildingUnit = template.GenerateUnit(_instance.transform, tile.World);
-            if (string.IsNullOrEmpty(id))
+            var pos = WorldCameraController.Camera.ScreenToWorldPoint(_mousePos).ToVector2();
+            var mapTile = WorldController.Pathing.GetMapTileByWorldPosition(pos);
+            if (mapTile != null && (_currentMapTile == null || _currentMapTile != mapTile))
             {
-                id = Guid.NewGuid().ToString();
-            }
-            _instance._setupBuildingMsg.Building = building;
-            _instance._setupBuildingMsg.Id = id;
-            _instance.gameObject.SendMessageTo(_instance._setupBuildingMsg, buildingUnit.gameObject);
-
-            var setMapTileMsg = MessageFactory.GenerateSetMapTileMsg();
-            setMapTileMsg.Tile = tile ;
-            _instance.gameObject.SendMessageTo(setMapTileMsg, buildingUnit.gameObject);
-            MessageFactory.CacheMessage(setMapTileMsg);
-
-            _instance._currentBuildings.Add(new BuildingData { Building = building.name, Id = id, Position = tile.Position.ToData() }, buildingUnit.gameObject);
-            var buildTiles = building.GetBlockingPositions(tile.Position);
-            var passiveTiles = building.GetRequiredPositions(tile.Position).Where(t => !buildTiles.Contains(t)).ToList();
-
-            if (!tile.Block)
-            {
-                passiveTiles.Add(tile.Position);
-            }
-
-            for (var i = 0; i < passiveTiles.Count; i++)
-            {
-                if (!_instance._passiveBuildingTiles.Contains(passiveTiles[i]))
+                _validBuildingTilemap.ClearMap();
+                _invalidBuildingTilemap.ClearMap();
+                _currentMapTile = mapTile;
+                _movingBuilding.transform.SetTransformPosition(_currentMapTile.World);
+                var requiredTilePositions = _movingTemplate.GetRequiredPositions(_currentMapTile.Position);
+                var validTiles = requiredTilePositions.Select(WorldController.Pathing.GetTileByPosition).Where(t => t != null && (!t.Block || t.Block == _movingBuilding) && (!_passiveBuildingTiles.Contains(t.Position) || _movingOriginTiles.Contains(t))).ToArray();
+                var invalidTiles = requiredTilePositions.Where(t => validTiles.FirstOrDefault(v => v.Position == t) == null).ToArray();
+                foreach (var tile in validTiles)
                 {
-                    _instance._passiveBuildingTiles.Add(passiveTiles[i]);
+                    _validBuildingTilemap.SetTile(tile.Position.x, tile.Position.y, 0);
                 }
+
+                foreach (var tile in invalidTiles)
+                {
+                    _invalidBuildingTilemap.SetTile(tile.x, tile.y, 0);
+                }
+                _validBuildingTilemap.Refresh();
+                _invalidBuildingTilemap.Refresh();
+                _validBuild = invalidTiles.Length <= 0;
+
             }
         }
+
+
+
+
 
         private void SubscribeToMessages()
         {
@@ -196,31 +299,105 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Building
         private void UpdateInputState(UpdateInputStateMessage msg)
         {
             _mousePos = msg.Current.MousePos;
-            if (_buildingController.gameObject.activeSelf && WorldController.State == WorldState.World)
+            if (WorldController.State == WorldState.World)
             {
-                UpdateBuildingTile();
-                if (!msg.Previous.LeftClick && msg.Current.LeftClick)
+                if (_buildingController.gameObject.activeSelf)
                 {
-                    if (_currentMapTile != null && _validBuild)
+                    UpdateBuildingTile();
+                    if (!msg.Previous.LeftClick && msg.Current.LeftClick)
                     {
-                        GenerateBuildingAtPosition(_buildingController.Building, _currentMapTile);
+                        if (WorldStashController.Gold >= _buildingController.Building.Cost)
+                        {
+                            if (_currentMapTile != null && _validBuild)
+                            {
+                                WorldStashController.RemoveGold(_buildingController.Building.Cost);
+                                GenerateBuildingAtPosition(_buildingController.Building, _currentMapTile);
+                                _buildingController.Clear();
+                                _currentMapTile = null;
+                                _validBuild = false;
+                                _invalidBuildingTilemap.ClearMap();
+                                _validBuildingTilemap.ClearMap();
+
+                                gameObject.SendMessage(WorldBuildingStoppedMessage.INSTANCE);
+                            }
+                            else
+                            {
+                                UiOverlayTextManager.ShowOverlayAlert("Invalid building location", ColorFactoryController.ErrorAlertText);
+                            }
+                        }
+                        else
+                        {
+                            UiOverlayTextManager.ShowOverlayAlert("Not Enough Gold", ColorFactoryController.ErrorAlertText);
+                            _buildingController.Clear();
+                            _currentMapTile = null;
+                            _validBuild = false;
+                            _invalidBuildingTilemap.ClearMap();
+                            _validBuildingTilemap.ClearMap();
+                            gameObject.SendMessage(WorldBuildingStoppedMessage.INSTANCE);
+                        }
+                    }
+                    else if (!msg.Previous.RightClick && msg.Current.RightClick)
+                    {
                         _buildingController.Clear();
                         _currentMapTile = null;
                         _validBuild = false;
                         _invalidBuildingTilemap.ClearMap();
                         _validBuildingTilemap.ClearMap();
-
                         gameObject.SendMessage(WorldBuildingStoppedMessage.INSTANCE);
                     }
                 }
-                else if (!msg.Previous.RightClick && msg.Current.RightClick)
+                else if (_movingBuilding)
                 {
-                    _buildingController.Clear();
-                    _currentMapTile = null;
-                    _validBuild = false;
-                    _invalidBuildingTilemap.ClearMap();
-                    _validBuildingTilemap.ClearMap();
-                    gameObject.SendMessage(WorldBuildingStoppedMessage.INSTANCE);
+                    UpdateMovingBuildingTiles();
+                    if (!msg.Previous.LeftClick && msg.Current.LeftClick)
+                    {
+                        if (_currentMapTile != null && _validBuild)
+                        {
+                            //GenerateBuildingAtPosition(_buildingController.Building, _currentMapTile);
+                            //_buildingController.Clear();
+                            _movingBuilding.transform.SetTransformPosition(_currentMapTile.World);
+                            var setMapTileMsg = MessageFactory.GenerateSetMapTileMsg();
+                            setMapTileMsg.Tile = _currentMapTile;
+                            gameObject.SendMessageTo(setMapTileMsg, _movingBuilding);
+                            MessageFactory.CacheMessage(setMapTileMsg);
+
+                            var setSpriteAlphaMsg = MessageFactory.GenerateSetSpriteAlphaMsg();
+                            setSpriteAlphaMsg.Alpha = 1f;
+                            _instance.gameObject.SendMessageTo(setSpriteAlphaMsg, _movingBuilding);
+                            MessageFactory.CacheMessage(setSpriteAlphaMsg);
+
+                            _movingOriginTiles = new MapTile[0];
+                            _movingBuilding = null;
+
+                            _currentMapTile = null;
+                            _validBuild = false;
+                            _invalidBuildingTilemap.ClearMap();
+                            _validBuildingTilemap.ClearMap();
+
+                            gameObject.SendMessage(WorldBuildingStoppedMessage.INSTANCE);
+                        }
+                        else
+                        {
+                            UiOverlayTextManager.ShowOverlayAlert("Invalid building location", ColorFactoryController.ErrorAlertText);
+                        }
+                    }
+                    else if (!msg.Previous.RightClick && msg.Current.RightClick)
+                    {
+                        _instance.gameObject.SendMessageTo(ResetPositionMessage.INSTANCE, _movingBuilding);
+
+                        var setSpriteAlphaMsg = MessageFactory.GenerateSetSpriteAlphaMsg();
+                        setSpriteAlphaMsg.Alpha = 1f;
+                        _instance.gameObject.SendMessageTo(setSpriteAlphaMsg, _movingBuilding);
+                        MessageFactory.CacheMessage(setSpriteAlphaMsg);
+
+                        _movingBuilding = null;
+                        _movingOriginTiles = new MapTile[0];
+                        _currentMapTile = null;
+                        _validBuild = false;
+                        _invalidBuildingTilemap.ClearMap();
+                        _validBuildingTilemap.ClearMap();
+                        gameObject.SendMessage(WorldBuildingStoppedMessage.INSTANCE);
+                    }
                 }
             }
         }

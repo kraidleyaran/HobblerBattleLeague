@@ -1,4 +1,5 @@
 ﻿using Assets.Resources.Ancible_Tools.Scripts.System.Building;
+using Assets.Resources.Ancible_Tools.Scripts.System.Items;
 using MessageBusLib;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -23,7 +24,14 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.Building
 
         public void Click()
         {
-            WorldBuildingManager.SetupBuilding(Building);
+            if (WorldStashController.Gold >= Building.Cost)
+            {
+                WorldBuildingManager.SetupBuilding(Building);
+            }
+            else
+            {
+                UiOverlayTextManager.ShowOverlayAlert("Not enough gold", ColorFactoryController.ErrorAlertText);
+            }
         }
 
         public void OnPointerEnter(PointerEventData eventData)
@@ -39,6 +47,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.Building
                 showHoverInfoMsg.Icon = Building.Icon;
                 showHoverInfoMsg.Owner = gameObject;
                 showHoverInfoMsg.World = false;
+                showHoverInfoMsg.Gold = Building.Cost;
                 gameObject.SendMessage(showHoverInfoMsg);
                 MessageFactory.CacheMessage(showHoverInfoMsg);
             }

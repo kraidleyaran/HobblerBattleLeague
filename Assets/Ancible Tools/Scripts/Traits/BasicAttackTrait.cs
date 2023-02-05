@@ -10,6 +10,8 @@ namespace Assets.Ancible_Tools.Scripts.Traits
     [CreateAssetMenu(fileName = "Basic Attack Trait", menuName = "Ancible Tools/Traits/Minigame/Combat/Basic Attack")]
     public class BasicAttackTrait : Trait
     {
+        public BasicAttackSetup AttackSetup => _attackSetup;
+
         [SerializeField] private BasicAttackSetup _attackSetup = new BasicAttackSetup();
         [SerializeField] private bool _activateGlobalCooldown = true;
 
