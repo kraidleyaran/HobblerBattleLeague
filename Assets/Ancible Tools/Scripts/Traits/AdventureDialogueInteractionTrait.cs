@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Assets.Ancible_Tools.Scripts.Traits
 {
-    [CreateAssetMenu(fileName = "Adventure Dialogue Trait", menuName = "Ancible Tools/Traits/Adventure/Interaction/Adventure Dialogue Trait")]
+    [CreateAssetMenu(fileName = "Adventure Dialogue Trait", menuName = "Ancible Tools/Traits/Adventure/Interaction/Adventure Dialogue")]
     public class AdventureDialogueInteractionTrait : Trait
     {
         [SerializeField] private DialogueData _dialogue = null;

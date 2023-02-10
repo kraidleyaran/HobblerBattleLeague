@@ -59,7 +59,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             if (msg.Item.Type == WorldItemType.Gold)
             {
                 _gold += msg.Stack;
-                UiAlertManager.ShowAlert($"+{msg.Stack} Gold", IconFactoryController.Gold);
+                UiAlertManager.ShowAlert($"+{msg.Stack} Gold", IconFactoryController.Gold, Color.white);
             }
             else if (msg.Item.Type == WorldItemType.Instant)
             {
@@ -71,10 +71,8 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                         instantItem.Use(_controller.transform.parent.gameObject);
                         uses++;
                     }
-                    UiAlertManager.ShowAlert($"{msg.Item.DisplayName}", msg.Item.Icon);
+                    UiAlertManager.ShowAlert($"{msg.Item.DisplayName}", msg.Item.Icon, msg.Item.Rarity.ToRarityColor());
                 }
-                
-
             }
             else
             {
@@ -86,7 +84,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                 }
 
                 itemStack.Stack += msg.Stack;
-                UiAlertManager.ShowAlert($"+{msg.Stack} {itemStack.Item.DisplayName}", itemStack.Item.Icon);
+                UiAlertManager.ShowAlert($"+{msg.Stack} {itemStack.Item.DisplayName}", itemStack.Item.Icon, itemStack.Item.Rarity.ToRarityColor());
             }
 
         }

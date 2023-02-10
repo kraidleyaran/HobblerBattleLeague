@@ -167,6 +167,21 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Items
             return _instance._items.Select(i => i.ToData()).ToArray();
         }
 
+        public static bool HasItem(WorldItem item, int stack = 1)
+        {
+            if (stack > 1)
+            {
+                var items = _instance._items.FindAll(i => i.Item == item);
+                var totalStack = items.Sum(i => i.Stack);
+                return totalStack >= stack;
+            }
+            else
+            {
+                return _instance._items.Exists(i => i.Item == item);
+            }
+            
+        }
+
         public static void Clear()
         {
             Gold = 0;

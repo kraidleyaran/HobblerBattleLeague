@@ -15,5 +15,5 @@ MonoBehaviour:
   _traits:
   - {fileID: 11400000, guid: db5f2e806ec8350499519a7341c8ec77, type: 2}
   - {fileID: 11400000, guid: 842d4bbccaa2d25489356c20d8e470ea, type: 2}
-  - {fileID: 11400000, guid: 6693d71896d05aa4e96d12a589d687f3, type: 2}
+  - {fileID: 11400000, guid: e9d4c03514a4017418fa852474115049, type: 2}
   _baseTemplate: {fileID: 11400000, guid: bb4f8d68f6de44542b43b25da2b724a7, type: 2}

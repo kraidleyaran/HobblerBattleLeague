@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Assets.Ancible_Tools.Scripts.System.SaveData;
+using Assets.Ancible_Tools.Scripts.System.SaveData.Building;
 using Assets.Ancible_Tools.Scripts.System.WorldNodes;
 using Assets.Resources.Ancible_Tools.Scripts.System;
 using Assets.Resources.Ancible_Tools.Scripts.System.Animation;
@@ -17,11 +19,10 @@ namespace Assets.Ancible_Tools.Scripts.Traits
     public class WorldNodeTrait : Trait
     {
         [SerializeField] protected internal WorldNodeType _nodeType = WorldNodeType.Food;
-        [SerializeField] private int _requiredTicks = 1;
+        [SerializeField] protected internal int _requiredTicks = 1;
         [SerializeField] private Trait[] _applyOnFinish = new Trait[0];
-        [SerializeField] private int _stack = 0;
-        [SerializeField] private int _gatherArea = 0;
-        [SerializeField] private bool _includeNodeTileForGathering = false;
+        [SerializeField] protected internal int _stack = 0;
+        [SerializeField] private Vector2Int[] _relativeGatheringPositions = new Vector2Int[0];
         [SerializeField] private NodeInteractionType _interactionType = NodeInteractionType.Bump;
         [SerializeField] private SpriteTrait _nodeSprite = null;
         [SerializeField] private UnitCommand _stopSelectCommand = null;
@@ -31,10 +32,14 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         private int _currentStack = 0;
         protected internal RegisteredWorldNode _registeredNode = null;
         private MapTile[] _gatheringTiles = new MapTile[0];
-        private MapTile _mapTile = null;
+        protected internal MapTile _mapTile = null;
         private string _buildingId = string.Empty;
+        private NodeBuildingParamaterData _data = null;
 
-        private SpriteController _nodeSpriteController = null;
+        
+        private NodeBuildingParamaterData _nodeData = null;
+
+        protected internal SpriteController _nodeSpriteController = null;
 
         private CommandInstance _nodeCommandInstance = null;
 
@@ -65,7 +70,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             RefreshNodeSprite(false);
         }
 
-        private void RefreshNodeSprite(bool refreshTrait)
+        protected internal virtual void RefreshNodeSprite(bool refreshTrait)
         {
             if (refreshTrait)
             {
@@ -82,7 +87,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             _nodeSpriteController.gameObject.SetActive(_nodeSprite && _registeredNode != null);
         }
 
-        private bool FinishGatheringCheck(GameObject obj)
+        protected internal virtual bool FinishGatheringCheck(GameObject obj)
         {
             if (_currentStack == 0)
             {
@@ -186,19 +191,25 @@ namespace Assets.Ancible_Tools.Scripts.Traits
 
         }
 
-        private void SubscribeToMessages()
+        protected internal virtual int GetRequiredTicks(GameObject owner)
+        {
+            return _requiredTicks;
+        }
+
+        protected internal virtual void SubscribeToMessages()
         {
             if (_stack > 0)
             {
                 _controller.gameObject.Subscribe<QueryNodeMessage>(QueryNode);
                 _controller.gameObject.Subscribe<LoadWorldDataMessage>(LoadWorldData);
                 _controller.transform.parent.gameObject.SubscribeWithFilter<UpdateBuildingIdMessage>(UpdateBuildingId, _instanceId);
+                _controller.transform.parent.gameObject.SubscribeWithFilter<QueryBuildingParamterDataMessage>(QueryBuildingParameterData, _instanceId);
             }
-
+            
             _controller.transform.parent.gameObject.SubscribeWithFilter<UpdateMapTileMessage>(UpdateMapTile, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<InteractMessage>(Interact, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<RefillNodeStacksMessage>(RefillNodeStacks, _instanceId);
-            if (_interactionType == NodeInteractionType.Invisible)
+            if (_interactionType == NodeInteractionType.Invisible || _nodeType == WorldNodeType.Crafting)
             {
                 _controller.transform.parent.gameObject.SubscribeWithFilter<QueryCommandsMessage>(QueryCommands, _instanceId);
             }
@@ -206,16 +217,11 @@ namespace Assets.Ancible_Tools.Scripts.Traits
 
         }
 
-        private void UpdateMapTile(UpdateMapTileMessage msg)
+        protected internal virtual void UpdateMapTile(UpdateMapTileMessage msg)
         {
             _mapTile = msg.Tile;
             
-            var gatheringTiles = WorldController.Pathing.GetMapTilesInArea(msg.Tile.Position, _gatherArea).Where(t => !t.Block).ToList();
-            if (!_includeNodeTileForGathering)
-            {
-                gatheringTiles.Remove(msg.Tile);
-            }
-            _gatheringTiles = gatheringTiles.ToArray();
+            _gatheringTiles = _relativeGatheringPositions.Select(p => WorldController.Pathing.GetTileByPosition(p + _mapTile.Position)).Where(t => t != null).ToArray();
             if (_gatheringTiles.Length > 0)
             {
                 if (_registeredNode == null)
@@ -266,7 +272,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             gatherMsg.Node = _controller.transform.parent.gameObject;
             gatherMsg.NodeType = _nodeType;
             gatherMsg.DoAfter = FinishGathering;
-            gatherMsg.Ticks = _requiredTicks;
+            gatherMsg.Ticks = GetRequiredTicks(msg.Owner);
             gatherMsg.GatheringTile = _gatheringTiles.Length > 1 ? _gatheringTiles[Random.Range(0, _gatheringTiles.Length)] : _gatheringTiles[0];
             gatherMsg.Invisible = _interactionType == NodeInteractionType.Invisible;
             _controller.gameObject.SendMessageTo(gatherMsg, msg.Owner);
@@ -325,7 +331,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             }
         }
 
-        private void QueryCommands(QueryCommandsMessage msg)
+        protected internal virtual void QueryCommands(QueryCommandsMessage msg)
         {
             msg.DoAfter.Invoke(new[] { _nodeCommandInstance });
         }
@@ -374,17 +380,33 @@ namespace Assets.Ancible_Tools.Scripts.Traits
 
         private void LoadWorldData(LoadWorldDataMessage msg)
         {
-            var nodeData = PlayerDataController.GetNodeDataById(_buildingId);
-            if (nodeData != null)
+            //var nodeData = PlayerDataController.GetNodeDataById(_buildingId);
+            //if (nodeData != null)
+            //{
+            //    _currentStack = nodeData.Stack;
+            //    RefreshNodeSprite(false);
+            //}
+        }
+        protected internal virtual void UpdateBuildingId(UpdateBuildingIdMessage msg)
+        {
+            _buildingId = msg.Id;
+            var data = PlayerDataController.GetBuildingData(msg.Id);
+            if (data != null && data.Parameter is NodeBuildingParamaterData nodeData)
             {
                 _currentStack = nodeData.Stack;
                 RefreshNodeSprite(false);
             }
         }
 
-        private void UpdateBuildingId(UpdateBuildingIdMessage msg)
+        protected internal virtual void QueryBuildingParameterData(QueryBuildingParamterDataMessage msg)
         {
-            _buildingId = msg.Id;
+            if (_nodeData == null)
+            {
+                _nodeData = new NodeBuildingParamaterData();
+                
+            }
+            _nodeData.Stack = _currentStack;
+            msg.DoAfter.Invoke(_nodeData);
         }
 
         public override void Destroy()

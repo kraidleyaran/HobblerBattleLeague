@@ -69,6 +69,10 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                 _projectile = Instantiate(FactoryController.PROJECTILE_CONTROLLER, pos, Quaternion.identity);
                 _projectile.gameObject.layer = _controller.transform.parent.gameObject.layer;
                 _projectile.Setup(_sprite, _applyOnContact, _pixelsPerSecond, _controller.transform.parent.gameObject, owner, TargetReached);
+                if (_rotate)
+                {
+                    _projectile.SetRotation(_rotate, _rotationOffset);
+                }
             }
             else
             {

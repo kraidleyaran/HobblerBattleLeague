@@ -13,6 +13,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.DetailedInfo
 
         [SerializeField] private Image _emptyIcon;
         [SerializeField] private Image _equippedIcon;
+        [SerializeField] private Image _borderImage;
         [SerializeField] private EquipSlot _equipSlot = EquipSlot.Armor;
 
         private EquippableItem _equipped = null;
@@ -29,6 +30,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.DetailedInfo
                 _equippedIcon.sprite = _equipped.Icon;
                 _emptyIcon.gameObject.SetActive(false);
                 _equippedIcon.gameObject.SetActive(true);
+                _borderImage.color = _equipped.Rarity.ToRarityColor();
             }
             else
             {
@@ -50,7 +52,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.DetailedInfo
             showHoveredInfoMsg.Gold = _equipped ? _equipped.GoldValue : -1;
             gameObject.SendMessage(showHoveredInfoMsg);
             MessageFactory.CacheMessage(showHoveredInfoMsg);
-
+            _borderImage.color = ColorFactoryController.HoveredItem;
             var setHoveredEquippedItemControllerMsg = MessageFactory.GenerateSetHoveredEquippedItemControllerMsg();
             setHoveredEquippedItemControllerMsg.Controller = this;
             gameObject.SendMessageTo(setHoveredEquippedItemControllerMsg, _parent);
@@ -66,7 +68,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.DetailedInfo
                 removeHoverInfoMsg.Owner = gameObject;
                 gameObject.SendMessage(removeHoverInfoMsg);
                 MessageFactory.CacheMessage(removeHoverInfoMsg);
-
+                _borderImage.color = _equipped ? _equipped.Rarity.ToRarityColor() : Color.white;
                 var removeHoveredEquippedItemControllerMsg = MessageFactory.GenerateRemoveHoveredEquippedItemControllerMsg();
                 removeHoveredEquippedItemControllerMsg.Controller = this;
                 gameObject.SendMessageTo(removeHoveredEquippedItemControllerMsg, _parent);

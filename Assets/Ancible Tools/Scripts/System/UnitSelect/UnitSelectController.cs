@@ -115,7 +115,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
                         if (_selectedUnit)
                         {
                             _setSelectStateMsg.Selector = null;
-                            gameObject.SendMessageTo(_setHoveredStateMsg, _selectedUnit);
+                            gameObject.SendMessageTo(_setSelectStateMsg, _selectedUnit);
                         }
 
                         _selectedUnit = _hoveredUnit;

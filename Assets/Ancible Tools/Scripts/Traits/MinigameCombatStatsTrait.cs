@@ -207,12 +207,17 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             }
 
             _currentMana = Mathf.Max(0, Mathf.Min(mana, max));
-            var showFloatingTextMsg = MessageFactory.GenerateShowFloatingTextMsg();
-            showFloatingTextMsg.Text = $"+{trueAmount}";
-            showFloatingTextMsg.Color = ColorFactoryController.ManaBar;
-            showFloatingTextMsg.World = _controller.transform.parent.position.ToVector2() + _floatingTextOffset;
-            _controller.gameObject.SendMessage(showFloatingTextMsg);
-            MessageFactory.CacheMessage(showFloatingTextMsg);
+            if (trueAmount > 0)
+            {
+                var showFloatingTextMsg = MessageFactory.GenerateShowFloatingTextMsg();
+                showFloatingTextMsg.Text = $"+{trueAmount}";
+                showFloatingTextMsg.Color = ColorFactoryController.ManaBar;
+                showFloatingTextMsg.World = _controller.transform.parent.position.ToVector2() + _floatingTextOffset;
+                _controller.gameObject.SendMessage(showFloatingTextMsg);
+                MessageFactory.CacheMessage(showFloatingTextMsg);
+            }
+
+            _controller.gameObject.SendMessageTo(RefreshUnitMessage.INSTANCE, _controller.transform.parent.gameObject);
         }
 
     }

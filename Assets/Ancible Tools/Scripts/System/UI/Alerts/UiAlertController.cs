@@ -8,6 +8,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.Alerts
     {
         [SerializeField] private RectTransform _gridTransform;
         [SerializeField] private Image _iconImage = null;
+        [SerializeField] private Image _iconBorder = null;
         [SerializeField] private Text _alertText = null;
         [SerializeField] private int _moveTime = 0;
         [SerializeField] private float _movePosition = 0f;
@@ -17,11 +18,12 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.Alerts
         private Sequence _staySequence = null;
         private Tween _moveTween = null;
 
-        public void Setup(string text, Sprite icon)
+        public void Setup(string text, Sprite icon, Color iconBorderColor)
         {
             _alertText.text = text;
             _iconImage.sprite = icon;
             _moveTween = _gridTransform.DOLocalMoveX(_movePosition, _moveTime * TickController.TickRate).SetEase(_ease).OnComplete(MoveFinished);
+            _iconBorder.color = iconBorderColor;
         }
 
         private void MoveFinished()

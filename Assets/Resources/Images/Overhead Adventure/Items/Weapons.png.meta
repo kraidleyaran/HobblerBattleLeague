@@ -5,6 +5,9 @@ TextureImporter:
   - first:
       213: 5601323976189978565
     second: Wood Sword
+  - first:
+      213: -761887118410055393
+    second: Training Bow
   externalObjects: {}
   serializedVersion: 12
   mipmaps:
@@ -127,7 +130,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -135,6 +138,27 @@ TextureImporter:
       bones: []
       spriteID: 5c7aea0ba76ebbd40800000000000000
       internalID: 5601323976189978565
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Training Bow
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 32
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f110934d3bb3d65f0800000000000000
+      internalID: -761887118410055393
       vertices: []
       indices: 
       edges: []

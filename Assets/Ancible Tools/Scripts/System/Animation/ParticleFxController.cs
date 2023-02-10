@@ -20,7 +20,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Animation
             _alone = alone;
             _particleSystem = Instantiate(system, transform);
             _particleSystem.transform.SetLocalPosition(offset);
-            _particleSystem.gameObject.layer = layer;
+            _particleSystem.SetObjectLayer(layer);
             _particleSequence = DOTween.Sequence().AppendInterval(_particleSystem.main.duration + _afterTime).OnComplete(SequenceFinished);
         }
 

@@ -1,0 +1,109 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f22c8e9414d6224489b7ef9205a0ec68, type: 3}
+  m_Name: Level 1.1 Chest Maze Loot Table
+  m_EditorClassIdentifier: 
+  _items:
+  - Item: {fileID: 11400000, guid: ee7cbe2a3dd07bd4791f6517be7eba67, type: 2}
+    Stack:
+      Minimum: 5
+      Maximum: 8
+    ChanceToDrop: 0.75
+  - Item: {fileID: 11400000, guid: ee7cbe2a3dd07bd4791f6517be7eba67, type: 2}
+    Stack:
+      Minimum: 5
+      Maximum: 8
+    ChanceToDrop: 0.75
+  - Item: {fileID: 11400000, guid: ee7cbe2a3dd07bd4791f6517be7eba67, type: 2}
+    Stack:
+      Minimum: 5
+      Maximum: 8
+    ChanceToDrop: 0.75
+  - Item: {fileID: 11400000, guid: 0718201bb43693b4e9efe09fb829c4d7, type: 2}
+    Stack:
+      Minimum: 1
+      Maximum: 1
+    ChanceToDrop: 0.1
+  - Item: {fileID: 11400000, guid: 2ea8c3b7b48544841b58f7b34bdf9e65, type: 2}
+    Stack:
+      Minimum: 1
+      Maximum: 1
+    ChanceToDrop: 0.1
+  - Item: {fileID: 11400000, guid: e8502475d6ff7174c82871f5a6a6cea7, type: 2}
+    Stack:
+      Minimum: 1
+      Maximum: 1
+    ChanceToDrop: 0.1
+  - Item: {fileID: 11400000, guid: 987166895ab2ecc47bb05f82a7265da6, type: 2}
+    Stack:
+      Minimum: 1
+      Maximum: 1
+    ChanceToDrop: 0.1
+  - Item: {fileID: 11400000, guid: e2cf8c2d5cbd8b046a708bce83b6cc73, type: 2}
+    Stack:
+      Minimum: 1
+      Maximum: 1
+    ChanceToDrop: 0.1
+  - Item: {fileID: 11400000, guid: ed8b807a138eb9347baaba21cc88cd5d, type: 2}
+    Stack:
+      Minimum: 1
+      Maximum: 1
+    ChanceToDrop: 0.1
+  - Item: {fileID: 11400000, guid: 6a42b0b7834a9dd46a2d82dc29c07032, type: 2}
+    Stack:
+      Minimum: 1
+      Maximum: 1
+    ChanceToDrop: 0.1
+  - Item: {fileID: 11400000, guid: dcc72720e56ca0647b9b85cff588780f, type: 2}
+    Stack:
+      Minimum: 1
+      Maximum: 1
+    ChanceToDrop: 0.1
+  - Item: {fileID: 11400000, guid: 751b84d2ba346f147ba81e1cc9d7f9e3, type: 2}
+    Stack:
+      Minimum: 1
+      Maximum: 1
+    ChanceToDrop: 0.1
+  - Item: {fileID: 11400000, guid: 1596e01be35ead14bba2f26e1b04defc, type: 2}
+    Stack:
+      Minimum: 1
+      Maximum: 1
+    ChanceToDrop: 0.1
+  - Item: {fileID: 11400000, guid: 6b53a1a96d74e0e49a521dd8dd0aeb9d, type: 2}
+    Stack:
+      Minimum: 1
+      Maximum: 1
+    ChanceToDrop: 0.1
+  - Item: {fileID: 11400000, guid: e39c0cda0b0c8b449a448a4c951cf87a, type: 2}
+    Stack:
+      Minimum: 1
+      Maximum: 1
+    ChanceToDrop: 0.075
+  - Item: {fileID: 11400000, guid: 3fde272d6ff831c49b07b14ffa11644f, type: 2}
+    Stack:
+      Minimum: 1
+      Maximum: 1
+    ChanceToDrop: 0.075
+  - Item: {fileID: 11400000, guid: 0bd06066d41dd0242a2dd823cc36fd5d, type: 2}
+    Stack:
+      Minimum: 1
+      Maximum: 1
+    ChanceToDrop: 0.075
+  - Item: {fileID: 11400000, guid: c9d798d7fe59f44478920a965ad4ef86, type: 2}
+    Stack:
+      Minimum: 1
+      Maximum: 1
+    ChanceToDrop: 0.075
+  _itemRolls:
+    Minimum: 5
+    Maximum: 9
+  _rollBonus: 0

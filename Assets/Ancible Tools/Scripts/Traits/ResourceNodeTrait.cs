@@ -1,6 +1,9 @@
 ﻿using Assets.Ancible_Tools.Scripts.System.WorldNodes;
+using Assets.Resources.Ancible_Tools.Scripts.System;
 using Assets.Resources.Ancible_Tools.Scripts.System.Items;
 using Assets.Resources.Ancible_Tools.Scripts.System.Pathing;
+using Assets.Resources.Ancible_Tools.Scripts.System.Skills;
+using MessageBusLib;
 using UnityEngine;
 
 namespace Assets.Ancible_Tools.Scripts.Traits
@@ -9,6 +12,8 @@ namespace Assets.Ancible_Tools.Scripts.Traits
     public class ResourceNodeTrait : WorldNodeTrait
     {
         [SerializeField] private ItemStack _item;
+        [SerializeField] private WorldGatheringSkill _skill = null;
+        [SerializeField] private float _skillBonusPercent = 1f;
 
         protected internal override void ApplyToUnit(GameObject obj)
         {
@@ -25,6 +30,24 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         {
             WorldNodeManager.UnregisterNode(_controller.transform.parent.gameObject, WorldNodeType.Resource);
             _registeredNode = null;
+        }
+
+        protected internal override int GetRequiredTicks(GameObject owner)
+        {
+            var bonus = 0f;
+            var querySkillBonusMsg = MessageFactory.GenerateQuerySkillBonusMsg();
+            querySkillBonusMsg.DoAfter = skillBonus => bonus = skillBonus * _skillBonusPercent;
+            querySkillBonusMsg.Skill = _skill;
+            _controller.gameObject.SendMessageTo(querySkillBonusMsg, owner);
+            MessageFactory.CacheMessage(querySkillBonusMsg);
+
+            var tickBonus = Mathf.RoundToInt(bonus);
+            var ticks = _requiredTicks - tickBonus;
+            if (ticks <= 0)
+            {
+                ticks = 1;
+            }
+            return ticks;
         }
     }
 }

@@ -17,7 +17,7 @@ MonoBehaviour:
   MaximumRounds: 1
   VictoryExperiencePerPoint: 3
   DefeatExperiencePerPoint: 0
-  RepeatableLoot: {fileID: 0}
+  RepeatableLoot: {fileID: 11400000, guid: 6d447411fb456ec47a65b11fd6a2ae4d, type: 2}
   Save: 0
   Monsters:
   - Template: {fileID: 11400000, guid: 70c07f03842504345b78f7fd200c0a91, type: 2}

@@ -91,7 +91,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI
         private void ShowBattleResultsWindow(ShowBattleResultsWindowMessage msg)
         {
             var window = UiWindowManager.OpenWindow(_battleResultsTemplate);
-            window.Setup(msg.Units, msg.LeftScore, msg.RightScore, msg.Result, msg.TotalRounds);
+            window.Setup(msg);
         }
 
         private void ShowHobGeneratorWindow(ShowHobGeneratorWindowMessage msg)

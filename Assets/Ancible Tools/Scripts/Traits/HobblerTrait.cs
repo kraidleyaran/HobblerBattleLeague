@@ -194,7 +194,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             var queryCombatStatsMsg = MessageFactory.GenerateQueryCombatStatsMsg();
             queryCombatStatsMsg.DoAfter = (stats, bonus, genetics) =>
             {
-                data.Stats = stats + bonus + genetics;
+                data.Stats = stats + genetics;
             };
             _controller.gameObject.SendMessageTo(queryCombatStatsMsg, _controller.transform.parent.gameObject);
             MessageFactory.CacheMessage(queryCombatStatsMsg);

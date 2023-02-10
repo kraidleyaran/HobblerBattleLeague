@@ -56,6 +56,15 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Combat
         {
             _rotate = rotate;
             _rotationOffset = _rotate ? rotationOffset : 0f;
+            if (_rotate)
+            {
+                var targetPos = _target.transform.position.ToVector2();
+                var pos = _rigidBody.position;
+                var diff = (targetPos - pos);
+                _spriteRenderer.transform.localRotation = Quaternion.Euler(0f,0f, diff.normalized.ToZRotation() + _rotationOffset);
+                
+                //_rigidBody.rotation = _rotationOffset + diff.normalized.ToZRotation();
+            }
         }
 
         private void SubscribeToMessages()
@@ -77,10 +86,13 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Combat
             var speed = TickController.TickRate * (_pixelsPerSecond * DataController.Interpolation);
             if (diff.magnitude > speed + _detectDistance)
             {
-                _rigidBody.position += speed * diff.normalized;
+                var direction = diff.normalized;
+                _rigidBody.position += speed * direction;
                 if (_rotate)
                 {
-                    _rigidBody.rotation = _rotationOffset + diff.ToZRotation();
+                    var rotation = direction.ToZRotation() + _rotationOffset;
+                    Debug.Log($"Projectile Rotation: {rotation}");
+                    _spriteRenderer.transform.localRotation = Quaternion.Euler(0f, 0f, rotation);
                 }
             }
             else

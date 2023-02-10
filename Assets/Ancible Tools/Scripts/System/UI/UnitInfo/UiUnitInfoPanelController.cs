@@ -141,14 +141,13 @@ namespace Assets.Ancible_Tools.Scripts.System.UI.UnitInfo
             }
         }
 
-        void OnDestroy()
+        public override void Destroy()
         {
             if (_selectedUnit)
             {
                 _selectedUnit.UnsubscribeFromAllMessagesWithFilter(FILTER);
             }
-            gameObject.UnsubscribeFromAllMessages();
+            base.Destroy();
         }
-
     }
 }

@@ -23,6 +23,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             SubscribeToMessages();
         }
 
+
         private void SubscribeToMessages()
         {
             _controller.transform.parent.gameObject.SubscribeWithFilter<ReportDamageMessage>(ReportDamage, _instanceId);
@@ -54,7 +55,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                             addTraitToUnitMsg.Trait = trait;
                             _controller.gameObject.SendMessageTo(addTraitToUnitMsg, _controller.transform.parent.gameObject);
                         }
-
+                        MessageFactory.CacheMessage(addTraitToUnitMsg);
                         if (_cooldownTicks > 0)
                         {
                             _cooldownTimer = new TickTimer(_cooldownTicks, 0, () =>

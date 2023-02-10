@@ -37,7 +37,6 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI
             {
                 _moveTween = null;
                 _onFinish?.Invoke(this);
-                Destroy(_parent);
             });
         }
 

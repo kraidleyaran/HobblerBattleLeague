@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b634df8c891e4224e92b134952b5562c, type: 3}
+  m_Name: Magician's Boots Armor Item
+  m_EditorClassIdentifier: 
+  DisplayName: Magician's Boots
+  Description: 
+  _icon: {fileID: 949356957589755430, guid: 2b8f0602ca246a843860ad4b1b843b9a, type: 3}
+  MaxStack: 120
+  GoldValue: -1
+  Rarity: 1
+  _applyOnEquip:
+  - {fileID: 11400000, guid: d652b77577439ef48851fa1645a27f2a, type: 2}

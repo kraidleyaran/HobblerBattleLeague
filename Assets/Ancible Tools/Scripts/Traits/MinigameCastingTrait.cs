@@ -25,6 +25,12 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             ability.UseAbility(_controller.transform.parent.gameObject, target);
             _castingTimer.Destroy();
             _castingTimer = null;
+
+            var applyManaMsg = MessageFactory.GenerateApplyManaMsg();
+            applyManaMsg.Amount = ability.Instance.ManaCost * -1;
+            _controller.gameObject.SendMessageTo(applyManaMsg, _controller.transform.parent.gameObject);
+            MessageFactory.CacheMessage(applyManaMsg);
+
             _controller.gameObject.SendMessageTo(ActivateGlobalCooldownMessage.INSTANCE, _controller.transform.parent.gameObject);
         }
 

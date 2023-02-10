@@ -25,7 +25,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
 
         public override string GetDescription()
         {
-            var description = $"On {_amount} healing received:{Environment.NewLine}";
+            var description = $"On {_amount} healing received:";
             var traitDescriptions = _applyOnAmount.GetTraitDescriptions();
             for (var i = 0; i < traitDescriptions.Length; i++)
             {

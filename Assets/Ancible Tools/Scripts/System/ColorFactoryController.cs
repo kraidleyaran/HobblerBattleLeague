@@ -8,6 +8,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
         public static Color NegativeStatColor => _instance._negativeStatColor;
         public static Color Experience => _instance._experienceColor;
         public static Color HoveredItem => _instance._hoveredItemColor;
+        public static Color SelectedItem => _instance._selectedItemColor;
         public static Color BonusStat => _instance._bonusStatColor;
         public static Color LeftSide => _instance._leftSideColor;
         public static Color RighSide => _instance._rightSideColor;
@@ -17,12 +18,19 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
         public static Color ManaText => _instance._manaTextColor;
         public static Color DefaultAlertText => _instance._defaultAlertTextColor;
         public static Color ErrorAlertText => _instance._errorAlertTextColor;
+        public static Color CommonItemRarity => _instance._commonColor;
+        public static Color UnCommonItemRarity => _instance._uncommonColor;
+        public static Color RareItemRarity => _instance._rareColor;
+        public static Color EpicItemRarity => _instance._epicColor;
+        public static Color LegendaryItemRarity => _instance._legendaryColor;
+        public static Color AncientItemRarity => _instance._ancientColor;
 
         private static ColorFactoryController _instance = null;
 
         [SerializeField] private Color _negativeStatColor = Color.red;
         [SerializeField] private Color _experienceColor = Color.magenta;
         [SerializeField] private Color _hoveredItemColor = Color.yellow;
+        [SerializeField] private Color _selectedItemColor = Color.green;
         [SerializeField] private Color _bonusStatColor = Color.green;
         [SerializeField] private Color _leftSideColor = Color.blue;
         [SerializeField] private Color _rightSideColor = Color.red;
@@ -39,6 +47,14 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
         [SerializeField] private Color _rootColor = Color.yellow;
         [SerializeField] private Color _muteColor = Color.blue;
         [SerializeField] private Color _disarmColor = Color.red;
+
+        [Header("Item Rarity Colors")]
+        [SerializeField] private Color _commonColor = Color.white;
+        [SerializeField] private Color _uncommonColor = Color.green;
+        [SerializeField] private Color _rareColor = Color.blue;
+        [SerializeField] private Color _epicColor = Color.red;
+        [SerializeField] private Color _legendaryColor = Color.yellow;
+        [SerializeField] private Color _ancientColor = Color.yellow;
 
         void Awake()
         {

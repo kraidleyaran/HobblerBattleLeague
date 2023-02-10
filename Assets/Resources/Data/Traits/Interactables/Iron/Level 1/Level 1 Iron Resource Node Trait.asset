@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69a7a2b9502754d4eaa56893457b814a, type: 3}
+  m_Name: Level 1 Iron Resource Node Trait
+  m_EditorClassIdentifier: 
+  MaxStack: 1
+  _nodeType: 3
+  _requiredTicks: 8
+  _applyOnFinish:
+  - {fileID: 11400000, guid: 72c5756650340d64a93bc9a3fda60a73, type: 2}
+  - {fileID: 11400000, guid: e1e91873a7f1b2546b659db151ad99e6, type: 2}
+  _stack: -1
+  _relativeGatheringPositions:
+  - {x: 0, y: 1}
+  - {x: 0, y: -1}
+  - {x: -1, y: 0}
+  - {x: 1, y: 0}
+  - {x: -1, y: 1}
+  - {x: 1, y: 1}
+  - {x: -1, y: -1}
+  - {x: 1, y: -1}
+  _interactionType: 1
+  _nodeSprite: {fileID: 0}
+  _stopSelectCommand: {fileID: 0}
+  _selectableHobblerCommandTemplate: {fileID: 0}
+  _item:
+    Item: {fileID: 11400000, guid: d9884908348746749b76eead908b4940, type: 2}
+    Stack: 1
+  _skill: {fileID: 11400000, guid: 7c2c8a6a5cc026c42a3a4094d8850f2a, type: 2}
+  _skillBonusPercent: 1

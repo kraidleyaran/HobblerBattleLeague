@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c590c31b07bea1346aa0f2e175e34341, type: 3}
+  m_Name: Weaponsmith Crafting Node Trait
+  m_EditorClassIdentifier: 
+  MaxStack: 1
+  _nodeType: 5
+  _requiredTicks: 10
+  _applyOnFinish: []
+  _stack: 0
+  _relativeGatheringPositions:
+  - {x: 0, y: 1}
+  - {x: 0, y: -1}
+  - {x: -1, y: 0}
+  - {x: 1, y: 0}
+  _interactionType: 1
+  _nodeSprite: {fileID: 0}
+  _stopSelectCommand: {fileID: 0}
+  _selectableHobblerCommandTemplate: {fileID: 0}
+  _startingRecipes:
+  - {fileID: 11400000, guid: bf01f0081cd7c1a4694d5c6b536fcadc, type: 2}
+  _defaultItemScale: {x: 31.25, y: 31.25}
+  _itemOffset: {x: 0, y: 0}
+  _skill: {fileID: 11400000, guid: fc198a89e4782654eab4b1124cfaa03c, type: 2}
+  _skillBonusPercent: 1
+  _maxQueue: 5

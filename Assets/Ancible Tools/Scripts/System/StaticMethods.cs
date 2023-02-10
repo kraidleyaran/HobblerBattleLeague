@@ -2,12 +2,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Assets.Ancible_Tools.Scripts.System.SaveData.Buildings;
 using Assets.Ancible_Tools.Scripts.Traits;
 using Assets.Resources.Ancible_Tools.Scripts.Hitbox;
 using Assets.Resources.Ancible_Tools.Scripts.System.Abilities;
 using Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague;
 using Assets.Resources.Ancible_Tools.Scripts.System.Combat;
+using Assets.Resources.Ancible_Tools.Scripts.System.Items;
 using Assets.Resources.Ancible_Tools.Scripts.System.Maze;
 using Assets.Resources.Ancible_Tools.Scripts.System.SaveData;
 using Assets.Resources.Ancible_Tools.Scripts.System.Skills;
@@ -758,7 +758,14 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
 
         public static SkillData ToData(this KeyValuePair<int, SkillInstance> skill)
         {
-            return new SkillData { Skill = skill.Value.Instance.name, Experience = skill.Value.Instance.LevelExperience, Level = skill.Value.Level, Priority = skill.Key};
+            return new SkillData
+            {
+                Skill = skill.Value.Instance.name,
+                Experience = skill.Value.Instance.LevelExperience,
+                Level = skill.Value.Level,
+                Priority = skill.Key,
+                Permanent = skill.Value.Permanent
+            };
         }
 
         public static string ToFloatingText(this StatusEffectType type)
@@ -778,6 +785,39 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
                 default:
                     return string.Empty;
             }
+        }
+
+        public static Color ToRarityColor(this ItemRarity rarity)
+        {
+            switch (rarity)
+            {
+                case ItemRarity.Common:
+                    return ColorFactoryController.CommonItemRarity;
+                case ItemRarity.Uncommon:
+                    return ColorFactoryController.UnCommonItemRarity;
+                case ItemRarity.Rare:
+                    return ColorFactoryController.RareItemRarity;
+                case ItemRarity.Epic:
+                    return ColorFactoryController.EpicItemRarity;
+                case ItemRarity.Legendary:
+                    return ColorFactoryController.LegendaryItemRarity;
+                case ItemRarity.Ancient:
+                    return ColorFactoryController.AncientItemRarity;
+                default:
+                    return Color.white;
+            }
+        }
+
+        public static void SetObjectLayer(this ParticleSystem system, int layer)
+        {
+            var systemCount = system.subEmitters.subEmittersCount;
+            for (var i = 0; i < systemCount; i++)
+            {
+                var subSystem = system.subEmitters.GetSubEmitterSystem(i);
+                subSystem.SetObjectLayer(layer);
+            }
+            system.gameObject.layer = layer;
+
         }
 
     }

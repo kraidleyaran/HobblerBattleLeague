@@ -10,6 +10,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
     public class BattleAttackTrait : Trait
     {
         [SerializeField] private BasicAttackSetup _defaultSetup = null;
+        [SerializeField] private float _defaultAttackRange = 16 * .3125f;
 
         private BasicAttackSetup _currentAttackSetup = null;
 
@@ -98,7 +99,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                 doBumpMsg.OnBump = () => { ApplyAttack(target); };
                 doBumpMsg.DoAfter = CleanupAttack;
                 doBumpMsg.PixelsPerSecond = (int)(_currentAttackSetup.AttackSpeed * BattleLeagueController.AttackSpeedModifier);
-                doBumpMsg.Distance = diff.magnitude * .66f;
+                doBumpMsg.Distance = _defaultAttackRange;
                 _controller.gameObject.SendMessageTo(doBumpMsg, _controller.transform.parent.gameObject);
                 MessageFactory.CacheMessage(doBumpMsg);
 

@@ -12,6 +12,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.BattleLeague.Status
         private const string FILTER = "Ui Battle Unit Status";
 
         [SerializeField] private UiFillBarController _healthBarController = null;
+        [SerializeField] private UiFillBarController _manaBarController = null;
         [SerializeField] private Image[] _allStatusEffects = new Image[0];
         [SerializeField] private Image _silence;
         [SerializeField] private Image _stun;
@@ -42,19 +43,38 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.BattleLeague.Status
             {
                 effect.gameObject.SetActive(false);
             }
+            RefrehUnitStats();
             SubscribeToMessages();
-        }
-
-        private void FloatingTextFinished(UiFloatingTextController controller)
-        {
-            _floatingText.Remove(controller);
-            Destroy(controller.gameObject);
         }
 
         private void RefreshHealth(int current, int max)
         {
             var percent = (float) current / max;
             _healthBarController.Setup(percent, string.Empty, _healthBarColor);
+            _healthBarController.gameObject.SetActive(percent < 1f);
+        }
+
+        private void RefreshMana(int current, int max)
+        {
+            if (max > 0)
+            {
+                var percent = (float)current / max;
+                _manaBarController.Setup(percent, string.Empty, ColorFactoryController.ManaBar);
+            }
+            _manaBarController.gameObject.SetActive(max > 0);
+        }
+
+        private void RefrehUnitStats()
+        {
+            var queryHealthMsg = MessageFactory.GenerateQueryHealthMsg();
+            queryHealthMsg.DoAfter = RefreshHealth;
+            gameObject.SendMessageTo(queryHealthMsg, Owner);
+            MessageFactory.CacheMessage(queryHealthMsg);
+
+            var queryManaMsg = MessageFactory.GenerateQueryManaMsg();
+            queryManaMsg.DoAfter = RefreshMana;
+            gameObject.SendMessageTo(queryManaMsg, Owner);
+            MessageFactory.CacheMessage(queryManaMsg);
         }
 
         private void SubscribeToMessages()
@@ -90,10 +110,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.BattleLeague.Status
 
         private void RefreshUnit(RefreshUnitMessage msg)
         {
-            var queryHealthMsg = MessageFactory.GenerateQueryHealthMsg();
-            queryHealthMsg.DoAfter = RefreshHealth;
-            gameObject.SendMessageTo(queryHealthMsg, Owner);
-            MessageFactory.CacheMessage(queryHealthMsg);
+            RefrehUnitStats();
         }
 
         private void UpdateUnitBattleState(UpdateUnitBattleStateMessage msg)

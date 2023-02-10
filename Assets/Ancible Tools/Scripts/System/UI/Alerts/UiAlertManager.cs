@@ -47,27 +47,27 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.Alerts
             {
                 var alert = _alerts[0];
                 _alerts.RemoveAt(0);
-                GenerateAlert(alert.Text, alert.Icon);
+                GenerateAlert(alert.Text, alert.Icon, alert.BorderColor);
                 alert.Dispose();
             }
         }
 
-        private void GenerateAlert(string text, Sprite icon)
+        private void GenerateAlert(string text, Sprite icon,Color borderColor)
         {
             var controller = Instantiate(_alertTemplate, _gridTransform);
-            controller.Setup(text, icon);
+            controller.Setup(text, icon, borderColor);
             _alertCooldownTimer.Play();
         }
 
-        public static void ShowAlert(string text, Sprite icon)
+        public static void ShowAlert(string text, Sprite icon, Color borderColor)
         {
             if (_instance._onCooldown)
             {
-                _instance._alerts.Add(new CachedAlert(text, icon));
+                _instance._alerts.Add(new CachedAlert(text, icon, borderColor));
             }
             else
             {
-                _instance.GenerateAlert(text, icon);
+                _instance.GenerateAlert(text, icon, borderColor);
             }
         }
 

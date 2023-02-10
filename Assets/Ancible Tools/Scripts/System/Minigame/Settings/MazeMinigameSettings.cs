@@ -23,7 +23,9 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Minigame
         public bool PaintGroundForWall = false;
         public int EdgeBuffer = 4;
         public MinigameUnitSpawnController VerticalDoorSpawn;
+        public CustomTileData[] VerticalDoorOverTiles = new CustomTileData[0];
         public MinigameUnitSpawnController HorizontalDoorSpawn;
+        public CustomTileData[] HorizontalDoorOverTiles = new CustomTileData[0];
         public UnitTemplate UpEndTemplate;
         public UnitTemplate DownEndTemplate;
         public UnitTemplate LeftEndTemplate;

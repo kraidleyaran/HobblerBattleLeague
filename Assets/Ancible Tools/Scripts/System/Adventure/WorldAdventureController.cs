@@ -32,6 +32,8 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Adventure
         private UpdateAdventureStateMessage _updateAdventureStateMsg = new UpdateAdventureStateMessage();
         private Dictionary<string, AdventureMap> _maps = new Dictionary<string, AdventureMap>();
 
+        private List<GameObject> _registeredObjects = new List<GameObject>();
+
         void Awake()
         {
             if (_instance)
@@ -91,9 +93,51 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Adventure
             return null;
         }
 
+        public static void TransitionToMap(AdventureMap map, Vector2Int pos, Vector2Int direction)
+        {
+            if (_instance._currentMap != map)
+            {
+                var objs = _instance._registeredObjects.ToArray();
+                foreach (var obj in objs)
+                {
+                    Destroy(obj);
+                }
+                _instance._registeredObjects.Clear();
+
+                Destroy(_instance._mapController.gameObject);
+
+                _instance._currentMap = map;
+                _instance._mapController = Instantiate(map.MapController, _instance.transform);
+                _instance._mapController.gameObject.layer = _instance.gameObject.layer;
+                _instance._mapController.Setup(pos);
+
+                var setFacingDirectionMsg = MessageFactory.GenerateSetFaceDirectionMsg();
+                setFacingDirectionMsg.Direction = direction;
+                _instance.gameObject.SendMessageTo(setFacingDirectionMsg, Player);
+                MessageFactory.CacheMessage(setFacingDirectionMsg);
+            }
+        }
+
         private void SubscribeToMessages()
         {
             gameObject.Subscribe<ClearWorldMessage>(ClearWorld);
+        }
+
+        public static void RegisterObject(GameObject obj)
+        {
+            if (!_instance._registeredObjects.Contains(obj))
+            {
+                _instance._registeredObjects.Add(obj);
+            }
+        }
+
+        public static void UnregisterObject(GameObject obj, bool destroy = false)
+        {
+            _instance._registeredObjects.Remove(obj);
+            if (destroy)
+            {
+                Destroy(obj);
+            }
         }
 
         private void ClearWorld(ClearWorldMessage msg)

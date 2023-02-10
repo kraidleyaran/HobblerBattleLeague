@@ -23,6 +23,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Maze
     {
         [SerializeField] private STETilemap _tilemap;
         [SerializeField] private STETilemap _terrain;
+        [SerializeField] private STETilemap _over;
         [SerializeField] private uint _deadEndId = 1;
         [SerializeField] private uint _possibleEndId = 0;
         [SerializeField] private int _mazeSteps = 100;
@@ -52,6 +53,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Maze
             var edges = _maze.GetPossibleConnections(new ProceduralToolkit.Samples.Maze.Vertex(startPoint, Directions.None, 0));
             _tilemap.Tileset = _settings.Ground;
             _terrain.Tileset = _settings.Terrain;
+            _over.Tileset = _settings.Terrain;
             Debug.Log($"Player Spawn: {_playerSpawn}");
             var draw = new List<ProceduralToolkit.Samples.Maze.Edge>();
             while (Generate(edges, draw, _mazeSteps))
@@ -438,6 +440,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Maze
             var doorCount = doors.Count * _settings.DoorPerecent;
             var drawDoors = doors.Values.ToList();
             var doorPositions = new List<Vector2Int>();
+            var overTiles = new List<CustomTileData>();
             for (var i = 0; i < doorCount && i < drawDoors.Count; i++)
             {
                 var door = drawDoors.Count > 1 ? drawDoors[Random.Range(0, drawDoors.Count)] : drawDoors[0];
@@ -454,30 +457,35 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Maze
                         break;
                 }
 
+                
                 if (_tiles.TryGetValue(door.Position, out var tile))
                 {
                     var doorUnit = Instantiate(spawnController, MinigameController.Transform);
                     doorUnit.transform.SetTransformPosition(tile.World);
+                    
                     switch (door.Rotation.ToDoorRotation())
                     {
                         case DoorRotation.Horizontal:
                             _spawnableTiles.Remove(door.Position + Vector2Int.left);
                             _spawnableTiles.Remove(door.Position + Vector2Int.right);
-
+                            overTiles.AddRange(_settings.VerticalDoorOverTiles.Select(t => t.FromRelativePosition(door.Position)));
                             break;
                         case DoorRotation.Vertical:
                             _spawnableTiles.Remove(door.Position + Vector2Int.up);
                             _spawnableTiles.Remove(door.Position + Vector2Int.down);
+                            overTiles.AddRange(_settings.HorizontalDoorOverTiles.Select(t => t.FromRelativePosition(door.Position)));
                             break;
                     }
                     _spawnableTiles.Remove(door.Position + Vector2Int.up + Vector2Int.left);
                     _spawnableTiles.Remove(door.Position + Vector2Int.up + Vector2Int.right);
                     _spawnableTiles.Remove(door.Position + Vector2Int.down + Vector2Int.left);
                     _spawnableTiles.Remove(door.Position + Vector2Int.down + Vector2Int.right);
+
+                    
                 }
 
             }
-
+            
             for (var i = 0; i < doorPositions.Count; i++)
             {
                 var wallPos = doorPositions[i];
@@ -488,8 +496,14 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Maze
                 _spawnableTiles.Remove(wallPos + Vector2Int.left);
                 _spawnableTiles.Remove(wallPos + Vector2Int.right);
 
-                _tilemap.SetTile(wallPos.x, wallPos.y, 0, _settings.WallTileId, eTileFlags.Updated);
+                _terrain.SetTile(wallPos.x, wallPos.y, 0, _settings.WallTileId, eTileFlags.Updated);
                 
+            }
+
+            for (var i = 0; i < overTiles.Count; i++)
+            {
+                var tile = overTiles[i];
+                _over?.SetTile(tile.Position.x, tile.Position.y, tile.Brush ? 0 : tile.TileData, tile.Brush ? tile.TileData : 0);
             }
             
             _pathingGrid.Setup(_tiles.Values.ToArray(), (max - min) + Vector2Int.one, _offset);
@@ -567,6 +581,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Maze
 
             _terrain.Refresh(true, true, true, true);
             _tilemap.Refresh(true, true, true, true);
+            _over.Refresh(true, true, true, true);
             Debug.Log($"{_tiles.Count} Pathing Tiles");
             return _rooms.Where(r => r.Depth > 2).ToArray();
         }

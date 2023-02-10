@@ -80,7 +80,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.MInigame
             for (var i = 0; i < _items.Length; i++)
             {
                 var controller = Instantiate(_stashItemController, _itemsGrid.transform);
-                controller.Setup(_items[i]);
+                controller.Setup(_items[i], false);
                 controllers.Add(controller);
             }
 

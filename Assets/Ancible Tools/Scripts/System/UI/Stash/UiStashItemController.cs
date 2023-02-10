@@ -17,12 +17,15 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.Stash
         private ItemStack _stack = null;
 
         private bool _hovered = false;
+        private bool _setHovered = true;
 
-        public void Setup(ItemStack stack)
+        public void Setup(ItemStack stack, bool setHovered)
         {
             _stack = stack;
             _iconImage.sprite = stack.Item.Icon;
             _stackText.text = _stack.Stack > 1 ? $"x{_stack.Stack}" : string.Empty;
+            _borderImage.color = _stack.Item.Rarity.ToRarityColor();
+            _setHovered = setHovered;
         }
 
         public void OnPointerEnter(PointerEventData eventData)
@@ -40,10 +43,13 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.Stash
             MessageFactory.CacheMessage(showHoverInfoMsg);
             _borderImage.color = ColorFactoryController.HoveredItem;
 
-            var setHoveredStashItemMsg = MessageFactory.GenerateSetHoveredStashItemControllerMsg();
-            setHoveredStashItemMsg.Controller = this;
-            gameObject.SendMessage(setHoveredStashItemMsg);
-            MessageFactory.CacheMessage(setHoveredStashItemMsg);
+            if (_setHovered)
+            {
+                var setHoveredStashItemMsg = MessageFactory.GenerateSetHoveredStashItemControllerMsg();
+                setHoveredStashItemMsg.Controller = this;
+                gameObject.SendMessage(setHoveredStashItemMsg);
+                MessageFactory.CacheMessage(setHoveredStashItemMsg);
+            }
         }
 
         public void OnPointerExit(PointerEventData eventData)
@@ -55,12 +61,15 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.Stash
                 removeHoverInfoMsg.Owner = gameObject;
                 gameObject.SendMessage(removeHoverInfoMsg);
                 MessageFactory.CacheMessage(removeHoverInfoMsg);
-                _borderImage.color = Color.white;
+                _borderImage.color = _stack.Item.Rarity.ToRarityColor();
 
-                var removeHoveredStashItemMsg = MessageFactory.GenerateRemoveHoveredStashItemControllerMsg();
-                removeHoveredStashItemMsg.Controller = this;
-                gameObject.SendMessage(removeHoveredStashItemMsg);
-                MessageFactory.CacheMessage(removeHoveredStashItemMsg);
+                if (_setHovered)
+                {
+                    var removeHoveredStashItemMsg = MessageFactory.GenerateRemoveHoveredStashItemControllerMsg();
+                    removeHoveredStashItemMsg.Controller = this;
+                    gameObject.SendMessage(removeHoveredStashItemMsg);
+                    MessageFactory.CacheMessage(removeHoveredStashItemMsg);
+                }
             }
         }
 

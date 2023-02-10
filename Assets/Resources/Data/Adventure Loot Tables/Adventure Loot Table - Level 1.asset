@@ -23,6 +23,36 @@ MonoBehaviour:
       Minimum: 7
       Maximum: 12
     ChanceToDrop: 0.12
+  - Item: {fileID: 11400000, guid: 2ea8c3b7b48544841b58f7b34bdf9e65, type: 2}
+    Stack:
+      Minimum: 1
+      Maximum: 1
+    ChanceToDrop: 0.05
+  - Item: {fileID: 11400000, guid: e8502475d6ff7174c82871f5a6a6cea7, type: 2}
+    Stack:
+      Minimum: 1
+      Maximum: 1
+    ChanceToDrop: 0.05
+  - Item: {fileID: 11400000, guid: 0718201bb43693b4e9efe09fb829c4d7, type: 2}
+    Stack:
+      Minimum: 1
+      Maximum: 1
+    ChanceToDrop: 0.05
+  - Item: {fileID: 11400000, guid: 6d9a789da424b624fa36862bc5c80870, type: 2}
+    Stack:
+      Minimum: 1
+      Maximum: 1
+    ChanceToDrop: 0.05
+  - Item: {fileID: 11400000, guid: e2cf8c2d5cbd8b046a708bce83b6cc73, type: 2}
+    Stack:
+      Minimum: 1
+      Maximum: 1
+    ChanceToDrop: 0.05
+  - Item: {fileID: 11400000, guid: 987166895ab2ecc47bb05f82a7265da6, type: 2}
+    Stack:
+      Minimum: 1
+      Maximum: 1
+    ChanceToDrop: 0.05
   _itemRolls:
     Minimum: 1
     Maximum: 3

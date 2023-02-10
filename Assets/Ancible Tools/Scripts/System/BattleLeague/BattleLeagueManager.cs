@@ -17,16 +17,21 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague
         [SerializeField] private UiBaseWindow[] _battleWindows = new UiBaseWindow[0];
         [SerializeField] private BattleLeagueController _battleLeagueController = null;
         [SerializeField] private BattleEncounter _encounter = null;
+        [SerializeField] private float _manaPerDamageDone = 0f;
+        [SerializeField] private float _manaPerDamageTaken = 0f;
         
         private QueryBattleUnitDataMessage _queryBattleUnitDataMsg = new QueryBattleUnitDataMessage();
         private ApplyHobblerBattleDataMessage _applyHobblerBattleDataMsg = new ApplyHobblerBattleDataMessage();
         private EncounterFinishedMessage _encounterFinished = new EncounterFinishedMessage();
+        private ShowBattleResultsWindowMessage _showBattleResultsWindowMsg = new ShowBattleResultsWindowMessage();
 
         private UiBaseWindow[] _openBattleWindows = new UiBaseWindow[0];
         private BattleResult _result = BattleResult.Abandon;
         private int _pointsScored = 0;
         private int _roundsPlayed = 0;
         private bool _repeat = false;
+        private ItemStack[] _loot = new ItemStack[0];
+        private int _experienceGained = 0;
 
         private Dictionary<BattleUnitData, GameObject> _hobblers = new Dictionary<BattleUnitData, GameObject>();
 
@@ -85,6 +90,45 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague
             _instance._battleLeagueController.Setup(_instance._hobblers.Keys.ToArray(), encounter);
         }
 
+        public static void EncounterFinished(int leftScore, int rightScore, KeyValuePair<BattleUnitData, BattleAlignment>[] units, int totalRounds, BattleResult result)
+        {
+            switch (result)
+            {
+                case BattleResult.Victory:
+                    if (_instance._currentEncounter)
+                    {
+                        var encounter = _instance._currentEncounter;
+                        _instance._loot = encounter.GenerateLoot(encounter.Save && _instance._finishedEncounters.Contains(encounter));
+                        _instance._experienceGained = Mathf.Max(1, Mathf.RoundToInt(encounter.VictoryExperiencePerPoint * leftScore));
+                    }
+                    break;
+                case BattleResult.Defeat:
+                    _instance._experienceGained = Mathf.Max(1, Mathf.RoundToInt(_instance._currentEncounter.DefeatExperiencePerPoint * leftScore));
+                    break;
+                case BattleResult.Abandon:
+                    break;
+            }
+            _instance._showBattleResultsWindowMsg.Result = result;
+            _instance._showBattleResultsWindowMsg.LeftScore = leftScore;
+            _instance._showBattleResultsWindowMsg.RightScore = rightScore;
+            _instance._showBattleResultsWindowMsg.Units = units;
+            _instance._showBattleResultsWindowMsg.TotalRounds = totalRounds;
+            _instance._showBattleResultsWindowMsg.TotalExperience = _instance._experienceGained;
+            _instance._showBattleResultsWindowMsg.Items = _instance._loot;
+            _instance._showBattleResultsWindowMsg.Hobblers = _instance._hobblers.ToArray();
+            _instance.gameObject.SendMessage(_instance._showBattleResultsWindowMsg);
+        }
+
+        public static int GetManaFromDamageTaken(int amount)
+        {
+            return Mathf.Max(Mathf.RoundToInt(amount * _instance._manaPerDamageTaken), 1);
+        }
+
+        public static int GetManaFromDamageDone(int amount)
+        {
+            return Mathf.Max(Mathf.RoundToInt(amount * _instance._manaPerDamageDone), 1);
+        }
+
         private void SubscribeToMessages()
         {
             gameObject.Subscribe<ShowBattleResultsWindowMessage>(ShowBattleResultsWindow);
@@ -93,25 +137,18 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague
 
         private void CloseBattle(CloseBattleMessage msg)
         {
-            var experience = 0;
             switch (_result)
             {
                 case BattleResult.Victory:
-                    if (_currentEncounter)
+                    if (_loot.Length > 0)
                     {
-                        var loot = _currentEncounter.GenerateLoot(_currentEncounter.Save && _finishedEncounters.Contains(_currentEncounter));
-                        if (loot.Length > 0)
+                        foreach (var item in _loot)
                         {
-                            for (var i = 0; i < loot.Length; i++)
-                            {
-                                WorldStashController.AddItem(loot[i].Item, loot[i].Stack);
-                            }
+                            WorldStashController.AddItem(item.Item, item.Stack);
                         }
-                        experience = Mathf.Max(1, Mathf.RoundToInt(_currentEncounter.VictoryExperiencePerPoint * _pointsScored));
                     }
                     break;
                 case BattleResult.Defeat:
-                    experience = Mathf.Max(1, Mathf.RoundToInt(_currentEncounter.DefeatExperiencePerPoint * _pointsScored));
                     break;
                 case BattleResult.Abandon:
                     break;
@@ -123,7 +160,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague
             }
             var objs = _hobblers.ToArray();
             var addExperienceMsg = MessageFactory.GenerateAddExperienceMsg();
-            addExperienceMsg.Amount = experience;
+            addExperienceMsg.Amount = _experienceGained;
 
             _applyHobblerBattleDataMsg.Result = _result;
             _applyHobblerBattleDataMsg.MatchId = _battleLeagueController.MatchId;
@@ -140,6 +177,8 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague
             _applyHobblerBattleDataMsg.Data = null;
             _result = BattleResult.Abandon;
             _pointsScored = 0;
+            _loot = new ItemStack[0];
+            _experienceGained = 0;
             _hobblers.Clear();
             _battleLeagueController.Clear();
             _currentEncounter = null;

@@ -1,6 +1,9 @@
-﻿using Assets.Resources.Ancible_Tools.Scripts.Hitbox;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Assets.Resources.Ancible_Tools.Scripts.Hitbox;
 using Assets.Resources.Ancible_Tools.Scripts.System;
 using Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague;
+using Assets.Resources.Ancible_Tools.Scripts.System.Items;
 using Assets.Resources.Ancible_Tools.Scripts.System.UI.BattleLeague.Status;
 using MessageBusLib;
 using UnityEngine;
@@ -19,6 +22,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
 
         private BattleUnitData _data = null;
         private BattleAlignment _alignment = BattleAlignment.None;
+        private EquippableInstance[] _equipped = new EquippableInstance[0];
 
         private UnitSelectorController _hovered = null;
         private UnitSelectorController _selected = null;
@@ -113,6 +117,15 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         private void StartBattle(StartBattleMessage msg)
         {
             _controller.gameObject.Unsubscribe<StartBattleMessage>();
+            var equipment = _data.EquippedItems.ToArray();
+            var equipped = new List<EquippableInstance>();
+            foreach (var equippable in equipment)
+            {
+                var instance = new EquippableInstance(equippable, _controller.transform.parent.gameObject);
+                equipped.Add(instance);
+            }
+
+            _equipped = equipped.ToArray();
             _data.RoundsPlayed++;
         }
 
@@ -133,7 +146,6 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             {
                 _hovered.gameObject.SetActive(true);
                 _hovered.SetParent(_controller.transform.parent, _selectOffset, _selectorSize);
-                
             }
         }
 

@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using Assets.Ancible_Tools.Scripts.System.Items.Crafting;
 using Assets.Ancible_Tools.Scripts.System.SaveData;
-using Assets.Ancible_Tools.Scripts.System.SaveData.Buildings;
+using Assets.Ancible_Tools.Scripts.System.SaveData.Building;
 using Assets.Ancible_Tools.Scripts.System.UI.UnitInfo;
 using Assets.Ancible_Tools.Scripts.System.WorldNodes;
 using Assets.Ancible_Tools.Scripts.Traits;
@@ -20,6 +21,7 @@ using Assets.Resources.Ancible_Tools.Scripts.System.Pathing;
 using Assets.Resources.Ancible_Tools.Scripts.System.SaveData;
 using Assets.Resources.Ancible_Tools.Scripts.System.Skills;
 using Assets.Resources.Ancible_Tools.Scripts.System.TickTimers;
+using Assets.Resources.Ancible_Tools.Scripts.System.UI.Crafting;
 using Assets.Resources.Ancible_Tools.Scripts.System.UI.DetailedInfo;
 using Assets.Resources.Ancible_Tools.Scripts.System.UI.MInigame;
 using Assets.Resources.Ancible_Tools.Scripts.System.UI.MInigame.MazeSelector;
@@ -788,7 +790,10 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
         public int LeftScore;
         public int RightScore;
         public KeyValuePair<BattleUnitData, BattleAlignment>[] Units;
+        public KeyValuePair<BattleUnitData, GameObject>[] Hobblers;
         public int TotalRounds;
+        public int TotalExperience;
+        public ItemStack[] Items = new ItemStack[0];
     }
 
     public class CloseBattleMessage : EventMessage
@@ -1377,5 +1382,87 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
     {
         public DamageType Type;
         public WorldInstance<int> Instance;
+    }
+
+    public class SetAdventureMapTransitionMessage : EventMessage
+    {
+        public AdventureMap Map;
+        public Vector2Int Position;
+        public Vector2Int Direction;
+    }
+
+    public class QueryRequiredLevelExperienceMessage : EventMessage
+    {
+        public int Level;
+        public Action<int> DoAfter;
+    }
+
+    public class UpdateHealthMessage : EventMessage
+    {
+        public int Current;
+        public int Max;
+    }
+
+    public class UpdateManaMessage : EventMessage
+    {
+        public int Current;
+        public int Max;
+    }
+
+    public class SearchForCraftingNodeMessage : EventMessage
+    {
+        public WorldSkill Skill;
+        public Action DoAfter;
+    }
+
+    public class ApplySkillBonusMessage : EventMessage
+    {
+        public WorldSkill Skill;
+        public float Bonus;
+        public bool Permanent;
+    }
+
+    public class QuerySkillBonusMessage : EventMessage
+    {
+        public WorldSkill Skill;
+        public Action<float> DoAfter;
+    }
+
+    public class CancelCraftingQueueAtIndexMessage : EventMessage
+    {
+        public int Index;
+    }
+
+    public class QueueCraftingRecipeMessage : EventMessage
+    {
+        public CraftingRecipe Recipe;
+        public int Stack;
+    }
+
+    public class QueryCraftingRecipesMessage : EventMessage
+    {
+        public Action<CraftingRecipe[]> DoAfter;
+    }
+
+    public class QueryCraftingQueueMessage : EventMessage
+    {
+        //Queue, Max Queue Slots;
+        public Action<QueuedCraft[], int> DoAfter;
+    }
+
+    public class SetSelectedCraftingRecipeControllerMessage : EventMessage
+    {
+        public UiCraftingRecipeController Controller;
+    }
+
+    public class SetCraftingIndexMessage : EventMessage
+    {
+        public int Current;
+        public int Target;
+    }
+
+    public class ShowCraftingWindowMessage : EventMessage
+    {
+        public GameObject Owner;
     }
 }

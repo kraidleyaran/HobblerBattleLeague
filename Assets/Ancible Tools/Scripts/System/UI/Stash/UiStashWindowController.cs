@@ -40,7 +40,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.Stash
             for (var i = 0; i < items.Length; i++)
             {
                 var controller = Instantiate(_itemTemplate, _content);
-                controller.Setup(items[i]);
+                controller.Setup(items[i], true);
                 controllers.Add(controller);
             }
 

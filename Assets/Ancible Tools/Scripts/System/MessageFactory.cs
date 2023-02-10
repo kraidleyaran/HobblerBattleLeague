@@ -201,6 +201,19 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
         private static List<QueryTimerMessage> _queryTimerCache = new List<QueryTimerMessage>();
         private static List<RefreshTimerMessage> _refreshTimerCache = new List<RefreshTimerMessage>();
         private static List<AbsorbedDamageCheckMessage> _absorbedDamageCheckCache = new List<AbsorbedDamageCheckMessage>();
+        private static List<SetAdventureMapTransitionMessage> _setAdventureMapTransitionCache = new List<SetAdventureMapTransitionMessage>();
+        private static List<QueryRequiredLevelExperienceMessage> _queryRequiredLevelExperienceCache = new List<QueryRequiredLevelExperienceMessage>();
+        private static List<UpdateHealthMessage> _updateHealthCache = new List<UpdateHealthMessage>();
+        private static List<UpdateManaMessage> _updateManaCache = new List<UpdateManaMessage>();
+        private static List<SearchForCraftingNodeMessage> _searchForCraftingNodeCache = new List<SearchForCraftingNodeMessage>();
+        private static List<ApplySkillBonusMessage> _applySkillBonusCache = new List<ApplySkillBonusMessage>();
+        private static List<QuerySkillBonusMessage> _querySkillBonusCache = new List<QuerySkillBonusMessage>();
+        private static List<QueueCraftingRecipeMessage> _queueCraftingRecipeCache = new List<QueueCraftingRecipeMessage>();
+        private static List<SetSelectedCraftingRecipeControllerMessage> _setSelectedCraftingRecipeControllerCache = new List<SetSelectedCraftingRecipeControllerMessage>();
+        private static List<QueryCraftingRecipesMessage> _queryCraftingRecipesCache = new List<QueryCraftingRecipesMessage>();
+        private static List<QueryCraftingQueueMessage> _queryCraftingQueueCache = new List<QueryCraftingQueueMessage>();
+        private static List<SetCraftingIndexMessage> _setCraftingIndexCache = new List<SetCraftingIndexMessage>();
+        private static List<ShowCraftingWindowMessage> _showCraftingWindowCache = new List<ShowCraftingWindowMessage>();
 
         public static AddTraitToUnitMessage GenerateAddTraitToUnitMsg()
         {
@@ -2385,6 +2398,162 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
             return new AbsorbedDamageCheckMessage();
         }
 
+        public static SetAdventureMapTransitionMessage GenerateSetAdventureMapTransitionMsg()
+        {
+            if (_setAdventureMapTransitionCache.Count > 0)
+            {
+                var message = _setAdventureMapTransitionCache[0];
+                _setAdventureMapTransitionCache.Remove(message);
+                return message;
+            }
+
+            return new SetAdventureMapTransitionMessage();
+        }
+
+        public static QueryRequiredLevelExperienceMessage GenerateQueryRequiredLevelExperienceMsg()
+        {
+            if (_queryRequiredLevelExperienceCache.Count > 0)
+            {
+                var message = _queryRequiredLevelExperienceCache[0];
+                _queryRequiredLevelExperienceCache.Remove(message);
+                return message;
+            }
+
+            return new QueryRequiredLevelExperienceMessage();
+        }
+
+        public static UpdateHealthMessage GenerateUpdateHealthMsg()
+        {
+            if (_updateHealthCache.Count > 0)
+            {
+                var message = _updateHealthCache[0];
+                _updateHealthCache.Remove(message);
+                return message;
+            }
+
+            return new UpdateHealthMessage();
+        }
+
+        public static UpdateManaMessage GenerateUpdateManaMsg()
+        {
+            if (_updateManaCache.Count > 0)
+            {
+                var message = _updateManaCache[0];
+                _updateManaCache.Remove(message);
+                return message;
+            }
+
+            return new UpdateManaMessage();
+        }
+
+        public static SearchForCraftingNodeMessage GenerateSearchForCraftingNodeMsg()
+        {
+            if (_searchForCraftingNodeCache.Count > 0)
+            {
+                var message = _searchForCraftingNodeCache[0];
+                _searchForCraftingNodeCache.Remove(message);
+                return message;
+            }
+
+            return new SearchForCraftingNodeMessage();
+        }
+
+        public static QuerySkillBonusMessage GenerateQuerySkillBonusMsg()
+        {
+            if (_querySkillBonusCache.Count > 0)
+            {
+                var message = _querySkillBonusCache[0];
+                _querySkillBonusCache.Remove(message);
+                return message;
+            }
+
+            return new QuerySkillBonusMessage();
+        }
+
+        public static ApplySkillBonusMessage GenerateApplySkillBonusMsg()
+        {
+            if (_applySkillBonusCache.Count > 0)
+            {
+                var message = _applySkillBonusCache[0];
+                _applySkillBonusCache.Remove(message);
+                return message;
+            }
+
+            return new ApplySkillBonusMessage();
+        }
+
+        public static QueueCraftingRecipeMessage GenerateQueueCraftingRecipeMsg()
+        {
+            if (_queueCraftingRecipeCache.Count > 0)
+            {
+                var message = _queueCraftingRecipeCache[0];
+                _queueCraftingRecipeCache.Remove(message);
+                return message;
+            }
+
+            return new QueueCraftingRecipeMessage();
+        }
+
+        public static SetSelectedCraftingRecipeControllerMessage GenerateSetSelectedCraftingRecipeMsg()
+        {
+            if (_setSelectedCraftingRecipeControllerCache.Count > 0)
+            {
+                var message = _setSelectedCraftingRecipeControllerCache[0];
+                _setSelectedCraftingRecipeControllerCache.Remove(message);
+                return message;
+            }
+
+            return new SetSelectedCraftingRecipeControllerMessage();
+        }
+
+        public static QueryCraftingRecipesMessage GenerateQueryCraftingRecipesMsg()
+        {
+            if (_queryCraftingRecipesCache.Count > 0)
+            {
+                var message = _queryCraftingRecipesCache[0];
+                _queryCraftingRecipesCache.Remove(message);
+                return message;
+            }
+
+            return new QueryCraftingRecipesMessage();
+        }
+
+        public static QueryCraftingQueueMessage GenerateQueryCraftingQueueMsg()
+        {
+            if (_queryCraftingQueueCache.Count > 0)
+            {
+                var message = _queryCraftingQueueCache[0];
+                _queryCraftingQueueCache.Remove(message);
+                return message;
+            }
+
+            return new QueryCraftingQueueMessage();
+        }
+
+        public static SetCraftingIndexMessage GenerateSetCraftingIndexMsg()
+        {
+            if (_setCraftingIndexCache.Count > 0)
+            {
+                var message = _setCraftingIndexCache[0];
+                _setCraftingIndexCache.Remove(message);
+                return message;
+            }
+
+            return new SetCraftingIndexMessage();
+        }
+
+        public static ShowCraftingWindowMessage GenerateShowCraftingWindowMsg()
+        {
+            if (_showCraftingWindowCache.Count > 0)
+            {
+                var message = _showCraftingWindowCache[0];
+                _showCraftingWindowCache.Remove(message);
+                return message;
+            }
+
+            return new ShowCraftingWindowMessage();
+        }
+
         //TODO: Start Cache
 
         public static void CacheMessage(AddTraitToUnitMessage msg)
@@ -3736,6 +3905,107 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
             msg.Instance = null;
             msg.Sender = null;
             _absorbedDamageCheckCache.Add(msg);
+        }
+
+        public static void CacheMessage(SetAdventureMapTransitionMessage msg)
+        {
+            msg.Direction = Vector2Int.zero;
+            msg.Map = null;
+            msg.Position = Vector2Int.zero;
+            msg.Sender = null;
+            _setAdventureMapTransitionCache.Add(msg);
+        }
+
+        public static void CacheMessage(QueryRequiredLevelExperienceMessage msg)
+        {
+            msg.DoAfter = null;
+            msg.Level = 0;
+            msg.Sender = null;
+            _queryRequiredLevelExperienceCache.Add(msg);
+        }
+
+        public static void CacheMessage(UpdateHealthMessage msg)
+        {
+            msg.Current = 0;
+            msg.Max = 0;
+            msg.Sender = null;
+            _updateHealthCache.Add(msg);
+        }
+
+        public static void CacheMessage(UpdateManaMessage msg)
+        {
+            msg.Current = 0;
+            msg.Max = 0;
+            msg.Sender = null;
+            _updateManaCache.Add(msg);
+        }
+
+        public static void CacheMessage(SearchForCraftingNodeMessage msg)
+        {
+            msg.Skill = null;
+            msg.DoAfter = null;
+            msg.Sender = null;
+            _searchForCraftingNodeCache.Add(msg);
+        }
+
+        public static void CacheMessage(QuerySkillBonusMessage msg)
+        {
+            msg.Skill = null;
+            msg.DoAfter = null;
+            msg.Sender = null;
+            _querySkillBonusCache.Add(msg);
+        }
+
+        public static void CacheMessage(ApplySkillBonusMessage msg)
+        {
+            msg.Bonus = 0;
+            msg.Permanent = false;
+            msg.Sender = null;
+            _applySkillBonusCache.Add(msg);
+        }
+
+        public static void CacheMessage(QueueCraftingRecipeMessage msg)
+        {
+            msg.Recipe = null;
+            msg.Stack = 0;
+            msg.Sender = null;
+            _queueCraftingRecipeCache.Add(msg);
+        }
+
+        public static void CacheMessage(SetSelectedCraftingRecipeControllerMessage msg)
+        {
+            msg.Controller = null;
+            msg.Sender = null;
+            _setSelectedCraftingRecipeControllerCache.Add(msg);
+        }
+
+        public static void CacheMessage(QueryCraftingRecipesMessage msg)
+        {
+            msg.DoAfter = null;
+            msg.Sender = null;
+            _queryCraftingRecipesCache.Add(msg);
+        }
+
+        public static void CacheMessage(QueryCraftingQueueMessage msg)
+        {
+            msg.DoAfter = null;
+            msg.Sender = null;
+            _queryCraftingQueueCache.Add(msg);
+        }
+
+        public static void CacheMessage(SetCraftingIndexMessage msg)
+        {
+            msg.Current = 0;
+            msg.Target = 0;
+            msg.Sender = null;
+            _setCraftingIndexCache.Add(msg);
+        }
+
+        public static void CacheMessage(ShowCraftingWindowMessage msg)
+        {
+            msg.Owner = null;
+            msg.Sender = null;
+            _showCraftingWindowCache.Add(msg);
         }
     }
 }

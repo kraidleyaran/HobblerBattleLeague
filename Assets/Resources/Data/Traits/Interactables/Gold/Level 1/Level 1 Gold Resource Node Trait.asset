@@ -19,8 +19,15 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1f76ef373f7085f41b9dbf4db6c44b4d, type: 2}
   - {fileID: 11400000, guid: b86ec6da9406c7441855d7a9fa029302, type: 2}
   _stack: -1
-  _gatherArea: 1
-  _includeNodeTileForGathering: 0
+  _relativeGatheringPositions:
+  - {x: 0, y: 1}
+  - {x: 0, y: -1}
+  - {x: -1, y: 0}
+  - {x: 1, y: 0}
+  - {x: -1, y: 1}
+  - {x: 1, y: 1}
+  - {x: -1, y: -1}
+  - {x: 1, y: -1}
   _interactionType: 1
   _nodeSprite: {fileID: 0}
   _stopSelectCommand: {fileID: 0}
@@ -28,3 +35,5 @@ MonoBehaviour:
   _item:
     Item: {fileID: 11400000, guid: ee7cbe2a3dd07bd4791f6517be7eba67, type: 2}
     Stack: 1
+  _skill: {fileID: 11400000, guid: 7c2c8a6a5cc026c42a3a4094d8850f2a, type: 2}
+  _skillBonusPercent: 1

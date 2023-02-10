@@ -26,6 +26,11 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             endMinigameMsg.Unit = _controller.transform.parent.gameObject;
             _controller.gameObject.SendMessage(endMinigameMsg);
             MessageFactory.CacheMessage(endMinigameMsg);
+
+            var setUnitStateMsg = MessageFactory.GenerateSetMinigameUnitStateMsg();
+            setUnitStateMsg.State = MinigameUnitState.Disabled;
+            _controller.gameObject.SendMessageTo(setUnitStateMsg, _controller.transform.parent.gameObject);
+            MessageFactory.CacheMessage(setUnitStateMsg);
         }
     }
 }

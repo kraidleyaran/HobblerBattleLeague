@@ -1,7 +1,7 @@
 ﻿using System;
 using Assets.Resources.Ancible_Tools.Scripts.System.SaveData;
 
-namespace Assets.Ancible_Tools.Scripts.System.SaveData.Buildings
+namespace Assets.Ancible_Tools.Scripts.System.SaveData.Building
 {
     [Serializable]
     public class BuildingData : IDisposable

@@ -4,7 +4,7 @@ TextureImporter:
   internalIDToNameTable:
   - first:
       213: 5601323976189978565
-    second: Stone Blade
+    second: Footman's Sword
   - first:
       213: -761887118410055393
     second: Great Stone Blade
@@ -79,10 +79,10 @@ TextureImporter:
     second: Weapons_24
   - first:
       213: -150671194606510068
-    second: Weapons_25
+    second: Club
   - first:
       213: 111540097082384536
-    second: Weapons_26
+    second: Spiked Club
   - first:
       213: 8681363007004761560
     second: Weapons_27
@@ -130,7 +130,7 @@ TextureImporter:
     second: Weapons_41
   - first:
       213: -774299901840641857
-    second: Weapons_42
+    second: Reflex Bow
   - first:
       213: -1325017773493138764
     second: Weapons_43
@@ -169,7 +169,7 @@ TextureImporter:
     second: Weapons_54
   - first:
       213: -2300029148869845589
-    second: Weapons_55
+    second: Apprentice Staff
   - first:
       213: 5286152548734671800
     second: Weapons_56
@@ -290,7 +290,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Stone Blade
+      name: Footman's Sword
       rect:
         serializedVersion: 2
         x: 0
@@ -815,7 +815,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Weapons_25
+      name: Club
       rect:
         serializedVersion: 2
         x: 16
@@ -836,7 +836,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Weapons_26
+      name: Spiked Club
       rect:
         serializedVersion: 2
         x: 32
@@ -1172,7 +1172,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Weapons_42
+      name: Reflex Bow
       rect:
         serializedVersion: 2
         x: 32
@@ -1445,7 +1445,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Weapons_55
+      name: Apprentice Staff
       rect:
         serializedVersion: 2
         x: 112

@@ -115,6 +115,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _gridTransform: {fileID: 6647984542588253963}
   _iconImage: {fileID: 6089803945391135943}
+  _iconBorder: {fileID: 446752795429791451}
   _alertText: {fileID: 3716508009786689943}
   _moveTime: 45
   _movePosition: -262

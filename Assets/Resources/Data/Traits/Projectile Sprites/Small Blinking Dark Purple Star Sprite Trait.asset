@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: edbe00d6aa4e3ad499a1bbb3e213a84f, type: 3}
+  m_Name: Small Blinking Dark Purple Star Sprite Trait
+  m_EditorClassIdentifier: 
+  MaxStack: 1
+  _sprite: {fileID: -6587075892296573196, guid: 5a229f2969b658f48ac9ac2db373be63, type: 3}
+  _runtimeAnimator: {fileID: 9100000, guid: c7cb36e6529d8b54f93f6428e24f7ae7, type: 2}
+  _scaling: {x: 31.25, y: 31.25}
+  _spriteLayer: {fileID: 11400000, guid: c6a1960323536384baa5acd7c37e3599, type: 2}
+  _sortingOrder: 100
+  _offset: {x: 0, y: 0}
+  _colorMask: {r: 1, g: 1, b: 1, a: 1}
+  _rotation: 0
+  _flipX: 0
+  _flipY: 0
+  _flipSprite: 0
+  _bumpDistance: 1
+  _bumpTicks: 1
+  _animationStates: 0
+  _overrideMapTileSorting: 0

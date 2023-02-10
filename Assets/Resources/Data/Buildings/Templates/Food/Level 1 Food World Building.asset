@@ -17,11 +17,19 @@ MonoBehaviour:
   Icon: {fileID: 7554081255881643696, guid: 2b8f0602ca246a843860ad4b1b843b9a, type: 3}
   Sprites:
   - {fileID: 11400000, guid: b574a4b281bd41947ad14a0bd57bb72d, type: 2}
-  RequiredTiles: []
+  RequiredTiles:
+  - {x: 0, y: 1}
+  - {x: 0, y: -1}
+  - {x: -1, y: 0}
+  - {x: 1, y: 0}
+  - {x: -1, y: 1}
+  - {x: 1, y: 1}
+  - {x: -1, y: -1}
+  - {x: 1, y: -1}
   BlockingTiles:
   - {x: 0, y: 0}
   Template: {fileID: 11400000, guid: 7e87e9f9101671946937a7a9eb0eef0d, type: 2}
-  Cost: 1
+  Cost: 25
   Upgrades:
     Buildings:
     - {fileID: 11400000, guid: c8b88366b8ce8154a96429a24058215c, type: 2}

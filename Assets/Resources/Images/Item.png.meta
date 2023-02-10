@@ -205,7 +205,7 @@ TextureImporter:
     second: Item_66
   - first:
       213: 7204217345763328989
-    second: Item_67
+    second: Mana Potion
   - first:
       213: 1992998090958234927
     second: Item_68
@@ -643,16 +643,16 @@ TextureImporter:
     second: Silver Ring
   - first:
       213: -2132846676789888953
-    second: Item_213
+    second: Strength Band
   - first:
       213: -4075345766457696751
-    second: Item_214
+    second: Ring of Agility
   - first:
       213: 3677099331700584818
-    second: Item_215
+    second: Footman's Ring
   - first:
       213: 2196410206623280606
-    second: Item_216
+    second: Arcane Band
   - first:
       213: -1324450774362798219
     second: Item_217
@@ -661,7 +661,7 @@ TextureImporter:
     second: Item_218
   - first:
       213: 5612137041232314748
-    second: Item_219
+    second: Ring of the Follower
   - first:
       213: -2354947892214407683
     second: Item_220
@@ -814,16 +814,16 @@ TextureImporter:
     second: Item_269
   - first:
       213: 5665147199802603098
-    second: Item_270
+    second: Apprentice Amulet
   - first:
       213: -8275460760682668031
     second: Item_271
   - first:
       213: 4841911928076375335
-    second: Item_272
+    second: Rogue's Pendant
   - first:
       213: -1902480797917915608
-    second: Trinket Icon
+    second: Holy Pendant
   - first:
       213: -8381235707725568578
     second: Item_274
@@ -946,13 +946,13 @@ TextureImporter:
     second: Study Icon 2
   - first:
       213: -1038995589839815560
-    second: Item_314
+    second: Basic Spells Vol. 1
   - first:
       213: 2770624902037738622
-    second: Item_315
+    second: Basic Spells Vol 2.
   - first:
       213: 991411213321432952
-    second: Item_316
+    second: Basic Spells Vol 3.
   - first:
       213: -3982657237903775736
     second: Item_317
@@ -1000,7 +1000,7 @@ TextureImporter:
     second: Item_331
   - first:
       213: -7154655626011236041
-    second: Item_332
+    second: War Horn
   - first:
       213: -5539880271301759760
     second: Item_333
@@ -1204,7 +1204,7 @@ TextureImporter:
     second: Item_399
   - first:
       213: -6528855298566401050
-    second: Item_400
+    second: Iron Ore
   - first:
       213: -2202832307352794470
     second: Item_401
@@ -1216,7 +1216,7 @@ TextureImporter:
     second: Item_403
   - first:
       213: -1054775756065530648
-    second: Item_404
+    second: Wood Icon
   - first:
       213: -1808294713149704508
     second: Item_405
@@ -1396,7 +1396,7 @@ TextureImporter:
     second: Item_463
   - first:
       213: -6532214027558274052
-    second: Item_464
+    second: Iron Bar
   - first:
       213: 4855478955841123584
     second: Item_465
@@ -1438,7 +1438,7 @@ TextureImporter:
     second: Item_477
   - first:
       213: 5225831342146474410
-    second: Item_478
+    second: Crafting Icon 0
   - first:
       213: -6607504521139571946
     second: Item_479
@@ -1453,7 +1453,7 @@ TextureImporter:
     second: Item_482
   - first:
       213: 1514049779320286944
-    second: Stone Mallet
+    second: Crafting Icon 1
   - first:
       213: 227499192886884146
     second: Item_484
@@ -1693,7 +1693,7 @@ TextureImporter:
     second: Item_562
   - first:
       213: -8131178587875080484
-    second: Item_563
+    second: Bronze Disk
   - first:
       213: 9002190994465767025
     second: Item_564
@@ -1702,10 +1702,10 @@ TextureImporter:
     second: Item_565
   - first:
       213: -6584142763177310598
-    second: Item_566
+    second: Wood Shield
   - first:
       213: -726411472953255047
-    second: Item_567
+    second: Spiked Shield
   - first:
       213: -5136220711578305972
     second: Item_568
@@ -1786,7 +1786,7 @@ TextureImporter:
     second: Item_593
   - first:
       213: 2399291448252019018
-    second: Item_594
+    second: Training Sword
   - first:
       213: -1661644775049069456
     second: Item_595
@@ -1795,10 +1795,10 @@ TextureImporter:
     second: Item_596
   - first:
       213: 378837585755033801
-    second: Item_597
+    second: Item_597W
   - first:
       213: 6410758321597398900
-    second: Item_598
+    second: Wood Shield
   - first:
       213: 3327634997648024829
     second: Item_599
@@ -1906,7 +1906,7 @@ TextureImporter:
     second: Item_633
   - first:
       213: -6532573431951129393
-    second: Item_634
+    second: Red Arrow
   - first:
       213: -8474108377402637942
     second: Item_635
@@ -2239,7 +2239,7 @@ TextureImporter:
     second: Iron Mallet
   - first:
       213: 3671390876100913593
-    second: Item_745
+    second: Stone Helmet
   - first:
       213: 5858135056049351826
     second: Item_746
@@ -2278,7 +2278,7 @@ TextureImporter:
     second: Item_757
   - first:
       213: 3771692918947791538
-    second: Apprentice Cloak
+    second: Robes of the Apprentice
   - first:
       213: 6703537975157026687
     second: Item_759
@@ -2320,7 +2320,7 @@ TextureImporter:
     second: Item_771
   - first:
       213: 7143418154412594214
-    second: Item_772
+    second: Hardened Leather Gloves
   - first:
       213: -2815793692000539107
     second: Item_773
@@ -2347,7 +2347,7 @@ TextureImporter:
     second: Item_780
   - first:
       213: 3021282411507275391
-    second: Apprentice Cap
+    second: Black Wizard Cap
   - first:
       213: 8727658568133382563
     second: Item_782
@@ -2527,7 +2527,7 @@ TextureImporter:
     second: Steel Jagged Axe
   - first:
       213: -5921265649936300525
-    second: Item_841
+    second: Iron Visor
   - first:
       213: -4714114007009377996
     second: Item_842
@@ -2539,7 +2539,7 @@ TextureImporter:
     second: Item_844
   - first:
       213: -7264796650165535970
-    second: Item_845
+    second: Iron Boots
   - first:
       213: 2733233926224850450
     second: Item_846
@@ -2719,7 +2719,7 @@ TextureImporter:
     second: Item_904
   - first:
       213: 8970911918651364656
-    second: Item_905
+    second: Iron Helm
   - first:
       213: 5963728092090514388
     second: Item_906
@@ -2758,7 +2758,7 @@ TextureImporter:
     second: Item_917
   - first:
       213: -7519865016705449388
-    second: Item_918
+    second: Iron Grips
   - first:
       213: 4376556338486338450
     second: Item_919
@@ -2800,7 +2800,7 @@ TextureImporter:
     second: Jagged Axe
   - first:
       213: 4057737179899707984
-    second: Stamina Icon
+    second: Hard Leather Boots
   - first:
       213: -6201107019143491926
     second: Leather Boots
@@ -3061,10 +3061,10 @@ TextureImporter:
     second: Item_1018
   - first:
       213: 7707165942720557590
-    second: Enchanted Twig
+    second: Training Wand
   - first:
       213: 7276692227602403460
-    second: Bow Staff
+    second: Training Staff
   - first:
       213: 3006215599022934071
     second: Item_1021
@@ -3082,7 +3082,7 @@ TextureImporter:
     second: Item_1025
   - first:
       213: 7619000427558421538
-    second: Item_1026
+    second: Burnt Wand
   - first:
       213: 8697172718147034512
     second: Item_1027
@@ -3217,7 +3217,7 @@ TextureImporter:
     second: Item_1070
   - first:
       213: 8820204732360213612
-    second: Item_1071
+    second: Wood Cane
   - first:
       213: 9195688605803175186
     second: Item_1072
@@ -3505,10 +3505,10 @@ TextureImporter:
     second: Item_1166
   - first:
       213: -3198976444967800993
-    second: Item_1167
+    second: Ankh
   - first:
       213: 2725261340739739238
-    second: Item_1168
+    second: Lucky Clover
   - first:
       213: -153611857495457856
     second: Item_1169
@@ -3697,7 +3697,7 @@ TextureImporter:
     second: Item_1230
   - first:
       213: -6521769041175996243
-    second: Item_1231
+    second: Cross
   - first:
       213: 1228599581544524427
     second: Item_1232
@@ -3716,6 +3716,21 @@ TextureImporter:
   - first:
       213: -7763409869652998020
     second: Item_1237
+  - first:
+      213: -4866220581708105810
+    second: Elvish Boots
+  - first:
+      213: 949356957589755430
+    second: Magician's Boots
+  - first:
+      213: -3487044263661249587
+    second: Sandals of the Apprentice
+  - first:
+      213: 4451213847460292218
+    second: Black Wizard Cap
+  - first:
+      213: 4155099681058498409
+    second: Burnt Wand
   externalObjects: {}
   serializedVersion: 12
   mipmaps:
@@ -5237,7 +5252,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Item_67
+      name: Mana Potion
       rect:
         serializedVersion: 2
         x: 48
@@ -8303,7 +8318,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Item_213
+      name: Strength Band
       rect:
         serializedVersion: 2
         x: 16
@@ -8324,7 +8339,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Item_214
+      name: Ring of Agility
       rect:
         serializedVersion: 2
         x: 32
@@ -8345,7 +8360,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Item_215
+      name: Footman's Ring
       rect:
         serializedVersion: 2
         x: 48
@@ -8366,7 +8381,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Item_216
+      name: Arcane Band
       rect:
         serializedVersion: 2
         x: 64
@@ -8429,7 +8444,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Item_219
+      name: Ring of the Follower
       rect:
         serializedVersion: 2
         x: 112
@@ -9500,7 +9515,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Item_270
+      name: Apprentice Amulet
       rect:
         serializedVersion: 2
         x: 96
@@ -9542,7 +9557,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Item_272
+      name: Rogue's Pendant
       rect:
         serializedVersion: 2
         x: 128
@@ -9563,7 +9578,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Trinket Icon
+      name: Holy Pendant
       rect:
         serializedVersion: 2
         x: 144
@@ -10424,7 +10439,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Item_314
+      name: Basic Spells Vol. 1
       rect:
         serializedVersion: 2
         x: 96
@@ -10445,7 +10460,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Item_315
+      name: Basic Spells Vol 2.
       rect:
         serializedVersion: 2
         x: 112
@@ -10466,7 +10481,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Item_316
+      name: Basic Spells Vol 3.
       rect:
         serializedVersion: 2
         x: 128
@@ -10802,7 +10817,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Item_332
+      name: War Horn
       rect:
         serializedVersion: 2
         x: 384
@@ -12230,7 +12245,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Item_400
+      name: Iron Ore
       rect:
         serializedVersion: 2
         x: 720
@@ -12314,7 +12329,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Item_404
+      name: Wood Icon
       rect:
         serializedVersion: 2
         x: 784
@@ -13574,7 +13589,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Item_464
+      name: Iron Bar
       rect:
         serializedVersion: 2
         x: 976
@@ -13868,7 +13883,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Item_478
+      name: Crafting Icon 0
       rect:
         serializedVersion: 2
         x: 512
@@ -13973,7 +13988,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Stone Mallet
+      name: Crafting Icon 1
       rect:
         serializedVersion: 2
         x: 608
@@ -15653,7 +15668,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Item_563
+      name: Bronze Disk
       rect:
         serializedVersion: 2
         x: 16
@@ -15716,7 +15731,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Item_566
+      name: Wood Shield
       rect:
         serializedVersion: 2
         x: 64
@@ -15737,7 +15752,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Item_567
+      name: Spiked Shield
       rect:
         serializedVersion: 2
         x: 80
@@ -16304,7 +16319,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Item_594
+      name: Training Sword
       rect:
         serializedVersion: 2
         x: 48
@@ -16367,7 +16382,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Item_597
+      name: Item_597W
       rect:
         serializedVersion: 2
         x: 96
@@ -17144,7 +17159,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Item_634
+      name: Red Arrow
       rect:
         serializedVersion: 2
         x: 368
@@ -19748,7 +19763,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Apprentice Cloak
+      name: Robes of the Apprentice
       rect:
         serializedVersion: 2
         x: 416
@@ -20042,7 +20057,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Item_772
+      name: Hardened Leather Gloves
       rect:
         serializedVersion: 2
         x: 256
@@ -20231,7 +20246,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Apprentice Cap
+      name: Black Wizard Cap
       rect:
         serializedVersion: 2
         x: 400
@@ -21491,7 +21506,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Item_841
+      name: Iron Visor
       rect:
         serializedVersion: 2
         x: 208
@@ -21575,7 +21590,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Item_845
+      name: Iron Boots
       rect:
         serializedVersion: 2
         x: 272
@@ -22835,7 +22850,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Item_905
+      name: Iron Helm
       rect:
         serializedVersion: 2
         x: 448
@@ -23108,7 +23123,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Item_918
+      name: Iron Grips
       rect:
         serializedVersion: 2
         x: 320
@@ -23402,7 +23417,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Stamina Icon
+      name: Hard Leather Boots
       rect:
         serializedVersion: 2
         x: 320
@@ -25229,7 +25244,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Enchanted Twig
+      name: Training Wand
       rect:
         serializedVersion: 2
         x: 336
@@ -25250,7 +25265,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Bow Staff
+      name: Training Staff
       rect:
         serializedVersion: 2
         x: 352
@@ -25376,7 +25391,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Item_1026
+      name: Burnt Wand
       rect:
         serializedVersion: 2
         x: 448
@@ -26321,7 +26336,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Item_1071
+      name: Wood Cane
       rect:
         serializedVersion: 2
         x: 400
@@ -28337,7 +28352,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Item_1167
+      name: Ankh
       rect:
         serializedVersion: 2
         x: 128
@@ -28358,7 +28373,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Item_1168
+      name: Lucky Clover
       rect:
         serializedVersion: 2
         x: 144
@@ -29681,7 +29696,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Item_1231
+      name: Cross
       rect:
         serializedVersion: 2
         x: 128
@@ -29823,6 +29838,111 @@ TextureImporter:
       bones: []
       spriteID: c7842991bd3d24490800000000000000
       internalID: -7763409869652998020
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Elvish Boots
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 544
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ea7f79cc926b77cb0800000000000000
+      internalID: -4866220581708105810
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Magician's Boots
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 560
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 626de2e7f1bcc2d00800000000000000
+      internalID: 949356957589755430
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sandals of the Apprentice
+      rect:
+        serializedVersion: 2
+        x: 544
+        y: 528
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dcb5864a7b78b9fc0800000000000000
+      internalID: -3487044263661249587
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Apprentice Cap
+      rect:
+        serializedVersion: 2
+        x: 400
+        y: 640
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a76ab252963e5cd30800000000000000
+      internalID: 4451213847460292218
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Apprentice Wand
+      rect:
+        serializedVersion: 2
+        x: 464
+        y: 448
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 967a4df2521e9a930800000000000000
+      internalID: 4155099681058498409
       vertices: []
       indices: 
       edges: []

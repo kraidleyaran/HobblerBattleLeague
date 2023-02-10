@@ -15,4 +15,4 @@ MonoBehaviour:
   MaxStack: 1
   _chestSpawnTemplate: {fileID: 11400000, guid: 9247008299096964e91da30f97cfe7f1, type: 2}
   _lootTable: {fileID: 11400000, guid: c47f95499c0036f479c5dd1680661f76, type: 2}
-  _chanceToSpawnLoot: 0.2
+  _chanceToSpawnLoot: 0.8

@@ -13,6 +13,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Items
         [SerializeField] private Sprite _icon = null;
         public int MaxStack = 1;
         public int GoldValue = -1;
+        public ItemRarity Rarity = ItemRarity.Common;
 
         public virtual string GetDescription()
         {

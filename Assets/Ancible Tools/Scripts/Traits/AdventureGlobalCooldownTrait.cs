@@ -54,5 +54,12 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         {
             _unitState = msg.State;
         }
+
+        public override void Destroy()
+        {
+            _globalCooldown?.Destroy();
+            _globalCooldown = null;
+            base.Destroy();
+        }
     }
 }

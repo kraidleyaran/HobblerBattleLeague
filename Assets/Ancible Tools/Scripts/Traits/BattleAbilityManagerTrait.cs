@@ -15,6 +15,8 @@ namespace Assets.Ancible_Tools.Scripts.Traits
     {
         [SerializeField] private WorldAbility[] _startingAbilities = new WorldAbility[0];
         [SerializeField] private int _maxAbilities = 4;
+        [SerializeField] private float _bumpDistance = 16f * .3125f;
+        [SerializeField] private int _defaultBumpSpeed = 50;
 
         private UnitBattleState _battleState = UnitBattleState.Active;
 
@@ -69,13 +71,25 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                 MessageFactory.CacheMessage(queryUnitBattleStateMsg);
                 if (targetBattleState != UnitBattleState.Dead)
                 {
-
-                    var doBumpMsg = MessageFactory.GenerateDoBumpMsg();
-                    doBumpMsg.Direction = (target.transform.position.ToVector2() - _controller.transform.parent.position.ToVector2()).normalized;
-                    doBumpMsg.OnBump = () => { UseAbilityOnTarget(ability, target); };
+                    
+                    var diff = target.transform.position.ToVector2() - _controller.transform.parent.position.ToVector2();
+                    var doBumpMsg = MessageFactory.GenerateDoBumpOverPixelsPerSecondMsg();
+                    doBumpMsg.Direction = diff.normalized;
+                    doBumpMsg.Distance = _bumpDistance;
+                    doBumpMsg.PixelsPerSecond = _defaultBumpSpeed;
+                    doBumpMsg.OnBump = () =>{ UseAbilityOnTarget(ability, target);};
                     doBumpMsg.DoAfter = CleanUpCasting;
+                    //var doBumpMsg = MessageFactory.GenerateDoBumpMsg();
+                    //doBumpMsg.Direction = (target.transform.position.ToVector2() - _controller.transform.parent.position.ToVector2()).normalized;
+                    //doBumpMsg.OnBump = () => { UseAbilityOnTarget(ability, target); };
+                    //doBumpMsg.DoAfter = CleanUpCasting;
                     _controller.gameObject.SendMessageTo(doBumpMsg, _controller.transform.parent.gameObject);
                     MessageFactory.CacheMessage(doBumpMsg);
+
+                    var applyManaMsg = MessageFactory.GenerateApplyManaMsg();
+                    applyManaMsg.Amount = ability.Instance.ManaCost * -1;
+                    _controller.gameObject.SendMessageTo(applyManaMsg, _controller.transform.parent.gameObject);
+                    MessageFactory.CacheMessage(applyManaMsg);
                 }
                 else
                 {
@@ -94,10 +108,10 @@ namespace Assets.Ancible_Tools.Scripts.Traits
 
         }
 
-        private KeyValuePair<int, AbilityInstance>[] GetAvailableAllyAbilities(MapTile currentTile, GameObject[] allies)
+        private KeyValuePair<int, AbilityInstance>[] GetAvailableAllyAbilities(MapTile currentTile, GameObject[] allies, int mana)
         {
             var returnAbilities = new List<KeyValuePair<int, AbilityInstance>>();
-            var abilities = _abilities.Where(kv => kv.Value != null && !kv.Value.OnCooldown && (kv.Value.Instance.Type == AbilityType.Both || kv.Value.Instance.Type == AbilityType.Other) && (kv.Value.Instance.Alignment == AbilityTargetAlignment.Ally || kv.Value.Instance.Alignment == AbilityTargetAlignment.Both)).ToList();
+            var abilities = _abilities.Where(kv => kv.Value != null && kv.Value.Instance.ManaCost <= mana && !kv.Value.OnCooldown && (kv.Value.Instance.Type == AbilityType.Both || kv.Value.Instance.Type == AbilityType.Other) && (kv.Value.Instance.Alignment == AbilityTargetAlignment.Ally || kv.Value.Instance.Alignment == AbilityTargetAlignment.Both)).ToList();
             
             if (abilities.Count > 0)
             {
@@ -190,8 +204,14 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             MessageFactory.CacheMessage(canCastMsg);
             if (canCast)
             {
-                var allyAbilities = GetAvailableAllyAbilities(msg.Origin, msg.Allies).ToList();
-                var availableAbilities = _abilities.Where(kv => kv.Value != null && !kv.Value.OnCooldown && kv.Value.Instance.CanApplyToTarget(_controller.transform.parent.gameObject, msg.Target, msg.Distance)).ToList();
+                var currentMana = 0;
+                var queryManaMsg = MessageFactory.GenerateQueryManaMsg();
+                queryManaMsg.DoAfter = (current, max) => { currentMana = current; };
+                _controller.gameObject.SendMessageTo(queryManaMsg, _controller.transform.parent.gameObject);
+                MessageFactory.CacheMessage(queryManaMsg);
+
+                var allyAbilities = GetAvailableAllyAbilities(msg.Origin, msg.Allies, currentMana).ToList();
+                var availableAbilities = _abilities.Where(kv => kv.Value != null && kv.Value.Instance.ManaCost <= currentMana && !kv.Value.OnCooldown && kv.Value.Instance.CanApplyToTarget(_controller.transform.parent.gameObject, msg.Target, msg.Distance)).ToList();
                 availableAbilities.AddRange(allyAbilities);
                 if (availableAbilities.Count > 0)
                 {

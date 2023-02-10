@@ -172,10 +172,10 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: 4a3cea3f137faf04a9a800cb8a153ee7, type: 2}
-    m_FontSize: 16
+    m_FontSize: 15
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 10
+    m_MinSize: 0
     m_MaxSize: 40
     m_Alignment: 4
     m_AlignByGeometry: 0
@@ -183,7 +183,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Battle!
+  m_Text: Enter World
 --- !u!114 &7739506051412123863
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -212,7 +212,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_EffectColor: {r: 0, g: 0, b: 0, a: 1}
-  m_EffectDistance: {x: -1, y: -1}
+  m_EffectDistance: {x: 1, y: 1}
   m_UseGraphicAlpha: 1
 --- !u!1 &7739506051550962537
 GameObject:
@@ -657,7 +657,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 464, y: 508}
+  m_SizeDelta: {x: 464, y: 472}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7739506051781546261
 CanvasRenderer:
@@ -1277,7 +1277,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &7739506052259696736
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1519,9 +1519,9 @@ MonoBehaviour:
   m_Padding:
     m_Left: 0
     m_Right: 0
-    m_Top: 24
+    m_Top: 32
     m_Bottom: 0
-  m_ChildAlignment: 4
+  m_ChildAlignment: 1
   m_Spacing: 16
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 1
@@ -1705,7 +1705,7 @@ GameObject:
   - component: {fileID: 7739506052589733382}
   - component: {fileID: 920303915810840529}
   m_Layer: 5
-  m_Name: Button
+  m_Name: Enter World Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1726,10 +1726,10 @@ RectTransform:
   m_Father: {fileID: 7739506052259696736}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 482, y: -24}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 192, y: 32}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7739506052589733376
 CanvasRenderer:
@@ -1752,7 +1752,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.8784314, g: 0.23529412, b: 0.15686275, a: 1}
+  m_Color: {r: 0.07450981, g: 0.6156863, b: 0.03137255, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1782,7 +1782,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 0
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
@@ -2015,8 +2015,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d6180358be41a6438984a466731c2da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  WorldName: 
   ActiveWorldStates: 00000000
   DisabledStates: 
+  _enterWorldButton: {fileID: 7739506052589733382}
 --- !u!1 &7739506052759768997
 GameObject:
   m_ObjectHideFlags: 0
@@ -2134,7 +2136,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 464, y: 508}
+  m_SizeDelta: {x: 464, y: 472}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7739506053023885684
 CanvasRenderer:

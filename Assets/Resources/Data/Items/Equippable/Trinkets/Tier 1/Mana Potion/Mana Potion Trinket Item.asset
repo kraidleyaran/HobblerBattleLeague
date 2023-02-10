@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa3670f52213d994dbbec882bbf09287, type: 3}
+  m_Name: Mana Potion Trinket Item
+  m_EditorClassIdentifier: 
+  DisplayName: Mana Potion
+  Description: 
+  _icon: {fileID: 7204217345763328989, guid: 2b8f0602ca246a843860ad4b1b843b9a, type: 3}
+  MaxStack: 1
+  GoldValue: 50
+  Rarity: 1
+  _applyOnEquip:
+  - {fileID: 11400000, guid: 09205c955a2e3ee40beeb9cc61b7fdbd, type: 2}
+  - {fileID: 11400000, guid: 9b22e1ddacfc01740a0232f410c8fc93, type: 2}

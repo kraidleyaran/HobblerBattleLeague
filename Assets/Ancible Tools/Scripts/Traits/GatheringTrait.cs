@@ -33,6 +33,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             _controller.transform.parent.gameObject.SubscribeWithFilter<UpdateMonsterStateMessage>(UpdateMonsterState, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<ObstacleMessage>(Obstacle, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<SearchForResourceNodeMessage>(SearchForResourceNode, _instanceId);
+            _controller.transform.parent.gameObject.SubscribeWithFilter<SearchForCraftingNodeMessage>(SearchForCraftingNode, _instanceId);
         }
 
         private void SearchForNode(SearchForNodeMessage msg)
@@ -66,6 +67,19 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         private void SearchForResourceNode(SearchForResourceNodeMessage msg)
         {
             var node = WorldNodeManager.GetClosestNodeByItem(_currentTile, msg.Item);
+            if (node != null)
+            {
+                var interactMsg = MessageFactory.GenerateInteractMsg();
+                interactMsg.Owner = _controller.transform.parent.gameObject;
+                _controller.gameObject.SendMessageTo(interactMsg, node.Unit);
+                MessageFactory.CacheMessage(interactMsg);
+                msg.DoAfter?.Invoke();
+            }
+        }
+
+        private void SearchForCraftingNode(SearchForCraftingNodeMessage msg)
+        {
+            var node = WorldNodeManager.GetClosestNodeByCraftingSkill(_currentTile, msg.Skill);
             if (node != null)
             {
                 var interactMsg = MessageFactory.GenerateInteractMsg();

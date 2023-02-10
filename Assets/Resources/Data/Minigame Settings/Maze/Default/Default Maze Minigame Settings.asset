@@ -34,7 +34,36 @@ MonoBehaviour:
   PaintGroundForWall: 0
   EdgeBuffer: 20
   VerticalDoorSpawn: {fileID: 5753810329028742340, guid: b3b03e638ecc9e549b3c041724c5986a, type: 3}
+  VerticalDoorOverTiles:
+  - TileData: 246
+    Brush: 0
+    Position: {x: 0, y: 0}
+  - TileData: 198
+    Brush: 0
+    Position: {x: 0, y: 1}
+  - TileData: 294
+    Brush: 0
+    Position: {x: 0, y: -1}
   HorizontalDoorSpawn: {fileID: 5753810329028742340, guid: e707c7cb47b786a4f92f5bac246433e3, type: 3}
+  HorizontalDoorOverTiles:
+  - TileData: 202
+    Brush: 0
+    Position: {x: -1, y: 0}
+  - TileData: 203
+    Brush: 0
+    Position: {x: 0, y: 0}
+  - TileData: 204
+    Brush: 0
+    Position: {x: 1, y: 0}
+  - TileData: 154
+    Brush: 0
+    Position: {x: -1, y: 1}
+  - TileData: 155
+    Brush: 0
+    Position: {x: 0, y: 1}
+  - TileData: 156
+    Brush: 0
+    Position: {x: 1, y: 1}
   UpEndTemplate: {fileID: 11400000, guid: 9cf1daa6410423948b92ad440bc95eb9, type: 2}
   DownEndTemplate: {fileID: 11400000, guid: d048ac4559618ba4b93ce26fc8d384ab, type: 2}
   LeftEndTemplate: {fileID: 11400000, guid: f5c591850b1c1d5469e3276032841a42, type: 2}

@@ -258,6 +258,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _emptyIcon: {fileID: 2589848835446882574}
   _equippedIcon: {fileID: 2378613478289721756}
+  _borderImage: {fileID: 1366491661567305755}
   _equipSlot: 1
 --- !u!114 &5631309707625826296
 MonoBehaviour:

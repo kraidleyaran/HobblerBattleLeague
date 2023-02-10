@@ -23,4 +23,6 @@ MonoBehaviour:
   - {x: 1, y: 0}
   - {x: -1, y: 0}
   Template: {fileID: 11400000, guid: 9cecf5b96c117cb429a43b9b88dd8667, type: 2}
-  Cost: 1
+  Cost: 25
+  Upgrades:
+    Buildings: []

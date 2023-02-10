@@ -18,8 +18,8 @@ MonoBehaviour:
   _applyOnFinish:
   - {fileID: 11400000, guid: f300ba10613df734bb9f6c59d8d77057, type: 2}
   _stack: -1
-  _gatherArea: 0
-  _includeNodeTileForGathering: 1
+  _relativeGatheringPositions:
+  - {x: 0, y: 0}
   _interactionType: 2
   _nodeSprite: {fileID: 0}
   _stopSelectCommand: {fileID: 11400000, guid: c9c426c506ba43946baeeec1b27246f1, type: 2}

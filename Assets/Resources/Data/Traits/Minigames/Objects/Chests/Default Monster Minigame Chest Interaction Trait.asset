@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Default Monster Minigame Chest Interaction Trait
   m_EditorClassIdentifier: 
   MaxStack: 1
-  _openSprite: {fileID: 11400000, guid: 2d600b30919974341867c43e45e01327, type: 2}
+  _openSprite: {fileID: 11400000, guid: efe0437934b5b1444809158c74ea2cbb, type: 2}
   _lootTable: {fileID: 11400000, guid: c47f95499c0036f479c5dd1680661f76, type: 2}
   _skipSpawnCount: 1

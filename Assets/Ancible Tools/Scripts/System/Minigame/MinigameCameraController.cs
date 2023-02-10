@@ -31,6 +31,17 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Minigame
             SubscribeToMessages();
         }
 
+        void LateUpdate()
+        {
+            var pos = transform.position.ToVector2();
+            var pixelPerfect = pos.ToPixelPerfect();
+            if (pixelPerfect != pos)
+            {
+                transform.SetTransformPosition(pixelPerfect);
+            }
+            
+        }
+
         private void SubscribeToMessages()
         {
             gameObject.Subscribe<SetMinigameCameraPositionMessage>(SetMinigameCameraPosition);

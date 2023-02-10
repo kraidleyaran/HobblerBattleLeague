@@ -8,6 +8,9 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Skills
     {
         public int Level { get; private set; }
         public int Experience { get; private set; }
+        public float Permanent;
+        public float Bonus;
+        public float TotalBonus => Permanent + Bonus;
 
         public SkillInstance(WorldSkill skill)
         {
@@ -21,6 +24,8 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Skills
             Instance = skill;
             Level = data.Level;
             Experience = data.Experience;
+            Permanent = data.Permanent;
+            Bonus = 0;
         }
 
         public int GainExperience(int amount)
@@ -73,6 +78,11 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Skills
                     }
                 }
 
+                var applySkillBonusMsg = MessageFactory.GenerateApplySkillBonusMsg();
+                applySkillBonusMsg.Bonus = Instance.Levels[Level - 1].Bonus;
+                applySkillBonusMsg.Permanent = true;
+                owner.SendMessageTo(applySkillBonusMsg, owner);
+                MessageFactory.CacheMessage(applySkillBonusMsg);
                 levelCount++;
             }
             MessageFactory.CacheMessage(addTraitToUnitMsg);
@@ -91,14 +101,15 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Skills
         public void SetFromData(SkillData data, GameObject owner = null)
         {
             Experience = data.Experience;
-            if (owner)
-            {
-                ApplyLevels(data.Level, owner);
-            }
-            else
-            {
-                Level = data.Level;
-            }
+            Level = data.Level;
+            //if (owner)
+            //{
+            //    ApplyLevels(data.Level, owner);
+            //}
+            //else
+            //{
+                
+            //}
 
         }
     }

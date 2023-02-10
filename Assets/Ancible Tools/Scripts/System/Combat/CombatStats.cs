@@ -180,6 +180,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Combat
                 Health = (int) (a.Health + g.Health),
                 Mana = (int) (a.Mana + g.Mana),
                 Strength = (int) (a.Strength + g.Strength),
+                Agility = (int)(a.Agility + g.Agility),
                 Magic = (int) (a.Magic + g.Magic),
                 Faith = (int) (a.Faith + g.Faith),
                 Defense = (int) (a.Defense + g.Armor),

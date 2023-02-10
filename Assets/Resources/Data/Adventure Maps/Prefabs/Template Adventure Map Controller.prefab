@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 192293050646775088}
   - component: {fileID: 3474860404083793032}
-  m_Layer: 13
+  m_Layer: 3
   m_Name: Spawns
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -181,7 +181,7 @@ GameObject:
   - component: {fileID: 3949360467178129145}
   - component: {fileID: 3949360467178129144}
   - component: {fileID: 3949360467178129143}
-  m_Layer: 13
+  m_Layer: 3
   m_Name: Player Pathing
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -365,7 +365,7 @@ GameObject:
   - component: {fileID: 3949360468142412053}
   - component: {fileID: 3949360468142412054}
   - component: {fileID: 3949360468142412055}
-  m_Layer: 13
+  m_Layer: 3
   m_Name: Monster Pathing
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -518,7 +518,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3949360468476208020}
-  m_Layer: 13
+  m_Layer: 3
   m_Name: Pathing
   m_TagString: Untagged
   m_Icon: {fileID: 0}

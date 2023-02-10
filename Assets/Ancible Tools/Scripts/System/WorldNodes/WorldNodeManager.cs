@@ -3,6 +3,7 @@ using System.Linq;
 using Assets.Resources.Ancible_Tools.Scripts.System;
 using Assets.Resources.Ancible_Tools.Scripts.System.Items;
 using Assets.Resources.Ancible_Tools.Scripts.System.Pathing;
+using Assets.Resources.Ancible_Tools.Scripts.System.Skills;
 using MessageBusLib;
 using UnityEngine;
 
@@ -14,6 +15,7 @@ namespace Assets.Ancible_Tools.Scripts.System.WorldNodes
 
         private Dictionary<WorldNodeType, List<RegisteredWorldNode>> _nodes = new Dictionary<WorldNodeType, List<RegisteredWorldNode>>();
         private Dictionary<WorldItem, List<RegisteredWorldNode>> _resourceNodes = new Dictionary<WorldItem, List<RegisteredWorldNode>>();
+        private Dictionary<WorldSkill,List<RegisteredWorldNode>> _craftingNodes = new Dictionary<WorldSkill, List<RegisteredWorldNode>>();
         private List<RegisteredWorldNode> _allNodes = new List<RegisteredWorldNode>();
 
         void Awake()
@@ -82,6 +84,29 @@ namespace Assets.Ancible_Tools.Scripts.System.WorldNodes
             return node;
         }
 
+        public static RegisteredWorldNode RegisterCraftingNode(GameObject unit, MapTile tile, WorldSkill skill)
+        {
+            var node = _instance._allNodes.FirstOrDefault(n => n.Unit == unit);
+            if (node == null)
+            {
+                node = new RegisteredWorldNode(unit, tile, WorldNodeType.Crafting);
+                _instance._allNodes.Add(node);
+            }
+
+            if (!_instance._craftingNodes.TryGetValue(skill, out var craftingNodes))
+            {
+                craftingNodes = new List<RegisteredWorldNode>();
+                _instance._craftingNodes.Add(skill, craftingNodes);
+            }
+
+            if (!craftingNodes.Contains(node))
+            {
+                craftingNodes.Add(node);
+            }
+
+            return node;
+        }
+
         public static void UnregisterNode(GameObject unit, WorldNodeType type)
         {
             var existingNode = _instance._allNodes.FirstOrDefault(n => n.Unit == unit);
@@ -114,6 +139,15 @@ namespace Assets.Ancible_Tools.Scripts.System.WorldNodes
                         }
                         break;
                     case WorldNodeType.Crafting:
+                        var craftingPairs = _instance._craftingNodes.Where(kv => kv.Value.Contains(existingNode)).ToArray();
+                        foreach (var pair in craftingPairs)
+                        {
+                            pair.Value.Remove(existingNode);
+                            if (pair.Value.Count <= 0)
+                            {
+                                _instance._craftingNodes.Remove(pair.Key);
+                            }
+                        }
                         break;
                 }
                 if (_instance._nodes.TryGetValue(type, out var nodes))
@@ -147,6 +181,21 @@ namespace Assets.Ancible_Tools.Scripts.System.WorldNodes
         public static RegisteredWorldNode GetClosestNodeByItem(MapTile currentTile, WorldItem item)
         {
             if (_instance._resourceNodes.TryGetValue(item, out var nodes))
+            {
+                if (nodes.Count > 0)
+                {
+                    return nodes.Count > 1 ? nodes.OrderBy(n => (n.Tile.World - currentTile.World).sqrMagnitude).FirstOrDefault() : nodes[0];
+                }
+
+                return null;
+            }
+
+            return null;
+        }
+
+        public static RegisteredWorldNode GetClosestNodeByCraftingSkill(MapTile currentTile, WorldSkill skill)
+        {
+            if (_instance._craftingNodes.TryGetValue(skill, out var nodes))
             {
                 if (nodes.Count > 0)
                 {

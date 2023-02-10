@@ -52,6 +52,6 @@ MonoBehaviour:
   ChestTemplates:
   - {fileID: 11400000, guid: 0241fa02694d72f4ab95c0832a3bcf94, type: 2}
   ChestLootTables:
-  - {fileID: 11400000, guid: c47f95499c0036f479c5dd1680661f76, type: 2}
+  - {fileID: 11400000, guid: b013fec5aedf1bd4abff78359a31e001, type: 2}
   MaximumChestsPerRoom: 3
   ChestSpawnPercent: 0.33

@@ -90,6 +90,8 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Adventure
                 setFaceDirectionMsg.Direction = _faceDirection;
                 gameObject.SendMessageTo(setFaceDirectionMsg, controller.gameObject);
                 MessageFactory.CacheMessage(setFaceDirectionMsg);
+
+                WorldAdventureController.RegisterObject(controller.gameObject);
             }
             
         }

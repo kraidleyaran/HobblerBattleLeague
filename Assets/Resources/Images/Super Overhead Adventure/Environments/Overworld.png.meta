@@ -10,7 +10,10 @@ TextureImporter:
     second: Overworld Green Right Stairs Down
   - first:
       213: -7179496123588461096
-    second: Super Overworld -4 Tile Green Tree
+    second: Super Overworld - 4 Tile Green Tree
+  - first:
+      213: 5358339777047750641
+    second: White Cauldron 0
   externalObjects: {}
   serializedVersion: 12
   mipmaps:
@@ -75,7 +78,7 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 2048
+    maxTextureSize: 4096
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 0
@@ -87,7 +90,7 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
     buildTarget: Standalone
-    maxTextureSize: 2048
+    maxTextureSize: 4096
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 0
@@ -99,7 +102,7 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
     buildTarget: WebGL
-    maxTextureSize: 2048
+    maxTextureSize: 4096
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 0
@@ -111,7 +114,7 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
     buildTarget: Windows Store Apps
-    maxTextureSize: 2048
+    maxTextureSize: 4096
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 0
@@ -167,7 +170,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Super Overworld -4 Tile Green Tree
+      name: Super Overworld - 4 Tile Green Tree
       rect:
         serializedVersion: 2
         x: 32
@@ -183,6 +186,27 @@ TextureImporter:
       bones: []
       spriteID: 8dd373f605e4d5c90800000000000000
       internalID: -7179496123588461096
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: White Cauldron 0
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 64
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1f7e6c433a5ac5a40800000000000000
+      internalID: 5358339777047750641
       vertices: []
       indices: 
       edges: []

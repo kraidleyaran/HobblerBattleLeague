@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Assets.Ancible_Tools.Scripts.System.SaveData.Buildings
+namespace Assets.Ancible_Tools.Scripts.System.SaveData.Building
 {
     [Serializable]
     public class BuildingParameterData : IDisposable

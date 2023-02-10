@@ -24,6 +24,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             _controller.transform.parent.gameObject.SubscribeWithFilter<AddExperienceMessage>(AddExperience, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<QueryExperienceMessage>(QueryExperience, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<SetHobblerExperienceMessage>(SetHobblerExperience, _instanceId);
+            _controller.transform.parent.gameObject.SubscribeWithFilter<QueryRequiredLevelExperienceMessage>(QueryRequiredLevelExeperience, _instanceId);
         }
 
         private void AddExperience(AddExperienceMessage msg)
@@ -59,6 +60,11 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         {
             _level = msg.Level;
             _experience = msg.Experience;
+        }
+
+        private void QueryRequiredLevelExeperience(QueryRequiredLevelExperienceMessage msg)
+        {
+            msg.DoAfter.Invoke(StaticMethods.CalculateNextLevel(msg.Level - 1, _baseExperience, _xpRate));
         }
     }
 }

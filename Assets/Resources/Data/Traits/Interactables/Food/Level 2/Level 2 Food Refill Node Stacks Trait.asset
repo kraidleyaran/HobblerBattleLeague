@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: Level 2 Food Refill Node Stacks Trait
   m_EditorClassIdentifier: 
   MaxStack: 1
-  _stacks: 10
+  _stacks: 25
+  _refillCost: 50

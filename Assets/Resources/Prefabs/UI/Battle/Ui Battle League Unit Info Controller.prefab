@@ -1721,6 +1721,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _emptyIcon: {fileID: 8900169588899234891}
   _equippedIcon: {fileID: 8900169589518058043}
+  _borderImage: {fileID: 8900169589699743677}
   _equipSlot: 0
 --- !u!114 &8900169589699743679
 MonoBehaviour:
@@ -1907,6 +1908,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _emptyIcon: {fileID: 8900169590374883659}
   _equippedIcon: {fileID: 8900169589321955108}
+  _borderImage: {fileID: 8900169589767877746}
   _equipSlot: 1
 --- !u!114 &8900169589767877748
 MonoBehaviour:
@@ -2781,6 +2783,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _emptyIcon: {fileID: 8900169590951667670}
   _equippedIcon: {fileID: 8900169590431839675}
+  _borderImage: {fileID: 8900169590365063373}
   _equipSlot: 1
 --- !u!114 &8900169590365063375
 MonoBehaviour:
@@ -3331,6 +3334,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _emptyIcon: {fileID: 8900169589416931242}
   _equippedIcon: {fileID: 8900169590877160551}
+  _borderImage: {fileID: 8900169590507281728}
   _equipSlot: 2
 --- !u!114 &8900169590507281730
 MonoBehaviour:
@@ -3576,6 +3580,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _emptyIcon: {fileID: 8900169590137399295}
   _equippedIcon: {fileID: 8900169589180917306}
+  _borderImage: {fileID: 8900169590689243985}
   _equipSlot: 1
 --- !u!114 &8900169590689243987
 MonoBehaviour:
@@ -3726,6 +3731,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eecb356c43ea8f24482c5cfd1e60d84a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  WorldName: 
   ActiveWorldStates: 02000000
   DisabledStates: 
   _unitIconImage: {fileID: 8900169590572207532}
@@ -4209,6 +4215,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _emptyIcon: {fileID: 8900169589563989315}
   _equippedIcon: {fileID: 8900169590766800102}
+  _borderImage: {fileID: 8900169590929902296}
   _equipSlot: 2
 --- !u!114 &8900169590929902298
 MonoBehaviour:

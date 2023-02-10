@@ -18,7 +18,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
     {
         [SerializeField] private WorldSkill[] _startingSkills = new WorldSkill[0];
         [SerializeField] private UnitCommand _workCommand = null;
-        
+        [SerializeField] private UnitCommand _craftCommand = null;
 
         private Dictionary<WorldSkill, SkillInstance> _skills = new Dictionary<WorldSkill, SkillInstance>();
         private Dictionary<int, SkillInstance> _prioritizedSkills = new Dictionary<int, SkillInstance>();
@@ -26,12 +26,15 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         private MapTile _currentTile = null;
 
         private CommandInstance _workInstance = null;
+        private CommandInstance _craftInstance = null;
 
         public override void SetupController(TraitController controller)
         {
             base.SetupController(controller);
             //var workCommand = Instantiate(_workCommand, _controller.transform);
             _workInstance = _workCommand.GenerateInstance();
+            _craftInstance = _craftCommand.GenerateInstance();
+            _workInstance.Tree.SubCommands.Add(_craftInstance);
             for (var i = 0; i < _startingSkills.Length; i++)
             {
                 if (!_skills.ContainsKey(_startingSkills[i]))
@@ -55,6 +58,15 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             MessageFactory.CacheMessage(searchForResourceNodeMsg);
         }
 
+        private void SearchForCraftingNode(WorldCraftingSkill skill)
+        {
+            var searchForCraftingNodeMsg = MessageFactory.GenerateSearchForCraftingNodeMsg();
+            searchForCraftingNodeMsg.Skill = skill;
+            searchForCraftingNodeMsg.DoAfter = null;
+            _controller.gameObject.SendMessageTo(searchForCraftingNodeMsg, _controller.transform.parent.gameObject);
+            MessageFactory.CacheMessage(searchForCraftingNodeMsg);
+        }
+
         private CommandInstance GenerateSkillCommand(SkillInstance instance)
         {
             var skillCommand = Instantiate(FactoryController.COMMAND_TEMPLATE, _controller.transform);
@@ -63,16 +75,29 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             skillCommand.Description = instance.Instance.Description;
             skillCommand.DoAfter = () => { };
             var skillCommandInstance = skillCommand.GenerateInstance();
-            var items = instance.Instance.Items;
-            for (var it = 0; it < items.Length; it++)
+            if (instance.Instance.SkillType == WorldSkillType.Gathering && instance.Instance is WorldGatheringSkill gathering)
             {
-                var item = items[it];
-                var itemCommand = Instantiate(FactoryController.COMMAND_TEMPLATE, _controller.transform);
-                itemCommand.Icons = new[] { new CommandIcon { Sprite = item.Icon, ColorMask = Color.white } };
-                itemCommand.DoAfter = () => { SearchForResourceNode(item); };
-                itemCommand.Command = $"{instance.Instance.Verb} {item.DisplayName}";
-                var itemInstance = itemCommand.GenerateInstance();
-                skillCommandInstance.Tree.SubCommands.Add(itemInstance);
+                
+                var items = gathering.Items;
+                foreach (var item in items)
+                {
+                    //var item = items[it];
+                    var itemCommand = Instantiate(FactoryController.COMMAND_TEMPLATE, _controller.transform);
+                    itemCommand.Icons = new[] { new CommandIcon { Sprite = item.Icon, ColorMask = Color.white } };
+                    itemCommand.DoAfter = () => { SearchForResourceNode(item); };
+                    itemCommand.Command = $"{instance.Instance.Verb} {item.DisplayName}";
+                    var itemInstance = itemCommand.GenerateInstance();
+                    skillCommandInstance.Tree.SubCommands.Add(itemInstance);
+                }
+            }
+            else if (instance.Instance.SkillType == WorldSkillType.Crafting && instance.Instance is WorldCraftingSkill craftingSkill)
+            {
+                var craftingCommand = Instantiate(FactoryController.COMMAND_TEMPLATE, _controller.transform);
+                craftingCommand.Icons = new[] {new CommandIcon {Sprite = craftingSkill.Icon},};
+                craftingCommand.DoAfter = () => { SearchForCraftingNode(craftingSkill); };
+                craftingCommand.Command = $"{craftingSkill.DisplayName}";
+                var craftingInstance = craftingCommand.GenerateInstance();
+                _craftInstance.Tree.SubCommands.Add(craftingInstance);
             }
 
             return skillCommandInstance;
@@ -86,6 +111,8 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             _controller.transform.parent.gameObject.SubscribeWithFilter<QuerySkillsByPriorityMessage>(QuerySkillsByPriority, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<ChangeSkillPriorityMessage>(ChangeSkillPriority, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<SetSkillsFromDataMessage>(SetSkillsFromData, _instanceId);
+            _controller.transform.parent.gameObject.SubscribeWithFilter<ApplySkillBonusMessage>(ApplySkillBonus, _instanceId);
+            _controller.transform.parent.gameObject.SubscribeWithFilter<QuerySkillBonusMessage>(QuerySkillBonus, _instanceId);
         }
 
         private void GainSkillExperience(GainSkillExperienceMessage msg)
@@ -103,7 +130,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             if (levelsGained > 0)
             {
                 instance.ApplyLevels(levelsGained, _controller.transform.parent.gameObject);
-                UiAlertManager.ShowAlert($"+{levelsGained} {msg.Skill.DisplayName}", msg.Skill.Icon);
+                UiAlertManager.ShowAlert($"+{levelsGained} {msg.Skill.DisplayName}", msg.Skill.Icon, Color.white);
             }
             _controller.gameObject.SendMessageTo(RefreshUnitMessage.INSTANCE, _controller.transform.parent.gameObject);
         }
@@ -113,19 +140,31 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             for (var i = 0; i < _prioritizedSkills.Count; i++)
             {
                 var skill = _prioritizedSkills[i];
-                var items = skill.Instance.Items.Where(it => it.RequiredLevel <= skill.Level && WorldNodeManager.IsResourceAvailable(it)).ToArray();
-                if (items.Length > 0)
+                if (skill.Instance.SkillType == WorldSkillType.Gathering && skill.Instance is WorldGatheringSkill gatheringSkill)
                 {
-                    var orderedItems = items.OrderByDescending(it => it.RequiredLevel).ToArray();
-                    var highestLevel = orderedItems[0].RequiredLevel;
-                    var item = items.Where(it => it.RequiredLevel == highestLevel).ToArray().GetRandom();
-                    var searchForResourceNodeMsg = MessageFactory.GenerateSearchForResourceNodeMsg();
-                    searchForResourceNodeMsg.Item = item;
-                    _controller.gameObject.SendMessageTo(searchForResourceNodeMsg, _controller.transform.parent.gameObject);
-                    MessageFactory.CacheMessage(searchForResourceNodeMsg);
-                    msg.DoAfter?.Invoke();
-                    break;
+                    var items = gatheringSkill.Items.Where(it => it.RequiredLevel <= skill.Level && WorldNodeManager.IsResourceAvailable(it)).ToArray();
+                    if (items.Length > 0)
+                    {
+                        var orderedItems = items.OrderByDescending(it => it.RequiredLevel).ToArray();
+                        var highestLevel = orderedItems[0].RequiredLevel;
+                        var item = items.Where(it => it.RequiredLevel == highestLevel).ToArray().GetRandom();
+                        var searchForResourceNodeMsg = MessageFactory.GenerateSearchForResourceNodeMsg();
+                        searchForResourceNodeMsg.Item = item;
+                        _controller.gameObject.SendMessageTo(searchForResourceNodeMsg, _controller.transform.parent.gameObject);
+                        MessageFactory.CacheMessage(searchForResourceNodeMsg);
+                        msg.DoAfter?.Invoke();
+                        break;
+                    }
                 }
+                else if (skill.Instance.SkillType == WorldSkillType.Crafting)
+                {
+                    var searchForCraftingNodeMsg = MessageFactory.GenerateSearchForCraftingNodeMsg();
+                    searchForCraftingNodeMsg.Skill = skill.Instance;
+                    _controller.gameObject.SendMessageTo(searchForCraftingNodeMsg, _controller.transform.parent.gameObject);
+                    MessageFactory.CacheMessage(searchForCraftingNodeMsg);
+                    msg.DoAfter?.Invoke();
+                }
+
             }
         }
 
@@ -168,6 +207,32 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                     _skills.Add(worldSkill, instance);
                     _prioritizedSkills.Add(skill.Priority, instance);
                 }
+            }
+        }
+
+        private void ApplySkillBonus(ApplySkillBonusMessage msg)
+        {
+            if (!_skills.TryGetValue(msg.Skill, out var instance))
+            {
+                instance = new SkillInstance(msg.Skill);
+                _skills.Add(msg.Skill, instance);
+            }
+
+            if (msg.Permanent)
+            {
+                instance.Permanent += msg.Bonus;
+            }
+            else
+            {
+                instance.Bonus += msg.Bonus;
+            }
+        }
+
+        private void QuerySkillBonus(QuerySkillBonusMessage msg)
+        {
+            if (_skills.TryGetValue(msg.Skill, out var instance))
+            {
+                msg.DoAfter.Invoke(instance.TotalBonus);
             }
         }
     }

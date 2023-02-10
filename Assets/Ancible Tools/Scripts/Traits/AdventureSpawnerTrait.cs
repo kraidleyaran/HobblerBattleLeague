@@ -69,7 +69,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                 _controller.gameObject.SendMessageTo(setUnitStateMsg, _spawnedUnit);
                 MessageFactory.CacheMessage(setUnitStateMsg);
 
-                
+                WorldAdventureController.RegisterObject(_spawnedUnit);
             }
             else
             {
@@ -133,11 +133,11 @@ namespace Assets.Ancible_Tools.Scripts.Traits
 
             _spawnCooldownTimer?.Destroy();
             _spawnCooldownTimer = null;
-
             if (_spawnedUnit)
             {
-                Destroy(_spawnedUnit);
+                WorldAdventureController.UnregisterObject(_spawnedUnit, true);
             }
+            
             base.Destroy();
         }
     }

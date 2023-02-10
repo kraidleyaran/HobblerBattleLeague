@@ -18,6 +18,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b00a6be533ab9fa4d84f0872f9e27984, type: 2}
   - {fileID: 11400000, guid: a9b67095f3d69a84ebbf6a5ec97c5355, type: 2}
   - {fileID: 11400000, guid: d218506b2c91e6f4db1c755430b41922, type: 2}
+  - {fileID: 11400000, guid: e3fef1c57ca6c2541b9d27b0014c3f2f, type: 2}
+  - {fileID: 11400000, guid: 3babe4957cd759e4b945ffc1c4a066fb, type: 2}
+  - {fileID: 11400000, guid: cc030a5909a48a54fb775dafdc8b0c8a, type: 2}
   _maxRoll: 5
   _buyCommand: {fileID: 11400000, guid: f8ce02761ee69e346b5ad536dcefe469, type: 2}
   _reRollCost: 0

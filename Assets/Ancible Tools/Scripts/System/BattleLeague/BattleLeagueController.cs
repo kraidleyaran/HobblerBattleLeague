@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Assets.Resources.Ancible_Tools.Scripts.System.Combat;
+using Assets.Resources.Ancible_Tools.Scripts.System.Items;
 using Assets.Resources.Ancible_Tools.Scripts.System.Pathing;
 using Assets.Resources.Ancible_Tools.Scripts.System.Templates;
 using Assets.Resources.Ancible_Tools.Scripts.System.TickTimers;
@@ -67,7 +68,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague
         private UpdateBattleLeagueScoreMessage _updateBattleLeagueScoreMsg = new UpdateBattleLeagueScoreMessage();
         private UpdateBattleStateMessage _updatebattleStateMsg = new UpdateBattleStateMessage();
         
-        private ShowBattleResultsWindowMessage _showBattleResultsWindowMsg = new ShowBattleResultsWindowMessage();
+        
 
         private int _leftPoints = 0;
         private int _rightPoints = 0;
@@ -81,6 +82,9 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague
 
 
         private BattleType _type = BattleType.Encounter;
+        private BattleEncounter _encounter = null;
+
+        private ItemStack[] _loot = new ItemStack[0];
 
         public void WakeUp()
         {
@@ -126,7 +130,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague
             _rightBenchController.gameObject.SetActive(false);
             _goalPoints = encounter.RequiredPoints;
             _maxRounds = encounter.MaximumRounds;
-
+            _encounter = encounter;
             var updateBattlePointRequirementMsg = MessageFactory.GenerateUpdateBattlePointRequirementMsg();
             updateBattlePointRequirementMsg.Requirement = _goalPoints;
             updateBattlePointRequirementMsg.Rounds = _maxRounds;
@@ -159,7 +163,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague
         {
             var enemyUnits = new GameObject[0];
             var allyUnits = new GameObject[0];
-            var totalPoints = 1 + spirit;
+            var totalPoints = Mathf.Max(1, spirit);
             switch (alignment)
             {
                 case BattleAlignment.Left:
@@ -361,9 +365,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague
                 _updatebattleStateMsg.State = State;
                 gameObject.SendMessage(_updatebattleStateMsg);
 
-                _showBattleResultsWindowMsg.Result = _leftPoints > _rightPoints ? BattleResult.Victory : BattleResult.Defeat;
-                _showBattleResultsWindowMsg.LeftScore = _leftPoints;
-                _showBattleResultsWindowMsg.RightScore = _rightPoints;
+                var result = _leftPoints > _rightPoints ? BattleResult.Victory : BattleResult.Defeat;
                 var allUnits = _leftBenchController.GetAllUnits().ToList();
                 switch (_type)
                 {
@@ -374,10 +376,24 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague
                         allUnits.AddRange(_rightBenchController.GetAllUnits());
                         break;
                 }
+                BattleLeagueManager.EncounterFinished(_leftPoints, _rightPoints, allUnits.ToArray(), _round + 1, result);
+                //_showBattleResultsWindowMsg.Result = _leftPoints > _rightPoints ? BattleResult.Victory : BattleResult.Defeat;
+                //_showBattleResultsWindowMsg.LeftScore = _leftPoints;
+                //_showBattleResultsWindowMsg.RightScore = _rightPoints;
+                //var allUnits = _leftBenchController.GetAllUnits().ToList();
+                //switch (_type)
+                //{
+                //    case BattleType.Encounter:
+                //        allUnits.AddRange(_encounterBenchController.GetAllUnits());
+                //        break;
+                //    case BattleType.Player:
+                //        allUnits.AddRange(_rightBenchController.GetAllUnits());
+                //        break;
+                //}
 
-                _showBattleResultsWindowMsg.Units = allUnits.ToArray();
-                _showBattleResultsWindowMsg.TotalRounds = _round + 1;
-                gameObject.SendMessage(_showBattleResultsWindowMsg);
+                //_showBattleResultsWindowMsg.Units = allUnits.ToArray();
+                //_showBattleResultsWindowMsg.TotalRounds = _round + 1;
+                //gameObject.SendMessage(_showBattleResultsWindowMsg);
             }
             else
             {

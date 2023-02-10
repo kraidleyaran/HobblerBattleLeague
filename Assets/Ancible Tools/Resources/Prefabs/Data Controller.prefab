@@ -989,6 +989,8 @@ MonoBehaviour:
   - {fileID: 8981403704970511182, guid: e97b0450a31533549b7f6ad145c9893f, type: 3}
   _battleLeagueController: {fileID: 6432564473526602109}
   _encounter: {fileID: 11400000, guid: dc3bc983e05a167448a965edeff4265e, type: 2}
+  _manaPerDamageDone: 0
+  _manaPerDamageTaken: 0
 --- !u!1 &1015332609595145519
 GameObject:
   m_ObjectHideFlags: 0
@@ -2439,8 +2441,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 5a59c9053a787de4ca4609b7ea4a4604, type: 2}
   - {fileID: 11400000, guid: 82e864679bcd311449933e8ead99e0dc, type: 2}
   - {fileID: 11400000, guid: ea090aa4c11da2140933cccf8abe057a, type: 2}
-  _buildingFolder: 
-  _sellBackPercentage: 0.5
+  - {fileID: 11400000, guid: d8b2e415e9297ce42b66b073948bb727, type: 2}
+  - {fileID: 11400000, guid: 10c821b16b02a114ab4e6caf826c3e58, type: 2}
+  _buildingFolder: Data/Buildings
+  _sellBackPercentage: 0.33
 --- !u!1 &2382719844781140610
 GameObject:
   m_ObjectHideFlags: 0
@@ -4800,6 +4804,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _itemFolders:
   - Data/Items
+  _recipeFolders: []
 --- !u!1 &5675447503826518558
 GameObject:
   m_ObjectHideFlags: 0
@@ -5110,15 +5115,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _negativeStatColor: {r: 0.8784314, g: 0.23529412, b: 0.15686275, a: 1}
-  _experienceColor: {r: 1, g: 0, b: 1, a: 1}
+  _experienceColor: {r: 0.6509804, g: 0.45882353, b: 0.99607843, a: 1}
   _hoveredItemColor: {r: 1, g: 0.90588236, b: 0.21568628, a: 1}
   _bonusStatColor: {r: 0, g: 1, b: 0, a: 1}
   _leftSideColor: {r: 0.039215688, g: 0.5372549, b: 1, a: 1}
   _rightSideColor: {r: 0.8784314, g: 0.23529412, b: 0.15686275, a: 1}
   _neutralColor: {r: 1, g: 1, b: 1, a: 1}
   _healthBarColor: {r: 0.8784314, g: 0.23529412, b: 0.15686275, a: 1}
-  _manaBarColor: {r: 0.039215688, g: 0.5372549, b: 1, a: 1}
-  _manaTextColor: {r: 0, g: 0, b: 1, a: 1}
+  _manaBarColor: {r: 0.007843138, g: 0.2901961, b: 0.7921569, a: 1}
+  _manaTextColor: {r: 0.007843138, g: 0.2901961, b: 0.7921569, a: 1}
   _defaultAlertTextColor: {r: 1, g: 0.90588236, b: 0.21568628, a: 1}
   _errorAlertTextColor: {r: 0.8784314, g: 0.23529412, b: 0.15686275, a: 1}
   _stunColor: {r: 1, g: 0.73333335, b: 0.19215687, a: 1}
@@ -5126,6 +5131,12 @@ MonoBehaviour:
   _rootColor: {r: 0.68235296, g: 0.42352942, b: 0.21568628, a: 1}
   _muteColor: {r: 0.8117647, g: 0.23529412, b: 0.44313726, a: 1}
   _disarmColor: {r: 0.85490197, g: 0.39607844, b: 0.36862746, a: 1}
+  _commonColor: {r: 1, g: 1, b: 1, a: 1}
+  _uncommonColor: {r: 0.34509805, g: 0.827451, b: 0.19607843, a: 1}
+  _rareColor: {r: 0.007843138, g: 0.2901961, b: 0.7921569, a: 1}
+  _epicColor: {r: 0.41568628, g: 0.19215687, b: 0.7921569, a: 1}
+  _legendaryColor: {r: 0.9647059, g: 0.56078434, b: 0.21568628, a: 1}
+  _ancientColor: {r: 0.6784314, g: 0.30588236, b: 0.101960786, a: 1}
 --- !u!1 &5998134379898019450
 GameObject:
   m_ObjectHideFlags: 0

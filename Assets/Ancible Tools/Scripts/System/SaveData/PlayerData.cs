@@ -1,6 +1,6 @@
 ﻿using System;
 using Assets.Ancible_Tools.Scripts.System.SaveData;
-using Assets.Ancible_Tools.Scripts.System.SaveData.Buildings;
+using Assets.Ancible_Tools.Scripts.System.SaveData.Building;
 
 namespace Assets.Resources.Ancible_Tools.Scripts.System.SaveData
 {
@@ -19,7 +19,6 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.SaveData
         public int Gold;
         public ItemStackData[] Stash = new ItemStackData[0];
         public TrainerData[] Trainers = new TrainerData[0];
-        public NodeData[] Nodes = new NodeData[0];
         public BuildingData[] Buildings = new BuildingData[0];
         public WindowData[] Windows = new WindowData[0];
 
@@ -34,7 +33,6 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.SaveData
             Gold = 0;
             Stash = null;
             Trainers = null;
-            Nodes = null;
             Buildings = null;
             Windows = null;
         }

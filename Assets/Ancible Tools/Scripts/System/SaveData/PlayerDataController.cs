@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using Assets.Ancible_Tools.Scripts.System.Factories;
 using Assets.Ancible_Tools.Scripts.System.SaveData;
-using Assets.Ancible_Tools.Scripts.System.SaveData.Buildings;
+using Assets.Ancible_Tools.Scripts.System.SaveData.Building;
 using Assets.Ancible_Tools.Scripts.Traits;
 using Assets.Resources.Ancible_Tools.Scripts.System.Adventure;
 using Assets.Resources.Ancible_Tools.Scripts.System.Building;
@@ -109,14 +109,6 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.SaveData
             MessageFactory.CacheMessage(queryTrainerDataMsg);
 
             data.Trainers = trainerData.ToArray();
-            
-            var nodeData = new List<NodeData>();
-            var queryNodeMsg = MessageFactory.GenerateQueryNodeMsg();
-            queryNodeMsg.DoAfter = (id, stack) => nodeData.Add(new NodeData {Id = id, Stack = stack});
-            _instance.gameObject.SendMessage(queryNodeMsg);
-            MessageFactory.CacheMessage(queryNodeMsg);
-
-            data.Nodes = nodeData.ToArray();
 
             var playerFilePath = $"{GeneratePlayerFolder(data.Name)}{data.Name}.{PlayerData.EXTENSION}";
             var playerResult = FileData.SaveData(playerFilePath, data);
@@ -197,11 +189,6 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.SaveData
                     ? $"Exception while loading player data at path {playerFilePath} - {playerLoadResult.Exception}"
                     : $"Unknown error while loading player data at path {playerFilePath}");
             }
-        }
-
-        public static NodeData GetNodeDataById(string id)
-        {
-            return _instance._playerData?.Nodes.FirstOrDefault(d => d.Id == id);
         }
 
         public static TrainerData GetTrainerDataById(string id)

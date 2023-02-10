@@ -9,6 +9,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.SaveData
         public int Experience;
         public int Level;
         public int Priority;
+        public float Permanent;
 
         public void Dispose()
         {

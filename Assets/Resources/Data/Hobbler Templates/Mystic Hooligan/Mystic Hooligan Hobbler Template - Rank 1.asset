@@ -43,9 +43,10 @@ MonoBehaviour:
     Armor: 1.8
     Spirit: 1.25
   StartingAbilities:
-  - {fileID: 11400000, guid: 58239f48a8842ce479c2ad1c30059005, type: 2}
-  StartingWeapon: {fileID: 11400000, guid: ed8b807a138eb9347baaba21cc88cd5d, type: 2}
+  - {fileID: 11400000, guid: 098d215174de2484bbbbd1b7bc4477a0, type: 2}
+  - {fileID: 11400000, guid: 04ad6ce0dab62a3498b40ce50dc8d02e, type: 2}
+  StartingWeapon: {fileID: 11400000, guid: ae33c9a67f157684ca10512ddf7c6b69, type: 2}
   Evolution:
     RequiredLevel: 10
     Template: {fileID: 11400000, guid: 7c8cc5b955bb3a4498c92c2ce0c5b5a2, type: 2}
-  Cost: 0
+  Cost: 10

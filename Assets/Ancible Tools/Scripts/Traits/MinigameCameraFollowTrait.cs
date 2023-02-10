@@ -22,7 +22,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
 
         private void UpdatePosition(UpdatePositionMessage msg)
         {
-            _setCameraPosMsg.Position = msg.Position.ToPixelPerfect();
+            _setCameraPosMsg.Position = msg.Position;
             _controller.gameObject.SendMessage(_setCameraPosMsg);
         }
     }

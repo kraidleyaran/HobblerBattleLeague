@@ -14,6 +14,30 @@ TextureImporter:
   - first:
       213: 8171336699953212542
     second: Small Blinking Purple Star 3
+  - first:
+      213: 8534413873311886165
+    second: Light Blue Blinking Star 0
+  - first:
+      213: -808106322476610583
+    second: Light Blue Blinking Star 1
+  - first:
+      213: 6683723330167763452
+    second: Light Blue Blinking Star 2
+  - first:
+      213: 8665903625875779447
+    second: Light Blue Blinking Star 3
+  - first:
+      213: -1151394341740344624
+    second: Small Blinking Dark Purple Star 0
+  - first:
+      213: 6096960603921573962
+    second: Small Blinking Dark Purple Star 1
+  - first:
+      213: 3869014522220747670
+    second: Small Blinking Dark Purple Star 2
+  - first:
+      213: -6587075892296573196
+    second: Small Blinking Dark Purple Star 3
   externalObjects: {}
   serializedVersion: 12
   mipmaps:
@@ -136,7 +160,7 @@ TextureImporter:
         width: 7
         height: 7
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -157,7 +181,7 @@ TextureImporter:
         width: 7
         height: 7
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -178,7 +202,7 @@ TextureImporter:
         width: 7
         height: 7
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -199,7 +223,7 @@ TextureImporter:
         width: 7
         height: 7
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -207,6 +231,174 @@ TextureImporter:
       bones: []
       spriteID: e7ce2dc5f6b666170800000000000000
       internalID: 8171336699953212542
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Light Blue Blinking Star 0
+      rect:
+        serializedVersion: 2
+        x: 310
+        y: 344
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 55babe45334507670800000000000000
+      internalID: 8534413873311886165
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Light Blue Blinking Star 1
+      rect:
+        serializedVersion: 2
+        x: 316
+        y: 344
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9ebc80cc49709c4f0800000000000000
+      internalID: -808106322476610583
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Light Blue Blinking Star 2
+      rect:
+        serializedVersion: 2
+        x: 324
+        y: 344
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cf1f3a7f4fa51cc50800000000000000
+      internalID: 6683723330167763452
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Light Blue Blinking Star 3
+      rect:
+        serializedVersion: 2
+        x: 334
+        y: 344
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 77f681e0f69734870800000000000000
+      internalID: 8665903625875779447
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Small Blinking Dark Purple Star 0
+      rect:
+        serializedVersion: 2
+        x: 310
+        y: 294
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0da0c2052fc6500f0800000000000000
+      internalID: -1151394341740344624
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Small Blinking Dark Purple Star 1
+      rect:
+        serializedVersion: 2
+        x: 316
+        y: 294
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a48eb4ebd51cc9450800000000000000
+      internalID: 6096960603921573962
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Small Blinking Dark Purple Star 2
+      rect:
+        serializedVersion: 2
+        x: 324
+        y: 294
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 69b9bc3853081b530800000000000000
+      internalID: 3869014522220747670
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Small Blinking Dark Purple Star 3
+      rect:
+        serializedVersion: 2
+        x: 334
+        y: 294
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4fe9f1330610694a0800000000000000
+      internalID: -6587075892296573196
       vertices: []
       indices: 
       edges: []

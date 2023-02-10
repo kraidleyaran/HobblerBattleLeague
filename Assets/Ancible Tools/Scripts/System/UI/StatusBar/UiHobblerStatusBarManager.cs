@@ -65,7 +65,14 @@ namespace Assets.Ancible_Tools.Scripts.System.UI.StatusBar
         {
             if (_instance._statusBars.TryGetValue(owner, out var bar))
             {
-                bar.gameObject.SetActive(active);
+                if (bar)
+                {
+                    bar.gameObject.SetActive(active);
+                }
+                else
+                {
+                    _instance._statusBars.Remove(owner);
+                }
             }
         }
 

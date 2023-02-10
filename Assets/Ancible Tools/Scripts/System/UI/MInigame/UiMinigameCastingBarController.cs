@@ -54,6 +54,15 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.MInigame
             _abilityIcon.sprite = null;
             gameObject.SetActive(false);
         }
+
+        void OnDestroy()
+        {
+            if (_timer != null)
+            {
+                _timer.OnTickFinished -= OnTickFinish;
+                _timer.OnTickUpdate -= OnTickUpdate;
+            }
+        }
         
     }
 }
