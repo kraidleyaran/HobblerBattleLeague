@@ -25,15 +25,12 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         [SerializeField] private Vector2Int[] _relativeGatheringPositions = new Vector2Int[0];
         [SerializeField] private NodeInteractionType _interactionType = NodeInteractionType.Bump;
         [SerializeField] private SpriteTrait _nodeSprite = null;
-        [SerializeField] private UnitCommand _stopSelectCommand = null;
-        [SerializeField] private UnitCommand _selectableHobblerCommandTemplate = null;
         
 
         private int _currentStack = 0;
         protected internal RegisteredWorldNode _registeredNode = null;
         private MapTile[] _gatheringTiles = new MapTile[0];
         protected internal MapTile _mapTile = null;
-        private string _buildingId = string.Empty;
         private NodeBuildingParamaterData _data = null;
 
         
@@ -43,16 +40,12 @@ namespace Assets.Ancible_Tools.Scripts.Traits
 
         private CommandInstance _nodeCommandInstance = null;
 
-        private Dictionary<GameObject, CommandInstance> _interactingHobblers = new Dictionary<GameObject, CommandInstance>();
+        private List<GameObject> _interactingHobblers = new List<GameObject>();
 
         public override void SetupController(TraitController controller)
         {
             base.SetupController(controller);
             _currentStack = _stack;
-            if (_interactionType == NodeInteractionType.Invisible)
-            {
-                _nodeCommandInstance = _stopSelectCommand.GenerateInstance();
-            }
             _nodeSpriteController = Instantiate(FactoryController.SPRITE_CONTROLLER, _controller.transform.parent);
             RefreshNodeSprite(true);
             SubscribeToMessages();
@@ -176,15 +169,8 @@ namespace Assets.Ancible_Tools.Scripts.Traits
 
         private void RemoveFromInteractingObjects(GameObject owner)
         {
-            if (_interactingHobblers.ContainsKey(owner))
+            if (_interactingHobblers.Contains(owner))
             {
-                if (_interactionType == NodeInteractionType.Invisible)
-                {
-                    var commandInstance = _interactingHobblers[owner];
-                    _nodeCommandInstance.Tree.SubCommands.Remove(commandInstance);
-                    commandInstance.Command.Destroy();
-                    Destroy(commandInstance.Command);
-                }
                 _interactingHobblers.Remove(owner);
                 _controller.gameObject.SendMessageTo(RefreshUnitMessage.INSTANCE, _controller.transform.parent.gameObject);
             }
@@ -200,16 +186,14 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         {
             if (_stack > 0)
             {
-                _controller.gameObject.Subscribe<QueryNodeMessage>(QueryNode);
-                _controller.gameObject.Subscribe<LoadWorldDataMessage>(LoadWorldData);
                 _controller.transform.parent.gameObject.SubscribeWithFilter<UpdateBuildingIdMessage>(UpdateBuildingId, _instanceId);
                 _controller.transform.parent.gameObject.SubscribeWithFilter<QueryBuildingParamterDataMessage>(QueryBuildingParameterData, _instanceId);
             }
-            
+            _controller.transform.parent.gameObject.SubscribeWithFilter<QueryNodeMessage>(QueryNode, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<UpdateMapTileMessage>(UpdateMapTile, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<InteractMessage>(Interact, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<RefillNodeStacksMessage>(RefillNodeStacks, _instanceId);
-            if (_interactionType == NodeInteractionType.Invisible || _nodeType == WorldNodeType.Crafting)
+            if (_interactionType == NodeInteractionType.Invisible)
             {
                 _controller.transform.parent.gameObject.SubscribeWithFilter<QueryCommandsMessage>(QueryCommands, _instanceId);
             }
@@ -241,7 +225,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                 
             }
 
-            var hobblers = _interactingHobblers.Values.ToArray();
+            var hobblers = _interactingHobblers.ToArray();
             if (_interactionType != NodeInteractionType.Invisible)
             {
                 var stopGatheringMsg = MessageFactory.GenerateStopGatheringMsg();
@@ -278,41 +262,9 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             _controller.gameObject.SendMessageTo(gatherMsg, msg.Owner);
             MessageFactory.CacheMessage(gatherMsg);
 
-            if (_interactionType == NodeInteractionType.Invisible)
+            if (!_interactingHobblers.Contains(msg.Owner))
             {
-                SpriteTrait spriteTrait = null;
-                var querySpriteMsg = MessageFactory.GenerateQuerySpriteMsg();
-                querySpriteMsg.DoAfter = trait => spriteTrait = trait;
-                _controller.gameObject.SendMessageTo(querySpriteMsg, msg.Owner);
-                MessageFactory.CacheMessage(querySpriteMsg);
-                if (!_interactingHobblers.ContainsKey(msg.Owner))
-                {
-                    var owner = msg.Owner;
-                    var unitCommand = Instantiate(_selectableHobblerCommandTemplate, _controller.transform);
-                    var queryNameMsg = MessageFactory.GenerateQueryUnitNameMsg();
-                    queryNameMsg.DoAfter = unitName => unitCommand.Command = unitName;
-                    _controller.gameObject.SendMessageTo(queryNameMsg, owner);
-                    MessageFactory.CacheMessage(queryNameMsg);
-                    //unitCommand.Command = "Hobbler";
-                    unitCommand.Icons = new[]
-                    {
-                        new CommandIcon {Sprite = spriteTrait.Sprite}
-                    };
-                    unitCommand.DoAfter = () =>
-                    {
-                        UnitSelectController.SelectUnit(owner);
-                    };
-
-                    var instance = unitCommand.GenerateInstance();
-                    _interactingHobblers.Add(msg.Owner, instance);
-                    _nodeCommandInstance.Tree.SubCommands.Add(instance);
-                    _controller.gameObject.SendMessageTo(ResetCommandCardMessage.INSTANCE, _controller.transform.parent.gameObject);
-                    //_controller.gameObject.SendMessageTo(RefreshUnitMessage.INSTANCE, _controller.transform.parent.gameObject);
-                }
-            }
-            else if (!_interactingHobblers.ContainsKey(msg.Owner))
-            {
-                _interactingHobblers.Add(msg.Owner, null);
+                _interactingHobblers.Add(msg.Owner);
             }
 
         }
@@ -339,57 +291,16 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         private void UnregisterFromNode(UnregisterFromGatheringNodeMessage msg)
         {
             RemoveFromInteractingObjects(msg.Unit);
-            var stopGatheringMsg = MessageFactory.GenerateStopGatheringMsg();
-            stopGatheringMsg.Node = _controller.transform.parent.gameObject;
-            _controller.gameObject.SendMessageTo(stopGatheringMsg, msg.Unit);
-            MessageFactory.CacheMessage(stopGatheringMsg);
-            //switch (_interactionType)
-            //{
-            //    case NodeInteractionType.Invisible when _interactingHobblers.ContainsKey(msg.Unit):
-                    
-            //        {
-            //            var stopGatheringMsg = MessageFactory.GenerateStopGatheringMsg();
-            //            stopGatheringMsg.Node = _controller.transform.parent.gameObject;
-            //            _controller.gameObject.SendMessageTo(stopGatheringMsg, msg.Unit);
-            //            MessageFactory.CacheMessage(stopGatheringMsg);
-            //        }
-            //        break;
-            //    case NodeInteractionType.Invisible:
-            //    {
-            //        var stopGatheringMsg = MessageFactory.GenerateStopGatheringMsg();
-            //        stopGatheringMsg.Node = _controller.transform.parent.gameObject;
-            //        _controller.gameObject.SendMessageTo(stopGatheringMsg, msg.Unit);
-            //        MessageFactory.CacheMessage(stopGatheringMsg);
-            //        break;
-            //    }
-            //    default:
-            //    {
-            //        var stopGatheringMsg = MessageFactory.GenerateStopGatheringMsg();
-            //        stopGatheringMsg.Node = _controller.transform.parent.gameObject;
-            //        _controller.gameObject.SendMessageTo(stopGatheringMsg, msg.Unit);
-            //        MessageFactory.CacheMessage(stopGatheringMsg);
-            //        break;
-            //    }
-            //}
+            _controller.gameObject.SendMessageTo(RefreshUnitMessage.INSTANCE, _controller.transform.parent.gameObject);
         }
 
         private void QueryNode(QueryNodeMessage msg)
         {
-            msg.DoAfter.Invoke(_buildingId, _currentStack);
+            msg.DoAfter.Invoke(_currentStack, _stack, _interactingHobblers.ToArray());
         }
 
-        private void LoadWorldData(LoadWorldDataMessage msg)
-        {
-            //var nodeData = PlayerDataController.GetNodeDataById(_buildingId);
-            //if (nodeData != null)
-            //{
-            //    _currentStack = nodeData.Stack;
-            //    RefreshNodeSprite(false);
-            //}
-        }
         protected internal virtual void UpdateBuildingId(UpdateBuildingIdMessage msg)
         {
-            _buildingId = msg.Id;
             var data = PlayerDataController.GetBuildingData(msg.Id);
             if (data != null && data.Parameter is NodeBuildingParamaterData nodeData)
             {
@@ -403,21 +314,21 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             if (_nodeData == null)
             {
                 _nodeData = new NodeBuildingParamaterData();
-                
             }
             _nodeData.Stack = _currentStack;
             msg.DoAfter.Invoke(_nodeData);
         }
 
+        
+
         public override void Destroy()
         {
-            var keys = _interactingHobblers.Keys.ToArray();
+            var hobblers = _interactingHobblers.ToArray();
             var stopGatheringMsg = MessageFactory.GenerateStopGatheringMsg();
             stopGatheringMsg.Node = _controller.transform.parent.gameObject;
-            foreach (var key in keys)
+            foreach (var hobbler in hobblers)
             {
-                RemoveFromInteractingObjects(key);
-                _controller.gameObject.SendMessageTo(stopGatheringMsg, key);
+                _controller.gameObject.SendMessageTo(stopGatheringMsg, hobbler);
             }
             MessageFactory.CacheMessage(stopGatheringMsg);
             _interactingHobblers.Clear();

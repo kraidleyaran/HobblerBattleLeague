@@ -26,7 +26,6 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         
 
         private List<QueuedCraft> _craftingQueue = new List<QueuedCraft>();
-        private CommandInstance _craftCommandInstance = null;
         private List<CraftingRecipe> _recipes = new List<CraftingRecipe>();
 
         private CraftingParameterData _craftingData = null;
@@ -53,6 +52,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                     QueuedCraftFinished(currentItem);
                 }
                 base.ApplyToUnit(obj);
+                _controller.gameObject.SendMessageTo(RefreshUnitMessage.INSTANCE, _controller.transform.parent.gameObject);
             }
         }
 
@@ -61,7 +61,15 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             var finish = _craftingQueue.Count <= 0;
             if (finish)
             {
-                UnregisterNode();
+                var stopGatheringMsg = MessageFactory.GenerateStopGatheringMsg();
+                stopGatheringMsg.Node = _controller.transform.parent.gameObject;
+                _controller.gameObject.SendMessageTo(stopGatheringMsg, obj);
+                MessageFactory.CacheMessage(stopGatheringMsg);
+
+                if (_registeredNode != null)
+                {
+                    UnregisterNode();
+                }
             }
 
             return finish;
@@ -82,6 +90,11 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             _craftingQueue.Remove(craft);
             craft.Destroy();
             RefreshNodeSprite(true);
+            if (_craftingQueue.Count <= 0 && _registeredNode != null)
+            {
+                UnregisterNode();
+            }
+            _controller.gameObject.SendMessageTo(RefreshUnitMessage.INSTANCE, _controller.transform.parent.gameObject);
         }
 
         protected internal override void RefreshNodeSprite(bool refreshTrait)
@@ -114,6 +127,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             var bonus = 0f;
             var querySkillBonusMsg = MessageFactory.GenerateQuerySkillBonusMsg();
             querySkillBonusMsg.DoAfter = skillBonus => bonus = skillBonus * _skillBonusPercent;
+            querySkillBonusMsg.Skill = _skill;
             _controller.gameObject.SendMessageTo(querySkillBonusMsg, owner);
             MessageFactory.CacheMessage(querySkillBonusMsg);
 
@@ -135,6 +149,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             _controller.transform.parent.gameObject.SubscribeWithFilter<QueueCraftingRecipeMessage>(QueueCraftingRecipe, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<QueryCraftingQueueMessage>(QueryCraftingQueue, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<QueryCraftingRecipesMessage>(QueryCraftingRecipes, _instanceId);
+            _controller.transform.parent.gameObject.SubscribeWithFilter<SetCraftingIndexMessage>(SetCraftingIndex, _instanceId);
         }
 
         protected internal override void QueryBuildingParameterData(QueryBuildingParamterDataMessage msg)
@@ -180,6 +195,8 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                 {
                     UnregisterNode();
                 }
+
+                _controller.gameObject.SendMessageTo(RefreshUnitMessage.INSTANCE, _controller.transform.parent.gameObject);
             }
         }
 
@@ -187,12 +204,12 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         {
             if (_craftingQueue.Count < _maxQueue)
             {
-                var register = _craftingQueue.Count <= 0;
                 QueueRecipe(msg.Recipe, msg.Stack);
-                if (register)
+                if (_registeredNode == null)
                 {
                     RegisterNode(_mapTile);
                 }
+                _controller.gameObject.SendMessageTo(RefreshUnitMessage.INSTANCE, _controller.transform.parent.gameObject);
             }
         }
 
@@ -204,6 +221,25 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         private void QueryCraftingRecipes(QueryCraftingRecipesMessage msg)
         {
             msg.DoAfter.Invoke(_recipes.ToArray());
+        }
+
+        private void SetCraftingIndex(SetCraftingIndexMessage msg)
+        {
+            if (msg.Current < _craftingQueue.Count)
+            {
+                var queueItem = _craftingQueue[msg.Current];
+                _craftingQueue.RemoveAt(msg.Current);
+                if (msg.Target < _craftingQueue.Count)
+                {
+                    _craftingQueue.Insert(msg.Target, queueItem);
+                }
+                else
+                {
+                    _craftingQueue.Add(queueItem);
+                }
+
+                _controller.gameObject.SendMessageTo(RefreshUnitMessage.INSTANCE, _controller.transform.parent.gameObject);
+            }
         }
     }
 }

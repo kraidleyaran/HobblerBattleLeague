@@ -1,5 +1,6 @@
 ﻿using Assets.Resources.Ancible_Tools.Scripts.System;
 using Assets.Resources.Ancible_Tools.Scripts.System.Items;
+using Assets.Resources.Ancible_Tools.Scripts.System.UI;
 using MessageBusLib;
 using UnityEngine;
 using UnityEngine.UI;
@@ -18,6 +19,11 @@ namespace Assets.Ancible_Tools.Scripts.System.UI.WorldInfo
         void Start()
         {
             _worldGoldText.text = $"{WorldStashController.Gold:N0}";
+        }
+
+        public void ToggleStash()
+        {
+            UiController.ToggleStashWindow();
         }
 
         private void SubscribeToMessages()

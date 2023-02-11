@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 992dfd0a50edcf0448772bf6f6355dd1, type: 3}
+  m_Name: Level 1 Weaponsmith Extended Unit Template
+  m_EditorClassIdentifier: 
+  _traits:
+  - {fileID: 11400000, guid: db5f2e806ec8350499519a7341c8ec77, type: 2}
+  - {fileID: 11400000, guid: cca7807b9a889d641b138f3211a802a1, type: 2}
+  - {fileID: 11400000, guid: 65b8ffaf7d843e8479d7b60e5efa4a24, type: 2}
+  - {fileID: 11400000, guid: d189655603e297244a74f4d9ae555b41, type: 2}
+  - {fileID: 11400000, guid: 878c30a10d1e90a41ac22587abfe8f7f, type: 2}
+  _baseTemplate: {fileID: 11400000, guid: bb4f8d68f6de44542b43b25da2b724a7, type: 2}

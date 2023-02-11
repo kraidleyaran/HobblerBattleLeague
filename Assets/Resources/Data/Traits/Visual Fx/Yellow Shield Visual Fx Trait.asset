@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1cf840f3189fbb24da2824f67fa9ccb4, type: 3}
+  m_Name: Yellow Shield Visual Fx Trait
+  m_EditorClassIdentifier: 
+  MaxStack: 1
+  _runtime: {fileID: 9100000, guid: 3e24bcf64beb68d4e97f4c03c34e0022, type: 2}
+  _scaling: {x: 31.25, y: 31.25}
+  _offset: {x: 0, y: -1.25}
+  _loop: 0
+  _spriteLayer: {fileID: 11400000, guid: 4bbdf7457732b6c4084bb82f4a93c387, type: 2}
+  _sortingOrder: 0
+  InstantiateAlone: 0

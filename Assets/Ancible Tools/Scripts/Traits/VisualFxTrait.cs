@@ -16,6 +16,8 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         [SerializeField] private int _loop = 0;
         [SerializeField] private SpriteLayer _spriteLayer = null;
         [SerializeField] private int _sortingOrder = 0;
+        [SerializeField] private bool _flipX = false;
+        [SerializeField] private bool _flipY = false;
         public bool InstantiateAlone = false;
 
         private VisualFxController _fxController = null;
@@ -39,6 +41,8 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             fxController.transform.SetLocalScaling(_scaling);
             fxController.gameObject.layer = _controller.transform.parent.gameObject.layer;
             fxController.SetSpriteLayer(_spriteLayer, _sortingOrder);
+            fxController.FlipX(_flipX);
+            fxController.FlipY(_flipY);
             fxController.Setup(_runtime, InstantiateAlone ? null : _controller.gameObject, _loop);
             if (!InstantiateAlone)
             {

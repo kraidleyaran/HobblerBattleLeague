@@ -2443,6 +2443,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ea090aa4c11da2140933cccf8abe057a, type: 2}
   - {fileID: 11400000, guid: d8b2e415e9297ce42b66b073948bb727, type: 2}
   - {fileID: 11400000, guid: 10c821b16b02a114ab4e6caf826c3e58, type: 2}
+  - {fileID: 11400000, guid: 5f65684d1f8eaca43ade034d51203c46, type: 2}
   _buildingFolder: Data/Buildings
   _sellBackPercentage: 0.33
 --- !u!1 &2382719844781140610
@@ -5117,6 +5118,7 @@ MonoBehaviour:
   _negativeStatColor: {r: 0.8784314, g: 0.23529412, b: 0.15686275, a: 1}
   _experienceColor: {r: 0.6509804, g: 0.45882353, b: 0.99607843, a: 1}
   _hoveredItemColor: {r: 1, g: 0.90588236, b: 0.21568628, a: 1}
+  _selectedItemColor: {r: 0, g: 1, b: 0, a: 1}
   _bonusStatColor: {r: 0, g: 1, b: 0, a: 1}
   _leftSideColor: {r: 0.039215688, g: 0.5372549, b: 1, a: 1}
   _rightSideColor: {r: 0.8784314, g: 0.23529412, b: 0.15686275, a: 1}

@@ -1,6 +1,7 @@
 ﻿using Assets.Ancible_Tools.Scripts.System.UI.BattleLeague.Roster;
 using Assets.Resources.Ancible_Tools.Scripts.System.UI.BattleLeague;
 using Assets.Resources.Ancible_Tools.Scripts.System.UI.Building;
+using Assets.Resources.Ancible_Tools.Scripts.System.UI.Crafting;
 using Assets.Resources.Ancible_Tools.Scripts.System.UI.DetailedInfo;
 using Assets.Resources.Ancible_Tools.Scripts.System.UI.Dialogue;
 using Assets.Resources.Ancible_Tools.Scripts.System.UI.HobblerGenerator;
@@ -26,6 +27,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI
         [SerializeField] private UiRosterWindow _rosterWindowTemplate;
         [SerializeField] private UiDialogueWindowController _dialogueWindowTemplate;
         [SerializeField] private UiMazeSelectionWindowController _mazeSettingsWindowTemplate;
+        [SerializeField] private UiCraftingWindowController _craftingWindowTemplate;
 
         void Awake()
         {
@@ -39,6 +41,16 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI
             SubscribeToMessages();
         }
 
+        public static void ToggleRosterWindow()
+        {
+            UiWindowManager.ToggleWindow(_instance._rosterWindowTemplate);
+        }
+
+        public static void ToggleStashWindow()
+        {
+            UiWindowManager.ToggleWindow(_instance._stashWindowTemplate);
+        }
+
         private void SubscribeToMessages()
         {
             gameObject.Subscribe<ShowDetailedHobblerInfoMessage>(ShowDetailedHobblerInfo);
@@ -48,6 +60,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI
             gameObject.Subscribe<ShowHobGeneratorWindowMessage>(ShowHobGeneratorWindow);
             gameObject.Subscribe<ShowDialogueMessage>(ShowDialogue);
             gameObject.Subscribe<ShowMazeSelectionWindowMessage>(ShowMazeSelectionWindow);
+            gameObject.Subscribe<ShowCraftingWindowMessage>(ShowCraftingWindow);
         }
 
         private void ShowDetailedHobblerInfo(ShowDetailedHobblerInfoMessage msg)
@@ -135,6 +148,23 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI
 
             var window = UiWindowManager.OpenWindow(_mazeSettingsWindowTemplate, $"{UiMazeSelectionWindowController.FILTER}{id}");
             window.Setup(msg.Hobbler);
+        }
+
+        private void ShowCraftingWindow(ShowCraftingWindowMessage msg)
+        {
+            var id = string.Empty;
+            var queryBuildingMsg = MessageFactory.GenerateQueryBuildingMsg();
+            queryBuildingMsg.DoAfter = (building, tile, buildingId) => { id = buildingId; };
+            _instance.gameObject.SendMessageTo(queryBuildingMsg, msg.Owner);
+            MessageFactory.CacheMessage(queryBuildingMsg);
+
+            if (string.IsNullOrEmpty(id))
+            {
+                id = $"{msg.Owner.GetInstanceID()}";
+            }
+
+            var window = UiWindowManager.OpenWindow(_craftingWindowTemplate, $"{UiCraftingWindowController.FILTER}{id}");
+            window.Setup(msg.Owner);
         }
 
         void OnDestroy()

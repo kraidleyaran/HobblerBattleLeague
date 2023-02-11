@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Training Sword Crafting Recipe
   m_EditorClassIdentifier: 
   Item:
-    Item: {fileID: 0}
-    Stack: 0
+    Item: {fileID: 11400000, guid: 735c2b3a45054504cb77872e1b12e122, type: 2}
+    Stack: 1
   RequiredItems:
   - Item: {fileID: 11400000, guid: dd77740cff36adf45998ecf87b1743a9, type: 2}
     Stack: 10

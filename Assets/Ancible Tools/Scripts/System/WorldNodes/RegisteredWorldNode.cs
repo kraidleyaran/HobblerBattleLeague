@@ -10,6 +10,7 @@ namespace Assets.Ancible_Tools.Scripts.System.WorldNodes
         public GameObject Unit;
         public MapTile Tile;
         public WorldNodeType Type;
+        public int Priority;
 
         public RegisteredWorldNode(GameObject unit, MapTile tile, WorldNodeType type)
         {

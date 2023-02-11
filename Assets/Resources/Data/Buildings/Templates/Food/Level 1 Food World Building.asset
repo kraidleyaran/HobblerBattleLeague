@@ -33,3 +33,4 @@ MonoBehaviour:
   Upgrades:
     Buildings:
     - {fileID: 11400000, guid: c8b88366b8ce8154a96429a24058215c, type: 2}
+  UnitInfoTemplate: {fileID: 5921139191069282072, guid: d672da69bb6026244983229187f0a4d7, type: 3}

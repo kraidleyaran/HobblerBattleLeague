@@ -59,5 +59,15 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Animation
                 }
             }
         }
+
+        public void FlipX(bool flip)
+        {
+            _renderer.flipX = flip;
+        }
+
+        public void FlipY(bool flip)
+        {
+            _renderer.flipY = flip;
+        }
     }
 }

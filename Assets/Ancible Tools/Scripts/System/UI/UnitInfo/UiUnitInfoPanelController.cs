@@ -1,6 +1,8 @@
 ﻿using System.Linq;
 using Assets.Ancible_Tools.Scripts.Traits;
 using Assets.Resources.Ancible_Tools.Scripts.System;
+using Assets.Resources.Ancible_Tools.Scripts.System.Building;
+using Assets.Resources.Ancible_Tools.Scripts.System.Pathing;
 using Assets.Resources.Ancible_Tools.Scripts.System.UI;
 using Assets.Resources.Ancible_Tools.Scripts.System.Windows;
 using MessageBusLib;
@@ -79,6 +81,10 @@ namespace Assets.Ancible_Tools.Scripts.System.UI.UnitInfo
                         _infoController = hobblerInfo.gameObject;
                         break;
                     case WorldUnitType.Interactable:
+                        var queryBuildingMsg = MessageFactory.GenerateQueryBuildingMsg();
+                        queryBuildingMsg.DoAfter = SetupBuilding;
+                        gameObject.SendMessageTo(queryBuildingMsg, _selectedUnit);
+                        MessageFactory.CacheMessage(queryBuildingMsg);
                         break;
                 }
             }
@@ -94,7 +100,10 @@ namespace Assets.Ancible_Tools.Scripts.System.UI.UnitInfo
             }
             else
             {
-                Destroy(_infoController);
+                if (_infoController)
+                {
+                    Destroy(_infoController);
+                }
                 if (_hovered)
                 {
                     UiWindowManager.RemoveHoveredWindow(this);
@@ -104,6 +113,16 @@ namespace Assets.Ancible_Tools.Scripts.System.UI.UnitInfo
             
         }
 
+        private void SetupBuilding(WorldBuilding building, MapTile tile, string id)
+        {
+            if (building.UnitInfoTemplate)
+            {
+                var buildingInfo = Instantiate(building.UnitInfoTemplate, transform);
+                buildingInfo.Setup(_selectedUnit, building);
+                _infoController = buildingInfo.gameObject;
+            }
+        }
+
         private void SubscribeToMessages()
         {
             gameObject.Subscribe<UpdateSelectedUnitMessage>(UpdateSelectedUnit);
@@ -111,17 +130,28 @@ namespace Assets.Ancible_Tools.Scripts.System.UI.UnitInfo
 
         private void UpdateSelectedUnit(UpdateSelectedUnitMessage msg)
         {
-            if (_selectedUnit)
+            if (msg.Unit)
+            {
+                if (!_selectedUnit || _selectedUnit != msg.Unit)
+                {
+                    if (_selectedUnit)
+                    {
+                        _selectedUnit.UnsubscribeFromAllMessagesWithFilter(FILTER);
+                    }
+                    _selectedUnit = msg.Unit;
+                    gameObject.SendMessageTo(_queryWorldUnitTypeMsg, _selectedUnit);
+                    _selectedUnit.gameObject.SubscribeWithFilter<RefreshUnitMessage>(RefreshUnit, FILTER);
+                    RefreshInfo();
+                }
+            }
+            else if (_selectedUnit)
             {
                 _selectedUnit.UnsubscribeFromAllMessagesWithFilter(FILTER);
+                _selectedUnit = null;
+                RefreshInfo();
             }
-            _selectedUnit = msg.Unit;
-            if (_selectedUnit)
-            {
-                gameObject.SendMessageTo(_queryWorldUnitTypeMsg, _selectedUnit);
-                _selectedUnit.gameObject.SubscribeWithFilter<RefreshUnitMessage>(RefreshUnit);
-            }
-            RefreshInfo();
+            
+
         }
 
         private void RefreshUnit(RefreshUnitMessage msg)

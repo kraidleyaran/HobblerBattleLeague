@@ -27,3 +27,6 @@ MonoBehaviour:
   - {x: -1, y: 0}
   Template: {fileID: 11400000, guid: 50f5390ac196b4a4a92515531223db7d, type: 2}
   Cost: 50
+  Upgrades:
+    Buildings: []
+  UnitInfoTemplate: {fileID: 8580601051416011726, guid: 8c8262cf64715ec40b7da89793c061c6, type: 3}

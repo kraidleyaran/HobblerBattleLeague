@@ -1239,8 +1239,8 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
 
     public class QueryNodeMessage : EventMessage
     {
-        //Id, stack remaining
-        public Action<string, int> DoAfter;
+        //currentstack, maxstack, Hobblers
+        public Action<int, int, GameObject[]> DoAfter;
     }
 
     public class QueryBuildingMessge : EventMessage

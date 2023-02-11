@@ -6,10 +6,12 @@ using UnityEngine;
 
 namespace Assets.Ancible_Tools.Scripts.Traits
 {
+    [CreateAssetMenu(fileName = "Absorb Damage Trait", menuName = "Ancible Tools/Traits/Combat/Absorb Damage")]
     public class AbsorbDamageTrait : Trait
     {
         [SerializeField] private int _amount;
         [SerializeField] private DamageType _type;
+        [SerializeField] private Trait[] _applyOnEffect = new Trait[0];
 
         private int _remainingDamage = 0;
 
@@ -36,6 +38,17 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                 _remainingDamage -= damageInstance.Instance;
                 damageInstance.Instance = 0;
             }
+
+            if (_applyOnEffect.Length > 0)
+            {
+                var addTraitToUnitMsg = MessageFactory.GenerateAddTraitToUnitMsg();
+                foreach (var trait in _applyOnEffect)
+                {
+                    addTraitToUnitMsg.Trait = trait;
+                    _controller.transform.parent.gameObject.SendMessageTo(addTraitToUnitMsg, _controller.transform.parent.gameObject);
+                }
+                MessageFactory.CacheMessage(addTraitToUnitMsg);
+            }
         }
 
         private void SubscribeToMessages()
@@ -45,18 +58,21 @@ namespace Assets.Ancible_Tools.Scripts.Traits
 
         private void AbsorbDamageCheck(AbsorbedDamageCheckMessage msg)
         {
-            switch (_type)
+            if (msg.Instance.Instance > 0)
             {
-                case DamageType.Physical:
-                case DamageType.Magical:
-                    if (msg.Type == _type)
-                    {
+                switch (_type)
+                {
+                    case DamageType.Physical:
+                    case DamageType.Magical:
+                        if (msg.Type == _type)
+                        {
+                            AbsorbDamage(msg.Instance);
+                        }
+                        break;
+                    case DamageType.Pure:
                         AbsorbDamage(msg.Instance);
-                    }
-                    break;
-                case DamageType.Pure:
-                    AbsorbDamage(msg.Instance);
-                    break;
+                        break;
+                }
             }
         }
     }

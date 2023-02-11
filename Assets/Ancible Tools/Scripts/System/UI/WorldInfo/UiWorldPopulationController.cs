@@ -1,4 +1,5 @@
 ﻿using Assets.Resources.Ancible_Tools.Scripts.System;
+using Assets.Resources.Ancible_Tools.Scripts.System.UI;
 using MessageBusLib;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,10 +21,18 @@ namespace Assets.Ancible_Tools.Scripts.System.UI.WorldInfo
             RefreshPopulation();
         }
 
+        public void ToggleRoster()
+        {
+            if (WorldController.State == WorldState.World)
+            {
+                UiController.ToggleRosterWindow();
+            }
+        }
+
         private void RefreshPopulation()
         {
-            _populationText.text = $"{WorldHobblerManager.All.Count} / {WorldHobblerManager.PopulationLimit}";
-            _rosterText.text = $"{WorldHobblerManager.Roster.Count} / {WorldHobblerManager.RosterLimit}";
+            _populationText.text = $"{WorldHobblerManager.All.Count}/{WorldHobblerManager.PopulationLimit}";
+            _rosterText.text = $"{WorldHobblerManager.Roster.Count}/{WorldHobblerManager.RosterLimit}";
         }
 
         private void SubscribeToMessages()

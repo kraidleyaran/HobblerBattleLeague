@@ -32,3 +32,4 @@ MonoBehaviour:
   Cost: 25
   Upgrades:
     Buildings: []
+  UnitInfoTemplate: {fileID: 5921139191069282072, guid: d672da69bb6026244983229187f0a4d7, type: 3}

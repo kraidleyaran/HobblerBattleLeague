@@ -43,26 +43,27 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.Crafting
                 for (var i = currentCount; i < maxSlots; i++)
                 {
                     var controller = Instantiate(_queuedCraftTemplate, _grid.transform);
-                    controller.SetIndex(i, maxSlots - 1);
                     controller.SetOwner(_owner);
+                    controllers.Add(controller);
+                    controller.Clear();
                 }
+
+                _controllers = controllers.ToArray();
             }
 
             for (var i = 0; i < maxSlots; i++)
             {
                 var controller = _controllers[i];
-                if (queue.Length >= i)
+                controller.SetIndex(i, queue.Length);
+                if (i < queue.Length)
                 {
                     if (controller.Craft == null || controller.Craft != queue[i])
                     {
-                        if (controller.Craft == null)
-                        {
-                            controller.Setup(queue[i]);
-                        }
-                        else
-                        {
-                            controller.RefreshCraft();
-                        }
+                        controller.Setup(queue[i]);
+                    }
+                    else
+                    {
+                        controller.RefreshCraft();
                     }
                 }
                 else if (controller.Craft != null)

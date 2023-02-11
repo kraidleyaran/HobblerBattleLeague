@@ -42,8 +42,15 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                     var instance = new SkillInstance(_startingSkills[i]);
                     _skills.Add(instance.Instance, instance);
                     _prioritizedSkills.Add(_prioritizedSkills.Count, instance);
-
-                    _workInstance.Tree.SubCommands.Add(GenerateSkillCommand(instance));
+                    if (instance.Instance.SkillType == WorldSkillType.Crafting)
+                    {
+                        _craftInstance.Tree.SubCommands.Add(GenerateSkillCommand(instance));
+                    }
+                    else
+                    {
+                        _workInstance.Tree.SubCommands.Add(GenerateSkillCommand(instance));
+                    }
+                    
                 }
             }
 
@@ -70,37 +77,40 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         private CommandInstance GenerateSkillCommand(SkillInstance instance)
         {
             var skillCommand = Instantiate(FactoryController.COMMAND_TEMPLATE, _controller.transform);
-            skillCommand.Icons = new[] { new CommandIcon { Sprite = instance.Instance.Icon, ColorMask = Color.white } };
-            skillCommand.Command = instance.Instance.Verb;
-            skillCommand.Description = instance.Instance.Description;
-            skillCommand.DoAfter = () => { };
-            var skillCommandInstance = skillCommand.GenerateInstance();
-            if (instance.Instance.SkillType == WorldSkillType.Gathering && instance.Instance is WorldGatheringSkill gathering)
+            switch (instance.Instance.SkillType)
             {
-                
-                var items = gathering.Items;
-                foreach (var item in items)
-                {
-                    //var item = items[it];
-                    var itemCommand = Instantiate(FactoryController.COMMAND_TEMPLATE, _controller.transform);
-                    itemCommand.Icons = new[] { new CommandIcon { Sprite = item.Icon, ColorMask = Color.white } };
-                    itemCommand.DoAfter = () => { SearchForResourceNode(item); };
-                    itemCommand.Command = $"{instance.Instance.Verb} {item.DisplayName}";
-                    var itemInstance = itemCommand.GenerateInstance();
-                    skillCommandInstance.Tree.SubCommands.Add(itemInstance);
-                }
+                case WorldSkillType.Gathering when instance.Instance is WorldGatheringSkill gathering:
+                    var skillCommandInstance = skillCommand.GenerateInstance();
+                    skillCommand.Icons = new[] { new CommandIcon { Sprite = instance.Instance.Icon, ColorMask = Color.white } };
+                    skillCommand.Command = instance.Instance.Verb;
+                    skillCommand.Description = instance.Instance.Description;
+                    skillCommand.DoAfter = () => { };
+                    var items = gathering.Items;
+                    foreach (var item in items)
+                    {
+                        //var item = items[it];
+                        var itemCommand = Instantiate(FactoryController.COMMAND_TEMPLATE, _controller.transform);
+                        itemCommand.Icons = new[] { new CommandIcon { Sprite = item.Icon, ColorMask = Color.white } };
+                        itemCommand.DoAfter = () => { SearchForResourceNode(item); };
+                        itemCommand.Command = $"{instance.Instance.Verb} {item.DisplayName}";
+                        itemCommand.Description = instance.Instance.Description;
+                        var itemInstance = itemCommand.GenerateInstance();
+                        skillCommandInstance.Tree.SubCommands.Add(itemInstance);
+                    }
+                    return skillCommandInstance;
+                case WorldSkillType.Crafting when instance.Instance is WorldCraftingSkill craftingSkill:
+                    skillCommand.Icons = new[] {new CommandIcon {Sprite = craftingSkill.Icon},};
+                    skillCommand.DoAfter = () => { SearchForCraftingNode(craftingSkill); };
+                    skillCommand.Command = $"{craftingSkill.DisplayName}";
+                    skillCommand.Description = craftingSkill.Description;
+                    return skillCommand.GenerateInstance();
+                default:
+                    skillCommand.Icons = new[] { new CommandIcon { Sprite = instance.Instance.Icon, ColorMask = Color.white } };
+                    skillCommand.Command = instance.Instance.Verb;
+                    skillCommand.Description = instance.Instance.Description;
+                    skillCommand.DoAfter = () => { };
+                    return skillCommand.GenerateInstance();
             }
-            else if (instance.Instance.SkillType == WorldSkillType.Crafting && instance.Instance is WorldCraftingSkill craftingSkill)
-            {
-                var craftingCommand = Instantiate(FactoryController.COMMAND_TEMPLATE, _controller.transform);
-                craftingCommand.Icons = new[] {new CommandIcon {Sprite = craftingSkill.Icon},};
-                craftingCommand.DoAfter = () => { SearchForCraftingNode(craftingSkill); };
-                craftingCommand.Command = $"{craftingSkill.DisplayName}";
-                var craftingInstance = craftingCommand.GenerateInstance();
-                _craftInstance.Tree.SubCommands.Add(craftingInstance);
-            }
-
-            return skillCommandInstance;
         }
 
         private void SubscribeToMessages()
@@ -122,7 +132,15 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                 instance = new SkillInstance(msg.Skill);
                 _skills.Add(msg.Skill, instance);
                 _prioritizedSkills.Add(_prioritizedSkills.Count, instance);
-                _workInstance.Tree.SubCommands.Add(GenerateSkillCommand(instance));
+                if (msg.Skill.SkillType == WorldSkillType.Crafting)
+                {
+                    _craftInstance.Tree.SubCommands.Add(GenerateSkillCommand(instance));
+                }
+                else
+                {
+                    _workInstance.Tree.SubCommands.Add(GenerateSkillCommand(instance));
+                }
+                
                 _controller.gameObject.SendMessageTo(ResetCommandCardMessage.INSTANCE, _controller.transform.parent.gameObject);
             }
 
@@ -216,6 +234,16 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             {
                 instance = new SkillInstance(msg.Skill);
                 _skills.Add(msg.Skill, instance);
+                _prioritizedSkills.Add(_prioritizedSkills.Count, instance);
+                if (msg.Skill.SkillType == WorldSkillType.Crafting)
+                {
+                    _craftInstance.Tree.SubCommands.Add(GenerateSkillCommand(instance));
+                }
+                else
+                {
+                    _workInstance.Tree.SubCommands.Add(GenerateSkillCommand(instance));
+                }
+                _controller.gameObject.SendMessageTo(RefreshUnitMessage.INSTANCE, _controller.transform.parent.gameObject);
             }
 
             if (msg.Permanent)

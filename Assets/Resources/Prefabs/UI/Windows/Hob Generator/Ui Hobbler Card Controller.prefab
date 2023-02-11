@@ -876,7 +876,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c4d9c606a3f32d4cb2d0211ad76c728, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _hobblerIcon: {fileID: 1189037108196836148}
+  _hobblerIcon: {fileID: 7822273581157875520}
   _weaponController: {fileID: 1189037108072900284}
   _abilityControllers:
   - {fileID: 1189037109337569735}
@@ -908,6 +908,7 @@ GameObject:
   - component: {fileID: 1189037108196836147}
   - component: {fileID: 1189037108196836149}
   - component: {fileID: 1189037108196836148}
+  - component: {fileID: 7822273581157875520}
   m_Layer: 5
   m_Name: Hobbler Icon
   m_TagString: Untagged
@@ -972,6 +973,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &7822273581157875520
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1189037108196836146}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 705e652ec0053fc47b155621687e5f87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RectTransform: {fileID: 1189037108196836147}
+  Button: {fileID: 0}
+  _iconImage: {fileID: 1189037108196836148}
 --- !u!1 &1189037108322231396
 GameObject:
   m_ObjectHideFlags: 0

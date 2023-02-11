@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ad3fddeec03bef47a7b6e49beb70cd7, type: 3}
+  m_Name: Level 1 Weaponsmith World Building
+  m_EditorClassIdentifier: 
+  DisplayName: Weaponsmith
+  Description: Craft new weapons for Hobblers to wield
+  Icon: {fileID: 21300000, guid: f612b05289d358647913d0ea44a0947a, type: 3}
+  Sprites:
+  - {fileID: 11400000, guid: cca7807b9a889d641b138f3211a802a1, type: 2}
+  - {fileID: 11400000, guid: 879d6a722a523c3449f012d139edbec8, type: 2}
+  - {fileID: 11400000, guid: a5efc563fa2dbfa4ea0037cf06197438, type: 2}
+  - {fileID: 11400000, guid: 613a89204a010bd40bb425432c3edb4b, type: 2}
+  - {fileID: 11400000, guid: 1dfb8d00caba1ed4181e037d60a53f5f, type: 2}
+  - {fileID: 11400000, guid: 74217d350941f584483410dccc790cc4, type: 2}
+  RequiredTiles:
+  - {x: 0, y: 1}
+  - {x: 0, y: -1}
+  - {x: -1, y: 0}
+  - {x: 1, y: 0}
+  BlockingTiles:
+  - {x: 0, y: 0}
+  - {x: 1, y: 1}
+  - {x: -1, y: 1}
+  - {x: 1, y: -1}
+  - {x: -1, y: -1}
+  Template: {fileID: 11400000, guid: 8bfd8e56e49171c4badb141ee519e6fd, type: 2}
+  Cost: 100
+  Upgrades:
+    Buildings: []
+  UnitInfoTemplate: {fileID: 1820557890110346249, guid: 4f89674d1b18b1e4b85fe33a121acb80, type: 3}

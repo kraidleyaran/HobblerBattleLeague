@@ -56,6 +56,16 @@ namespace Assets.Ancible_Tools.Scripts.System.UI.UnitInfo
             Clear();
             gameObject.SendMessageTo(_queryHappinessMsg, _unit);
             gameObject.SendMessageTo(_queryWellbeingStatsMsg, _unit);
+
+            var queryUnitNameMsg = MessageFactory.GenerateQueryUnitNameMsg();
+            queryUnitNameMsg.DoAfter = RefreshName;
+            gameObject.SendMessageTo(queryUnitNameMsg, _unit);
+            MessageFactory.CacheMessage(queryUnitNameMsg);
+        }
+
+        private void RefreshName(string unitName)
+        {
+            _nameText.text = unitName;
         }
 
         private void RefreshHappiness(int happiness, IntNumberRange caps)

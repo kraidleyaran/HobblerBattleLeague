@@ -22,6 +22,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.Crafting
         [SerializeField] private InputField _quantityInputText;
         [SerializeField] private Button _craftButton;
         [SerializeField] private GameObject _objectGrouping;
+        [SerializeField] private int _maxQuantity = 999;
 
         private GameObject _owner;
         private GameObject _parent;
@@ -33,6 +34,8 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.Crafting
 
         public void Setup(GameObject owner, GameObject parent)
         {
+            _owner = owner;
+            _parent = parent;
             _craftButton.interactable = false;
             _filter = $"{FILTER}-{_owner.GetInstanceID()}";
             _objectGrouping.gameObject.SetActive(false);
@@ -59,7 +62,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.Crafting
         {
             _recipeItemController.Setup(_selectedRecipe.Item, false);
             _recipeNameText.text = $"{_selectedRecipe.Item.Item.DisplayName}";
-            _quantityInputText.SetTextWithoutNotify($"{_quantity}");
+            _quantityInputText.SetTextWithoutNotify($"{1}");
             UpdateMaterials();
             UpdateQuantity();
             _objectGrouping.gameObject.SetActive(true);
@@ -86,20 +89,15 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.Crafting
             }
         }
 
-        private void UpdateQuantity()
+        public void UpdateQuantity()
         {
-            if (int.TryParse(_quantityInputText.text, out var quantity))
-            {
-                _quantity = quantity;
-            }
-            else
-            {
-                _quantity = 1;
-                _quantityInputText.SetTextWithoutNotify($"{_quantity}");
-            }
+            _quantity = int.TryParse(_quantityInputText.text, out var quantity) ? Mathf.Min(Mathf.Max(quantity, 0), quantity, _maxQuantity) : 0;
 
             var goldCost = _selectedRecipe.Cost * _quantity;
             _goldCostText.text = $"{goldCost:N0}";
+
+            var timeCost = _selectedRecipe.CraftingTicks * _quantity;
+            _tickCostText.text = $"{timeCost:N0}";
             UpdateCraftButton();
         }
 
@@ -110,21 +108,29 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.Crafting
 
         private bool IsCraftable()
         {
-            var goldCost = _selectedRecipe.Cost * _quantity;
-            var craftable = goldCost <= WorldStashController.Gold;
-            if (craftable)
+            if (_selectedRecipe != null)
             {
-                foreach (var item in _selectedRecipe.RequiredItems)
+                var craftable = _quantity > 0;
+                if (craftable)
                 {
-                    craftable = WorldStashController.HasItem(item.Item, item.Stack);
-                    if (!craftable)
+                    var goldCost = _selectedRecipe.Cost * _quantity;
+                    craftable = goldCost <= WorldStashController.Gold;
+                }
+                if (craftable)
+                {
+                    foreach (var item in _selectedRecipe.RequiredItems)
                     {
-                        break;
+                        craftable = WorldStashController.HasItem(item.Item, item.Stack * _quantity);
+                        if (!craftable)
+                        {
+                            break;
+                        }
                     }
                 }
-            }
 
-            return craftable;
+                return craftable;
+            }
+            return false;
         }
 
         private void SubscribeToMessages()
@@ -143,12 +149,12 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.Crafting
 
         private void GoldUpdated(GoldUpdatedMessage msg)
         {
-            UpdateQuantity();
+            _craftButton.interactable = IsCraftable();
         }
 
         private void WorldStashUpdated(StashUpdatedMessage msg)
         {
-            UpdateQuantity();
+            _craftButton.interactable = IsCraftable();
         }
 
         public void Destroy()

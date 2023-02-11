@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c0e771370d75d646b84ab3985f44c84, type: 3}
+  m_Name: Flash Of Light World Ability
+  m_EditorClassIdentifier: 
+  DisplayName: Flash of Light
+  Icon: {fileID: 21300000, guid: ef50027a9cf73214b80d0f10cc971ebc, type: 3}
+  Description: 
+  Range: 6
+  CastTime: 80
+  ManaCost: 2
+  ApplyToTarget:
+  - {fileID: 11400000, guid: 7b7a9abc39219b144bbb5b21063709d8, type: 2}
+  - {fileID: 11400000, guid: 5b38e5977a2d728468ecc009c2884e92, type: 2}
+  - {fileID: 11400000, guid: 04311437a1f7b634cab6a243a4b6d795, type: 2}
+  Alignment: 0
+  Type: 2
+  Cooldown: 450
+  Conditions:
+  - {fileID: 11400000, guid: a3316bf729f0f2d49bdfe79acc55cbb0, type: 2}

@@ -79,7 +79,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
 
         private void SearchForCraftingNode(SearchForCraftingNodeMessage msg)
         {
-            var node = WorldNodeManager.GetClosestNodeByCraftingSkill(_currentTile, msg.Skill);
+            var node = WorldNodeManager.GetCraftingNodeByPriorityAndSkill(msg.Skill);
             if (node != null)
             {
                 var interactMsg = MessageFactory.GenerateInteractMsg();
@@ -92,6 +92,13 @@ namespace Assets.Ancible_Tools.Scripts.Traits
 
         private void Gather(GatherMessage msg)
         {
+            if (_currentNode && msg.Node != _currentNode)
+            {
+                var unregisterFromNodeMsg = MessageFactory.GenerateUnregisterFromGatheringNodeMsg();
+                unregisterFromNodeMsg.Unit = _controller.transform.parent.gameObject;
+                _controller.gameObject.SendMessageTo(unregisterFromNodeMsg, _currentNode);
+                MessageFactory.CacheMessage(unregisterFromNodeMsg);
+            }
             if (_gatheringTimer != null)
             {
                 _gatheringTimer.Destroy();
@@ -126,6 +133,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                 case WorldNodeType.Book:
                     setMonsterStateMsg.State = MonsterState.Studying;
                     break;
+                case WorldNodeType.Crafting:
                 case WorldNodeType.Resource:
                     setMonsterStateMsg.State = MonsterState.Gathering;
                     break;
@@ -208,7 +216,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
 
         private void UpdateMonsterState(UpdateMonsterStateMessage msg)
         {
-            if (msg.State == MonsterState.Idle || msg.State == MonsterState.Minigame)
+            if (msg.State == MonsterState.Idle || msg.State == MonsterState.Minigame || msg.State == MonsterState.Battle)
             {
                 if (_currentNode != null)
                 {

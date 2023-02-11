@@ -52,7 +52,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Items
             }
             else
             {
-                var existingStacks = _instance._items.Where(s => s.Stack < item.MaxStack).OrderByDescending(s => s.Stack).ToArray();
+                var existingStacks = _instance._items.Where(s => s.Item == item && s.Stack < item.MaxStack).OrderByDescending(s => s.Stack).ToArray();
                 if (existingStacks.Length > 0)
                 {
                     var remainingStack = stack;

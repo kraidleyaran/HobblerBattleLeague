@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Woodcutting Gathering Skill
   m_EditorClassIdentifier: 
   DisplayName: Woodcutting
-  Verb: Woodcutting
+  Verb: Chop
   Description: 
   Icon: {fileID: -1054775756065530648, guid: 2b8f0602ca246a843860ad4b1b843b9a, type: 3}
   ExperienceMultiplier: 1

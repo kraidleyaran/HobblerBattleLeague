@@ -214,6 +214,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
         private static List<QueryCraftingQueueMessage> _queryCraftingQueueCache = new List<QueryCraftingQueueMessage>();
         private static List<SetCraftingIndexMessage> _setCraftingIndexCache = new List<SetCraftingIndexMessage>();
         private static List<ShowCraftingWindowMessage> _showCraftingWindowCache = new List<ShowCraftingWindowMessage>();
+        private static List<CancelCraftingQueueAtIndexMessage> _cancelCraftingQueueAtIndexCache = new List<CancelCraftingQueueAtIndexMessage>();
 
         public static AddTraitToUnitMessage GenerateAddTraitToUnitMsg()
         {
@@ -2554,6 +2555,18 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
             return new ShowCraftingWindowMessage();
         }
 
+        public static CancelCraftingQueueAtIndexMessage GenerateCancelCraftingQueueAtIndexMsg()
+        {
+            if (_cancelCraftingQueueAtIndexCache.Count > 0)
+            {
+                var message = _cancelCraftingQueueAtIndexCache[0];
+                _cancelCraftingQueueAtIndexCache.Remove(message);
+                return message;
+            }
+
+            return new CancelCraftingQueueAtIndexMessage();
+        }
+
         //TODO: Start Cache
 
         public static void CacheMessage(AddTraitToUnitMessage msg)
@@ -4006,6 +4019,13 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
             msg.Owner = null;
             msg.Sender = null;
             _showCraftingWindowCache.Add(msg);
+        }
+
+        public static void CacheMessage(CancelCraftingQueueAtIndexMessage msg)
+        {
+            msg.Index = 0;
+            msg.Sender = null;
+            _cancelCraftingQueueAtIndexCache.Add(msg);
         }
     }
 }

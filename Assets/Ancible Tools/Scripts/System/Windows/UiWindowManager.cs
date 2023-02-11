@@ -40,14 +40,14 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Windows
         public static void SetHoveredWindow(UiBaseWindow window)
         {
             Hovered = window;
-            Debug.Log($"Window hovered - {Hovered.name}");
+            //Debug.Log($"Window hovered - {Hovered.name}");
         }
 
         public static void RemoveHoveredWindow(UiBaseWindow window)
         {
             if (Hovered && Hovered == window)
             {
-                Debug.Log($"Window Unhovered - {Hovered.name}");
+                //Debug.Log($"Window Unhovered - {Hovered.name}");
                 Hovered = null;
             }
         }

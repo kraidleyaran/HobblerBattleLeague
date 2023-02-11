@@ -59,35 +59,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             }
         }
 
-        public override void Destroy()
-        {
-            if (_hitboxController)
-            {
-                var unregisterCollisionMsg = MessageFactory.GenerateUnregisterCollisionMsg();
-                unregisterCollisionMsg.Object = _controller.gameObject;
-                _controller.gameObject.SendMessageTo(unregisterCollisionMsg, _hitboxController.gameObject);
-                MessageFactory.CacheMessage(unregisterCollisionMsg);
-            }
-            if (_hovered)
-            {
-                var removeHoveredUnitMsg = MessageFactory.GenerateRemoveHoveredUnitMsg();
-                removeHoveredUnitMsg.Unit = _controller.transform.parent.gameObject;
-                _controller.gameObject.SendMessage(removeHoveredUnitMsg);
-                MessageFactory.CacheMessage(removeHoveredUnitMsg);
-            }
-
-            _hovered = null;
-            if (_selected)
-            {
-                var removeSelectedUnitMsg = MessageFactory.GenerateRemoveSelectedUnitMsg();
-                removeSelectedUnitMsg.Unit = _controller.transform.parent.gameObject;
-                _controller.gameObject.SendMessage(removeSelectedUnitMsg);
-                MessageFactory.CacheMessage(removeSelectedUnitMsg);
-            }
-
-            _selected = null;
-            base.Destroy();
-        }
+        
 
         private void QueryWorldUnitType(QueryWorldUnitTypeMessage msg)
         {
@@ -115,6 +87,36 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                     MessageFactory.CacheMessage(removeHoveredUnitMsg);
                 }
             }
+        }
+
+        public override void Destroy()
+        {
+            if (_hitboxController)
+            {
+                var unregisterCollisionMsg = MessageFactory.GenerateUnregisterCollisionMsg();
+                unregisterCollisionMsg.Object = _controller.gameObject;
+                _controller.gameObject.SendMessageTo(unregisterCollisionMsg, _hitboxController.gameObject);
+                MessageFactory.CacheMessage(unregisterCollisionMsg);
+            }
+            if (_hovered)
+            {
+                var removeHoveredUnitMsg = MessageFactory.GenerateRemoveHoveredUnitMsg();
+                removeHoveredUnitMsg.Unit = _controller.transform.parent.gameObject;
+                _controller.gameObject.SendMessage(removeHoveredUnitMsg);
+                MessageFactory.CacheMessage(removeHoveredUnitMsg);
+            }
+            _hovered = null;
+
+            if (_selected)
+            {
+                var removeSelectedUnitMsg = MessageFactory.GenerateRemoveSelectedUnitMsg();
+                removeSelectedUnitMsg.Unit = _controller.transform.parent.gameObject;
+                _controller.gameObject.SendMessage(removeSelectedUnitMsg);
+                MessageFactory.CacheMessage(removeSelectedUnitMsg);
+            }
+            _selected = null;
+
+            base.Destroy();
         }
 
     }

@@ -199,10 +199,34 @@ namespace Assets.Ancible_Tools.Scripts.System.WorldNodes
             {
                 if (nodes.Count > 0)
                 {
-                    return nodes.Count > 1 ? nodes.OrderBy(n => (n.Tile.World - currentTile.World).sqrMagnitude).FirstOrDefault() : nodes[0];
+                    return nodes.Count > 1 ? nodes.OrderBy(n => n.Priority).ThenBy(n => (n.Tile.World - currentTile.World).sqrMagnitude).FirstOrDefault() : nodes[0];
                 }
 
                 return null;
+            }
+
+            return null;
+        }
+
+        public static RegisteredWorldNode GetRandomCraftingNode(MapTile currentTile)
+        {
+            var craftingnodes = _instance._allNodes.Where(n => n.Type == WorldNodeType.Crafting).ToArray();
+            return craftingnodes.GetRandom();
+        }
+
+        public static RegisteredWorldNode GetCraftingNodeByPriority()
+        {
+            var nodes = _instance._allNodes.Where(n => n.Type == WorldNodeType.Crafting).OrderByDescending(n => n.Priority).ToArray();
+            var priorityNodes = nodes.Where(n => n.Priority == nodes[0].Priority).ToArray();
+            return priorityNodes.GetRandom();
+        }
+
+        public static RegisteredWorldNode GetCraftingNodeByPriorityAndSkill(WorldSkill skill)
+        {
+            if (_instance._craftingNodes.TryGetValue(skill, out var nodes))
+            {
+                var priorityNodes = nodes.Where(n => n.Priority == nodes[0].Priority).ToArray();
+                return priorityNodes.GetRandom();
             }
 
             return null;

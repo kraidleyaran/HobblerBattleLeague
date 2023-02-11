@@ -1,4 +1,5 @@
-﻿using Assets.Ancible_Tools.Scripts.System.Items.Crafting;
+﻿using System;
+using Assets.Ancible_Tools.Scripts.System.Items.Crafting;
 using MessageBusLib;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -35,7 +36,8 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.Crafting
                 showHoverInfoMsg.Icon = Recipe.Item.Item.Icon;
                 showHoverInfoMsg.Gold = Recipe.Cost;
                 showHoverInfoMsg.Title = Recipe.Item.Item.DisplayName;
-                showHoverInfoMsg.Description = Recipe.Item.Item.GetDescription();
+                var description = $"{Recipe.Item.Item.GetDescription()}{Environment.NewLine}{Environment.NewLine}Time:{Recipe.CraftingTicks}";
+                showHoverInfoMsg.Description = description;
                 gameObject.SendMessage(showHoverInfoMsg);
                 MessageFactory.CacheMessage(showHoverInfoMsg);
 
@@ -47,6 +49,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.Crafting
         {
             if (_hovered)
             {
+                _hovered = false;
                 var removeHoverInfoMsg = MessageFactory.GenerateRemoveHoverInfoMsg();
                 removeHoverInfoMsg.Owner = gameObject;
                 gameObject.SendMessage(removeHoverInfoMsg);

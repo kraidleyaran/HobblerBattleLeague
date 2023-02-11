@@ -16,5 +16,6 @@ MonoBehaviour:
   _startingSkills:
   - {fileID: 11400000, guid: 7c2c8a6a5cc026c42a3a4094d8850f2a, type: 2}
   - {fileID: 11400000, guid: 98c5548638d43684382995bbb134245e, type: 2}
+  - {fileID: 11400000, guid: fc198a89e4782654eab4b1124cfaa03c, type: 2}
   _workCommand: {fileID: 11400000, guid: a328c74cd5f5ba34591171d63bbe416f, type: 2}
   _craftCommand: {fileID: 11400000, guid: db8d9e5e2c262524ea6f693b7297779b, type: 2}
