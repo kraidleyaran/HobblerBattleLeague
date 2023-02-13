@@ -42,10 +42,10 @@ namespace Assets.Ancible_Tools.Scripts.Traits
 
                 _jumpSequence = null;
             }
-
+            
             var distance = (_victoryJumpHeight * DataController.Interpolation);
-            var moveSpeed = TickController.OneSecond / (_victoryJumpSpeed * DataController.Interpolation) * distance;
-            _jumpSequence = _spriteController.transform.DOLocalJump(Offset, distance, 1, moveSpeed).SetEase(Ease.Linear).OnComplete(() =>
+            var time = TickController.OneSecond / (_victoryJumpSpeed * DataController.Interpolation) * distance;
+            _jumpSequence = _spriteController.transform.DOLocalJump(Offset, distance, 1, time).SetEase(Ease.Linear).OnComplete(() =>
                 {
                     _jumpSequence = null;
                     Wait();
@@ -70,6 +70,36 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                     _waitSequence = null;
                     DoJump();
                 });
+        }
+
+        protected internal override void CancelAllTweens(bool finish = false)
+        {
+            base.CancelAllTweens(finish);
+
+            if (_jumpSequence != null)
+            {
+                if (_jumpSequence.IsActive())
+                {
+                    _jumpSequence.Kill();
+                }
+
+                _jumpSequence = null;
+            }
+
+            if (_waitSequence != null)
+            {
+                if (_waitSequence.IsActive())
+                {
+                    _waitSequence.Kill();
+                }
+
+                _waitSequence = null;
+            }
+
+            if (_delayRoutine != null)
+            {
+                _controller.StopCoroutine(_delayRoutine);
+            }
         }
 
         protected internal override void SubscribeToMessages()
@@ -133,15 +163,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
 
         private void DoVictoryAnimation(DoVictoryAnimationMessage msg)
         {
-            if (_bumpTween != null)
-            {
-                if (_bumpTween.IsActive())
-                {
-                    _bumpTween.Kill();
-                }
-
-                _bumpTween = null;
-            }
+            CancelAllTweens();
             _spriteController.SetOffset(Offset);
             _delayRoutine = _controller.StartCoroutine(StaticMethods.WaitForFrames(_victoryAnimationDelay.Roll(), () =>
                 {
@@ -154,15 +176,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         {
             if (msg.State == UnitBattleState.Dead)
             {
-                if (_bumpTween != null)
-                {
-                    if (_bumpTween.IsActive())
-                    {
-                        _bumpTween.Kill();
-                    }
-
-                    _bumpTween = null;
-                }
+                CancelAllTweens();
             }
         }
 
@@ -184,46 +198,13 @@ namespace Assets.Ancible_Tools.Scripts.Traits
 
         private void InterruptBump(InterruptBumpMessage msg)
         {
-            if (_bumpTween != null)
-            {
-                if (_bumpTween.IsActive())
-                {
-                    _bumpTween.Kill();
-                }
-
-                _bumpTween = null;
-            }
-
+            CancelAllTweens();
             _spriteController.transform.SetLocalPosition(Offset);
         }
 
         public override void Destroy()
         {
-            if (_jumpSequence != null)
-            {
-                if (_jumpSequence.IsActive())
-                {
-                    _jumpSequence.Kill();
-                }
-
-                _jumpSequence = null;
-            }
-
-            if (_waitSequence != null)
-            {
-                if (_waitSequence.IsActive())
-                {
-                    _waitSequence.Kill();
-                }
-
-                _waitSequence = null;
-            }
-
-            if (_delayRoutine != null)
-            {
-                _controller.StopCoroutine(_delayRoutine);
-            }
-
+            CancelAllTweens();
             base.Destroy();
         }
     }

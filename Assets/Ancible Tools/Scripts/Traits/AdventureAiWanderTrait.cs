@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Assets.Ancible_Tools.Scripts.Traits
 {
-    [CreateAssetMenu(fileName = "Adventure Ai Wander Trait", menuName = "Ancible Tools/Traits/Adventure/Adventure Ai Wander")]
+    [CreateAssetMenu(fileName = "Adventure Ai Wander Trait", menuName = "Ancible Tools/Traits/Adventure/Ai/Wander")]
     public class AdventureAiWanderTrait : Trait
     {
         [SerializeField] private int _area = 1;
@@ -21,6 +21,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         private List<MapTile> _path = new List<MapTile>();
 
         private AdventureUnitState _unitState = AdventureUnitState.Idle;
+        private AdventureAiState _adventureAiState = AdventureAiState.Wander;
         private TickTimer _idleTimer = null;
 
         public override void SetupController(TraitController controller)
@@ -40,7 +41,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                     _idleTimer = null;
                 }
 
-                _idleTimer = new TickTimer(_idleTicks.Roll(), 0, IdleFinished, null, false, true);
+                _idleTimer = new TickTimer(_idleTicks.Roll(), 0, IdleFinished, null, false);
                 return true;
             }
 
@@ -58,6 +59,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             _controller.transform.parent.gameObject.SubscribeWithFilter<UpdateMapTileMessage>(UpdateMapTile, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<UpdateAdventureUnitStateMessage>(UpdateAdventureUnitState, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<ObstacleMessage>(Obstacle, _instanceId);
+            _controller.transform.parent.gameObject.SubscribeWithFilter<UpdateAdventureAiStateMessage>(UpdateAdventureAiState, _instanceId);
         }
 
         private void UpdateMapTile(UpdateMapTileMessage msg)
@@ -92,7 +94,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
 
         private void UpdateTick(UpdateTickMessage msg)
         {
-            if (_unitState == AdventureUnitState.Idle && _path.Count <= 0 && _idleTimer == null)
+            if (_unitState == AdventureUnitState.Idle && _path.Count <= 0 && _idleTimer == null && _adventureAiState == AdventureAiState.Wander)
             {
                 var idle = IsIdle();
                 if (!idle)
@@ -127,14 +129,31 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             _unitState = msg.State;
         }
 
+        private void UpdateAdventureAiState(UpdateAdventureAiStateMessage msg)
+        {
+            _adventureAiState = msg.State;
+            if (_adventureAiState != AdventureAiState.Wander)
+            {
+                _path.Clear();
+                _idleTimer?.Destroy();
+                _idleTimer = null;
+            }
+        }
+
         private void Obstacle(ObstacleMessage msg)
         {
-            _path.Clear();
-            var setDirectionMsg = MessageFactory.GenerateSetDirectionMsg();
-            setDirectionMsg.Direction = Vector2.zero;
-            _controller.gameObject.SendMessageTo(setDirectionMsg, _controller.transform.parent.gameObject);
-            MessageFactory.CacheMessage(setDirectionMsg);
+            if (_adventureAiState == AdventureAiState.Wander)
+            {
+                _path.Clear();
+                var setDirectionMsg = MessageFactory.GenerateSetDirectionMsg();
+                setDirectionMsg.Direction = Vector2.zero;
+                _controller.gameObject.SendMessageTo(setDirectionMsg, _controller.transform.parent.gameObject);
+                MessageFactory.CacheMessage(setDirectionMsg);
+            }
+
         }
+
+        
 
         private void OnDestroy()
         {

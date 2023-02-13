@@ -242,6 +242,11 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Pathing
             return TilemapUtils.GetGridWorldPos(_tilemap, worldPos.x, worldPos.y).ToVector2();
         }
 
+        public bool DoesTileExist(Vector2Int pos)
+        {
+            return _tiles.ContainsKey(pos);
+        }
+
         public void Clear()
         {
             var tiles = _tiles.ToArray();

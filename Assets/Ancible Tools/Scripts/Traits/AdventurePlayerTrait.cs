@@ -37,6 +37,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         {
             _currentTile = msg.Tile;
             msg.Tile.ApplyEvent(_controller.transform.parent.gameObject);
+            WorldAdventureController.SetPlayerTile(msg.Tile);
         }
 
         private void Obstacle(ObstacleMessage msg)

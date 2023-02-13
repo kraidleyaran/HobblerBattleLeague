@@ -13,6 +13,8 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         private AdventureUnitState _unitState = AdventureUnitState.Idle;
         [SerializeField] private int _ticks = 1;
 
+        private int _bonus = 0;
+
         public override void SetupController(TraitController controller)
         {
             base.SetupController(controller);
@@ -33,8 +35,9 @@ namespace Assets.Ancible_Tools.Scripts.Traits
 
         private void SubscribeToMessages()
         {
-            _controller.transform.parent.gameObject.SubscribeWithFilter<ActivateGlobalCooldownMessage>(ActivateGlobalCooldown);
-            _controller.transform.parent.gameObject.SubscribeWithFilter<UpdateAdventureUnitStateMessage>(UpdateAdventureUnitState);
+            _controller.transform.parent.gameObject.SubscribeWithFilter<ActivateGlobalCooldownMessage>(ActivateGlobalCooldown, _instanceId);
+            _controller.transform.parent.gameObject.SubscribeWithFilter<UpdateAdventureUnitStateMessage>(UpdateAdventureUnitState, _instanceId);
+            _controller.transform.parent.gameObject.SubscribeWithFilter<ApplyGlobalCooldownBonusMessage>(ApplyGlobalCooldownBonus, _instanceId);
         }
 
         private void ActivateGlobalCooldown(ActivateGlobalCooldownMessage msg)
@@ -53,6 +56,20 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         private void UpdateAdventureUnitState(UpdateAdventureUnitStateMessage msg)
         {
             _unitState = msg.State;
+        }
+
+        private void ApplyGlobalCooldownBonus(ApplyGlobalCooldownBonusMessage msg)
+        {
+            if (msg.Permanent)
+            {
+                _ticks += msg.Bonus;
+            }
+            else
+            {
+                _bonus += msg.Bonus;
+            }
+
+            _globalCooldown.SetTicksPerCycle(_ticks + _bonus);
         }
 
         public override void Destroy()

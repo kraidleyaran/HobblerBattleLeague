@@ -15,5 +15,5 @@ MonoBehaviour:
   MaxStack: 1
   _amount:
     Minimum: 1
-    Maximum: 3
+    Maximum: 2
   _type: 0

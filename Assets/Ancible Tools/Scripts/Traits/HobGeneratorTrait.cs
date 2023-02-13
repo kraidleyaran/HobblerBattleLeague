@@ -119,6 +119,11 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                 _controller.gameObject.SendMessageTo(setMapTileMsg, unitController.gameObject);
                 MessageFactory.CacheMessage(setMapTileMsg);
 
+                var setUnitNameMsg = MessageFactory.GenerateSetUnitNameMsg();
+                setUnitNameMsg.Name = template.DisplayName;
+                _controller.gameObject.SendMessageTo(setUnitNameMsg, unitController.gameObject);
+                MessageFactory.CacheMessage(setUnitNameMsg);
+
                 _currentHobblers[msg.Slot] = null;
                 WorldHobblerManager.RegisterHobbler(unitController.gameObject);
 

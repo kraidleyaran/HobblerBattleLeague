@@ -16,7 +16,10 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Adventure
         {
             _doAfter = doAfter;
             _exclamationIcon.color = color;
-            _aliveTimer = new TickTimer(aliveTimer, 0, _doAfter, null, false);
+            if (aliveTimer > 0)
+            {
+                _aliveTimer = new TickTimer(aliveTimer, 0, _doAfter, null, false);
+            }
         }
 
         void OnDestroy()

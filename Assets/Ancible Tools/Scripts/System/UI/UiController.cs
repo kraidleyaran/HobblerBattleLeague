@@ -61,6 +61,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI
             gameObject.Subscribe<ShowDialogueMessage>(ShowDialogue);
             gameObject.Subscribe<ShowMazeSelectionWindowMessage>(ShowMazeSelectionWindow);
             gameObject.Subscribe<ShowCraftingWindowMessage>(ShowCraftingWindow);
+            gameObject.Subscribe<ShowCustomDialogueMessage>(ShowCustomDialogue);
         }
 
         private void ShowDetailedHobblerInfo(ShowDetailedHobblerInfoMessage msg)
@@ -165,6 +166,12 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI
 
             var window = UiWindowManager.OpenWindow(_craftingWindowTemplate, $"{UiCraftingWindowController.FILTER}{id}");
             window.Setup(msg.Owner);
+        }
+
+        private void ShowCustomDialogue(ShowCustomDialogueMessage msg)
+        {
+            var window = UiWindowManager.OpenWindow(_dialogueWindowTemplate, $"{msg.Owner.GetInstanceID()}");
+            window.Setup(msg.Dialogue, msg.Owner);
         }
 
         void OnDestroy()

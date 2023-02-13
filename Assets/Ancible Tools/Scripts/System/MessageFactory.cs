@@ -215,6 +215,13 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
         private static List<SetCraftingIndexMessage> _setCraftingIndexCache = new List<SetCraftingIndexMessage>();
         private static List<ShowCraftingWindowMessage> _showCraftingWindowCache = new List<ShowCraftingWindowMessage>();
         private static List<CancelCraftingQueueAtIndexMessage> _cancelCraftingQueueAtIndexCache = new List<CancelCraftingQueueAtIndexMessage>();
+        private static List<ShowCustomDialogueMessage> _showCustomDialogueCache = new List<ShowCustomDialogueMessage>();
+        private static List<SetCustomDialogueMessage> _setCustomDialogueCache = new List<SetCustomDialogueMessage>();
+        private static List<SetAdventureAiStateMessage> _setAdventureAiStateCache = new List<SetAdventureAiStateMessage>();
+        private static List<UpdateAdventureAiStateMessage> _updateAdventureAiStateCache = new List<UpdateAdventureAiStateMessage>();
+        private static List<QueryAdventureAiStateMessage> _queryAdventureAiStateCache = new List<QueryAdventureAiStateMessage>();
+        private static List<DoJumpMessage> _doJumpCache = new List<DoJumpMessage>();
+        private static List<ApplyGlobalCooldownBonusMessage> _applyGlobalCooldownBonusCache = new List<ApplyGlobalCooldownBonusMessage>();
 
         public static AddTraitToUnitMessage GenerateAddTraitToUnitMsg()
         {
@@ -2567,6 +2574,90 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
             return new CancelCraftingQueueAtIndexMessage();
         }
 
+        public static ShowCustomDialogueMessage GenerateShowCustomDialogueMsg()
+        {
+            if (_showCustomDialogueCache.Count > 0)
+            {
+                var message = _showCustomDialogueCache[0];
+                _showCustomDialogueCache.Remove(message);
+                return message;
+            }
+
+            return new ShowCustomDialogueMessage();
+        }
+
+        public static SetCustomDialogueMessage GenerateSetCustomDialogueMsg()
+        {
+            if (_setCustomDialogueCache.Count > 0)
+            {
+                var message = _setCustomDialogueCache[0];
+                _setCustomDialogueCache.Remove(message);
+                return message;
+            }
+
+            return new SetCustomDialogueMessage();
+        }
+
+        public static SetAdventureAiStateMessage GenerateSetAdventureAiStateMsg()
+        {
+            if (_setAdventureAiStateCache.Count > 0)
+            {
+                var message = _setAdventureAiStateCache[0];
+                _setAdventureAiStateCache.Remove(message);
+                return message;
+            }
+
+            return new SetAdventureAiStateMessage();
+        }
+
+        public static UpdateAdventureAiStateMessage GenerateUpdateAdventureAiStateMsg()
+        {
+            if (_updateAdventureAiStateCache.Count > 0)
+            {
+                var message = _updateAdventureAiStateCache[0];
+                _updateAdventureAiStateCache.Remove(message);
+                return message;
+            }
+
+            return new UpdateAdventureAiStateMessage();
+        }
+
+        public static QueryAdventureAiStateMessage GenerateQueryAdventureAiStateMsg()
+        {
+            if (_queryAdventureAiStateCache.Count > 0)
+            {
+                var message = _queryAdventureAiStateCache[0];
+                _queryAdventureAiStateCache.Remove(message);
+                return message;
+            }
+
+            return new QueryAdventureAiStateMessage();
+        }
+
+        public static DoJumpMessage GenerateDoJumpMsg()
+        {
+            if (_doJumpCache.Count > 0)
+            {
+                var message = _doJumpCache[0];
+                _doJumpCache.Remove(message);
+                return message;
+            }
+
+            return new DoJumpMessage();
+        }
+
+        public static ApplyGlobalCooldownBonusMessage GenerateApplyGlobalCooldownBonusMsg()
+        {
+            if (_applyGlobalCooldownBonusCache.Count > 0)
+            {
+                var message = _applyGlobalCooldownBonusCache[0];
+                _applyGlobalCooldownBonusCache.Remove(message);
+                return message;
+            }
+
+            return new ApplyGlobalCooldownBonusMessage();
+        }
+
         //TODO: Start Cache
 
         public static void CacheMessage(AddTraitToUnitMessage msg)
@@ -4026,6 +4117,56 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
             msg.Index = 0;
             msg.Sender = null;
             _cancelCraftingQueueAtIndexCache.Add(msg);
+        }
+
+        public static void CacheMessage(ShowCustomDialogueMessage msg)
+        {
+            msg.Dialogue = null;
+            msg.Sender = null;
+            _showCustomDialogueCache.Add(msg);
+        }
+
+        public static void CacheMessage(SetCustomDialogueMessage msg)
+        {
+            msg.Dialogue = null;
+            msg.Sender = null;
+            _setCustomDialogueCache.Add(msg);
+        }
+
+        public static void CacheMessage(SetAdventureAiStateMessage msg)
+        {
+            msg.State = AdventureAiState.Wander;
+            msg.Sender = null;
+            _setAdventureAiStateCache.Add(msg);
+        }
+
+        public static void CacheMessage(UpdateAdventureAiStateMessage msg)
+        {
+            msg.State = AdventureAiState.Wander;
+            msg.Sender = null;
+            _updateAdventureAiStateCache.Add(msg);
+        }
+
+        public static void CacheMessage(QueryAdventureAiStateMessage msg)
+        {
+            msg.DoAfter = null;
+            msg.Sender = null;
+            _queryAdventureAiStateCache.Add(msg);
+        }
+
+        public static void CacheMessage(DoJumpMessage msg)
+        {
+            msg.DoAfter = null;
+            msg.Sender = null;
+            _doJumpCache.Add(msg);
+        }
+
+        public static void CacheMessage(ApplyGlobalCooldownBonusMessage msg)
+        {
+            msg.Bonus = 0;
+            msg.Permanent = false;
+            msg.Sender = null;
+            _applyGlobalCooldownBonusCache.Add(msg);
         }
     }
 }

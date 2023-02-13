@@ -82,6 +82,11 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.HoverInfo
             _rectTransform.pivot = pivot;
         }
 
+        public void SetColor(Color color)
+        {
+            _iconImage.color = color;
+        }
+
         public void Clear()
         {
             _iconImage.sprite = null;

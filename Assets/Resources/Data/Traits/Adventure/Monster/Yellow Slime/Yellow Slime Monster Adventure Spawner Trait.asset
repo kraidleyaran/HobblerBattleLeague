@@ -21,6 +21,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 5a41eaa4bb1fab44d8f68065877c35c5, type: 2}
   - {fileID: 11400000, guid: fa739bc95a28fef45b7ae5e89ed97781, type: 2}
   - {fileID: 11400000, guid: b32bfd6cbb83ba44f8c5393f06996f47, type: 2}
+  - {fileID: 11400000, guid: 3719262a665b2da47965f0de94703651, type: 2}
+  - {fileID: 11400000, guid: b38783a0c66fdc049adca59a6c3a34a5, type: 2}
   _spawnCooldown: 18000
   _chanceToSpawn: 1
   _spawnCheckCooldown: 0

@@ -1465,4 +1465,41 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
     {
         public GameObject Owner;
     }
+
+    public class ShowCustomDialogueMessage : EventMessage
+    {
+        public string[] Dialogue;
+        public GameObject Owner;
+    }
+
+    public class SetCustomDialogueMessage : EventMessage
+    {
+        public string[] Dialogue;
+    }
+
+    public class SetAdventureAiStateMessage : EventMessage
+    {
+        public AdventureAiState State;
+    }
+
+    public class UpdateAdventureAiStateMessage : EventMessage
+    {
+        public AdventureAiState State;
+    }
+
+    public class QueryAdventureAiStateMessage : EventMessage
+    {
+        public Action<AdventureAiState> DoAfter;
+    }
+
+    public class DoJumpMessage : EventMessage
+    {
+        public Action DoAfter;
+    }
+
+    public class ApplyGlobalCooldownBonusMessage : EventMessage
+    {
+        public int Bonus;
+        public bool Permanent;
+    }
 }

@@ -10,8 +10,6 @@ namespace Assets.Ancible_Tools.Scripts.Traits
     [CreateAssetMenu(fileName = "Adventure Monster Encounter Trait", menuName = "Ancible Tools/Traits/Adventure/Interaction/Adventure Monster Encounter")]
     public class AdventureMonsterEncounterTrait : Trait
     {
-        private MapTile _playerMapTile = null;
-
         [SerializeField] private BattleEncounter[] _encounters = new BattleEncounter[0];
         [SerializeField] private Color _exclamationColor = Color.red;
         [SerializeField] private Vector2Int _exclamationOffset = Vector2Int.zero;
@@ -19,6 +17,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
 
         private GameObject _spawner = null;
         private AdventureBattleExclamationController _exclamationController = null;
+        
 
         public override void SetupController(TraitController controller)
         {
@@ -51,16 +50,28 @@ namespace Assets.Ancible_Tools.Scripts.Traits
 
         private void StartExclamation(GameObject player)
         {
-            var setUnitStateMsg = MessageFactory.GenerateSetAdventureUnitStateMsg();
-            setUnitStateMsg.State = AdventureUnitState.Interaction;
-            _controller.gameObject.SendMessageTo(setUnitStateMsg, player);
-            _controller.gameObject.SendMessageTo(setUnitStateMsg, _controller.transform.parent.gameObject);
-            MessageFactory.CacheMessage(setUnitStateMsg);
+            var playerState = AdventureUnitState.Idle;
+            var queryUnitStateMsg = MessageFactory.GenerateQueryAdventureUnitStateMsg();
+            queryUnitStateMsg.DoAfter = state =>
+            {
+                playerState = state;
+            };
+            _controller.gameObject.SendMessageTo(queryUnitStateMsg, WorldAdventureController.Player);
+            MessageFactory.CacheMessage(queryUnitStateMsg);
 
-            _exclamationController = Instantiate(FactoryController.BATTLE_EXCLAMATION, _controller.transform);
-            var offset = new Vector2(_exclamationOffset.x * DataController.Interpolation, _exclamationOffset.y * DataController.Interpolation);
-            _exclamationController.transform.SetLocalPosition(offset);
-            _exclamationController.Setup(_exclamationTicks, () => {FinishExclamation(player);}, _exclamationColor);
+            if (playerState != AdventureUnitState.Interaction)
+            {
+                var setUnitStateMsg = MessageFactory.GenerateSetAdventureUnitStateMsg();
+                setUnitStateMsg.State = AdventureUnitState.Interaction;
+                _controller.gameObject.SendMessageTo(setUnitStateMsg, player);
+                _controller.gameObject.SendMessageTo(setUnitStateMsg, _controller.transform.parent.gameObject);
+                MessageFactory.CacheMessage(setUnitStateMsg);
+
+                _exclamationController = Instantiate(FactoryController.BATTLE_EXCLAMATION, _controller.transform);
+                var offset = new Vector2(_exclamationOffset.x * DataController.Interpolation, _exclamationOffset.y * DataController.Interpolation);
+                _exclamationController.transform.SetLocalPosition(offset);
+                _exclamationController.Setup(_exclamationTicks, () => { FinishExclamation(player); }, _exclamationColor);
+            }
         }
 
         private void FinishExclamation(GameObject player)
@@ -87,26 +98,11 @@ namespace Assets.Ancible_Tools.Scripts.Traits
 
         private void SubscribeToMessages()
         {
-            //_controller.transform.parent.gameObject.SubscribeWithFilter<UpdateMapTileMessage>(UpdateMapTile, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<UpdateAdventureUnitStateMessage>(UpdateUnitState, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<SetUnitSpawnerMessage>(SetUnitSpawner, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<ObstacleMessage>(Obstacle, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<InteractMessage>(Interact, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<EncounterFinishedMessage>(EncounterFinished, _instanceId);
-        }
-
-        private void UpdateMapTile(UpdateMapTileMessage msg)
-        {
-            if (_playerMapTile != null)
-            {
-                _playerMapTile.OnObjectEnteringTile -= StartBump;
-            }
-
-            _playerMapTile = WorldAdventureController.MapController.GetPlayerMapTileFromMonster(msg.Tile.Position);
-            if (_playerMapTile != null)
-            {
-                _playerMapTile.OnObjectEnteringTile += StartBump;
-            }
         }
 
         private void EncounterFinished(EncounterFinishedMessage msg)

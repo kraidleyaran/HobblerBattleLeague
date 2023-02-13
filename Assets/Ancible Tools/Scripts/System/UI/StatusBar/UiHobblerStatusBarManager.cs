@@ -3,6 +3,7 @@ using System.Linq;
 using Assets.Resources.Ancible_Tools.Scripts.System;
 using MessageBusLib;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Assets.Ancible_Tools.Scripts.System.UI.StatusBar
 {

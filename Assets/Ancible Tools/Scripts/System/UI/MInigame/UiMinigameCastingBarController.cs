@@ -43,16 +43,24 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.MInigame
 
         private void OnTickUpdate(int current, int max)
         {
-            var percent = (float) current / max;
-            _castingFillBarController.Setup(percent, $"{_actionName}", _fillColor);
+            if (gameObject)
+            {
+                var percent = (float)current / max;
+                _castingFillBarController.Setup(percent, $"{_actionName}", _fillColor);
+            }
+
         }
 
         private void OnTickFinish()
         {
-            _timer = null;
-            _actionName = string.Empty;
-            _abilityIcon.sprite = null;
-            gameObject.SetActive(false);
+            if (this)
+            {
+                _timer = null;
+                _actionName = string.Empty;
+                _abilityIcon.sprite = null;
+                gameObject.SetActive(false);
+            }
+
         }
 
         void OnDestroy()

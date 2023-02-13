@@ -1,5 +1,6 @@
 ﻿using System;
 using MessageBusLib;
+using UnityEngine;
 
 namespace Assets.Resources.Ancible_Tools.Scripts.System.TickTimers
 {
@@ -70,6 +71,12 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.TickTimers
         public void SetCurrentTicks(int ticks)
         {
             _tickCount = ticks;
+        }
+
+        public void SetTicksPerCycle(int ticksPerCycle)
+        {
+            TicksPerCycle = ticksPerCycle;
+            _tickCount = Mathf.Min(_tickCount, TicksPerCycle);
         }
 
         public TickTimer Stop(bool applyOnFinish = false)

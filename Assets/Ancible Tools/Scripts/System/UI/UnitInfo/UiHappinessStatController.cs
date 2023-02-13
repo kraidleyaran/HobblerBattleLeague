@@ -27,7 +27,7 @@ namespace Assets.Ancible_Tools.Scripts.System.UI.UnitInfo
             _max = max;
             if (_stat < 0)
             {
-                _fillBarController.Setup(_defaultNegativePercent, $"{_stat}", ColorFactoryController.NegativeStatColor);
+                _fillBarController.Setup(Mathf.Max(_defaultNegativePercent, (float) _stat / _min), $"{_stat}", ColorFactoryController.NegativeStatColor);
             }
             else if (_stat == 0)
             {
@@ -51,7 +51,7 @@ namespace Assets.Ancible_Tools.Scripts.System.UI.UnitInfo
             var showHoverinfoMsg = MessageFactory.GenerateShowHoverInfoMsg();
             showHoverinfoMsg.Title = WellBeingController.Happiness;
             var description = DescriptionFactoryController.Happiness;
-            description = $"{description}{Environment.NewLine}{Environment.NewLine}{_stat} / {_max}";
+            description = $"{description}{Environment.NewLine}{Environment.NewLine}{Environment.NewLine}{_stat} / {_max}";
             showHoverinfoMsg.Description = description;
             showHoverinfoMsg.Icon = WellBeingController.HappinessIcon;
             showHoverinfoMsg.Position = transform.position.ToVector2();

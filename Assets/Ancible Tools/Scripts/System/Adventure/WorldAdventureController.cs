@@ -14,6 +14,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Adventure
         public static AdventureMap Default => _instance._defaultMap;
         public static AdventureMap Current => _instance._currentMap ?? _instance._defaultMap;
         public static GameObject Player { get; private set; }
+        public static MapTile PlayerTile { get; private set; }
         public static int BattleBumpSpeed => _instance._battleBumpSpeed;
         public static float BattleBumpDistance => _instance._battleBumpDistance;
         public static AdventureState State { get; private set; }
@@ -138,6 +139,11 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Adventure
             {
                 Destroy(obj);
             }
+        }
+
+        public static void SetPlayerTile(MapTile tile)
+        {
+            PlayerTile = tile;
         }
 
         private void ClearWorld(ClearWorldMessage msg)

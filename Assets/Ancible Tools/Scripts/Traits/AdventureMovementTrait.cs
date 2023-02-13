@@ -169,12 +169,28 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                         {
                             CompleteMovement(nextTile);
                         });
+                        _moveTween.OnKill(() =>
+                        {
+                            if (_controller.gameObject && _currentTile != null && nextTile != _currentTile)
+                            {
+                                WorldAdventureController.MapController.RemoveBlockingTile(_controller.transform.parent.gameObject, nextTile.Position);
+                            }
+                            
+                        });
                     }
                 }
                 else
                 {
+                    var obstacleMsg = MessageFactory.GenerateObstacleMsg();
+                    obstacleMsg.Direction = _direction;
+                    obstacleMsg.Obstacle = WorldAdventureController.MapController.gameObject;
+                    _controller.gameObject.SendMessageTo(obstacleMsg, _controller.transform.parent.gameObject);
+                    MessageFactory.CacheMessage(obstacleMsg);
+
+                    _direction = Vector2Int.zero;
+
                     var updateDirectionMsg = MessageFactory.GenerateUpdateDirectionMsg();
-                    updateDirectionMsg.Direction = _direction;
+                    updateDirectionMsg.Direction = Vector2.zero;
                     _controller.gameObject.SendMessageTo(updateDirectionMsg, _controller.transform.parent.gameObject);
                     MessageFactory.CacheMessage(updateDirectionMsg);
 

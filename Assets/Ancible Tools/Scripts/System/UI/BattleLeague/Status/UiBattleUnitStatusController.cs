@@ -56,11 +56,8 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.BattleLeague.Status
 
         private void RefreshMana(int current, int max)
         {
-            if (max > 0)
-            {
-                var percent = (float)current / max;
-                _manaBarController.Setup(percent, string.Empty, ColorFactoryController.ManaBar);
-            }
+            var percent = (float)current / max;
+            _manaBarController.Setup(percent, string.Empty, ColorFactoryController.ManaBar);
             _manaBarController.gameObject.SetActive(max > 0);
         }
 

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Assets.Resources.Ancible_Tools.Scripts.System;
+using Assets.Resources.Ancible_Tools.Scripts.System.UI;
 using MessageBusLib;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,6 +13,10 @@ namespace Assets.Ancible_Tools.Scripts.System.UI.StatusBar
         private const string UI_HOBBLER_STATUS_BAR_FILTER = "UI_HOBBLER_STATUS_BAR";
 
         [SerializeField] private Transform _iconTransform;
+        [SerializeField] private Text _nameText;
+        [SerializeField] private UiFillBarController _happinessBar;
+        [SerializeField] private Color _negativeFillColor = Color.white;
+        [SerializeField] [Range(0f,1f)] private float _minimumNegativePercent = .01f;
 
         private GameObject _obj;
         private Vector2 _offset = Vector2.zero;
@@ -33,6 +38,21 @@ namespace Assets.Ancible_Tools.Scripts.System.UI.StatusBar
             queryWellbeingStatusMsg.DoAfter = RefreshStatusIcons;
             gameObject.SendMessageTo(queryWellbeingStatusMsg, _obj);
             MessageFactory.CacheMessage(queryWellbeingStatusMsg);
+
+            var queryNameMsg = MessageFactory.GenerateQueryUnitNameMsg();
+            queryNameMsg.DoAfter = RefreshName;
+            gameObject.SendMessageTo(queryNameMsg, _obj);
+            MessageFactory.CacheMessage(queryNameMsg);
+
+            var queryHappinessMsg = MessageFactory.GenerateQueryHappinessMsg();
+            queryHappinessMsg.DoAfter = RefreshHappiness;
+            gameObject.SendMessageTo(queryHappinessMsg, _obj);
+            MessageFactory.CacheMessage(queryHappinessMsg);
+        }
+
+        private void RefreshName(string hobblerName)
+        {
+            _nameText.text = hobblerName;
         }
 
         private void RefreshStatusIcons(WellbeingStatType[] types)
@@ -64,6 +84,16 @@ namespace Assets.Ancible_Tools.Scripts.System.UI.StatusBar
             }
         }
 
+        private void RefreshHappiness(int current, IntNumberRange range)
+        {
+            if (current < 0)
+            {
+                var percent = (float) current / range.Minimum;
+                _happinessBar.Setup(Mathf.Max(percent, _minimumNegativePercent), string.Empty, _negativeFillColor);
+            }
+            _happinessBar.gameObject.SetActive(current < 0);
+        }
+
         private void SubscribeToMessages()
         {
             gameObject.Subscribe<UpdateTickMessage>(UpdateTick);
@@ -80,6 +110,8 @@ namespace Assets.Ancible_Tools.Scripts.System.UI.StatusBar
         {
             RefreshInfo();
         }
+
+        
 
         public void Destroy()
         {

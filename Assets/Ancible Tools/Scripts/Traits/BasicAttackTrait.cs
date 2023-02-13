@@ -14,7 +14,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
 
         [SerializeField] private BasicAttackSetup _attackSetup = new BasicAttackSetup();
         [SerializeField] private bool _activateGlobalCooldown = true;
-        [SerializeField] private float _defaultAttackRange = 16 * .3125f;
+        [SerializeField] private float _defaultAttackBumpRange = 16 * .3125f;
 
         private BasicAttackSetup _currentAttackSetup = null;
 
@@ -95,7 +95,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                 doBumpMsg.OnBump = () => { ApplyAttack(target); };
                 doBumpMsg.DoAfter = CleanupAttack;
                 doBumpMsg.PixelsPerSecond = _currentAttackSetup.AttackSpeed;
-                doBumpMsg.Distance = _defaultAttackRange;
+                doBumpMsg.Distance = _defaultAttackBumpRange;
                 _controller.gameObject.SendMessageTo(doBumpMsg, _controller.transform.parent.gameObject);
                 MessageFactory.CacheMessage(doBumpMsg);
             }

@@ -36,12 +36,15 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         [SerializeField] private int _bumpTicks = 1;
         [SerializeField] private bool _animationStates = false;
         [SerializeField] private bool _overrideMapTileSorting = false;
+        [SerializeField] private int _defaultJumpHeight = 1;
+        [SerializeField] private int _defaultJumpSpeed = 1;
 
         protected internal SpriteController _spriteController = null;
         protected internal Tween _bumpTween = null;
         private SpriteTrait _currentSprite = null;
         protected internal Vector2Int _currentDirection = Vector2Int.zero;
         private UnitAnimationState _animationState = UnitAnimationState.Idle;
+        protected internal Sequence _jumpSequence = null;
 
         public override void SetupController(TraitController controller)
         {
@@ -58,6 +61,29 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             }
             SetupSprite(_currentSprite);
             SubscribeToMessages();
+        }
+
+        protected internal virtual void CancelAllTweens(bool finish = false)
+        {
+            if (_bumpTween != null)
+            {
+                if (_bumpTween.IsActive())
+                {
+                    _bumpTween.Kill(finish);
+                }
+
+                _bumpTween = null;
+            }
+
+            if (_jumpSequence != null)
+            {
+                if (_jumpSequence.IsActive())
+                {
+                    _jumpSequence.Kill(finish);
+                }
+
+                _jumpSequence = null;
+            }
         }
 
         private void SetupSprite(SpriteTrait sprite)
@@ -107,6 +133,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             {
                 _controller.transform.parent.gameObject.SubscribeWithFilter<UpdateMapTileMessage>(UpdateMapTile, _instanceId);
             }
+            _controller.transform.parent.gameObject.SubscribeWithFilter<DoJumpMessage>(DoJump, _instanceId);
         }
 
         protected internal virtual void UpdateDirection(UpdateDirectionMessage msg)
@@ -247,6 +274,20 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         private void SetSpriteAlpha(SetSpriteAlphaMessage msg)
         {
             _spriteController.SetAlpha(msg.Alpha);
+        }
+
+        private void DoJump(DoJumpMessage msg)
+        {
+            CancelAllTweens(false);
+            var distance = (_defaultJumpHeight * DataController.Interpolation);
+            var time = TickController.OneSecond / (_defaultJumpSpeed * DataController.Interpolation) * distance;
+            var doAfter = msg.DoAfter;
+            _jumpSequence = _spriteController.transform.DOLocalJump(Offset, distance, 1, time).SetEase(Ease.Linear).OnComplete(
+                () =>
+                {
+                    _jumpSequence = null; 
+                    doAfter?.Invoke();
+                });
         }
 
         public override void Destroy()

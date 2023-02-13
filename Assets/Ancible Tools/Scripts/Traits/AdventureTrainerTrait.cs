@@ -62,29 +62,42 @@ namespace Assets.Ancible_Tools.Scripts.Traits
 
         private void ForceEncounter(GameObject obj)
         {
-            MapTile playerTile = null;
-            var queryMapTileMsg = MessageFactory.GenerateQueryMapTileMsg();
-            queryMapTileMsg.DoAfter = tile => playerTile = tile;
-            _controller.gameObject.SendMessageTo(queryMapTileMsg, obj);
-            MessageFactory.CacheMessage(queryMapTileMsg);
+            var playerState = AdventureUnitState.Idle;
+            var queryAdventureUnitStateMsg = MessageFactory.GenerateQueryAdventureUnitStateMsg();
+            queryAdventureUnitStateMsg.DoAfter = state => { playerState = state; };
+            _controller.gameObject.SendMessageTo(queryAdventureUnitStateMsg, WorldAdventureController.Player);
+            MessageFactory.CacheMessage(queryAdventureUnitStateMsg);
 
-            if (playerTile != null)
+            if (playerState != AdventureUnitState.Interaction)
             {
+                MapTile playerTile = null;
+                var queryMapTileMsg = MessageFactory.GenerateQueryMapTileMsg();
+                queryMapTileMsg.DoAfter = tile => playerTile = tile;
+                _controller.gameObject.SendMessageTo(queryMapTileMsg, obj);
+                MessageFactory.CacheMessage(queryMapTileMsg);
 
-                var distance = _currentTile.Position.DistanceTo(playerTile.Position);
-                if (distance > 1)
+                if (playerTile != null)
                 {
-                    var moveTile = WorldAdventureController.MapController.PlayerPathing.GetTileByPosition(playerTile.Position + _faceDirection * -1);
-                    if (moveTile != null)
+
+                    var distance = _currentTile.Position.DistanceTo(playerTile.Position);
+                    if (distance > 1)
                     {
-                        var path = WorldAdventureController.MapController.PlayerPathing.GetPath(_currentTile.Position, moveTile.Position, false);
-                        if (path.Length > 0)
+                        var moveTile = WorldAdventureController.MapController.PlayerPathing.GetTileByPosition(playerTile.Position + _faceDirection * -1);
+                        if (moveTile != null)
                         {
-                            var setPathMsg = MessageFactory.GenerateSetPathMsg();
-                            setPathMsg.Path = path;
-                            setPathMsg.DoAfter = StartEncounter;
-                            _controller.gameObject.SendMessageTo(setPathMsg, _controller.transform.parent.gameObject);
-                            MessageFactory.CacheMessage(setPathMsg);
+                            var path = WorldAdventureController.MapController.PlayerPathing.GetPath(_currentTile.Position, moveTile.Position, false);
+                            if (path.Length > 0)
+                            {
+                                var setPathMsg = MessageFactory.GenerateSetPathMsg();
+                                setPathMsg.Path = path;
+                                setPathMsg.DoAfter = StartEncounter;
+                                _controller.gameObject.SendMessageTo(setPathMsg, _controller.transform.parent.gameObject);
+                                MessageFactory.CacheMessage(setPathMsg);
+                            }
+                            else
+                            {
+                                StartEncounter();
+                            }
                         }
                         else
                         {
@@ -95,13 +108,10 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                     {
                         StartEncounter();
                     }
-                }
-                else
-                {
-                    StartEncounter();
-                }
 
+                }
             }
+            
         }
 
         private void StartEncounter()

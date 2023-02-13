@@ -33,6 +33,14 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI
             IsRight = right;
             _onFinish = onFinish;
             _text.text = text;
+            if (_parent)
+            {
+                var setPos = WorldController.GetCurrentCamera().WorldToScreenPoint(_parent.transform.position.ToVector2()).ToVector2();
+                var transformPos = transform.position;
+                transformPos.x = setPos.x;
+                transformPos.y = setPos.y;
+                transform.position = transformPos;
+            }
             _moveTween = _text.transform.DOLocalJump(pos, _jumpPower, 1, _travelTime).SetEase(_ease).OnComplete(() =>
             {
                 _moveTween = null;

@@ -1,4 +1,5 @@
-﻿using Assets.Resources.Ancible_Tools.Scripts.System.Adventure;
+﻿using System.Linq;
+using Assets.Resources.Ancible_Tools.Scripts.System.Adventure;
 using Assets.Resources.Ancible_Tools.Scripts.System.Windows;
 using MessageBusLib;
 using UnityEngine;
@@ -31,6 +32,13 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.Dialogue
             _dialogueTextController.Setup(_currentDialogue.Dialogue);
         }
 
+        public void Setup(string[] dialogue, GameObject owner)
+        {
+            _owner = owner;
+            _answerManager.Clear();
+            _dialogueTextController.Setup(dialogue);
+        }
+
         private void SubscribeToMessages()
         {
             gameObject.Subscribe<ShowCurrentDialogueAnswersMessage>(ShowCurrentDialogueAnswers);
@@ -39,9 +47,12 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.Dialogue
 
         private void ShowCurrentDialogueAnswers(ShowCurrentDialogueAnswersMessage msg)
         {
-            if (_currentDialogue && _currentDialogue.Tree.Dialogue.Length > 0 && !_answerManager.gameObject.activeSelf)
+            if (_currentDialogue)
             {
-                _answerManager.Setup(_currentDialogue.Tree, _owner);
+                if (_currentDialogue.Tree.Dialogue.Length > 0 && !_answerManager.gameObject.activeSelf)
+                {
+                    _answerManager.Setup(_currentDialogue.Tree, _owner);
+                }   
             }
         }
 
@@ -49,7 +60,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.Dialogue
         {
             if (!msg.Previous.Interact && msg.Current.Interact && !_answerManager.gameObject.activeSelf)
             {
-                if (!_dialogueTextController.SkipText() && _currentDialogue.Tree.Dialogue.Length <= 0)
+                if (!_dialogueTextController.SkipText() &&  (!_currentDialogue || _currentDialogue.Tree.Dialogue.Length <= 0))
                 {
                     Close();
                 }

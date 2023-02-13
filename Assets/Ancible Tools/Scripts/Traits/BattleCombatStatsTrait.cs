@@ -55,7 +55,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         {
             var updateManaMsg = MessageFactory.GenerateUpdateManaMsg();
             updateManaMsg.Current = _currentMana;
-            updateManaMsg.Max = _baseStats.Mana = _bonusStats.Mana;
+            updateManaMsg.Max = _baseStats.Mana + _bonusStats.Mana;
             _controller.gameObject.SendMessageTo(updateManaMsg, _controller.transform.parent.gameObject);
             MessageFactory.CacheMessage(updateManaMsg);
         }

@@ -820,6 +820,11 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
 
         }
 
+        public static string DoubleNewLine()
+        {
+            return $"{Environment.NewLine}{Environment.NewLine}";
+        }
+
     }
 
 

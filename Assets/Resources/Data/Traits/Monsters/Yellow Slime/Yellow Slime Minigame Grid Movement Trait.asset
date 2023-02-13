@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Yellow Slime Minigame Grid Movement Trait
   m_EditorClassIdentifier: 
   MaxStack: 1
-  _moveSpeed: 25
+  _moveSpeed: 20
   _blockTile: 1
   _movementCooldown: 15
+  _visibleInFog: 1
+  _activateGlobalCooldown: 1

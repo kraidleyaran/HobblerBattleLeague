@@ -2,6 +2,6 @@
 {
     public enum AdventureUnitState
     {
-        Idle,Move,GlobalCooldown,Disabled,Interaction
+        Idle,Move,GlobalCooldown,Disabled,Interaction,Reaction
     }
 }

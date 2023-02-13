@@ -15,8 +15,9 @@ MonoBehaviour:
   MaxStack: 1
   _attackSetup:
     Range: 1
-    AttackSpeed: 35
+    AttackSpeed: 20
     ApplyToTarget:
     - {fileID: 11400000, guid: 2171ef0a3a587f540b9f778c043e53cd, type: 2}
     ApplyToOwner: []
   _activateGlobalCooldown: 1
+  _defaultAttackBumpRange: 5

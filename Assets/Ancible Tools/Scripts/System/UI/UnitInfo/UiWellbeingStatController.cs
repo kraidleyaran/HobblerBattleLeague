@@ -57,6 +57,7 @@ namespace Assets.Ancible_Tools.Scripts.System.UI.UnitInfo
             description = $"{description}{Environment.NewLine}{Environment.NewLine}{_stat}/{_max}";
             showHoverInfoMsg.Description = description;
             showHoverInfoMsg.Icon = _iconImage.sprite;
+            showHoverInfoMsg.ColorMask = _iconImage.color;
             showHoverInfoMsg.World = false;
             showHoverInfoMsg.Position = transform.position.ToVector2();
             showHoverInfoMsg.Owner = gameObject;

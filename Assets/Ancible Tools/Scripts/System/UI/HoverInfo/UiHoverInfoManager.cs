@@ -51,6 +51,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.HoverInfo
 
                 _generalInfoController.transform.SetLocalPosition(screenPos);
                 _generalInfoController.Setup(msg.Icon, msg.Title, msg.Description, msg.Gold);
+                _generalInfoController.SetColor(msg.ColorMask);
                 _generalInfoController.SetPivot(quadrant);
                 _generalInfoController.gameObject.SetActive(true);
             }
