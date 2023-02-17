@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9d2dec6798e8924eba6bc09d7b31e0c, type: 3}
+  m_Name: Red Smoke Particle Fx Trait - Alone
+  m_EditorClassIdentifier: 
+  MaxStack: 1
+  _particleSystem: {fileID: 7226888052703040407, guid: 218dff3259a01e1409687901f201e889, type: 3}
+  _instantiateAlone: 1
+  _offset: {x: 0, y: 0}

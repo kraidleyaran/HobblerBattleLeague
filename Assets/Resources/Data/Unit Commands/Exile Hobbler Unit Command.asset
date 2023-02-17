@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7011a722672d6d946860f89fd32b3fe4, type: 3}
+  m_Name: Exile Hobbler Unit Command
+  m_EditorClassIdentifier: 
+  Command: Exile
+  Priority: -100
+  Description: Exile your hobbler and receive a percentage of the gold back
+  Icons:
+  - Sprite: {fileID: -6401181650942206485, guid: d5a22c983a4f93644b2a95dff79e901e, type: 3}
+    Offset: {x: 0, y: 0}
+    ColorMask: {r: 0.8784314, g: 0.23529412, b: 0.15686275, a: 1}
+    FlipX: 0
+    FlipY: 0
+  OnCommand:
+  - {fileID: 11400000, guid: a08d72986fd885f4b877701328928a98, type: 2}
+  Tree:
+    SubCommands: []
+  GoldValue: -1
