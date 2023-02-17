@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: White Moth Aggrod Apply Global Cooldown Bonus Trait
   m_EditorClassIdentifier: 
   MaxStack: 1
-  _ticks: -20
+  _ticks: -35
   _permanent: 0

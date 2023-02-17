@@ -12,17 +12,21 @@ namespace Assets.Ancible_Tools.Scripts.Traits
     public class BattleAggroTrait : Trait
     {
         [SerializeField] private Vector2 _flagOffset = Vector2.zero;
+        [SerializeField] private float _diagonalCost = -1;
 
         private BattleAlignment _alignment = BattleAlignment.None;
         private Dictionary<GameObject, int> _enemyUnits = new Dictionary<GameObject, int>();
         private List<GameObject> _allies = new List<GameObject>();
+        private List<GameObject> _enemies = new List<GameObject>();
         private GameObject _currentTarget = null;
         private MapTile _currentTile = null;
         private UnitBattleState _battleState = UnitBattleState.Active;
+        private Vector2Int _direction = Vector2Int.zero;
 
         private bool _global = false;
 
         private List<MapTile> _currentPath = new List<MapTile>();
+        
 
         public override void SetupController(TraitController controller)
         {
@@ -83,6 +87,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                     var orderedThreat = _enemyUnits.OrderByDescending(e => e.Value).ThenBy(e => (e.Key.transform.position.ToVector2() - pos).sqrMagnitude).ToArray();
                     var equalThreat = orderedThreat.Where(e => e.Value == orderedThreat[0].Value).Select(e => e.Key).ToArray();
                     _currentTarget = equalThreat.GetRandom();
+                    _currentTarget.gameObject.SubscribeWithFilter<UpdateMapTileMessage>(UpdateTargetMapTile, _instanceId);
                     _currentPath.Clear();
                 }
 
@@ -114,7 +119,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                                 if (!availableSurroundingTiles.Contains(_currentTile))
                                 {
                                     var goToTile = availableSurroundingTiles.GetRandom();
-                                    var path = BattleLeagueController.PathingGrid.GetPath(_currentTile.Position, goToTile.Position);
+                                    var path = BattleLeagueController.PathingGrid.GetPath(_currentTile.Position, goToTile.Position, _diagonalCost);
                                     if (path.Length > 0)
                                     {
                                         _currentPath = path.ToList();
@@ -125,15 +130,28 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                                     }
                                     else
                                     {
+                                        Debug.Log("No path to target");
                                         _enemyUnits[_currentTarget] -= 1;
+                                        _currentTarget.UnsubscribeFromAllMessagesWithFilter(_instanceId);
                                         _currentTarget = null;
                                     }
                                 }
+                            }
+                            else
+                            {
+                                Debug.Log("No available tile");
+                                _enemyUnits[_currentTarget] -= 1;
+                                _currentTarget.UnsubscribeFromAllMessagesWithFilter(_instanceId);
+                                _currentTarget = null;
                             }
                         }
                         
                     }
                 }
+            }
+            else
+            {
+                Debug.Log("No enemies");
             }
         }
 
@@ -154,12 +172,16 @@ namespace Assets.Ancible_Tools.Scripts.Traits
 
         private void SetEnemyUnits(SetEnemyUnitsMessage msg)
         {
-            var units = msg.Units;
-            for (var i = 0; i < units.Length; i++)
+            var pairs = msg.Units.ToArray();
+            foreach (var pair in pairs)
             {
-                if (!_enemyUnits.ContainsKey(units[i]))
+                if (!_enemyUnits.ContainsKey(pair.Key))
                 {
-                    _enemyUnits.Add(units[i], 0);
+
+                    var distance = _currentTile.Position.DistanceTo(pair.Value.Position);
+
+                    _enemyUnits.Add(pair.Key, distance * -1);
+                    _enemies.Add(pair.Key);
                 }
             }
         }
@@ -209,7 +231,9 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                     {
                         _enemyUnits[msg.Obstacle] += 1;
                     }
+                    _currentTarget.UnsubscribeFromAllMessagesWithFilter(_instanceId);
                     _currentTarget = null;
+
                     _currentPath.Clear();
                 }
                 else
@@ -225,6 +249,10 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             if (_battleState == UnitBattleState.Dead)
             {
                 _currentPath.Clear();
+                if (_currentTarget)
+                {
+                    _currentTarget.UnsubscribeFromAllMessagesWithFilter(_instanceId);
+                }
                 _currentTarget = null;
                 _enemyUnits.Clear();
                 
@@ -234,8 +262,9 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         private void RemoveEnemyUnit(RemoveEnemyUnitMessage msg)
         {
             _enemyUnits.Remove(msg.Enemy);
-            if (_currentTarget == msg.Enemy)
+            if (_currentTarget && _currentTarget == msg.Enemy)
             {
+                _currentTarget.UnsubscribeFromAllMessagesWithFilter(_instanceId);
                 _currentTarget = null;
                 _currentPath.Clear();
 
@@ -256,6 +285,32 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             if (_enemyUnits.ContainsKey(msg.Owner))
             {
                 _enemyUnits[msg.Owner] += BattleLeagueController.GetAggroFromDamage(msg.Amount);
+            }
+        }
+
+        private void UpdateTargetMapTile(UpdateMapTileMessage msg)
+        {
+            var targetDirection = (msg.Tile.Position - _currentTile.Position).Normalize();
+            if (targetDirection != _direction)
+            {
+                _currentPath.Clear();
+
+                var setDirectionMsg = MessageFactory.GenerateSetDirectionMsg();
+                setDirectionMsg.Direction = Vector2.zero;
+                _controller.gameObject.SendMessageTo(setDirectionMsg, _controller.transform.parent.gameObject);
+                MessageFactory.CacheMessage(setDirectionMsg);
+            }
+            else if (_currentPath.Contains(msg.Tile))
+            {
+                var index = _currentPath.IndexOf(msg.Tile);
+                if (index > 1)
+                {
+                    _currentPath.RemoveRange(index + 1, _currentPath.Count - index);
+                }
+            }
+            else
+            {
+                _currentPath.AddRange(BattleLeagueController.PathingGrid.GetPath(_currentPath[_currentPath.Count - 1].Position, msg.Tile.Position, _diagonalCost));
             }
         }
     }

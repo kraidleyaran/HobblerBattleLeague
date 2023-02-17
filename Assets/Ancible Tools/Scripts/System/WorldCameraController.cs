@@ -79,32 +79,40 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
 
         private void UpdateInputState(UpdateInputStateMessage msg)
         {
-            if (WorldController.State == WorldState.World && IsInScreenBounds(msg.Previous.MousePos))
+            if (WorldController.State == WorldState.World)
             {
-                var pos = transform.position.ToVector2();
-                
-                if (msg.Current.LeftClick && (_moving || !UiWindowManager.Hovered && !UiWindowManager.Moving && !UnitSelectController.Hovered && !WorldBuildingManager.Active && !UiDragDropManager.Active))
+                if (msg.Current.CenterCamera)
                 {
-                    _moving = true;
-                    var delta = msg.Current.MousePos - msg.Previous.MousePos;
-                    var movePos = pos +  delta * -1 * _cameraMoveSpeedMultiplier;
-                    
-                    if (pos != movePos)
+                    transform.SetTransformPosition(UnitSelectController.Selected ? Vector2.Lerp(transform.position.ToVector2(), UnitSelectController.Selected.transform.position.ToVector2().ToPixelPerfect(), DataController.Interpolation) : Vector2.zero);
+                }
+                else if (IsInScreenBounds(msg.Previous.MousePos))
+                {
+                    var pos = transform.position.ToVector2();
+
+                    if (msg.Current.LeftClick && (_moving || !UiWindowManager.Hovered && !UiWindowManager.Moving && !UnitSelectController.Hovered && !WorldBuildingManager.Active && !UiDragDropManager.Active))
                     {
-                        transform.SetTransformPosition(movePos);
+                        _moving = true;
+                        var delta = msg.Current.MousePos - msg.Previous.MousePos;
+                        var movePos = pos + delta * -1 * _cameraMoveSpeedMultiplier;
+
+                        if (pos != movePos)
+                        {
+                            transform.SetTransformPosition(movePos.ToPixelPerfect());
+                        }
+                    }
+                    //else if (screenMove != Vector2.zero && !UiDragDropManager.Active)
+                    //{
+                    //    var movePos = pos + (screenMove * _borderMoveSpeed);
+                    //    transform.SetTransformPosition(movePos);
+                    //}
+                    else if (_moving)
+                    {
+                        var transformPos = transform.position.ToVector2().ToPixelPerfect();
+                        transform.SetTransformPosition(transformPos);
+                        _moving = false;
                     }
                 }
-                //else if (screenMove != Vector2.zero && !UiDragDropManager.Active)
-                //{
-                //    var movePos = pos + (screenMove * _borderMoveSpeed);
-                //    transform.SetTransformPosition(movePos);
-                //}
-                else if (_moving)
-                {
-                    var transformPos = transform.position.ToVector2().ToPixelPerfect();
-                    transform.SetTransformPosition(transformPos);
-                    _moving = false;
-                }
+                
             }
         }
 

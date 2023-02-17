@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Assets.Ancible_Tools.Scripts.System.Wellbeing;
 using Assets.Resources.Ancible_Tools.Scripts.System;
 using Assets.Resources.Ancible_Tools.Scripts.System.UI;
 using MessageBusLib;
@@ -84,14 +85,15 @@ namespace Assets.Ancible_Tools.Scripts.System.UI.StatusBar
             }
         }
 
-        private void RefreshHappiness(int current, IntNumberRange range)
+        private void RefreshHappiness(float current, float happy, float moderate,HappinessState state)
         {
-            if (current < 0)
+            
+            if (state == HappinessState.Unhappy)
             {
-                var percent = (float) current / range.Minimum;
-                _happinessBar.Setup(Mathf.Max(percent, _minimumNegativePercent), string.Empty, _negativeFillColor);
+                var percent = Mathf.Max(_minimumNegativePercent, current);
+                _happinessBar.Setup(percent, $"{current}", state.ToColor());
             }
-            _happinessBar.gameObject.SetActive(current < 0);
+            _happinessBar.gameObject.SetActive(state == HappinessState.Unhappy);
         }
 
         private void SubscribeToMessages()

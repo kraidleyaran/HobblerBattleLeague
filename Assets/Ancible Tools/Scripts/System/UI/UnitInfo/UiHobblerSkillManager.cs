@@ -47,7 +47,7 @@ namespace Assets.Ancible_Tools.Scripts.System.UI.UnitInfo
                     controller = obj.GetComponentInChildren<UiSkillController>();
                     _controllers.Add(orderedSkills[i].Key, controller);
                 }
-                controller.Setup(orderedSkills[i].Value, _owner, skills.Length - 1);
+                controller.Setup(orderedSkills[i].Value, _owner, skills.Length);
                 controller.transform.SetSiblingIndex(orderedSkills[i].Key);
             }
 

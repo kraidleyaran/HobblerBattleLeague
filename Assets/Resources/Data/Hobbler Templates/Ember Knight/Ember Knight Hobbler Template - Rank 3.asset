@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5daa7a20209fb73498f0f88cc8e18c75, type: 3}
   m_Name: Ember Knight Hobbler Template - Rank 3
   m_EditorClassIdentifier: 
-  DisplayName: Gorag
+  DisplayName: Ember Knight
   Description: 
-  Sprite: {fileID: 11400000, guid: b30f4eed35cab974eb446a5fb90da118, type: 2}
+  Sprite: {fileID: 11400000, guid: cdbcfbde0c3bf7d489248ea3f45e5354, type: 2}
   StartingStats:
     Health: 18
-    Mana: 4
+    Mana: 8
     Strength: 6
     Agility: 4
     Magic: 4
@@ -25,23 +25,23 @@ MonoBehaviour:
     Defense: 2
     Spirit: 1
   MinimumGenetics:
-    Health: 0.75
-    Mana: 0.4
-    Strength: 0.65
-    Agility: 0.35
-    Magic: 0.4
-    Faith: 0.1
-    Armor: 0.35
-    Spirit: 0.5
+    Health: 2.25
+    Mana: 1.8
+    Strength: 1.6
+    Agility: 0.85
+    Magic: 1.15
+    Faith: 0.5
+    Armor: 0.65
+    Spirit: 0.01
   MaximumGenetics:
-    Health: 2.6
-    Mana: 1.2
-    Strength: 1.8
-    Agility: 1.45
-    Magic: 1.55
-    Faith: 0.45
-    Armor: 1.4
-    Spirit: 1.5
+    Health: 3.7
+    Mana: 4.45
+    Strength: 3.2
+    Agility: 2.4
+    Magic: 1.85
+    Faith: 0.85
+    Armor: 2
+    Spirit: 0.05
   StartingAbilities:
   - {fileID: 11400000, guid: d1a949ea59ba3b34f8e52582a8c3b5f0, type: 2}
   - {fileID: 11400000, guid: 157951cdcc5d5fd4da80fef2028232c0, type: 2}

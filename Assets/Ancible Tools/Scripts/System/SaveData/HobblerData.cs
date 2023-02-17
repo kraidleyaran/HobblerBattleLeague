@@ -1,5 +1,6 @@
 ﻿using System;
 using Assets.Ancible_Tools.Scripts.System.SaveData;
+using Assets.Ancible_Tools.Scripts.System.Wellbeing;
 using Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague;
 using Assets.Resources.Ancible_Tools.Scripts.System.Combat;
 
@@ -16,7 +17,6 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.SaveData
         public string Id = string.Empty;
         public bool Roster;
         public WellbeingStats Wellbeing = WellbeingStats.Zero;
-        public WellbeingStats MinWellBeing = WellbeingStats.Zero;
         public WellbeingStats MaxWellbeing = WellbeingStats.Zero;
         public CombatStats Stats = CombatStats.Zero;
         public GeneticCombatStats Genetics = GeneticCombatStats.Zero;
@@ -36,7 +36,6 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.SaveData
             Id = null;
             Roster = false;
             Wellbeing = WellbeingStats.Zero;
-            MinWellBeing = WellbeingStats.Zero;
             Stats = CombatStats.Zero;
             Genetics = GeneticCombatStats.Zero;
             Abilities = null;

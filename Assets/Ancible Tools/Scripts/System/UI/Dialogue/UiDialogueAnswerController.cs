@@ -1,4 +1,5 @@
-﻿using Assets.Resources.Ancible_Tools.Scripts.System.Adventure;
+﻿using Assets.Ancible_Tools.Scripts.System.Dialogue;
+using Assets.Resources.Ancible_Tools.Scripts.System.Adventure;
 using MessageBusLib;
 using UnityEngine;
 using UnityEngine.EventSystems;

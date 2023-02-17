@@ -87,11 +87,10 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Combat
             if (diff.magnitude > speed + _detectDistance)
             {
                 var direction = diff.normalized;
-                _rigidBody.position += speed * direction;
+                _rigidBody.position = Vector2.Lerp(_rigidBody.position, _rigidBody.position + speed * direction, speed);
                 if (_rotate)
                 {
                     var rotation = direction.ToZRotation() + _rotationOffset;
-                    Debug.Log($"Projectile Rotation: {rotation}");
                     _spriteRenderer.transform.localRotation = Quaternion.Euler(0f, 0f, rotation);
                 }
             }
@@ -113,10 +112,10 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Combat
             var targetPos = _target.transform.position.ToVector2();
             var pos = _rigidBody.position;
             var diff = (targetPos - pos);
-            var speed = TickController.OneSecond / _pixelsPerSecond * Time.fixedDeltaTime;
+            var speed = TickController.OneSecond / (_pixelsPerSecond * DataController.Interpolation);
             if (diff.magnitude > speed + _detectDistance)
             {
-                _rigidBody.position += speed * diff.normalized;
+                _rigidBody.position = Vector2.Lerp(_rigidBody.position, targetPos, DataController.Interpolation);
             }
             else
             {

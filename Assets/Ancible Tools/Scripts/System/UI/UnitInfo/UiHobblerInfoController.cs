@@ -1,4 +1,5 @@
-﻿using Assets.Resources.Ancible_Tools.Scripts.System;
+﻿using Assets.Ancible_Tools.Scripts.System.Wellbeing;
+using Assets.Resources.Ancible_Tools.Scripts.System;
 using MessageBusLib;
 using UnityEngine;
 using UnityEngine.UI;
@@ -68,17 +69,17 @@ namespace Assets.Ancible_Tools.Scripts.System.UI.UnitInfo
             _nameText.text = unitName;
         }
 
-        private void RefreshHappiness(int happiness, IntNumberRange caps)
+        private void RefreshHappiness(float happiness, float happy, float moderate, HappinessState state)
         {
-            _happinessController.Setup(happiness, caps.Minimum, caps.Maximum);
+            _happinessController.Setup(happiness, state);
         }
 
-        private void RefreshWellbeing(WellbeingStats stats, WellbeingStats min, WellbeingStats max)
+        private void RefreshWellbeing(WellbeingStats stats, WellbeingStats max)
         {
-            _hungerController.Setup(stats.Hunger, min.Hunger, max.Hunger);
-            _fatigueController.Setup(stats.Fatigue, min.Fatigue, max.Fatigue);
-            _boredomController.Setup(stats.Boredom, min.Boredom, max.Boredom);
-            _ignoranceController.Setup(stats.Ignorance, min.Ignorance, max.Ignorance);
+            _hungerController.Setup(stats.Hunger, max.Hunger);
+            _fatigueController.Setup(stats.Fatigue, max.Fatigue);
+            _boredomController.Setup(stats.Boredom, max.Boredom);
+            _ignoranceController.Setup(stats.Ignorance, max.Ignorance);
         }
 
         private void RefreshUnit(RefreshUnitMessage msg)

@@ -104,7 +104,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                     if (mapTiles.Length > 0)
                     {
                         var tile = mapTiles.GetRandom();
-                        var path = pathingGrid.GetPath(_currentTile.Position, tile.Position, false);
+                        var path = pathingGrid.GetPath(_currentTile.Position, tile.Position);
                         if (path.Length > 0)
                         {
                             var nextTile = path[0];

@@ -1,4 +1,5 @@
-﻿using Assets.Resources.Ancible_Tools.Scripts.System;
+﻿using Assets.Ancible_Tools.Scripts.System.Wellbeing;
+using Assets.Resources.Ancible_Tools.Scripts.System;
 using MessageBusLib;
 using UnityEngine;
 
@@ -49,6 +50,12 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             _controller.gameObject.SendMessageTo(updateHobblerExperienceMsg, _controller.transform.parent.gameObject);
             MessageFactory.CacheMessage(updateHobblerExperienceMsg);
             _controller.gameObject.SendMessageTo(RefreshUnitMessage.INSTANCE, _controller.transform.parent.gameObject);
+
+            var ignorance = msg.Amount * WellBeingController.IgnorancePerExperience;
+            var applyWellbeingStatsMsg = MessageFactory.GenerateApplyWellbeingStatsMsg();
+            applyWellbeingStatsMsg.Stats = new WellbeingStats {Ignorance = ignorance};
+            _controller.gameObject.SendMessageTo(applyWellbeingStatsMsg, _controller.transform.parent.gameObject);
+            MessageFactory.CacheMessage(applyWellbeingStatsMsg);
         }
 
         private void QueryExperience(QueryExperienceMessage msg)

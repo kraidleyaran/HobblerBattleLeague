@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Assets.Ancible_Tools.Scripts.Traits;
 using Assets.Resources.Ancible_Tools.Scripts.System.Combat;
 using Assets.Resources.Ancible_Tools.Scripts.System.Items;
 using Assets.Resources.Ancible_Tools.Scripts.System.Pathing;
@@ -57,6 +58,8 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague
         [SerializeField] private float _aggroPerDamage = 1f;
         [SerializeField] private Sprite _leftSideFlagSprite = null;
         [SerializeField] private Sprite _rightSideFlagSprite = null;
+        [SerializeField] private Trait[] _applyOnLeftDeath = null;
+        [SerializeField] private Trait[] _applyOnRightDeath = null;
 
 
         private MapTile[] _leftSideTiles = new MapTile[0];
@@ -164,17 +167,20 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague
             var enemyUnits = new GameObject[0];
             var allyUnits = new GameObject[0];
             var totalPoints = Mathf.Max(1, spirit);
+            
             switch (alignment)
             {
                 case BattleAlignment.Left:
                     _instance._rightPoints += totalPoints;
                     enemyUnits = _instance._allUnits.Where(kv => kv.Value == BattleAlignment.Right).Select(kv => kv.Key).ToArray();
                     allyUnits = _instance._allUnits.Where(kv => kv.Value == BattleAlignment.Left).Select(kv => kv.Key).ToArray();
+                    _instance.gameObject.AddTraitsToUnit(_instance._applyOnLeftDeath, unit);
                     break;
                 case BattleAlignment.Right:
                     _instance._leftPoints += totalPoints;
                     enemyUnits = _instance._allUnits.Where(kv => kv.Value == BattleAlignment.Left).Select(kv => kv.Key).ToArray();
                     allyUnits = _instance._allUnits.Where(kv => kv.Value == BattleAlignment.Right).Select(kv => kv.Key).ToArray();
+                    _instance.gameObject.AddTraitsToUnit(_instance._applyOnRightDeath, unit);
                     break;
             }
             var removeEnemyUnitMsg = MessageFactory.GenerateRemoveEnemyUnitMsg();
@@ -237,6 +243,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague
 
         private void SetupRound()
         {
+            _pathingGrid.Clear();
             var addTraitToUnitMsg = MessageFactory.GenerateAddTraitToUnitMsg();
             var setMapTileMsg = MessageFactory.GenerateSetMapTileMsg();
             var setAbilitiesMsg = MessageFactory.GenerateSetAbilitiesMsg();
@@ -252,12 +259,14 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague
             setGamePieceDataMsg.Alignment = BattleAlignment.Left;
             setFacingDirectionMsg.Direction = Vector2.right;
             var leftSideUnits = LeftBench.GetUnitsForBattle();
+            var leftUnits = new Dictionary<GameObject, MapTile>();
             for (var i = 0; i < leftSideUnits.Length; i++)
             {
                 var tile = leftSideUnits[i].Key;
                 var unitController = GenerateUnit(leftSideUnits[i].Value, tile, setSpriteMsg, setMapTileMsg, setAbilitiesMsg, setCombatStatsMsg, setBasicAttackSetupMsg, setGamePieceDataMsg, setFacingDirectionMsg);
                 gameObject.SendMessageTo(setBattleAlignmentMsg, unitController.gameObject);
                 _allUnits.Add(unitController.gameObject, BattleAlignment.Left);
+                leftUnits.Add(unitController.gameObject, tile);
             }
 
             setBattleAlignmentMsg.Alignment = BattleAlignment.Right;
@@ -265,14 +274,16 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague
             setFacingDirectionMsg.Direction = Vector2.left;
 
             var rightSideUnits = _type == BattleType.Player ? RightBench.GetUnitsForBattle() : _encounterBenchController.GetUnitsForBattle();
+            var rightUnits = new Dictionary<GameObject, MapTile>();
             for (var i = 0; i < rightSideUnits.Length; i++)
             {
                 var tile = rightSideUnits[i].Key;
                 var unitController = GenerateUnit(rightSideUnits[i].Value,tile, setSpriteMsg, setMapTileMsg, setAbilitiesMsg, setCombatStatsMsg, setBasicAttackSetupMsg, setGamePieceDataMsg, setFacingDirectionMsg);
                 gameObject.SendMessageTo(setBattleAlignmentMsg, unitController.gameObject);
                 _allUnits.Add(unitController.gameObject, BattleAlignment.Right);
+                rightUnits.Add(unitController.gameObject, tile);
             }
-
+            
             MessageFactory.CacheMessage(setMapTileMsg);
             MessageFactory.CacheMessage(setBattleAlignmentMsg);
             MessageFactory.CacheMessage(addTraitToUnitMsg);
@@ -283,23 +294,27 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague
 
             var setEnemyUnitsMsg = MessageFactory.GenerateSetEnemyUnitsMsg();
             var setAllyUnitsMsg = MessageFactory.GenerateSetAlliesMsg();
-            var leftUnits = _allUnits.Where(kv => kv.Value == BattleAlignment.Left).Select(kv => kv.Key).ToArray();
-            var rightUnits = _allUnits.Where(kv => kv.Value == BattleAlignment.Right).Select(kv => kv.Key).ToArray();
+            //var leftUnits = _allUnits.Where(kv => kv.Value == BattleAlignment.Left).Select(kv => kv.Key).ToArray();
+            //var rightUnits = _allUnits.Where(kv => kv.Value == BattleAlignment.Right).Select(kv => kv.Key).ToArray();
 
             setEnemyUnitsMsg.Units = rightUnits;
-            setAllyUnitsMsg.Allies = leftUnits;
-            for (var i = 0; i < leftUnits.Length; i++)
+            setAllyUnitsMsg.Allies = _allUnits.Where(kv => kv.Value == BattleAlignment.Left).Select(kv => kv.Key).ToArray();
+
+            var left = leftUnits.Keys.ToArray();
+            foreach (var unit in left)
             {
-                gameObject.SendMessageTo(setEnemyUnitsMsg, leftUnits[i]);
-                gameObject.SendMessageTo(setAllyUnitsMsg, leftUnits[i]);
+                gameObject.SendMessageTo(setEnemyUnitsMsg, unit);
+                gameObject.SendMessageTo(setAllyUnitsMsg, unit);
             }
 
             setEnemyUnitsMsg.Units = leftUnits;
-            setAllyUnitsMsg.Allies = rightUnits;
-            for (var i = 0; i < rightUnits.Length; i++)
+            setAllyUnitsMsg.Allies = _allUnits.Where(kv => kv.Value == BattleAlignment.Left).Select(kv => kv.Key).ToArray(); ;
+
+            var right = rightUnits.Keys.ToArray();
+            foreach (var unit in right)
             {
-                gameObject.SendMessageTo(setEnemyUnitsMsg, rightUnits[i]);
-                gameObject.SendMessageTo(setAllyUnitsMsg, rightUnits[i]);
+                gameObject.SendMessageTo(setEnemyUnitsMsg, unit);
+                gameObject.SendMessageTo(setAllyUnitsMsg, unit);
             }
             MessageFactory.CacheMessage(setEnemyUnitsMsg);
             StartCountdownTimer();
@@ -359,7 +374,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague
                     break;
             }
             // If one side has enough points to reach the goal or we're over on the max rounds AND one of the players is ahead of the other, then we finish - otherwise, keep going
-            if (_leftPoints >= _goalPoints || _rightPoints >= _goalPoints || _maxRounds > 0 && _round >= _maxRounds && (_leftPoints > _rightPoints || _rightPoints > _leftPoints))
+            if ((_leftPoints >= _goalPoints || _rightPoints >= _goalPoints || _maxRounds > 0 && _round + 1 >= _maxRounds) && (_leftPoints > _rightPoints || _rightPoints > _leftPoints))
             {
                 State = BattleState.End;
                 _updatebattleStateMsg.State = State;

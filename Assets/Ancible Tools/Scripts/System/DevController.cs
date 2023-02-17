@@ -28,17 +28,6 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
             {
                 PlayerDataController.LoadData(PlayerDataController.DefaultPlayerName);
             }
-            else if (!msg.Previous.SwitchMode && msg.Current.SwitchMode)
-            {
-                if (WorldController.State == WorldState.World)
-                {
-                    WorldController.SetWorldState(WorldState.Adventure);
-                }
-                else if (WorldController.State == WorldState.Adventure)
-                {
-                    WorldController.SetWorldState(WorldState.World);
-                }
-            }
         }
     }
 }

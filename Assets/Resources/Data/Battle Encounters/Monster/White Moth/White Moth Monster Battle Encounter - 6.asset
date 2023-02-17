@@ -28,5 +28,3 @@ MonoBehaviour:
     Priority: 0
   - Template: {fileID: 11400000, guid: 6cac1a3319337af4397d6e48b299ec2c, type: 2}
     Priority: 0
-  - Template: {fileID: 11400000, guid: 602055a5f2eba044980cd30834a633cc, type: 2}
-    Priority: 0

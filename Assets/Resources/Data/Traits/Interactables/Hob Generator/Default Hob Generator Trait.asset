@@ -23,6 +23,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: cc030a5909a48a54fb775dafdc8b0c8a, type: 2}
   _maxRoll: 5
   _buyCommand: {fileID: 11400000, guid: f8ce02761ee69e346b5ad536dcefe469, type: 2}
-  _reRollCost: 0
+  _reRollCost: 25
   _generationWorldTicks: 60
   _spawnTileOffset: {x: 0, y: -1}

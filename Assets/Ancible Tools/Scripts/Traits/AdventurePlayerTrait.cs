@@ -64,7 +64,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
 
         private void UpdatePosition(UpdatePositionMessage msg)
         {
-            AdventureCameraController.SetCameraPosition(msg.Position.ToPixelPerfect());
+            AdventureCameraController.SetCameraPosition(msg.Position);
         }
 
         private void RespawnPlayer(RespawnPlayerMessage msg)

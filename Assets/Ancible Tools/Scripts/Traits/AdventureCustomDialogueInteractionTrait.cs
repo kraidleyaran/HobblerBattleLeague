@@ -47,6 +47,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             _controller.gameObject.SubscribeWithFilter<DialogueClosedMessage>(DialogueClosed, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<PlayerInteractMessage>(PlayerInteract, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<UpdateAdventureUnitStateMessage>(UpdateAdventureUnitState, _instanceId);
+            _controller.transform.parent.gameObject.SubscribeWithFilter<SetCustomDialogueMessage>(SetCustomDialogue, _instanceId);
         }
 
         private void PlayerInteract(PlayerInteractMessage msg)
@@ -84,6 +85,11 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                 _showRoutine = _controller.StartCoroutine(StaticMethods.WaitForFrames(1, ResetDialogueState));
             }
 
+        }
+
+        private void SetCustomDialogue(SetCustomDialogueMessage msg)
+        {
+            _dialogue = msg.Dialogue;
         }
 
         public override void Destroy()

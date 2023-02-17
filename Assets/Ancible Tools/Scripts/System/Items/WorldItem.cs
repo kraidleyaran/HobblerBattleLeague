@@ -19,5 +19,12 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Items
         {
             return Description;
         }
+
+        public void SetIcon(Sprite icon)
+        {
+#if UNITY_EDITOR
+            _icon = icon;
+#endif
+        }
     }
 }

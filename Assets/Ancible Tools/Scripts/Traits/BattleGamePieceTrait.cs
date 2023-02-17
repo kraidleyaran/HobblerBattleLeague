@@ -3,6 +3,7 @@ using System.Linq;
 using Assets.Resources.Ancible_Tools.Scripts.Hitbox;
 using Assets.Resources.Ancible_Tools.Scripts.System;
 using Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague;
+using Assets.Resources.Ancible_Tools.Scripts.System.Combat;
 using Assets.Resources.Ancible_Tools.Scripts.System.Pathing;
 using MessageBusLib;
 using UnityEngine;
@@ -12,7 +13,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
     [CreateAssetMenu(fileName = "Battle Game Piece Trait", menuName = "Ancible Tools/Traits/Battle/Battle Game Piece")]
     public class BattleGamePieceTrait : Trait
     {
-        [SerializeField] private Resources.Ancible_Tools.Scripts.Hitbox.Hitbox _hitbox = null;
+        [SerializeField] private Hitbox _hitbox = null;
         [SerializeField] private Vector2 _selectorSize = Vector2.zero;
         [SerializeField] private Vector2 _selectorOffset = Vector2.zero;
 
@@ -135,6 +136,19 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         {
             _data = msg.Data;
             _alignment = msg.Alignment;
+
+            var setCombatStatsMsg = MessageFactory.GenerateSetCombatStatsMsg();
+            setCombatStatsMsg.Stats = _data.Stats;
+            setCombatStatsMsg.Accumulated = GeneticCombatStats.Zero;
+            _controller.gameObject.SendMessageTo(setCombatStatsMsg, _controller.transform.parent.gameObject);
+            MessageFactory.CacheMessage(setCombatStatsMsg);
+
+            var setEquipmentMsg = MessageFactory.GenerateSetEquipmentMsg();
+            setEquipmentMsg.Items = _data.EquippedItems;
+            _controller.gameObject.SendMessageTo(setEquipmentMsg, _controller.transform.parent.gameObject);
+            MessageFactory.CacheMessage(setEquipmentMsg);
+
+            
         }
 
         private void SetSelectState(SetSelectStateMesage msg)

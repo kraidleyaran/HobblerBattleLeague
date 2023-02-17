@@ -23,8 +23,10 @@ MonoBehaviour:
   _rotation: 0
   _flipX: 0
   _flipY: 0
-  _flipSprite: 0
+  _flipSprite: 2
   _bumpDistance: 3
   _bumpTicks: 10
   _animationStates: 0
   _overrideMapTileSorting: 0
+  _defaultJumpHeight: 1
+  _defaultJumpSpeed: 1

@@ -15,7 +15,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
     {
         [SerializeField] private int _aggroRange = 1;
         [SerializeField] private int _leashRange = 0;
-        [SerializeField] private bool _diagonal = false;
+        [SerializeField] private int _diagonalCost = -1;
         [SerializeField] private Color _exclamationColor = Color.red;
         [SerializeField] private Vector2Int _exclamationOffset = Vector2Int.zero;
         [SerializeField] private Trait[] _applyOnAggro = null;
@@ -32,6 +32,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         private AdventureBattleExclamationController _exclamationController = null;
 
         private TraitController[] _aggrodTraits = new TraitController[0];
+        private Vector2Int _direction = Vector2Int.zero;
 
         public override void SetupController(TraitController controller)
         {
@@ -74,6 +75,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             _controller.transform.parent.gameObject.SubscribeWithFilter<UpdateMapTileMessage>(UpdateMapTile, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<UpdateAdventureUnitStateMessage>(UpdateAdventureUnitState, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<ObstacleMessage>(Obstacle, _instanceId);
+            _controller.transform.parent.gameObject.SubscribeWithFilter<UpdateDirectionMessage>(UpdateDirection, _instanceId);
         }
 
         private void UpdateTick(UpdateTickMessage msg)
@@ -82,7 +84,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             {
                 if (WorldAdventureController.MapController.MonsterPathing.DoesTileExist(WorldAdventureController.PlayerTile.Position))
                 {
-                    var path = WorldAdventureController.MapController.MonsterPathing.GetPath(_mapTile.Position, WorldAdventureController.PlayerTile.Position, _diagonal);
+                    var path = WorldAdventureController.MapController.MonsterPathing.GetPath(_mapTile.Position, WorldAdventureController.PlayerTile.Position, _diagonalCost);
                     if (path.Length > 0)
                     {
                         _path = path.ToList();
@@ -232,28 +234,50 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                 }
                 else if (_path.Count > 0)
                 {
-                    var tileIndex = _path.IndexOf(msg.Tile);
-                    if (tileIndex >= 0)
-                    {
-                        if (_path.Count > 1)
-                        {
-                            _path.RemoveRange(tileIndex + 1, _path.Count - tileIndex - 1);
-                        }
-                    }
-                    else if (_path.Count > _leashRange)
+                    var diff = msg.Tile.Position - _mapTile.Position;
+                    var playerDirection = _diagonalCost < 0 ? diff.ToCardinal() : diff.Normalize();
+                    if (_direction != playerDirection)
                     {
                         _path.Clear();
-
                         var setDirectionMsg = MessageFactory.GenerateSetDirectionMsg();
                         setDirectionMsg.Direction = Vector2.zero;
                         _controller.gameObject.SendMessageTo(setDirectionMsg, _controller.transform.parent.gameObject);
                         MessageFactory.CacheMessage(setDirectionMsg);
                     }
-                    else if (_mapTile != msg.Tile)
+                    else
                     {
-                        var tilePath = WorldAdventureController.MapController.MonsterPathing.GetPath(_path[_path.Count - 1].Position, msg.Tile.Position, _diagonal);
-                        _path.AddRange(tilePath);
+                        var tileIndex = _path.IndexOf(msg.Tile);
+                        if (tileIndex >= 0)
+                        {
+                            if (_path.Count > 1)
+                            {
+                                _path.RemoveRange(tileIndex + 1, _path.Count - tileIndex - 1);
+                            }
+                        }
+                        else
+                        {
+                            _path.Clear();
+                            var setDirectionMsg = MessageFactory.GenerateSetDirectionMsg();
+                            setDirectionMsg.Direction = Vector2.zero;
+                            _controller.gameObject.SendMessageTo(setDirectionMsg, _controller.transform.parent.gameObject);
+                            MessageFactory.CacheMessage(setDirectionMsg);
+                        }
                     }
+
+                    //else if (_path.Count > _leashRange)
+                    //{
+                    //    _path.Clear();
+
+                    //    var setDirectionMsg = MessageFactory.GenerateSetDirectionMsg();
+                    //    setDirectionMsg.Direction = Vector2.zero;
+                    //    _controller.gameObject.SendMessageTo(setDirectionMsg, _controller.transform.parent.gameObject);
+                    //    MessageFactory.CacheMessage(setDirectionMsg);
+                    //}
+                    //else if (_mapTile != msg.Tile)
+                    //{
+                    //    var tilePath = WorldAdventureController.MapController.MonsterPathing.GetPath(_path[_path.Count - 1].Position, msg.Tile.Position, _diagonalCost);
+                    //    _path.AddRange(tilePath);
+                    //}
                 }
             }
             else
@@ -287,6 +311,11 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             {
                 _path.Clear();
             }
+        }
+
+        private void UpdateDirection(UpdateDirectionMessage msg)
+        {
+            _direction = msg.Direction.ToVector2Int();
         }
 
         public override void Destroy()

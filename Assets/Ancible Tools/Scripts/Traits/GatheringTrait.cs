@@ -143,7 +143,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             MessageFactory.CacheMessage(setMonsterStateMsg);
             _gatheringTimer = new TickTimer(msg.Ticks, -1, () => {doAfter.Invoke(_controller.transform.parent.gameObject);}, null, true, false);
             _gatheringTile = msg.GatheringTile;
-            var path = WorldController.Pathing.GetPath(_currentTile.Position, _gatheringTile.Position, false);
+            var path = WorldController.Pathing.GetPath(_currentTile.Position, _gatheringTile.Position);
             var setPathMsg = MessageFactory.GenerateSetPathMsg();
             setPathMsg.Path = path;
             _controller.gameObject.SendMessageTo(setPathMsg, _controller.transform.parent.gameObject);
@@ -234,7 +234,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         {
             if (_currentNode != null)
             {
-                var path = WorldController.Pathing.GetPath(_currentTile.Position, _gatheringTile.Position, false);
+                var path = WorldController.Pathing.GetPath(_currentTile.Position, _gatheringTile.Position);
                 if (path.Length > 0)
                 {
                     var setPathMsg = MessageFactory.GenerateSetPathMsg();

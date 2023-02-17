@@ -56,6 +56,11 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         private void SetGamePieceData(SetGamePieceDataMessage msg)
         {
             _data = msg.Data;
+
+            var setEquipmentMsg = MessageFactory.GenerateSetEquipmentMsg();
+            setEquipmentMsg.Items = _data.EquippedItems.ToArray();
+            _controller.gameObject.SendMessageTo(setEquipmentMsg, _controller.transform.parent.gameObject);
+            MessageFactory.CacheMessage(setEquipmentMsg);
         }
 
         private void QueryBattleUnitData(QueryBattleUnitDataMessage msg)
@@ -117,15 +122,15 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         private void StartBattle(StartBattleMessage msg)
         {
             _controller.gameObject.Unsubscribe<StartBattleMessage>();
-            var equipment = _data.EquippedItems.ToArray();
-            var equipped = new List<EquippableInstance>();
-            foreach (var equippable in equipment)
-            {
-                var instance = new EquippableInstance(equippable, _controller.transform.parent.gameObject);
-                equipped.Add(instance);
-            }
+            //var equipment = _data.EquippedItems.ToArray();
+            //var equipped = new List<EquippableInstance>();
+            //foreach (var equippable in equipment)
+            //{
+            //    var instance = new EquippableInstance(equippable, _controller.transform.parent.gameObject);
+            //    equipped.Add(instance);
+            //}
 
-            _equipped = equipped.ToArray();
+            //_equipped = equipped.ToArray();
             _data.RoundsPlayed++;
         }
 

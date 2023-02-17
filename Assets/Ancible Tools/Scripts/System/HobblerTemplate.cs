@@ -57,7 +57,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
         {
             if (reverse)
             {
-                return max - roll.Roll() * ((max - min) / roll.Maximum) + 1;
+                return max - roll.Roll() * ((max - min) / roll.Maximum);
             }
             return roll.Roll() * ((max - min) / roll.Maximum);
 

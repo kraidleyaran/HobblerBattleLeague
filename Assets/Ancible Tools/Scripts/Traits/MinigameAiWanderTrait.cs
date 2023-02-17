@@ -14,7 +14,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
     {
         [SerializeField] private int _wanderArea = 1;
         [SerializeField] private bool _anchor = true;
-        [SerializeField] private bool _diagonal = false;
+        [SerializeField] private int _diagonalCost = -1;
 
         private MapTile _anchorTile = null;
         private MapTile[] _anchorArea = new MapTile[0];
@@ -49,7 +49,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                 if (pathableTiles.Length > 0)
                 {
                     var tile = pathableTiles.Length > 1 ? pathableTiles[Random.Range(0, pathableTiles.Length)] : pathableTiles[0];
-                    var path = MinigameController.Pathing.GetPath(_currentTile.Position, tile.Position, _diagonal);
+                    var path = MinigameController.Pathing.GetPath(_currentTile.Position, tile.Position, _diagonalCost);
                     if (path.Length > 0)
                     {
                         _currentPath = path.ToList();

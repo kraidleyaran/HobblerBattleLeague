@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: White Moth Adventure Global Cooldown Trait
   m_EditorClassIdentifier: 
   MaxStack: 1
-  _ticks: 45
+  _ticks: 65

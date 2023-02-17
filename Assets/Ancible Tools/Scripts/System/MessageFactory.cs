@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Assets.Ancible_Tools.Scripts.System.Wellbeing;
 using Assets.Ancible_Tools.Scripts.System.WorldNodes;
 using Assets.Ancible_Tools.Scripts.Traits;
 using Assets.Resources.Ancible_Tools.Scripts.Hitbox;
@@ -222,6 +223,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
         private static List<QueryAdventureAiStateMessage> _queryAdventureAiStateCache = new List<QueryAdventureAiStateMessage>();
         private static List<DoJumpMessage> _doJumpCache = new List<DoJumpMessage>();
         private static List<ApplyGlobalCooldownBonusMessage> _applyGlobalCooldownBonusCache = new List<ApplyGlobalCooldownBonusMessage>();
+        private static List<SetWellbeingStatsMessage> _setWellbeingStatsCache = new List<SetWellbeingStatsMessage>();
 
         public static AddTraitToUnitMessage GenerateAddTraitToUnitMsg()
         {
@@ -2658,6 +2660,18 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
             return new ApplyGlobalCooldownBonusMessage();
         }
 
+        public static SetWellbeingStatsMessage GenerateSetWellbeingStatsMsg()
+        {
+            if (_setWellbeingStatsCache.Count > 0)
+            {
+                var message = _setWellbeingStatsCache[0];
+                _setWellbeingStatsCache.Remove(message);
+                return message;
+            }
+
+            return new SetWellbeingStatsMessage();
+        }
+
         //TODO: Start Cache
 
         public static void CacheMessage(AddTraitToUnitMessage msg)
@@ -3586,7 +3600,6 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
         public static void CacheMessage(UpdateWellbeingMessage msg)
         {
             msg.Stats = WellbeingStats.Zero;
-            msg.Min = WellbeingStats.Zero;
             msg.Max = WellbeingStats.Zero;
             msg.Sender = null;
             _updateWellbeingCache.Add(msg);
@@ -3806,6 +3819,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
         public static void CacheMessage(ShowDialogueMessage msg)
         {
             msg.Dialogue = null;
+            msg.DoAfter = null;
             msg.Owner = null;
             msg.Sender = null;
             _showDialogueCache.Add(msg);
@@ -4122,6 +4136,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
         public static void CacheMessage(ShowCustomDialogueMessage msg)
         {
             msg.Dialogue = null;
+            msg.DoAfter = null;
             msg.Sender = null;
             _showCustomDialogueCache.Add(msg);
         }
@@ -4167,6 +4182,14 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
             msg.Permanent = false;
             msg.Sender = null;
             _applyGlobalCooldownBonusCache.Add(msg);
+        }
+
+        public static void CacheMessage(SetWellbeingStatsMessage msg)
+        {
+            msg.Stats = WellbeingStats.Zero;
+            msg.Maximum = WellbeingStats.Zero;
+            msg.Sender = null;
+            _setWellbeingStatsCache.Add(msg);
         }
     }
 }

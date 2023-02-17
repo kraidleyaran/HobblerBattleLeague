@@ -8,8 +8,8 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Combat
     {
         public static readonly CombatStats Zero = new CombatStats(0);
 
-        private const string HEALTH = "Health";
-        private const string MANA = "Mana";
+        private const string HEALTH = "Max Health";
+        private const string MANA = "Max Mana";
         private const string STRENGTH = "Strength";
         private const string AGILITY = "Agility";
         private const string MAGIC = "Magic";

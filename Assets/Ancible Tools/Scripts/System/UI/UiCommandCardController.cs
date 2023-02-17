@@ -83,7 +83,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI
         {
             if (commands.Length > 0)
             {
-                var orderedCommands = commands.OrderBy(c => c.Command.Command).ToArray();
+                var orderedCommands = commands.OrderByDescending(c => c.Command.Priority).ThenBy(c => c.Command.Command).ToArray();
                 var controllers = new List<UiUnitCommandController>();
                 var max = orderedCommands.Length > _maxCommands - 1 && orderedCommands.Length > _maxCommands ? _maxCommands - 1 : orderedCommands.Length;
                 var remainingCommands = new List<CommandInstance>();

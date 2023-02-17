@@ -16,8 +16,8 @@ MonoBehaviour:
   Icon: {fileID: 21300000, guid: b293d902412ae9741bc7822800ab19e1, type: 3}
   Description: 
   Range: 1
-  CastTime: 1
-  ManaCost: 2
+  CastTime: 15
+  ManaCost: 5
   ApplyToTarget:
   - {fileID: 11400000, guid: 79eb54018efa9b143a89ede29dd088bc, type: 2}
   Alignment: 0

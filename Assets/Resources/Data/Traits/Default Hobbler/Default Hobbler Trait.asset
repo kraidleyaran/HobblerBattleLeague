@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: Default Hobbler Trait
   m_EditorClassIdentifier: 
   MaxStack: 1
+  _exileCommandTemplate: {fileID: 11400000, guid: 567e704ed08e0c843b7d9ad73f2de4cd, type: 2}

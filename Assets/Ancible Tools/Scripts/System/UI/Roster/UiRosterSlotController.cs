@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Assets.Ancible_Tools.Scripts.System.Wellbeing;
 using Assets.Ancible_Tools.Scripts.Traits;
 using Assets.Resources.Ancible_Tools.Scripts.System.Abilities;
 using Assets.Resources.Ancible_Tools.Scripts.System.Combat;
@@ -16,6 +17,9 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.Roster
     {
         private const string FILTER = "UI_ROSTER_SLOT_CONTROLLER";
 
+        public HappinessState State => _state;
+        public string Name => _name;
+
         public RectTransform RectTransform;
         [SerializeField] private Image _hobblerIconImage;
         [SerializeField] private UiEquippedItemController _equippedItemTemplate;
@@ -28,6 +32,8 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.Roster
         [SerializeField] private Color _rosterButtonColor = Color.white;
         [SerializeField] private Image _buttonImage;
         [SerializeField] private Button _rosterButton = null;
+        [SerializeField] private Image _happinessIconImage = null;
+        [SerializeField] private Text _happinessText;
         
         private CombatStats _baseStats = CombatStats.Zero;
         private CombatStats _bonusStats = CombatStats.Zero;
@@ -35,6 +41,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.Roster
         private string _name = string.Empty;
         private RosterType _type = RosterType.Bench;
         private GameObject _hobbler = null;
+        private HappinessState _state = HappinessState.Moderate;
 
         private UiEquippedItemController[] _equippedItems = new UiEquippedItemController[0];
         private UiAbilityController[] _abilities = new UiAbilityController[0];
@@ -59,12 +66,8 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.Roster
             gameObject.SendMessageTo(queryAbilitiesMsg, _hobbler);
             MessageFactory.CacheMessage(queryAbilitiesMsg);
 
-
-
-            _hobbler.SubscribeWithFilter<RefreshUnitMessage>(RefreshUnit, FILTER);
-            _hobbler.SubscribeWithFilter<EquipmentUpdatedMessage>(EquipmentUpdated, FILTER);
-            _hobbler.SubscribeWithFilter<AbilitiesUpdatedMessage>(AbilitiesUpdated, FILTER);
             _rosterButton.interactable = _type != RosterType.Bench || WorldHobblerManager.Roster.Count < WorldHobblerManager.RosterLimit;
+            SubscribeToMessages();
         }
 
         public void ClickButton()
@@ -127,6 +130,11 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.Roster
             querySpriteMsg.DoAfter = RefreshSprite;
             gameObject.SendMessageTo(querySpriteMsg, _hobbler);
             MessageFactory.CacheMessage(querySpriteMsg);
+
+            var queryHappinessMsg = MessageFactory.GenerateQueryHappinessMsg();
+            queryHappinessMsg.DoAfter = RefreshHappiness;
+            gameObject.SendMessageTo(queryHappinessMsg, _hobbler);
+            MessageFactory.CacheMessage(queryHappinessMsg);
 
             if (_hovered)
             {
@@ -200,6 +208,20 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.Roster
         {
             _sprite = trait;
             _hobblerIconImage.sprite = _sprite.Sprite;
+        }
+
+        private void RefreshHappiness(float happiness, float happy, float moderate, HappinessState state)
+        {
+            _state = state;
+            _happinessIconImage.color = _state.ToColor();
+            _happinessText.text = _state.ToStateString(true);
+        }
+
+        private void SubscribeToMessages()
+        {
+            _hobbler.SubscribeWithFilter<RefreshUnitMessage>(RefreshUnit, FILTER);
+            _hobbler.SubscribeWithFilter<EquipmentUpdatedMessage>(EquipmentUpdated, FILTER);
+            _hobbler.SubscribeWithFilter<AbilitiesUpdatedMessage>(AbilitiesUpdated, FILTER);
         }
 
         private void RefreshUnit(RefreshUnitMessage msg)

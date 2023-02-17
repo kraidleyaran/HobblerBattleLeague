@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using Assets.Ancible_Tools.Scripts.System.SaveData.Building;
+using Assets.Ancible_Tools.Scripts.Traits;
 using Assets.Resources.Ancible_Tools.Scripts.System.Items;
 using Assets.Resources.Ancible_Tools.Scripts.System.Pathing;
 using Assets.Resources.Ancible_Tools.Scripts.System.Templates;
@@ -28,6 +29,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Building
         [SerializeField] private WorldBuilding[] _startingBuildings = new WorldBuilding[0];
         [SerializeField] private string _buildingFolder = string.Empty;
         [SerializeField] private float _sellBackPercentage = 0f;
+        [SerializeField] private Trait[] _applyOnSell = new Trait[0];
 
         private Vector2 _mousePos = Vector2.zero;
         private MapTile _currentMapTile = null;
@@ -179,6 +181,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Building
                 var pair = _instance._currentBuildings.FirstOrDefault(kv => kv.Value == obj);
                 if (pair.Value)
                 {
+                    _instance.gameObject.AddTraitsToUnit(_instance._applyOnSell, pair.Value);
                     WorldStashController.AddGold(CalculateSellbackValue(building.Cost));
                     pair.Key.Dispose();
                     _instance._currentBuildings.Remove(pair.Key);

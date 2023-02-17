@@ -41,7 +41,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             }
 
             var distance = (tile.World - _rigidBody.position).magnitude;
-            var moveSpeed = TickController.OneSecond / (_moveSpeed * DataController.Interpolation) * distance;
+            var moveSpeed = TickController.OneSecond / (_moveSpeed * DataController.Interpolation * BattleLeagueController.MoveSpeedModifier) * distance;
             BattleLeagueController.PathingGrid.SetTileBlock(_controller.transform.parent.gameObject,tile.Position);
 
             var updateDirectionMsg = MessageFactory.GenerateUpdateDirectionMsg();
@@ -56,21 +56,32 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                 MessageFactory.CacheMessage(setUnitBattleStateMsg);
             }
 
-            _moveTween = _controller.transform.parent.DOJump(tile.World, 5f, 1, moveSpeed).SetSpeedBased(true).SetEase(Ease.Linear).OnComplete(
+            if (_currentTile != null)
+            {
+                BattleLeagueController.PathingGrid.RemoveTileBlock(_controller.transform.parent.gameObject, _currentTile.Position);
+            }
+            _currentTile = tile;
+
+            var updateMapTileMsg = MessageFactory.GenerateUpdateMapTileMsg();
+            updateMapTileMsg.Tile = _currentTile;
+            _controller.gameObject.SendMessageTo(updateMapTileMsg, _controller.transform.parent.gameObject);
+            MessageFactory.CacheMessage(updateMapTileMsg);
+
+            _moveTween = _controller.transform.parent.DOJump(tile.World, BattleLeagueController.DefaultMoveJumpPower, 1, moveSpeed).SetSpeedBased(true).SetEase(Ease.Linear).OnComplete(
                 () =>
                 {
                     _moveTween = null;
-                    if (_currentTile != null)
-                    {
-                        BattleLeagueController.PathingGrid.RemoveTileBlock(_controller.transform.parent.gameObject, _currentTile.Position);
-                    }
-                    _currentTile = tile;
+                    //if (_currentTile != null)
+                    //{
+                    //    BattleLeagueController.PathingGrid.RemoveTileBlock(_controller.transform.parent.gameObject, _currentTile.Position);
+                    //}
+                    //_currentTile = tile;
                     _controller.gameObject.SendMessageTo(ActivateGlobalCooldownMessage.INSTANCE, _controller.transform.parent.gameObject);
 
-                    var updateMapTileMsg = MessageFactory.GenerateUpdateMapTileMsg();
-                    updateMapTileMsg.Tile = _currentTile;
-                    _controller.gameObject.SendMessageTo(updateMapTileMsg, _controller.transform.parent.gameObject);
-                    MessageFactory.CacheMessage(updateMapTileMsg);
+                    //var updateMapTileMsg = MessageFactory.GenerateUpdateMapTileMsg();
+                    //updateMapTileMsg.Tile = _currentTile;
+                    //_controller.gameObject.SendMessageTo(updateMapTileMsg, _controller.transform.parent.gameObject);
+                    //MessageFactory.CacheMessage(updateMapTileMsg);
 
                     var updatePositionMsg = MessageFactory.GenerateUpdatePositionMsg();
                     updatePositionMsg.Position = _currentTile.World;
@@ -184,6 +195,8 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                 }
                 _moveTween = null;
                 BattleLeagueController.PathingGrid.RemoveTileBlock(_controller.transform.parent.gameObject, _currentTile.Position);
+                _direction = Vector2Int.zero;
+                _controller.gameObject.Unsubscribe<UpdateTickMessage>();
             }
             else if (_battleState == UnitBattleState.End)
             {

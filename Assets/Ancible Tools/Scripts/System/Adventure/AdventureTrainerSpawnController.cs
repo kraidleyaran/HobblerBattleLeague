@@ -1,4 +1,5 @@
-﻿using Assets.Ancible_Tools.Scripts.Traits;
+﻿using Assets.Ancible_Tools.Scripts.System.Dialogue;
+using Assets.Ancible_Tools.Scripts.Traits;
 using Assets.Resources.Ancible_Tools.Scripts.System.Animation;
 using Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague;
 using Assets.Resources.Ancible_Tools.Scripts.System.Templates;

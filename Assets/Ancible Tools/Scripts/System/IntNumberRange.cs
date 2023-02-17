@@ -14,5 +14,10 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
         {
             return $"{Minimum}-{Maximum}";
         }
+
+        public bool Contains(int number)
+        {
+            return number >= Minimum && number <= Maximum;
+        }
     }
 }

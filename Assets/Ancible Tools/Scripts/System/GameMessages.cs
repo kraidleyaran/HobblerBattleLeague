@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using Assets.Ancible_Tools.Scripts.System.Dialogue;
 using Assets.Ancible_Tools.Scripts.System.Items.Crafting;
 using Assets.Ancible_Tools.Scripts.System.SaveData;
 using Assets.Ancible_Tools.Scripts.System.SaveData.Building;
 using Assets.Ancible_Tools.Scripts.System.UI.UnitInfo;
+using Assets.Ancible_Tools.Scripts.System.Wellbeing;
 using Assets.Ancible_Tools.Scripts.System.WorldNodes;
 using Assets.Ancible_Tools.Scripts.Traits;
 using Assets.Resources.Ancible_Tools.Scripts.System.Abilities;
@@ -95,12 +97,16 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
 
     public class UpdateHappinessMessage : EventMessage
     {
-        public int Happiness;
+        public float Happiness;
+        public float HappyMinimum;
+        public float ModerateMinimum;
+        public HappinessState State;
     }
 
     public class QueryHappinessMessage : EventMessage
     {
-        public Action<int, IntNumberRange> DoAfter;
+        //Happiness, HappyMinimum, ModerateMinimum
+        public Action<float, float, float, HappinessState> DoAfter;
     }
 
     public class ApplyWellbeingStatsMessage : EventMessage
@@ -110,7 +116,8 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
 
     public class QueryWellbeingStatsMessage : EventMessage
     {
-        public Action<WellbeingStats, WellbeingStats, WellbeingStats> DoAfter;
+        //Current, Max
+        public Action<WellbeingStats, WellbeingStats> DoAfter;
     }
 
     public class WorldTickMessage : EventMessage
@@ -522,7 +529,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
     {
         public GameObject Owner;
         public Sprite Icon;
-        public Color ColorMask;
+        public Color ColorMask = Color.white;
         public string Title;
         public string Description;
         public Vector2 Position;
@@ -606,7 +613,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
 
     public class SetEnemyUnitsMessage : EventMessage
     {
-        public GameObject[] Units;
+        public Dictionary<GameObject, MapTile> Units;
     }
 
     public class SetUnitBattleStateMessage : EventMessage
@@ -901,7 +908,6 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
     public class UpdateWellbeingMessage : EventMessage
     {
         public WellbeingStats Stats;
-        public WellbeingStats Min;
         public WellbeingStats Max;
     }
 
@@ -1182,6 +1188,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
     {
         public DialogueData Dialogue;
         public GameObject Owner;
+        public Action DoAfter;
     }
 
     public class ShowCurrentDialogueAnswersMessage : EventMessage
@@ -1470,6 +1477,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
     {
         public string[] Dialogue;
         public GameObject Owner;
+        public Action DoAfter;
     }
 
     public class SetCustomDialogueMessage : EventMessage
@@ -1501,5 +1509,21 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
     {
         public int Bonus;
         public bool Permanent;
+    }
+
+    public class MovementCompletedMessage : EventMessage
+    {
+        public static MovementCompletedMessage INSTANCE = new MovementCompletedMessage();
+    }
+
+    public class ApplyRosterStatusMessage : EventMessage
+    {
+        public bool Roster;
+    }
+
+    public class SetWellbeingStatsMessage : EventMessage
+    {
+        public WellbeingStats Stats;
+        public WellbeingStats Maximum;
     }
 }

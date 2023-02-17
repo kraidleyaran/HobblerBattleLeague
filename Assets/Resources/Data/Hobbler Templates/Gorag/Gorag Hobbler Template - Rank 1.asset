@@ -17,7 +17,7 @@ MonoBehaviour:
   Sprite: {fileID: 11400000, guid: 8f89185b6bb826b4e82e6fa0e2f7034a, type: 2}
   StartingStats:
     Health: 22
-    Mana: 3
+    Mana: 10
     Strength: 4
     Agility: 3
     Magic: 1
@@ -25,23 +25,23 @@ MonoBehaviour:
     Defense: 7
     Spirit: 1
   MinimumGenetics:
-    Health: 0.85
-    Mana: 0.1
-    Strength: 0.4
-    Agility: 0.2
-    Magic: 0.1
-    Faith: 0.1
-    Armor: 0.65
-    Spirit: 0.25
-  MaximumGenetics:
-    Health: 2.4
+    Health: 2.5
     Mana: 1
-    Strength: 1.6
-    Agility: 1.2
-    Magic: 0.9
+    Strength: 1.35
+    Agility: 0.4
+    Magic: 0.35
+    Faith: 0.25
+    Armor: 1.65
+    Spirit: 0.01
+  MaximumGenetics:
+    Health: 4.8
+    Mana: 2.1
+    Strength: 3
+    Agility: 0.85
+    Magic: 0.75
     Faith: 0.5
-    Armor: 2.2
-    Spirit: 1.25
+    Armor: 2.85
+    Spirit: 0.035
   StartingAbilities:
   - {fileID: 11400000, guid: d1a949ea59ba3b34f8e52582a8c3b5f0, type: 2}
   - {fileID: 11400000, guid: 999b1178a2c3c204ab5ed96d54f087e6, type: 2}

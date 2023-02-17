@@ -40,12 +40,17 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.Roster
                     units = WorldHobblerManager.Roster.ToArray();
                     break;
             }
-
             for (var i = 0; i < units.Length; i++)
             {
                 var controller = Instantiate(_rosterSlotTemplate, _grid.transform);
                 controller.Setup(units[i], _type);
                 _rosterSlots.Add(controller);
+            }
+
+            var orderedSlots = _rosterSlots.OrderByDescending(s => s.State).ThenBy(s => s.Name).ToArray();
+            for (var i = 0; i < orderedSlots.Length; i++)
+            {
+                orderedSlots[i].transform.SetSiblingIndex(i);
             }
 
             var height = _rosterSlots.Count * (_rosterSlotTemplate.RectTransform.rect.height + _grid.spacing) + _grid.padding.top;

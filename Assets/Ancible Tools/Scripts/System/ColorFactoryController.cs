@@ -24,6 +24,9 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
         public static Color EpicItemRarity => _instance._epicColor;
         public static Color LegendaryItemRarity => _instance._legendaryColor;
         public static Color AncientItemRarity => _instance._ancientColor;
+        public static Color Happiness => _instance._happinessColor;
+        public static Color Moderate => _instance._moderateColor;
+        public static Color Unhappiness => _instance._unhappinessColor;
 
         private static ColorFactoryController _instance = null;
 
@@ -40,6 +43,10 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
         [SerializeField] private Color _manaTextColor = Color.blue;
         [SerializeField] private Color _defaultAlertTextColor = Color.yellow;
         [SerializeField] private Color _errorAlertTextColor = Color.red;
+        [SerializeField] private Color _happinessColor = Color.green;
+        [SerializeField] private Color _moderateColor = Color.yellow;
+        [SerializeField] private Color _unhappinessColor = Color.red;
+        
 
         [Header("Status Effect Colors")]
         [SerializeField] private Color _stunColor = Color.yellow;

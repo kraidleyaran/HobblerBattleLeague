@@ -10,6 +10,8 @@ namespace Assets.Ancible_Tools.Scripts.System.UI.WorldInfo
     {
         [SerializeField] private Text _populationText = null;
         [SerializeField] private Text _rosterText = null;
+        [SerializeField] private Text _unhappyText = null;
+        [SerializeField] private GameObject _unHappyGroup;
 
         void Awake()
         {
@@ -33,6 +35,8 @@ namespace Assets.Ancible_Tools.Scripts.System.UI.WorldInfo
         {
             _populationText.text = $"{WorldHobblerManager.All.Count}/{WorldHobblerManager.PopulationLimit}";
             _rosterText.text = $"{WorldHobblerManager.Roster.Count}/{WorldHobblerManager.RosterLimit}";
+            _unhappyText.text = $"{WorldHobblerManager.Unhappy.Count}";
+            _unHappyGroup.gameObject.SetActive(WorldHobblerManager.Unhappy.Count > 0);
         }
 
         private void SubscribeToMessages()

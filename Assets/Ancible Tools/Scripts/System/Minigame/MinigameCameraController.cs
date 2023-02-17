@@ -11,6 +11,8 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Minigame
 
         [SerializeField] private Camera _camera;
 
+        private Vector2 _position = Vector2.zero;
+
         void Awake()
         {
             if (_instance)
@@ -28,34 +30,38 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Minigame
             {
                 Camera.SetupCurrent(Camera);
             }
-            SubscribeToMessages();
-        }
 
-        void LateUpdate()
-        {
-            var pos = transform.position.ToVector2();
-            var pixelPerfect = pos.ToPixelPerfect();
-            if (pixelPerfect != pos)
-            {
-                transform.SetTransformPosition(pixelPerfect);
-            }
-            
+            _position = transform.position.ToVector2();
+            SubscribeToMessages();
         }
 
         private void SubscribeToMessages()
         {
             gameObject.Subscribe<SetMinigameCameraPositionMessage>(SetMinigameCameraPosition);
             gameObject.Subscribe<UpdateWorldStateMessage>(UpdateWorldState);
+            gameObject.Subscribe<UpdateTickMessage>(UpdateTick);
         }
 
         private void SetMinigameCameraPosition(SetMinigameCameraPositionMessage msg)
         {
-            transform.SetTransformPosition(msg.Position);
+            _position = msg.Position;
         }
 
         private void UpdateWorldState(UpdateWorldStateMessage msg)
         {
             gameObject.SetActive(msg.State == WorldState.Minigame);
+        }
+
+        private void UpdateTick(UpdateTickMessage msg)
+        {
+            if (WorldController.State == WorldState.Minigame)
+            {
+                var pos = transform.position.ToVector2();
+                if (pos != _position)
+                {
+                    transform.SetTransformPosition(Vector2.Lerp(pos, _position, DataController.Interpolation));
+                }
+            }
         }
 
         public static void SetActive(bool active)

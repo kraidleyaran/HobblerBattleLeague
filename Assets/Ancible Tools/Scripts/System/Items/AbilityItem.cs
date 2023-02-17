@@ -8,7 +8,6 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Items
     {
         public override WorldItemType Type => WorldItemType.Ability;
         public WorldAbility Ability;
-        public override Sprite Icon => Ability.Icon;
         public int RequiredLevel = 0;
     }
 }

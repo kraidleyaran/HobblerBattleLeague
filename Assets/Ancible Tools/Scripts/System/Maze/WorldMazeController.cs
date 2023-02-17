@@ -13,6 +13,7 @@ using Assets.Resources.Ancible_Tools.Scripts.System.UI.MInigame;
 using CreativeSpore.SuperTilemapEditor;
 using MessageBusLib;
 using ProceduralToolkit;
+using ProceduralToolkit.Samples;
 using RogueSharp;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -64,7 +65,9 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Maze
             var existingTiles = new List<Vector2Int>();
             _rooms = draw.Select(e => GenerateRoom(e, deadEnds, doors, existingTiles)).ToArray();
             DrawRooms(_rooms);
-            var rooms = DrawWalls(deadEnds, doors);
+            var orderedRooms = _rooms.OrderByDescending(r => r.Depth).ToArray();
+            var endRooms = orderedRooms.Where(r => r.Depth == orderedRooms[0].Depth).ToArray();
+            var rooms = DrawWalls(deadEnds, doors, endRooms.ToArray());
             var chests = SpawnChests(_settings, rooms);
             var monsters = SpawnMonsters(_settings, rooms);
             var playerSpawnRoom = _rooms.FirstOrDefault(r => r.RoomId == startPoint);
@@ -205,12 +208,15 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Maze
             var changed = false;
             for (var i = 0; edges.Count > 0 && (steps == 0 || i < steps); i++)
             {
-                var edge = edges.Count > 1 ? edges[Random.Range(0, edges.Count)] : edges[0];
-                edges.Remove(edge);
+                var edge = edges[edges.Count - 1]; //edges.Count > 1 ? edges[Random.Range(0, edges.Count)] : edges[0];
+                edges.RemoveAt(edges.Count - 1);
                 if (_maze.IsUnconnected(edge.exit.position))
                 {
                     _maze.AddEdge(edge);
-                    edges.AddRange(_maze.GetPossibleConnections(edge.exit));
+                    var newEdges = _maze.GetPossibleConnections(edge.exit);
+                    newEdges.Shuffle();
+                    edges.AddRange(newEdges);
+                    //edges.AddRange(_maze.GetPossibleConnections(edge.exit));
                     draw.Add(edge);
                 }
 
@@ -385,7 +391,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Maze
             _tilemap.Refresh(true, true, true, true);
         }
 
-        private MazeRoom[] DrawWalls(List<Vector2Int> deadEnds, Dictionary<Vector2Int, MazeDoor> doors)
+        private MazeRoom[] DrawWalls(List<Vector2Int> deadEnds, Dictionary<Vector2Int, MazeDoor> doors, MazeRoom[] possibleEndRooms)
         {
             var min = new Vector2Int(_tilemap.MinGridX - _settings.EdgeBuffer, _tilemap.MinGridY - _settings.EdgeBuffer);
             var max = new Vector2Int(_tilemap.MaxGridX + (_settings.EdgeBuffer + _settings.WallSize) + 1, _tilemap.MaxGridY + _settings.EdgeBuffer + _settings.WallSize + 1);
@@ -513,8 +519,8 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Maze
             }
 
             var playerQuadrant = GetQuadrant(_playerSpawn);
-            
-            _possibleEnds = _tiles.Keys.Where(t => IsEndTile(t,playerQuadrant, GetDirectionFromTilePos(t))).Select(t => new MazeDoor(GetEndTileOffsetFromDirection(t, GetDirectionFromTilePos(t)), GetDirectionFromTilePos(t), new Vector2Int[0])).Where(d => !doorPositions.Contains(d.Position)).ToList();
+            //_possibleEnds = _tiles.Keys.Where(t => IsEndTile(t,playerQuadrant, GetDirectionFromTilePos(t))).Select(t => new MazeDoor(GetEndTileOffsetFromDirection(t, GetDirectionFromTilePos(t)), GetDirectionFromTilePos(t), new Vector2Int[0])).Where(d => !doorPositions.Contains(d.Position)).ToList();
+            _possibleEnds = GetEndTilesFromRooms(possibleEndRooms).Select(t => new MazeDoor(GetEndTileOffsetFromDirection(t, GetDirectionFromTilePos(t)), GetDirectionFromTilePos(t), new Vector2Int[0])).Where(d => !doorPositions.Contains(d.Position)).ToList();
             Debug.Log($"Possible Exits: {_possibleEnds.Count}");
             if (_possibleEnds.Count > 0)
             {
@@ -657,11 +663,10 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Maze
                    _tiles.ContainsKey(tile + Vector2Int.left) && _tiles.ContainsKey(tile + Vector2Int.right);
         }
 
-        private bool IsEndTile(Vector2Int pos, Vector2Int playerQuadrant, Directions direction)
+        private bool IsEndTile(Vector2Int pos, Directions direction)
         {
-            var quadrant = GetQuadrant(pos);
             var space = _settings.RoomSize;
-            if (quadrant.x != playerQuadrant.x && quadrant.y != playerQuadrant.y && !IsSpawnableTile(pos) && !IsCornerTile(pos))
+            if (!IsSpawnableTile(pos) && !IsCornerTile(pos))
             {
                 switch (direction)
                 {
@@ -676,6 +681,17 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Maze
                 }
             }
             return false;
+        }
+
+        private Vector2Int[] GetEndTilesFromRooms(MazeRoom[] rooms)
+        {
+            var endTiles = new List<Vector2Int>();
+            foreach (var room in rooms)
+            {
+                endTiles.AddRange(room.PathableTiles.Where(pos => IsEndTile(pos, GetDirectionFromTilePos(pos))));
+            }
+
+            return endTiles.ToArray();
         }
 
         public Vector2Int GetEndTileOffsetFromDirection(Vector2Int pos, Directions direction)

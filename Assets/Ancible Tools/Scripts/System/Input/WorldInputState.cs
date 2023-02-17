@@ -19,7 +19,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Input
         public bool Stash;
         public bool Build;
         public bool Roster;
-        public bool SwitchMode;
+        public bool CenterCamera;
 
         public bool Attack;
         public bool AbilitySlot0;

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Assets.Ancible_Tools.Scripts.System.Wellbeing;
 using Assets.Ancible_Tools.Scripts.Traits;
 using Assets.Resources.Ancible_Tools.Scripts.Hitbox;
 using Assets.Resources.Ancible_Tools.Scripts.System.Abilities;
@@ -301,7 +302,39 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
             return returnVector;
         }
 
+        public static Vector2Int ToNakedValues(this Vector2Int vector)
+        {
+            var returnVector = vector;
+            if (returnVector.x < 0)
+            {
+                returnVector.x *= -1;
+            }
+
+            if (returnVector.y < 0)
+            {
+                returnVector.y *= -1;
+            }
+
+            return returnVector;
+        }
+
         public static Vector2Int ToCardinal(this Vector2 vector)
+        {
+            var naked = vector.ToNakedValues();
+            var returnValue = Vector2Int.zero;
+            if (naked.x > naked.y)
+            {
+                returnValue.x = vector.x > 0 ? 1 : -1;
+            }
+            else if (naked.y > naked.x)
+            {
+                returnValue.y = vector.y > 0 ? 1 : -1;
+            }
+
+            return returnValue;
+        }
+
+        public static Vector2Int ToCardinal(this Vector2Int vector)
         {
             var naked = vector.ToNakedValues();
             var returnValue = Vector2Int.zero;
@@ -455,16 +488,17 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
             return returnVector;
         }
 
-        public static int CalculateHappiness(this WellbeingStats stats, IntNumberRange caps)
+        public static float CalculateHappiness(this WellbeingStats stats, WellbeingStats max)
         {
-            var happiness = 0f;
-            happiness += stats.Hunger * WellBeingController.HappinessPerHunger * -1;
-            happiness += stats.Boredom * WellBeingController.HappinessPerBoredom * -1;
-            happiness += stats.Fatigue * WellBeingController.HappinessPerFatigue * -1;
-            happiness += stats.Ignorance * WellBeingController.HappinessPerIgnorance * -1;
-            happiness = Mathf.Max(caps.Minimum, happiness);
-            happiness = Mathf.Min(caps.Maximum, happiness);
-            return Mathf.RoundToInt(happiness);
+            return ((max - stats) / max).ToAveragePercent();
+            //var happiness = max;
+            //happiness -= Mathf.RoundToInt(stats.Hunger * WellBeingController.HappinessPerHunger);
+            //happiness -= Mathf.RoundToInt(stats.Fatigue * WellBeingController.HappinessPerFatigue);
+            //happiness -= Mathf.RoundToInt(stats.Boredom * WellBeingController.HappinessPerBoredom);
+            //happiness -= Mathf.RoundToInt(stats.Ignorance * WellBeingController.HappinessPerIgnorance);
+            //happiness = Mathf.Max(min, happiness);
+            //happiness = Mathf.Min(max, happiness);
+            //return happiness;
         }
 
         public static bool HasMoreThanOneDirection(this Directions directions)
@@ -563,25 +597,26 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
             return (int) (baseExperience + baseExperience * currentLevel * experienceRate);
         }
 
-        public static WellbeingStatType[] GetStatus(this WellbeingStats stats)
+        public static WellbeingStatType[] GetStatus(this WellbeingStats stats, WellbeingStats max)
         {
             var status = new List<WellbeingStatType>();
-            if (stats.Hunger > 0)
+            var percents =  (max - stats) / max;
+            if (percents.Hunger <= WellBeingController.WarningPercent)
             {
                 status.Add(WellbeingStatType.Hunger);
             }
 
-            if (stats.Boredom > 0)
+            if (percents.Boredom <= WellBeingController.WarningPercent)
             {
                 status.Add(WellbeingStatType.Boredom);
             }
 
-            if (stats.Fatigue > 0)
+            if (percents.Fatigue <= WellBeingController.WarningPercent)
             {
                 status.Add(WellbeingStatType.Fatigue);
             }
 
-            if (stats.Ignorance > 0)
+            if (percents.Ignorance <= WellBeingController.WarningPercent)
             {
                 status.Add(WellbeingStatType.Ignorance);
             }
@@ -825,7 +860,83 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
             return $"{Environment.NewLine}{Environment.NewLine}";
         }
 
+        public static void AddTraitToUnit(this GameObject parent, Trait trait, GameObject unit, Action<TraitController> doAfter = null)
+        {
+            var addTraitToUnitMsg = MessageFactory.GenerateAddTraitToUnitMsg();
+            addTraitToUnitMsg.Trait = trait;
+            if (!trait.Instant)
+            {
+                addTraitToUnitMsg.DoAfter = doAfter;
+            }
+            parent.SendMessageTo(addTraitToUnitMsg, unit);
+            MessageFactory.CacheMessage(addTraitToUnitMsg);
+        }
+
+        public static void AddTraitsToUnit(this GameObject parent, Trait[] traits, GameObject unit, Action<TraitController> doAfter = null)
+        {
+            var addTraitToUnitMsg = MessageFactory.GenerateAddTraitToUnitMsg();
+            foreach (var trait in traits)
+            {
+                addTraitToUnitMsg.Trait = trait;
+                if (!trait.Instant)
+                {
+                    addTraitToUnitMsg.DoAfter = doAfter;
+                }
+                parent.SendMessageTo(addTraitToUnitMsg, unit);
+            }
+
+            MessageFactory.CacheMessage(addTraitToUnitMsg);
+            
+        }
+
+        public static HappinessState GetHappinesState(float happiness, float happy, float moderate)
+        {
+            if (happiness < moderate)
+            {
+                return HappinessState.Unhappy;
+            }
+
+            if (happiness < happy)
+            {
+                return HappinessState.Moderate;
+            }
+
+            return HappinessState.Happy;
+        }
+
+        public static Color ToColor(this HappinessState state)
+        {
+            switch (state)
+            {
+                case HappinessState.Unhappy:
+                    return ColorFactoryController.Unhappiness;
+                case HappinessState.Happy:
+                    return ColorFactoryController.Happiness;
+                default:
+                    return ColorFactoryController.Moderate;
+            }
+        }
+
+        public static string ToStateString(this HappinessState state, bool applyColor = false)
+        {
+            switch (state)
+            {
+                case HappinessState.Unhappy:
+                    return $"{(applyColor ? ApplyColorToText("Unhappy", state.ToColor()) : "Unhappy") }";
+                case HappinessState.Happy:
+                    return $"{(applyColor ? ApplyColorToText("Happy", state.ToColor()) : "Happy") }";
+                default:
+                    return $"{(applyColor ? ApplyColorToText("Moderate", state.ToColor()) : "Moderate") }";
+            }
+        }
+
+        public static float ToAveragePercent(this WellbeingStats stats)
+        {
+            var perecent = stats.Hunger + stats.Fatigue + stats.Ignorance + stats.Boredom;
+            return perecent / 4f;
+        }
     }
+
 
 
 

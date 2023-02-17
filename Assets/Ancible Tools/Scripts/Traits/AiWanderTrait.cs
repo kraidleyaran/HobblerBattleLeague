@@ -11,7 +11,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
     public class AiWanderTrait : Trait
     {
         [SerializeField] private int _wanderRange = 4;
-        [SerializeField] private bool _diagonal = false;
+        [SerializeField] private int _diagonalCost = -1;
 
         private MapTile _currentTile = null;
         private List<MapTile> _wanderPath = new List<MapTile>();
@@ -39,7 +39,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                 if (areaTiles.Length > 0)
                 {
                     var tile = areaTiles.Length > 1 ? areaTiles[Random.Range(0, areaTiles.Length)] : areaTiles[0];
-                    var path = WorldController.Pathing.GetPath(_currentTile.Position, tile.Position, _diagonal);
+                    var path = WorldController.Pathing.GetPath(_currentTile.Position, tile.Position, _diagonalCost);
                     if (path.Length > 0)
                     {
                         _wanderPath = path.ToList();

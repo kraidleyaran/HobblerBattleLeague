@@ -9,6 +9,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.HoverInfo
         [SerializeField] private string _title;
         [SerializeField] [TextArea(2, 5)] private string _description;
         [SerializeField] private Sprite _icon = null;
+        [SerializeField] private Color _colorMask = Color.white;
 
         private bool _hovered = false;
 
@@ -22,6 +23,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.HoverInfo
                 showHoverInfoMsg.Description = _description;
                 showHoverInfoMsg.Icon = _icon;
                 showHoverInfoMsg.Owner = gameObject;
+                showHoverInfoMsg.ColorMask = _colorMask;
                 gameObject.SendMessage(showHoverInfoMsg);
                 MessageFactory.CacheMessage(showHoverInfoMsg);
             }

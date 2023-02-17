@@ -143,7 +143,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
 
         private void QueryHobGenerator(QueryHobGeneratorMessage msg)
         {
-            msg.DoAfter.Invoke(_currentHobblers.ToArray(), _generationTimer, _generationWorldTicks);
+            msg.DoAfter.Invoke(_currentHobblers.ToArray(), _generationTimer, _reRollCost);
         }
 
         private void UpdateBuildingId(UpdateBuildingIdMessage msg)

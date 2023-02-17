@@ -1,4 +1,5 @@
 ﻿using System;
+using Assets.Ancible_Tools.Scripts.System.Wellbeing;
 using Assets.Resources.Ancible_Tools.Scripts.System;
 using Assets.Resources.Ancible_Tools.Scripts.System.UI;
 using MessageBusLib;
@@ -14,33 +15,28 @@ namespace Assets.Ancible_Tools.Scripts.System.UI.UnitInfo
         [SerializeField] private WellbeingStatType _statType;
         [SerializeField] private UiFillBarController _fillBarController;
         [SerializeField] private Color _fillColor = Color.white;
+        [SerializeField] [Range(0f, 1f)] private float _minimumPercent = .05f;
 
-        private int _stat = 0;
-        private int _min = 0;
-        private int _max = 0;
+        private float _stat = 0;
+        private float _max = 0;
 
         private bool _hovered = false;
 
-        public void Setup(int stat, int min, int max)
+        public void Setup(float stat, float max)
         {
-            _stat = stat * -1;
-            _min = min;
+            _stat = stat;
             _max = max;
-            if (_stat > 0)
+            var percent = (max - stat) / max;
+            var displayStat = (int) (percent * 100f);
+            if (percent > 0f)
             {
-                var fillMax = _min * -1;
-                var percent = (float) _stat / fillMax;
-                _fillBarController.Setup(percent, $"{_stat}", _fillColor);
+                if (displayStat < 1)
+                {
+                    displayStat = 1;
+                }
+                percent = Mathf.Max(_minimumPercent, percent);
             }
-            else if (_stat == 0)
-            {
-                _fillBarController.Setup(0f, $"{_stat}", _fillColor);
-            }
-            else
-            {
-                var percent = (float) stat / max;
-                _fillBarController.Setup(percent, $"{_stat}", ColorFactoryController.NegativeStatColor);
-            }
+            _fillBarController.Setup(percent, $"{displayStat}/100", _fillColor);
         }
 
         public void Clear()
@@ -54,7 +50,13 @@ namespace Assets.Ancible_Tools.Scripts.System.UI.UnitInfo
             var showHoverInfoMsg = MessageFactory.GenerateShowHoverInfoMsg();
             showHoverInfoMsg.Title = WellBeingController.GetPositiveStatName(_statType);
             var description = DescriptionFactoryController.GetWellbeingDescription(_statType);
-            description = $"{description}{Environment.NewLine}{Environment.NewLine}{_stat}/{_max}";
+            var percent = ((float) _max - _stat) / _max;
+            var displayStat = (int) (percent * 100f);
+            if (percent > 0f && displayStat < 1)
+            {
+                displayStat = 1;
+            }
+            description = $"{description}{StaticMethods.DoubleNewLine()}{displayStat}/100{Environment.NewLine}";
             showHoverInfoMsg.Description = description;
             showHoverInfoMsg.Icon = _iconImage.sprite;
             showHoverInfoMsg.ColorMask = _iconImage.color;

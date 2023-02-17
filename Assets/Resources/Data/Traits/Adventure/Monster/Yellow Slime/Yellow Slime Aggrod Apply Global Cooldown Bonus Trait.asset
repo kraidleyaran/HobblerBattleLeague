@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Yellow Slime Aggrod Apply Global Cooldown Bonus Trait
   m_EditorClassIdentifier: 
   MaxStack: 1
-  _ticks: -55
+  _ticks: -100
   _permanent: 0

@@ -11,6 +11,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Windows
         public virtual bool Movable => true;
         public virtual bool Static => false;
         public bool Instantiated { get; private set; }
+        public int Layer = 0;
 
         [HideInInspector] public string WorldName;
 

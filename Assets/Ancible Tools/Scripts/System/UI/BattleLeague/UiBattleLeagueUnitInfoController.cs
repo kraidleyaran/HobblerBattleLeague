@@ -76,7 +76,11 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.BattleLeague
             
             _unitNameText.text = $"{unitData.Name}";
             UpdateSpriteIcon(unitData.Sprite);
-            UpdateCombatStats(unitData.Stats);
+            var queryCombatStatsMsg = MessageFactory.GenerateQueryCombatStatsMsg();
+            queryCombatStatsMsg.DoAfter = UpdateCombatStats;
+            gameObject.SendMessageTo(queryCombatStatsMsg, _unit);
+            MessageFactory.CacheMessage(queryCombatStatsMsg);
+            //UpdateCombatStats(unitData.Stats);
             UpdateAbilities(unitData.Abilities);
             UpdateEquipment(unitData.EquippedItems);
             gameObject.SetActive(true);
@@ -111,16 +115,16 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.BattleLeague
             _unitIconImage.sprite = sprite.Sprite;
         }
 
-        private void UpdateCombatStats(CombatStats stats)
+        private void UpdateCombatStats(CombatStats stats, CombatStats bonus, GeneticCombatStats genetics)
         {
-            _healthController.Setup(stats.Health);
-            _manaController.Setup(stats.Mana);
-            _strengthController.Setup(stats.Strength);
-            _agilityController.Setup(stats.Agility);
-            _defenseController.Setup(stats.Defense);
-            _magicController.Setup(stats.Magic);
-            _faithController.Setup(stats.Faith);
-            _spiritController.Setup(stats.Spirit);
+            _healthController.Setup(stats.Health + bonus.Health);
+            _manaController.Setup(stats.Mana + bonus.Health);
+            _strengthController.Setup(stats.Strength + bonus.Strength);
+            _agilityController.Setup(stats.Agility + bonus.Agility);
+            _defenseController.Setup(stats.Defense + bonus.Defense);
+            _magicController.Setup(stats.Magic + bonus.Magic);
+            _faithController.Setup(stats.Faith + bonus.Faith);
+            _spiritController.Setup(stats.Spirit + bonus.Faith);
         }
 
         private void UpdateEquipment(EquippableItem[] items)

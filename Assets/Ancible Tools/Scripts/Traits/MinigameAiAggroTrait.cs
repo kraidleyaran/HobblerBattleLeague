@@ -15,7 +15,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
     public class MinigameAiAggroTrait : Trait
     {
         [SerializeField] private int _aggroRange = 1;
-        [SerializeField] private bool _diagonal = false;
+        [SerializeField] private int _diagonalCost = -1;
 
         private MapTile _currentTile = null;
         private MapTile[] _aggroTiles = new MapTile[0];
@@ -173,7 +173,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                             if (targetTiles.Length > 0)
                             {
                                 var goToTile = targetTiles.Length > 1 ? targetTiles[Random.Range(0, targetTiles.Length)] : targetTiles[0];
-                                var path = MinigameController.Pathing.GetPath(_currentTile.Position, goToTile.Position, _diagonal);
+                                var path = MinigameController.Pathing.GetPath(_currentTile.Position, goToTile.Position, _diagonalCost);
                                 if (path.Length > 0)
                                 {
                                     _currentPath = path.ToList();

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Assets.Ancible_Tools.Scripts.System.Wellbeing;
 using Assets.Resources.Ancible_Tools.Scripts.System;
 using Assets.Resources.Ancible_Tools.Scripts.System.TickTimers;
 using MessageBusLib;
@@ -10,15 +11,15 @@ namespace Assets.Ancible_Tools.Scripts.Traits
     [CreateAssetMenu(fileName = "Happiness Trait", menuName = "Ancible Tools/Traits/Stats/Wellbeing/Happiness")]
     public class HappinessTrait : Trait
     {
-        [SerializeField] private int _startingHappiness = 5;
-        [SerializeField] private IntNumberRange _happinessCaps = new IntNumberRange();
-        [SerializeField] private WellbeingStats _minStats = new WellbeingStats();
+        [SerializeField] [Range(0f,1f)] private float _minimumHappyPerecent = .71f;
+        [SerializeField] [Range(0f, 1f)] private float _minimumModeratePerecent = .71f;
         [SerializeField] private WellbeingStats _maxStats = new WellbeingStats();
 
         private WellbeingStats _wellBeingStats = new WellbeingStats();
         
         private Dictionary<WellbeingStatType, TickTimer> _wellbeingTimers = new Dictionary<WellbeingStatType, TickTimer>();
         private MonsterState _monsterState = MonsterState.Idle;
+        private HappinessState _happinessState = HappinessState.Happy;
 
         public override void SetupController(TraitController controller)
         {
@@ -36,30 +37,35 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         {
             var updateWellbeingMsg = MessageFactory.GenerateUpdateWellbeingMsg();
             updateWellbeingMsg.Stats = _wellBeingStats;
-            updateWellbeingMsg.Min = _minStats;
             updateWellbeingMsg.Max = _maxStats;
             _controller.gameObject.SendMessageTo(updateWellbeingMsg, _controller.transform.parent.gameObject);
             MessageFactory.CacheMessage(updateWellbeingMsg);
 
+            var happiness = _wellBeingStats.CalculateHappiness(_maxStats);
+            _happinessState = StaticMethods.GetHappinesState(happiness, _minimumHappyPerecent, _minimumModeratePerecent); ;
             var updateHappinessMsg = MessageFactory.GenerateUpdateHappinessMsg();
-            updateHappinessMsg.Happiness = _wellBeingStats.CalculateHappiness(_happinessCaps);
+            updateHappinessMsg.Happiness = happiness;
+            updateHappinessMsg.HappyMinimum = _minimumHappyPerecent;
+            updateHappinessMsg.ModerateMinimum = _minimumModeratePerecent;
+            updateHappinessMsg.State = _happinessState;
             _controller.gameObject.SendMessageTo(updateHappinessMsg, _controller.transform.parent.gameObject);
             MessageFactory.CacheMessage(updateHappinessMsg);
 
             _controller.gameObject.SendMessageTo(RefreshUnitMessage.INSTANCE, _controller.transform.parent.gameObject);
+            
         }
 
         private void ApplyHungerEffect()
         {
             _wellBeingStats.Hunger += WellBeingController.HungerPerEffect;
-            _wellBeingStats.ApplyLimits(_minStats, _maxStats);
+            _wellBeingStats.ApplyLimits(_maxStats);
             UpdateParent();
         }
 
         private void ApplyBoredomEffect()
         {
             _wellBeingStats.Boredom += WellBeingController.BoredomPerEffect;
-            _wellBeingStats.ApplyLimits(_minStats, _maxStats);
+            _wellBeingStats.ApplyLimits(_maxStats);
 
             UpdateParent();
         }
@@ -67,7 +73,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         private void ApplyFatigueEffect()
         {
             _wellBeingStats.Fatigue += WellBeingController.FatiguePerEffect;
-            _wellBeingStats.ApplyLimits(_minStats, _maxStats);
+            _wellBeingStats.ApplyLimits(_maxStats);
             UpdateParent();
         }
 
@@ -78,11 +84,14 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             _controller.transform.parent.gameObject.SubscribeWithFilter<QueryWellbeingStatsMessage>(QueryWellbeingStats, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<UpdateMonsterStateMessage>(UpdateMonsterState, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<QueryHobblerWellbeingStatusMessage>(QueryHobblerWellBeingStatus, _instanceId);
+            _controller.transform.parent.gameObject.SubscribeWithFilter<SetWellbeingStatsMessage>(SetWellbeingStats, _instanceId);
         }
 
         private void QueryHappiness(QueryHappinessMessage msg)
         {
-            msg.DoAfter.Invoke(_wellBeingStats.CalculateHappiness(_happinessCaps), _happinessCaps);
+            var stat = _wellBeingStats.CalculateHappiness(_maxStats);
+            var state = StaticMethods.GetHappinesState(stat, _minimumHappyPerecent, _minimumModeratePerecent);
+            msg.DoAfter.Invoke(stat, _minimumHappyPerecent, _minimumModeratePerecent, state);
         }
 
         private void ApplyWellBeingStats(ApplyWellbeingStatsMessage msg)
@@ -102,14 +111,14 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                 _wellbeingTimers[WellbeingStatType.Fatigue].Restart();
             }
             _wellBeingStats += msg.Stats;
-            _wellBeingStats.ApplyLimits(_minStats, _maxStats);
+            _wellBeingStats.ApplyLimits(_maxStats);
 
             UpdateParent();
         }
 
         private void QueryWellbeingStats(QueryWellbeingStatsMessage msg)
         {
-            msg.DoAfter.Invoke(_wellBeingStats, _minStats, _maxStats);
+            msg.DoAfter.Invoke(_wellBeingStats, _maxStats);
         }
 
         private void UpdateMonsterState(UpdateMonsterStateMessage msg)
@@ -152,7 +161,14 @@ namespace Assets.Ancible_Tools.Scripts.Traits
 
         private void QueryHobblerWellBeingStatus(QueryHobblerWellbeingStatusMessage msg)
         {
-            msg.DoAfter.Invoke(_wellBeingStats.GetStatus());
+            msg.DoAfter.Invoke(_wellBeingStats.GetStatus(_maxStats));
+        }
+
+        private void SetWellbeingStats(SetWellbeingStatsMessage msg)
+        {
+            _wellBeingStats = msg.Stats;
+            _maxStats = msg.Stats;
+            UpdateParent();
         }
 
         public override void Destroy()

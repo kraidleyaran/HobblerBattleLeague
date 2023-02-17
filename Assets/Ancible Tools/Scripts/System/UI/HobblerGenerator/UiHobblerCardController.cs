@@ -59,7 +59,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.HobblerGenerator
 
         public void RefreshBuyable()
         {
-            _buyButton.interactable = WorldStashController.Gold >= _template.Cost;
+            _buyButton.interactable = WorldStashController.Gold >= _template.Cost && WorldHobblerManager.AvailablePopulation;
         }
 
         public void OnPointerEnter(PointerEventData eventData)

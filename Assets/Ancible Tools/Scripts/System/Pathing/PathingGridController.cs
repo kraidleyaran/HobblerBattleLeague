@@ -103,22 +103,31 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Pathing
             return GetTileByPosition(pos);
         }
 
-        public MapTile[] GetPath(Vector2Int start, Vector2Int end, bool diagnoal = true)
+        public MapTile[] GetPath(Vector2Int start, Vector2Int end, double diagonalCost = -1)
         {
             if (_tiles.TryGetValue(start, out var startTile) && _tiles.TryGetValue(end, out var endTile))
             {
                 var min = new Vector2Int(Mathf.Min(startTile.Cell.X, endTile.Cell.X), Mathf.Min(startTile.Cell.Y, endTile.Cell.Y));
-                min.x = Mathf.Max(0, min.x - 2);
-                min.y = Mathf.Max(0, min.y - 2);
-                var max = new Vector2Int(Mathf.Max(startTile.Cell.X, endTile.Cell.X), Mathf.Max(startTile.Cell.Y, endTile.Cell.Y)) + Vector2Int.one;
+                min.x = Mathf.Max(0, min.x - 5);
+                min.y = Mathf.Max(0, min.y - 5);
+                var max = new Vector2Int(Mathf.Max(startTile.Cell.X, endTile.Cell.X), Mathf.Max(startTile.Cell.Y, endTile.Cell.Y)) + new Vector2Int(5,5);
 
-                var size = (max - min) + Vector2Int.one;
+                var size = (max - min);
                 var pathMap = new Map(size.x, size.y);
 
                 var pos = min;
                 var offset = min;
+                //if (offset.x < 0)
+                //{
+                //    offset.x *= -1;
+                //}
+
+                //if (offset.y < 0)
+                //{
+                //    offset.y *= -1;
+                //}
                 var startCellPos = new Vector2Int(startTile.Cell.X, startTile.Cell.Y);
-                while (pos.y <= max.y)
+                while (pos.y < max.y)
                 {
                     if (pos.x < _pathingMap.Width && pos.y < _pathingMap.Height)
                     {
@@ -139,7 +148,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Pathing
                     }
                 }
 
-                var pathFinder = diagnoal ? new PathFinder(pathMap, 1) : new PathFinder(pathMap);
+                var pathFinder = diagonalCost >= 0 ?  new PathFinder(pathMap, diagonalCost) : new PathFinder(pathMap);
                 var startOffset =  pathMap.GetCell(startTile.Cell.X - offset.x, startTile.Cell.Y - offset.y);
                 var endOffset = pathMap.GetCell(endTile.Cell.X - offset.x, endTile.Cell.Y - offset.y);
                 var attempt = pathFinder.TryFindShortestPath(startOffset, endOffset);
@@ -252,12 +261,9 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Pathing
             var tiles = _tiles.ToArray();
             foreach (var tile in tiles)
             {
-                if (tile.Value.Block)
-                {
-                    var cell = tile.Value.Cell;
-                    _pathingMap.SetCellProperties(cell.X, cell.Y, true, true, true);
-                    tile.Value.Block = null;
-                }
+                tile.Value.Block = null;
+                var cell = tile.Value.Cell;
+                _pathingMap.SetCellProperties(cell.X, cell.Y, true, true, true);
             }
         }
 

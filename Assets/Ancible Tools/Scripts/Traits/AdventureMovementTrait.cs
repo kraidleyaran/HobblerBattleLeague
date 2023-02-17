@@ -34,11 +34,11 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             SubscribeToMessages();
         }
 
-        private void CompleteMovement(MapTile nextTile)
+        private void CompleteMovement()
         {
-            WorldAdventureController.MapController.RemoveBlockingTile(_controller.transform.parent.gameObject, _currentTile.Position);
+            //WorldAdventureController.MapController.RemoveBlockingTile(_controller.transform.parent.gameObject, _currentTile.Position);
             _moveTween = null;
-            _currentTile = nextTile;
+            //_currentTile = nextTile;
 
             _controller.gameObject.SendMessageTo(ActivateGlobalCooldownMessage.INSTANCE, _controller.transform.parent.gameObject);
             if (_unitState == AdventureUnitState.Move)
@@ -48,6 +48,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                 _controller.gameObject.SendMessageTo(setAdventureUnitStateMsg, _controller.transform.parent.gameObject);
                 MessageFactory.CacheMessage(setAdventureUnitStateMsg);
             }
+            _controller.gameObject.SendMessageTo(MovementCompletedMessage.INSTANCE, _controller.transform.parent.gameObject);
 
             if (_direction == Vector2Int.zero)
             {
@@ -69,12 +70,17 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                 }
             }
 
-            var updateMapTileMsg = MessageFactory.GenerateUpdateMapTileMsg();
-            updateMapTileMsg.Tile = _currentTile;
-            _controller.gameObject.SendMessageTo(updateMapTileMsg, _controller.transform.parent.gameObject);
-            MessageFactory.CacheMessage(updateMapTileMsg);
+            //var updateMapTileMsg = MessageFactory.GenerateUpdateMapTileMsg();
+            //updateMapTileMsg.Tile = _currentTile;
+            //_controller.gameObject.SendMessageTo(updateMapTileMsg, _controller.transform.parent.gameObject);
+            //MessageFactory.CacheMessage(updateMapTileMsg);
 
-            
+            var updatePositionMsg = MessageFactory.GenerateUpdatePositionMsg();
+            updatePositionMsg.Position = _rigidBody.position;
+            _controller.gameObject.SendMessageTo(updatePositionMsg, _controller.transform.parent.gameObject);
+            MessageFactory.CacheMessage(updatePositionMsg);
+
+
         }
 
         private void SubscribeToMessages()
@@ -148,7 +154,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                     }
                     else
                     {
-                        WorldAdventureController.MapController.SetBlockingTile(_controller.transform.parent.gameObject, nextTile.Position);
+                        
                         var setAdventureUnitStateMsg = MessageFactory.GenerateSetAdventureUnitStateMsg();
                         setAdventureUnitStateMsg.State = _unitState;
                         _controller.gameObject.SendMessageTo(setAdventureUnitStateMsg, _controller.transform.parent.gameObject);
@@ -165,18 +171,24 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                         MessageFactory.CacheMessage(updateDirectionMsg);
 
                         var speed = _moveSpeed / TickController.OneSecond * DataController.Interpolation;
-                        _moveTween = _rigidBody.DOMove(nextTile.World, speed).SetEase(Ease.Linear).SetSpeedBased(true).OnComplete(() =>
-                        {
-                            CompleteMovement(nextTile);
-                        });
-                        _moveTween.OnKill(() =>
-                        {
-                            if (_controller.gameObject && _currentTile != null && nextTile != _currentTile)
-                            {
-                                WorldAdventureController.MapController.RemoveBlockingTile(_controller.transform.parent.gameObject, nextTile.Position);
-                            }
+                        WorldAdventureController.MapController.RemoveBlockingTile(_controller.transform.parent.gameObject, _currentTile.Position);
+                        WorldAdventureController.MapController.SetBlockingTile(_controller.transform.parent.gameObject, nextTile.Position);
+                        _currentTile = nextTile;
+
+                        var updateMapTileMsg = MessageFactory.GenerateUpdateMapTileMsg();
+                        updateMapTileMsg.Tile = _currentTile;
+                        _controller.gameObject.SendMessageTo(updateMapTileMsg, _controller.transform.parent.gameObject);
+                        MessageFactory.CacheMessage(updateMapTileMsg);
+
+                        _moveTween = _rigidBody.DOMove(nextTile.World, speed).SetEase(Ease.Linear).SetSpeedBased(true).OnComplete(CompleteMovement);
+                        //_moveTween.OnKill(() =>
+                        //{
+                        //    if (_controller.gameObject && _currentTile != null && nextTile != _currentTile)
+                        //    {
+                        //        WorldAdventureController.MapController.RemoveBlockingTile(_controller.transform.parent.gameObject, nextTile.Position);
+                        //    }
                             
-                        });
+                        //});
                     }
                 }
                 else
@@ -216,7 +228,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         {
             _unitState = msg.State;
             if (_unitState != AdventureUnitState.Move)
-            {
+            {             
                 var pathing = false;
                 if (_pathMoveTween != null)
                 {
@@ -228,7 +240,15 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                 {
                     if (_moveTween.IsActive())
                     {
-                        _moveTween.Kill();
+                        if (_unitState == AdventureUnitState.Interaction)
+                        {
+                            pathing = true;
+                            _moveTween.Complete(true);
+                        }
+                        else
+                        {
+                            _moveTween.Kill();
+                        }                        
                     }
 
                     _moveTween = null;

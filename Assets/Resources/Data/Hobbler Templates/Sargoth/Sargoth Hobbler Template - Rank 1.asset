@@ -12,39 +12,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5daa7a20209fb73498f0f88cc8e18c75, type: 3}
   m_Name: Sargoth Hobbler Template - Rank 1
   m_EditorClassIdentifier: 
-  DisplayName: Gorag
+  DisplayName: Sargoth
   Description: 
-  Sprite: {fileID: 11400000, guid: 8f89185b6bb826b4e82e6fa0e2f7034a, type: 2}
+  Sprite: {fileID: 11400000, guid: 105fa6bdddb145348bcb13c2be0244fd, type: 2}
   StartingStats:
     Health: 21
-    Mana: 3
-    Strength: 6
-    Agility: 6
-    Magic: 1
-    Faith: 1
-    Defense: 3
+    Mana: 12
+    Strength: 3
+    Agility: 4
+    Magic: 5
+    Faith: 3
+    Defense: 6
     Spirit: 1
   MinimumGenetics:
-    Health: 0.85
-    Mana: 0.25
-    Strength: 0.65
-    Agility: 0.6
-    Magic: 0.15
-    Faith: 0.1
-    Armor: 0.35
-    Spirit: 0.45
+    Health: 2.1
+    Mana: 2.2
+    Strength: 0.45
+    Agility: 0.85
+    Magic: 1.65
+    Faith: 0.25
+    Armor: 1.9
+    Spirit: 0.01
   MaximumGenetics:
-    Health: 2.55
-    Mana: 1.1
-    Strength: 1.8
-    Agility: 1.7
-    Magic: 0.8
-    Faith: 0.65
-    Armor: 1.2
-    Spirit: 1.45
+    Health: 4.95
+    Mana: 3.85
+    Strength: 0.85
+    Agility: 1.25
+    Magic: 3.1
+    Faith: 0.6
+    Armor: 3.25
+    Spirit: 0.06
   StartingAbilities:
   - {fileID: 11400000, guid: 8cd7cb9c9130abc489c4dddb85eb27db, type: 2}
-  - {fileID: 11400000, guid: d1a949ea59ba3b34f8e52582a8c3b5f0, type: 2}
+  - {fileID: 11400000, guid: 098d215174de2484bbbbd1b7bc4477a0, type: 2}
   StartingWeapon: {fileID: 11400000, guid: ae33c9a67f157684ca10512ddf7c6b69, type: 2}
   Evolution:
     RequiredLevel: 10

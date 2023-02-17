@@ -25,22 +25,21 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         [SerializeField] private Vector2Int[] _relativeGatheringPositions = new Vector2Int[0];
         [SerializeField] private NodeInteractionType _interactionType = NodeInteractionType.Bump;
         [SerializeField] private SpriteTrait _nodeSprite = null;
+        [SerializeField] private int _unitsPerTile = 1;
         
 
         private int _currentStack = 0;
+        private int _unitLimit = 0;
         protected internal RegisteredWorldNode _registeredNode = null;
-        private MapTile[] _gatheringTiles = new MapTile[0];
+        private List<MapTile> _gatheringTiles = new List<MapTile>();
         protected internal MapTile _mapTile = null;
         private NodeBuildingParamaterData _data = null;
-
         
         private NodeBuildingParamaterData _nodeData = null;
 
         protected internal SpriteController _nodeSpriteController = null;
 
-        private CommandInstance _nodeCommandInstance = null;
-
-        private List<GameObject> _interactingHobblers = new List<GameObject>();
+        private Dictionary<GameObject, MapTile> _interactingHobblers = new Dictionary<GameObject, MapTile>();
 
         public override void SetupController(TraitController controller)
         {
@@ -169,9 +168,14 @@ namespace Assets.Ancible_Tools.Scripts.Traits
 
         private void RemoveFromInteractingObjects(GameObject owner)
         {
-            if (_interactingHobblers.Contains(owner))
+            if (_interactingHobblers.TryGetValue(owner, out var tile))
             {
                 _interactingHobblers.Remove(owner);
+                _gatheringTiles.Add(tile);
+                if (_registeredNode == null && _gatheringTiles.Count > 0 && (_stack <= 0 || _currentStack > 0))
+                {
+                    RegisterNode(_mapTile);
+                }
                 _controller.gameObject.SendMessageTo(RefreshUnitMessage.INSTANCE, _controller.transform.parent.gameObject);
             }
 
@@ -193,10 +197,6 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             _controller.transform.parent.gameObject.SubscribeWithFilter<UpdateMapTileMessage>(UpdateMapTile, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<InteractMessage>(Interact, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<RefillNodeStacksMessage>(RefillNodeStacks, _instanceId);
-            if (_interactionType == NodeInteractionType.Invisible)
-            {
-                _controller.transform.parent.gameObject.SubscribeWithFilter<QueryCommandsMessage>(QueryCommands, _instanceId);
-            }
             _controller.transform.parent.gameObject.SubscribeWithFilter<UnregisterFromGatheringNodeMessage>(UnregisterFromNode, _instanceId);
 
         }
@@ -204,9 +204,9 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         protected internal virtual void UpdateMapTile(UpdateMapTileMessage msg)
         {
             _mapTile = msg.Tile;
-            
-            _gatheringTiles = _relativeGatheringPositions.Select(p => WorldController.Pathing.GetTileByPosition(p + _mapTile.Position)).Where(t => t != null).ToArray();
-            if (_gatheringTiles.Length > 0)
+            _gatheringTiles = _relativeGatheringPositions.Select(p => WorldController.Pathing.GetTileByPosition(p + _mapTile.Position)).Where(t => t != null).ToList();
+            _unitLimit = _gatheringTiles.Count * _unitsPerTile;
+            if (_gatheringTiles.Count > 0 && (_stack <= 0 || _currentStack > 0) && _interactingHobblers.Count < _unitLimit)
             {
                 if (_registeredNode == null)
                 {
@@ -225,6 +225,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                 
             }
 
+            
             var hobblers = _interactingHobblers.ToArray();
             if (_interactionType != NodeInteractionType.Invisible)
             {
@@ -232,7 +233,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                 stopGatheringMsg.Node = _controller.transform.parent.gameObject;
                 foreach (var hobbler in hobblers)
                 {
-                    _controller.gameObject.SendMessageTo(stopGatheringMsg, hobbler);
+                    _controller.gameObject.SendMessageTo(stopGatheringMsg, hobbler.Key);
                 }
                 MessageFactory.CacheMessage(stopGatheringMsg);
 
@@ -243,8 +244,10 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                 var setMapTileMsg = MessageFactory.GenerateSetMapTileMsg();
                 foreach (var hobbler in hobblers)
                 {
-                    setMapTileMsg.Tile = _gatheringTiles.Length > 1 ? _gatheringTiles[Random.Range(0, _gatheringTiles.Length)] : _gatheringTiles[0];
-                    _controller.gameObject.SendMessageTo(setMapTileMsg, hobbler);
+                    var tile = _gatheringTiles.GetRandom();
+                    setMapTileMsg.Tile = tile;
+                    _controller.gameObject.SendMessageTo(setMapTileMsg, hobbler.Key);
+                    _interactingHobblers[hobbler.Key] = tile;
                 }
                 MessageFactory.CacheMessage(setMapTileMsg);
             }
@@ -257,16 +260,33 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             gatherMsg.NodeType = _nodeType;
             gatherMsg.DoAfter = FinishGathering;
             gatherMsg.Ticks = GetRequiredTicks(msg.Owner);
-            gatherMsg.GatheringTile = _gatheringTiles.Length > 1 ? _gatheringTiles[Random.Range(0, _gatheringTiles.Length)] : _gatheringTiles[0];
+            var tile = _gatheringTiles.GetRandom();
+            if (_unitsPerTile <= 1)
+            {
+                _gatheringTiles.Remove(tile);
+            }
+            else if (_interactingHobblers.Values.Count(t => t == tile) + 1 < _unitsPerTile)
+            {
+                _gatheringTiles.Remove(tile);
+            }
+            gatherMsg.GatheringTile = tile;
             gatherMsg.Invisible = _interactionType == NodeInteractionType.Invisible;
             _controller.gameObject.SendMessageTo(gatherMsg, msg.Owner);
             MessageFactory.CacheMessage(gatherMsg);
 
-            if (!_interactingHobblers.Contains(msg.Owner))
+            if (_interactingHobblers.TryGetValue(msg.Owner, out var mapTile))
             {
-                _interactingHobblers.Add(msg.Owner);
+                _gatheringTiles.Add(mapTile);
+                _interactingHobblers[msg.Owner] = tile;
             }
-
+            else
+            {
+                _interactingHobblers.Add(msg.Owner, tile);
+            }
+            if (_gatheringTiles.Count <= 0 && _registeredNode != null && _interactingHobblers.Count >= _unitLimit)
+            {
+                UnregisterNode();
+            }
         }
 
         private void RefillNodeStacks(RefillNodeStacksMessage msg)
@@ -283,11 +303,6 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             }
         }
 
-        protected internal virtual void QueryCommands(QueryCommandsMessage msg)
-        {
-            msg.DoAfter.Invoke(new[] { _nodeCommandInstance });
-        }
-
         private void UnregisterFromNode(UnregisterFromGatheringNodeMessage msg)
         {
             RemoveFromInteractingObjects(msg.Unit);
@@ -296,7 +311,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
 
         private void QueryNode(QueryNodeMessage msg)
         {
-            msg.DoAfter.Invoke(_currentStack, _stack, _interactingHobblers.ToArray());
+            msg.DoAfter.Invoke(_currentStack, _stack, _interactingHobblers.Keys.ToArray());
         }
 
         protected internal virtual void UpdateBuildingId(UpdateBuildingIdMessage msg)

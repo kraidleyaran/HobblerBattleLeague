@@ -15,7 +15,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         private CombatStats _bonusStats = CombatStats.Zero;
 
         private int _currentHealth = 0;
-        private int _currentMana = 0;
+        private float _currentMana = 0;
 
         private UnitBattleState _battleState = UnitBattleState.Active;
 
@@ -54,7 +54,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         private void UpdateMana()
         {
             var updateManaMsg = MessageFactory.GenerateUpdateManaMsg();
-            updateManaMsg.Current = _currentMana;
+            updateManaMsg.Current = (int)_currentMana;
             updateManaMsg.Max = _baseStats.Mana + _bonusStats.Mana;
             _controller.gameObject.SendMessageTo(updateManaMsg, _controller.transform.parent.gameObject);
             MessageFactory.CacheMessage(updateManaMsg);
@@ -71,6 +71,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             _controller.transform.parent.gameObject.SubscribeWithFilter<ReportDamageMessage>(ReportDamage, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<QueryManaMessage>(QueryMana, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<ApplyManaMessage>(ApplyMana, _instanceId);
+            _controller.transform.parent.gameObject.SubscribeWithFilter<QueryCombatStatsMessage>(QueryCombatStats, _instanceId);
         }
 
         private void SetCombatStats(SetCombatStatsMessage msg)
@@ -218,7 +219,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
 
         private void QueryMana(QueryManaMessage msg)
         {
-            msg.DoAfter.Invoke(_currentMana, _baseStats.Mana + _bonusStats.Mana);
+            msg.DoAfter.Invoke((int) _currentMana, _baseStats.Mana + _bonusStats.Mana);
         }
 
         private void ApplyMana(ApplyManaMessage msg)
@@ -227,6 +228,11 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             _currentMana = Mathf.Min(Mathf.Max(0, mana), _baseStats.Mana + _bonusStats.Mana);
             UpdateMana();
             _controller.gameObject.SendMessageTo(RefreshUnitMessage.INSTANCE, _controller.transform.parent.gameObject);
+        }
+
+        private void QueryCombatStats(QueryCombatStatsMessage msg)
+        {
+            msg.DoAfter.Invoke(_baseStats, _bonusStats, GeneticCombatStats.Zero);
         }
     }
 }

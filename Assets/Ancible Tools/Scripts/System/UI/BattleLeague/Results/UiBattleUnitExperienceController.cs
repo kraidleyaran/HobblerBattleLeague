@@ -50,12 +50,12 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.BattleLeague
             var endExperience = startingExperience + _gainedXp;
             if (endExperience >= _nextLevelXp)
             {
-                var leftoverExperience = _nextLevelXp - endExperience;
+                var leftoverExperience = endExperience - _nextLevelXp;
                 _fillSequence = DoExperienceBarFill(1f).OnComplete(() => ProcessLargeExperience(leftoverExperience, _currentLevel + 1));
             }
             else
             {
-                if (endExperience > 0)
+                if (endExperience > startingExperience)
                 {
                     _fillSequence = DoExperienceBarFill((float)endExperience / _nextLevelXp).OnComplete(() =>
                     {
@@ -80,7 +80,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.BattleLeague
             {
 
                 var setPercent = (_fillSequence.position / time) * (fillPercent);
-                _experienceBarController.Setup(setPercent + percent, string.Empty, ColorFactoryController.Experience);
+                _experienceBarController.Setup(setPercent + _startingPercent, string.Empty, ColorFactoryController.Experience);
             });
         }
 
@@ -104,18 +104,20 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.BattleLeague
 
         }
 
-        private Sequence ProcessLargeExperience(int experienceAmount, int level)
+        private void ProcessLargeExperience(int experienceAmount, int level)
         {
+            _fillSequence = null;
+            _startingPercent = 0f;
             var requiredExperience = 0;
             var queryRequiredExperienceForLevelMsg = MessageFactory.GenerateQueryRequiredLevelExperienceMsg();
             queryRequiredExperienceForLevelMsg.Level = level + 1;
             queryRequiredExperienceForLevelMsg.DoAfter = experience => requiredExperience = experience;
             gameObject.SendMessageTo(queryRequiredExperienceForLevelMsg, _hobbler);
             MessageFactory.CacheMessage(queryRequiredExperienceForLevelMsg);
-            if (requiredExperience > experienceAmount)
+            if (experienceAmount >= requiredExperience)
             {
-                var leftoverExperience = requiredExperience - experienceAmount;
-                return DoExperienceBarFill(1f).OnComplete(() => { ProcessLargeExperience(leftoverExperience, level + 1);});
+                var leftoverExperience = experienceAmount - requiredExperience;
+                _fillSequence = DoExperienceBarFill(1f).OnComplete(() => { ProcessLargeExperience(leftoverExperience, level + 1);});
             }
             else
             {
@@ -130,7 +132,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.BattleLeague
                     percent = 1f;
                 }
                 _experienceBarController.Setup(0f, string.Empty, ColorFactoryController.Experience);
-                return DoExperienceBarFill(percent).OnComplete(() => { _fillSequence = null; });
+                _fillSequence = DoExperienceBarFill(percent).OnComplete(() => { _fillSequence = null; });
             }
         }
 

@@ -16,6 +16,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Input
         [SerializeField] private Key _stash = Key.I;
         [SerializeField] private Key _build = Key.B;
         [SerializeField] private Key _roster = Key.R;
+        [SerializeField] private Key _centerCamera = Key.Space;
 
         [Header("Minigame")]
         [SerializeField] private Key _attack = Key.Digit1;
@@ -27,7 +28,6 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Input
         [Header("System")]
         [SerializeField] private Key _save = Key.F5;
         [SerializeField] private Key _load = Key.F7;
-        [SerializeField] private Key _switchMode = Key.Backquote;
 
         private WorldInputState _previous = new WorldInputState();
         private UpdateInputStateMessage _updateInputStateMsg = new UpdateInputStateMessage();
@@ -73,7 +73,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Input
                 AbilitySlot3 = Keyboard.current[_abilitySlot3].isPressed,
                 Save = Keyboard.current[_save].isPressed,
                 Load = Keyboard.current[_load].isPressed,
-                SwitchMode = Keyboard.current[_switchMode].isPressed
+                CenterCamera = Keyboard.current[_centerCamera].isPressed
             };
             _updateInputStateMsg.Current = current;
             _updateInputStateMsg.Previous = _previous;

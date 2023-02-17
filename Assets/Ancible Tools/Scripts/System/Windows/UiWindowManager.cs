@@ -15,6 +15,8 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Windows
         private static UiWindowManager _instance = null;
 
         [SerializeField] private string[] _windowFolders = new string[0];
+        [SerializeField] private GameObject _windowLayerTemplate = null;
+        [SerializeField] private UiBaseWindow[] _startupWindows = new UiBaseWindow[0];
 
         private UiBaseWindow _selected = null;
         
@@ -23,6 +25,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Windows
         private List<GameObject> _windowBlocks = new List<GameObject>();
 
         private Dictionary<string, WindowData> _windowData = new Dictionary<string, WindowData>();
+        private Dictionary<int, Transform> _layers = new Dictionary<int, Transform>();
 
         void Awake()
         {
@@ -34,6 +37,14 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Windows
 
             _instance = this;
             SubscribeToMessages();
+        }
+
+        void Start()
+        {
+            foreach (var window in _startupWindows)
+            {
+                OpenWindow(window);
+            }
         }
 
 
@@ -60,7 +71,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Windows
                 {
                     if (!_instance._staticWindows.TryGetValue(template.name, out var window))
                     {
-                        window = Instantiate(template, _instance.transform);
+                        window = Instantiate(template, GetWindowLayer(template.Layer));
                         
                         window.name = template.name;
                         window.WorldName = template.name;
@@ -81,7 +92,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Windows
                 {
                     if (string.IsNullOrEmpty(id))
                     {
-                        var window = Instantiate(template, _instance.transform);
+                        var window = Instantiate(template, GetWindowLayer(template.Layer));
                         _instance._openWindows.Add(window);
                         window.transform.SetAsLastSibling();
 
@@ -92,7 +103,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Windows
                     var openWindow = _instance._openWindows.FirstOrDefault(w => w.WorldName == windowName);
                     if (!openWindow)
                     {
-                        openWindow = Instantiate(template, _instance.transform);
+                        openWindow = Instantiate(template, GetWindowLayer(template.Layer));
                         openWindow.name = template.name;
                         openWindow.WorldName = windowName;
                         if (_instance._windowData.TryGetValue(openWindow.WorldName, out var data))
@@ -220,6 +231,22 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Windows
                     _instance._windowData.Add(windowData.Id, windowData);
                 }
             }
+        }
+
+        private static Transform GetWindowLayer(int layer)
+        {
+            if (!_instance._layers.TryGetValue(layer, out var windowLayer))
+            {
+                windowLayer = Instantiate(_instance._windowLayerTemplate, _instance.transform).transform;
+                _instance._layers.Add(layer, windowLayer);
+                var orderedLayers = _instance._layers.OrderBy(kv => kv.Key).ToArray();
+                for (var i = 0; i < orderedLayers.Length; i++)
+                {
+                    orderedLayers[i].Value.SetSiblingIndex(i);
+                }
+            }
+
+            return windowLayer;
         }
 
         private void SubscribeToMessages()

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Assets.Ancible_Tools.Scripts.System.Wellbeing;
 using Assets.Resources.Ancible_Tools.Scripts.System.Items;
 using Assets.Resources.Ancible_Tools.Scripts.System.Windows;
 using MessageBusLib;
@@ -19,6 +20,8 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague
         [SerializeField] private BattleEncounter _encounter = null;
         [SerializeField] private float _manaPerDamageDone = 0f;
         [SerializeField] private float _manaPerDamageTaken = 0f;
+        [SerializeField] private WellbeingStats _applyOnVictory;
+        [SerializeField] private WellbeingStats _applyOnDefeat;
         
         private QueryBattleUnitDataMessage _queryBattleUnitDataMsg = new QueryBattleUnitDataMessage();
         private ApplyHobblerBattleDataMessage _applyHobblerBattleDataMsg = new ApplyHobblerBattleDataMessage();
@@ -69,8 +72,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague
             _instance._openBattleWindows = windows.ToArray();
             BattleLeagueCameraController.SetActive(true);
 
-            var roster = WorldHobblerManager.Roster.ToArray();
-
+            var roster = WorldHobblerManager.GetAvailableRoster();
             var setMonsterStateMsg = MessageFactory.GenerateSetMonsterStateMsg();
             setMonsterStateMsg.State = MonsterState.Battle;
             
@@ -119,14 +121,14 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague
             _instance.gameObject.SendMessage(_instance._showBattleResultsWindowMsg);
         }
 
-        public static int GetManaFromDamageTaken(int amount)
+        public static float GetManaFromDamageTaken(int amount)
         {
-            return Mathf.Max(Mathf.RoundToInt(amount * _instance._manaPerDamageTaken), 1);
+            return amount * _instance._manaPerDamageTaken;
         }
 
-        public static int GetManaFromDamageDone(int amount)
+        public static float GetManaFromDamageDone(int amount)
         {
-            return Mathf.Max(Mathf.RoundToInt(amount * _instance._manaPerDamageDone), 1);
+            return amount * _instance._manaPerDamageDone;
         }
 
         private void SubscribeToMessages()
@@ -137,6 +139,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague
 
         private void CloseBattle(CloseBattleMessage msg)
         {
+            var applyWellbeingStatsMsg = MessageFactory.GenerateApplyWellbeingStatsMsg();
             switch (_result)
             {
                 case BattleResult.Victory:
@@ -147,10 +150,13 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague
                             WorldStashController.AddItem(item.Item, item.Stack);
                         }
                     }
+                    applyWellbeingStatsMsg.Stats = _applyOnVictory;
                     break;
                 case BattleResult.Defeat:
+                    applyWellbeingStatsMsg.Stats = _applyOnDefeat;
                     break;
                 case BattleResult.Abandon:
+                    applyWellbeingStatsMsg.Stats = _applyOnDefeat;
                     break;
             }
 
@@ -164,15 +170,20 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague
 
             _applyHobblerBattleDataMsg.Result = _result;
             _applyHobblerBattleDataMsg.MatchId = _battleLeagueController.MatchId;
-            for (var i = 0; i < objs.Length; i++)
+            
+           
+            foreach (var pair in objs)
             {
-                _applyHobblerBattleDataMsg.Data = objs[i].Key;
-
-                gameObject.SendMessageTo(addExperienceMsg, objs[i].Value);
-                gameObject.SendMessageTo(_applyHobblerBattleDataMsg, objs[i].Value);
-                objs[i].Key.Dispose();
+                var obj = pair.Value;
+                _applyHobblerBattleDataMsg.Data = pair.Key;
+                gameObject.SendMessageTo(applyWellbeingStatsMsg, obj);
+                gameObject.SendMessageTo(addExperienceMsg, obj);
+                gameObject.SendMessageTo(_applyHobblerBattleDataMsg, obj);
+                pair.Key.Dispose();
             }
             MessageFactory.CacheMessage(addExperienceMsg);
+            MessageFactory.CacheMessage(applyWellbeingStatsMsg);
+
             _encounterFinished.Result = _result;
             _applyHobblerBattleDataMsg.Data = null;
             _result = BattleResult.Abandon;

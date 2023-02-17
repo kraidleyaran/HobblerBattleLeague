@@ -75,13 +75,13 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Combat
             switch (type)
             {
                 case DamageType.Physical:
-                    return amount;
+                    return 0;
                 case DamageType.Magical:
-                    return amount + (int)(amount * (stats.Faith * _instance._magicalHealPerFaith));
+                    return Mathf.RoundToInt(stats.Faith * _instance._magicalHealPerFaith);
                 case DamageType.Pure:
                     return amount;
                 default:
-                    return amount;
+                    return 0;
             }
         }
 

@@ -57,17 +57,17 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.HoverInfo
             }
             _descriptionText.text = description;
             var descriptionHeight = _descriptionText.GetHeightOfText(description);
-            Debug.Log($"Description Height: {descriptionHeight}");
-            _descriptionText.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, descriptionHeight);
-            var height = descriptionHeight + _iconTitleGroup.rect.height + _padding.top + _padding.bottom;
             if (descriptionHeight > 0f)
             {
-                height += _grid.spacing * 2;
+                descriptionHeight += _grid.spacing;
             }
+            Debug.Log($"Description Height: {descriptionHeight}");
+            _descriptionText.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, descriptionHeight);
+            var height = descriptionHeight + _iconTitleGroup.rect.height + _padding.top + _padding.bottom + _grid.spacing;
             if (amount >= 0)
             {
                 _goldAmountText.text = $"{amount:n0}";
-                height += _goldGroup.rect.height;
+                height += _goldGroup.rect.height + _grid.spacing;
             }
             
             _goldGroup.gameObject.SetActive(amount >= 0);

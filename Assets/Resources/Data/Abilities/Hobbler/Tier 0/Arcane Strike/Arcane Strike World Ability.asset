@@ -16,12 +16,12 @@ MonoBehaviour:
   Icon: {fileID: 21300000, guid: b2424d05fd0d6df46ae0a5db3dcb3cdc, type: 3}
   Description: 
   Range: 4
-  CastTime: 105
-  ManaCost: 3
+  CastTime: 100
+  ManaCost: 10
   ApplyToTarget:
   - {fileID: 11400000, guid: e63c6cc4b00d1be4ea6a5dac06f53d19, type: 2}
   - {fileID: 11400000, guid: 8ec5220f89c592343899c761a45aa723, type: 2}
   Alignment: 1
   Type: 1
-  Cooldown: 450
+  Cooldown: 300
   Conditions: []

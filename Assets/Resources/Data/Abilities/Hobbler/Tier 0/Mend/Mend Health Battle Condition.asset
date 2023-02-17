@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f34cea59a77a95244bdb110ce2529927, type: 3}
   m_Name: Mend Health Battle Condition
   m_EditorClassIdentifier: 
-  _healthPercent: 0.8
+  _healthPercent: 0.75
   _comparison: 5

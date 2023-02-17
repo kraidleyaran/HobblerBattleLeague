@@ -13,3 +13,5 @@ MonoBehaviour:
   m_Name: Default Battle Aggro Trait
   m_EditorClassIdentifier: 
   MaxStack: 1
+  _flagOffset: {x: 0, y: 0}
+  _diagonalCost: 1.5

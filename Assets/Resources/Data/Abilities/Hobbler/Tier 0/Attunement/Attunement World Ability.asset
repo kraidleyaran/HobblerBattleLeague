@@ -17,7 +17,7 @@ MonoBehaviour:
   Description: 
   Range: 1
   CastTime: 30
-  ManaCost: 1
+  ManaCost: 5
   ApplyToTarget:
   - {fileID: 11400000, guid: 0eb51a7ef20c6bc4bbfce9cbf5489c08, type: 2}
   Alignment: 0

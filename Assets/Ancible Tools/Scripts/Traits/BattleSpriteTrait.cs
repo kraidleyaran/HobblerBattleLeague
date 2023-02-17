@@ -129,15 +129,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             base.SetFacingDirection(msg);
             if (_currentDirection.x != 0)
             {
-                switch (FlipSprite)
-                {
-                    case FlipSprite.Negative:
-                        _alignmentController.FlipX(_currentDirection.x > 0);
-                        break;
-                    case FlipSprite.Positive:
-                        _alignmentController.FlipX(_currentDirection.x < 0);
-                        break;
-                }
+                _alignmentController.FlipX(_currentDirection.x > 0);
             }
 
 
@@ -148,15 +140,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             base.UpdateDirection(msg);
             if (_currentDirection.x != 0)
             {
-                switch (FlipSprite)
-                {
-                    case FlipSprite.Negative:
-                        _alignmentController.FlipX(_currentDirection.x > 0);
-                        break;
-                    case FlipSprite.Positive:
-                        _alignmentController.FlipX(_currentDirection.x < 0);
-                        break;
-                }
+                _alignmentController.FlipX(_currentDirection.x > 0);
             }
 
         }

@@ -1,4 +1,7 @@
-﻿using Assets.Resources.Ancible_Tools.Scripts.System.Building;
+﻿using Assets.Resources.Ancible_Tools.Scripts.System;
+using Assets.Resources.Ancible_Tools.Scripts.System.Building;
+using Assets.Resources.Ancible_Tools.Scripts.System.UI;
+using MessageBusLib;
 using UnityEngine;
 
 namespace Assets.Ancible_Tools.Scripts.Traits
@@ -11,7 +14,25 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         public override void SetupController(TraitController controller)
         {
             base.SetupController(controller);
-            WorldBuildingManager.SellBuilding(_controller.transform.parent.gameObject);
+            WorldBuilding building = null;
+            var parent = _controller.transform.parent.gameObject;
+            var queryBuildingMsg = MessageFactory.GenerateQueryBuildingMsg();
+            queryBuildingMsg.DoAfter = (worldBuilding, tile, id) =>
+            {
+                building = worldBuilding;
+            };
+            _controller.gameObject.SendMessageTo(queryBuildingMsg, parent);
+            MessageFactory.CacheMessage(queryBuildingMsg);
+
+            
+            if (building)
+            {
+                UiController.ShowConfirmationAlert($"Are you sure you want to sell {building.DisplayName} for {WorldBuildingManager.CalculateSellbackValue(building.Cost)}g?", building.Icon,
+                    () =>
+                    {
+                        WorldBuildingManager.SellBuilding(parent);
+                    }, Color.white);
+            }
         }
 
 

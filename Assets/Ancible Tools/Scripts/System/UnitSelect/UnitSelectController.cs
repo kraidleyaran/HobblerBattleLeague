@@ -8,6 +8,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
     public class UnitSelectController : MonoBehaviour
     {
         public static GameObject Hovered => _instance._hoveredUnit;
+        public static GameObject Selected => _instance._selectedUnit;
 
         private static UnitSelectController _instance = null;
 

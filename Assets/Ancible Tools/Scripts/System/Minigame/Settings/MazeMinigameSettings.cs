@@ -30,6 +30,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Minigame
         public UnitTemplate DownEndTemplate;
         public UnitTemplate LeftEndTemplate;
         public UnitTemplate RightEndTemplate;
+        public int MinimumEndDepth = 1;
         [Range(0f, 1f)] public float DoorPerecent = 1f;
         public UnitTemplate[] MonsterTemplates = new UnitTemplate[0];
         public IntNumberRange MonstersPerRoom = new IntNumberRange();

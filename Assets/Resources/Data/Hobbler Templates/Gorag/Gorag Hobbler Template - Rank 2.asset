@@ -17,35 +17,35 @@ MonoBehaviour:
   Sprite: {fileID: 11400000, guid: 422960a4318b38545b64dfae246e78e8, type: 2}
   StartingStats:
     Health: 22
-    Mana: 3
-    Strength: 7
-    Agility: 2
+    Mana: 10
+    Strength: 4
+    Agility: 3
     Magic: 1
     Faith: 2
-    Defense: 6
+    Defense: 7
     Spirit: 1
   MinimumGenetics:
     Health: 0.85
-    Mana: 0.1
+    Mana: 0.5
     Strength: 0.4
     Agility: 0.2
     Magic: 0.1
     Faith: 0.1
     Armor: 0.65
-    Spirit: 0.25
+    Spirit: 0.01
   MaximumGenetics:
     Health: 2.4
-    Mana: 1
-    Strength: 2.1
-    Agility: 1.4
+    Mana: 1.75
+    Strength: 1.6
+    Agility: 1.2
     Magic: 0.9
     Faith: 0.5
-    Armor: 2
-    Spirit: 1.25
+    Armor: 2.2
+    Spirit: 0.035
   StartingAbilities:
   - {fileID: 11400000, guid: d1a949ea59ba3b34f8e52582a8c3b5f0, type: 2}
   - {fileID: 11400000, guid: 999b1178a2c3c204ab5ed96d54f087e6, type: 2}
-  StartingWeapon: {fileID: 11400000, guid: ed8b807a138eb9347baaba21cc88cd5d, type: 2}
+  StartingWeapon: {fileID: 11400000, guid: 735c2b3a45054504cb77872e1b12e122, type: 2}
   Evolution:
     RequiredLevel: 20
     Template: {fileID: 11400000, guid: 8c1f8a2ad618bd142b05df47d299fe92, type: 2}

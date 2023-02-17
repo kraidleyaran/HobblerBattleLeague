@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Summerset Hollow Adventure Map
   m_EditorClassIdentifier: 
   MapController: {fileID: 3949360468494232806, guid: dfc4749253ebe18489e2d3ba6eed69bd, type: 3}
-  DefaultTile: {x: 0, y: 0}
+  DefaultTile: {x: 2, y: 24}

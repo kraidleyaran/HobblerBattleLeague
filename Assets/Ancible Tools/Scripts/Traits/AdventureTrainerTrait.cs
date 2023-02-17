@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Assets.Ancible_Tools.Scripts.System.Dialogue;
 using Assets.Resources.Ancible_Tools.Scripts.System;
 using Assets.Resources.Ancible_Tools.Scripts.System.Adventure;
 using Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague;
@@ -26,6 +27,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         private Vector2Int _faceDirection = Vector2Int.zero;
         private MapTile _currentTile = null;
         private AdventureBattleExclamationController _exclamationController = null;
+        private MapTile _originTile = null;
 
         private bool _defeated = false;
 
@@ -85,7 +87,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                         var moveTile = WorldAdventureController.MapController.PlayerPathing.GetTileByPosition(playerTile.Position + _faceDirection * -1);
                         if (moveTile != null)
                         {
-                            var path = WorldAdventureController.MapController.PlayerPathing.GetPath(_currentTile.Position, moveTile.Position, false);
+                            var path = WorldAdventureController.MapController.PlayerPathing.GetPath(_currentTile.Position, moveTile.Position);
                             if (path.Length > 0)
                             {
                                 var setPathMsg = MessageFactory.GenerateSetPathMsg();
@@ -215,6 +217,10 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         private void Defeat()
         {
             _controller.gameObject.SendMessageTo(RespawnPlayerMessage.INSTANCE, WorldAdventureController.Player);
+            var setMapTileMsg = MessageFactory.GenerateSetMapTileMsg();
+            setMapTileMsg.Tile = _originTile;
+            _controller.gameObject.SendMessageTo(setMapTileMsg, _controller.transform.parent.gameObject);
+            MessageFactory.CacheMessage(setMapTileMsg);
         }
 
         private void StartExclamation(GameObject obj)
@@ -260,6 +266,10 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         private void UpdateMapTile(UpdateMapTileMessage msg)
         {
             _currentTile = msg.Tile;
+            if (_originTile == null)
+            {
+                _originTile = _currentTile;
+            }
             if (!_defeated)
             {
                 UpdateSubscribedTiles();

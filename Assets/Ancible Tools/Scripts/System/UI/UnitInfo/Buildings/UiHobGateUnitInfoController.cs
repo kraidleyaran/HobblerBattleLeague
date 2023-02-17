@@ -25,9 +25,10 @@ namespace Assets.Ancible_Tools.Scripts.System.UI.UnitInfo.Buildings
         {
             base.Setup(owner, building);
             var queryHobGeneratorMsg = MessageFactory.GenerateQueryHobGeneratorMsg();
-            queryHobGeneratorMsg.DoAfter = (hobblers, timer, ticks) => { _generationTimer = timer; };
+            queryHobGeneratorMsg.DoAfter = (hobblers, timer, goldCost) => { _generationTimer = timer; };
             gameObject.SendMessageTo(queryHobGeneratorMsg, _owner);
             MessageFactory.CacheMessage(queryHobGeneratorMsg);
+            OnTimerUpdate(_generationTimer.TickCount, _generationTimer.TicksPerCycle);
             _generationTimer.OnTickUpdate += OnTimerUpdate;
         }
 
@@ -49,7 +50,7 @@ namespace Assets.Ancible_Tools.Scripts.System.UI.UnitInfo.Buildings
             _fillBarController.Setup(percent, $"{remainingTicks}", _timerFillColor);
         }
 
-        private void RefreshHobs(KeyValuePair<int, HobblerTemplate>[] hobblers, TickTimer timer, int ticks)
+        private void RefreshHobs(KeyValuePair<int, HobblerTemplate>[] hobblers, TickTimer timer, int rerollCost)
         {
             foreach (var icon in _icons)
             {

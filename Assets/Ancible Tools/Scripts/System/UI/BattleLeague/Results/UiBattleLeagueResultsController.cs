@@ -18,8 +18,11 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.BattleLeague
         [SerializeField] private UiBattleExperienceResultsController _experienceResultsController = null;
         [SerializeField] private UiBattleLootResultsController _battleLootResultsController = null;
 
+        private BattleResult _result = BattleResult.Victory;
+
         public void Setup(ShowBattleResultsWindowMessage msg)
         {
+            _result = msg.Result;
             _battleResultsController.Setup(msg.Units, msg.LeftScore, msg.RightScore, msg.Result, msg.TotalRounds);
             var hobblers = msg.Hobblers.Select(kv => kv.Value).ToArray();
             _experienceResultsController.Setup(hobblers, msg.TotalExperience);
@@ -28,8 +31,15 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.BattleLeague
         
         public void ShowExperience()
         {
-            _battleResultsController.gameObject.SetActive(false);
-            _experienceResultsController.Activate();
+            if (_result == BattleResult.Victory)
+            {
+                _battleResultsController.gameObject.SetActive(false);
+                _experienceResultsController.Activate();
+            }
+            else
+            {
+                Close();
+            }
         }
 
         public void ShowItems()

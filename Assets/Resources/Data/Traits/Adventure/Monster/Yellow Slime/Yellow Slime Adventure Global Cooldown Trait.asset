@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Yellow Slime Adventure Global Cooldown Trait
   m_EditorClassIdentifier: 
   MaxStack: 1
-  _ticks: 90
+  _ticks: 140

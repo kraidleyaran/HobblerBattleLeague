@@ -81,6 +81,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.HobblerGenerator
         private void SubscribeToMessages()
         {
             gameObject.Subscribe<GoldUpdatedMessage>(GoldUpdated);
+            gameObject.Subscribe<WorldPopulationUpdatedMessage>(WorldPopulationUpdated);
         }
 
         private void RefreshUnit(RefreshUnitMessage msg)
@@ -95,6 +96,14 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.HobblerGenerator
                 _controllers[i].RefreshBuyable();
             }
             _rerollButton.interactable = WorldStashController.Gold >= _rerollCost;
+        }
+
+        private void WorldPopulationUpdated(WorldPopulationUpdatedMessage msg)
+        {
+            foreach (var controller in _controllers)
+            {
+                controller.RefreshBuyable();
+            }
         }
 
         public override void Close()

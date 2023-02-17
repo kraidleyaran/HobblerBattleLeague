@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using Assets.Ancible_Tools.Scripts.System.Dialogue;
 using Assets.Resources.Ancible_Tools.Scripts.System.Adventure;
 using Assets.Resources.Ancible_Tools.Scripts.System.Windows;
 using MessageBusLib;
@@ -16,6 +18,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.Dialogue
 
         private DialogueData _currentDialogue = null;
         private GameObject _owner = null;
+        private Action _doAfter = null;
 
         public override void Awake()
         {
@@ -24,18 +27,20 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.Dialogue
             SubscribeToMessages();
         }
 
-        public void Setup(DialogueData dialogue, GameObject owner)
+        public void Setup(DialogueData dialogue, GameObject owner, Action doAfter = null)
         {
             _currentDialogue = dialogue;
             _owner = owner;
             _answerManager.Clear();
+            _doAfter = doAfter;
             _dialogueTextController.Setup(_currentDialogue.Dialogue);
         }
 
-        public void Setup(string[] dialogue, GameObject owner)
+        public void Setup(string[] dialogue, GameObject owner, Action doAfter = null)
         {
             _owner = owner;
             _answerManager.Clear();
+            _doAfter = doAfter;
             _dialogueTextController.Setup(dialogue);
         }
 
@@ -69,6 +74,8 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.Dialogue
 
         public override void Close()
         {
+            _doAfter?.Invoke();
+            _doAfter = null;
             gameObject.SendMessageTo(DialogueClosedMessage.INSTANCE, _owner);
             base.Close();
         }

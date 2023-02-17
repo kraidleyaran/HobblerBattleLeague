@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Tornado Aggrod Apply Global Cooldown Bonus Trait
   m_EditorClassIdentifier: 
   MaxStack: 1
-  _ticks: -50
+  _ticks: -75
   _permanent: 0

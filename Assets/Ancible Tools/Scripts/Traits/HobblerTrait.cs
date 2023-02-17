@@ -2,6 +2,7 @@
 using System.Linq;
 using Assets.Ancible_Tools.Scripts.System.Factories;
 using Assets.Ancible_Tools.Scripts.System.SaveData;
+using Assets.Ancible_Tools.Scripts.System.Wellbeing;
 using Assets.Resources.Ancible_Tools.Scripts.System;
 using Assets.Resources.Ancible_Tools.Scripts.System.Abilities;
 using Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague;
@@ -10,6 +11,7 @@ using Assets.Resources.Ancible_Tools.Scripts.System.Items;
 using Assets.Resources.Ancible_Tools.Scripts.System.Pathing;
 using Assets.Resources.Ancible_Tools.Scripts.System.SaveData;
 using Assets.Resources.Ancible_Tools.Scripts.System.Skills;
+using Assets.Resources.Ancible_Tools.Scripts.System.UnitCommands;
 using MessageBusLib;
 using UnityEditor;
 using UnityEngine;
@@ -19,6 +21,8 @@ namespace Assets.Ancible_Tools.Scripts.Traits
     [CreateAssetMenu(fileName = "Hobbler Trait", menuName = "Ancible Tools/Traits/Hobbler/Hobbler")]
     public class HobblerTrait : Trait
     {
+        [SerializeField] private UnitCommand _exileCommandTemplate = null;
+
         private string _name = string.Empty;
         private HobblerTemplate _template = null;
         private string _hobblerId = string.Empty;
@@ -33,9 +37,14 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         private MonsterState _monsterState = MonsterState.Idle;
         private HobblerData _data = null;
 
+        private CommandInstance _exileInstance = null;
+        private bool _roster = false;
+
         public override void SetupController(TraitController controller)
         {
             base.SetupController(controller);
+            var exileCommand = Instantiate(_exileCommandTemplate, _controller.transform);
+            _exileInstance = exileCommand.GenerateInstance();
             SubscribeToMessages();
         }
 
@@ -82,10 +91,9 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             _data.Skills = skills.Select(kv => kv.ToData()).ToArray();
         }
 
-        private void ApplyWellbeingToData(WellbeingStats wellbeing, WellbeingStats min, WellbeingStats max)
+        private void ApplyWellbeingToData(WellbeingStats wellbeing, WellbeingStats max)
         {
             _data.Wellbeing = wellbeing;
-            _data.MinWellBeing = min;
             _data.MaxWellbeing = max;
         }
 
@@ -107,11 +115,13 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             _controller.transform.parent.gameObject.SubscribeWithFilter<SetupHobblerFromDataMessage>(SetupHobblerFromData, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<UpdateMapTileMessage>(UpdateMapTile, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<UpdateHobblerExperienceMessage>(UpdateHobblerExperience, _instanceId);
+            _controller.transform.parent.gameObject.SubscribeWithFilter<QueryCommandsMessage>(QueryCommands, _instanceId);
         }
 
         private void SetHobblerTemplate(SetHobblerTemplateMessage msg)
         {
             _template = msg.Template;
+            _exileInstance.Command.GoldValue = WorldHobblerManager.GetExileGold(_template.Cost);
             if (string.IsNullOrEmpty(msg.Id))
             {
                 _hobblerId = GUID.Generate().ToString();
@@ -349,6 +359,12 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             setHobblerExperienceMsg.Level = _currentLevel;
             _controller.gameObject.SendMessageTo(setHobblerExperienceMsg, _controller.transform.parent.gameObject);
             MessageFactory.CacheMessage(setHobblerExperienceMsg);
+
+            var setWellbeingMsg = MessageFactory.GenerateSetWellbeingStatsMsg();
+            setWellbeingMsg.Stats = _data.Wellbeing;
+            setWellbeingMsg.Maximum = _data.MaxWellbeing;
+            _controller.gameObject.SendMessageTo(setWellbeingMsg, _controller.transform.parent.gameObject);
+            MessageFactory.CacheMessage(setWellbeingMsg);
         }
 
         private void UpdateMapTile(UpdateMapTileMessage msg)
@@ -376,6 +392,11 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             }
 
             _experience = msg.Experience;
+        }
+
+        private void QueryCommands(QueryCommandsMessage msg)
+        {
+            msg.DoAfter.Invoke(new []{_exileInstance});
         }
     }
 }

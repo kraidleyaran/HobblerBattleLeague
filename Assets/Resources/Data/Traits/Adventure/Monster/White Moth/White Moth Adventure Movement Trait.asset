@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MaxStack: 1
   _isMonster: 1
-  _moveSpeed: 45
+  _moveSpeed: 50
   _pathMovementMultiplier: 16

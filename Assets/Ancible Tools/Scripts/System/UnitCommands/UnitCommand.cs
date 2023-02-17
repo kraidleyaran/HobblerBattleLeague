@@ -9,6 +9,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UnitCommands
     public class UnitCommand : ScriptableObject
     {
         public string Command;
+        public int Priority;
         [TextArea(3, 10)] public string Description;
         public CommandIcon[] Icons = new CommandIcon[0];
         public Trait[] OnCommand = new Trait[0];
