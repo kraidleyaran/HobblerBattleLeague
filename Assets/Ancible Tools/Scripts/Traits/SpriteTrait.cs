@@ -248,7 +248,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                 }
 
                 
-                _spriteController.SetDirection(msg.Direction.ToStaticDirections());
+                _spriteController.SetDirection(_currentDirection);
 
                 var updateFacingDirectionMsg = MessageFactory.GenerateUpdateFacingDirectionMsg();
                 updateFacingDirectionMsg.Direction = _currentDirection;

@@ -22,18 +22,25 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         private void SubscribeToMessages()
         {
             _controller.transform.parent.gameObject.SubscribeWithFilter<UpdateMonsterStateMessage>(UpdateMonsterState, _instanceId);
+            _controller.transform.parent.gameObject.SubscribeWithFilter<SetSpriteVisibilityMessage>(SetSpriteVisibility, _instanceId);
         }
 
         private void UpdateMonsterState(UpdateMonsterStateMessage msg)
         {
-            if (msg.State == MonsterState.Resting)
-            {
-                UiHobblerStatusBarManager.SetStatusBarActive(_controller.transform.parent.gameObject, false);
-            }
-            else if (_monsterState == MonsterState.Idle)
-            {
-                UiHobblerStatusBarManager.SetStatusBarActive(_controller.transform.parent.gameObject, true);
-            }
+            _monsterState = msg.State;
+            //if (msg.State == MonsterState.Resting)
+            //{
+            //    UiHobblerStatusBarManager.SetStatusBarActive(_controller.transform.parent.gameObject, false);
+            //}
+            //else if (_monsterState == MonsterState.Idle)
+            //{
+            //    UiHobblerStatusBarManager.SetStatusBarActive(_controller.transform.parent.gameObject, true);
+            //}
+        }
+
+        private void SetSpriteVisibility(SetSpriteVisibilityMessage msg)
+        {
+            UiHobblerStatusBarManager.SetStatusBarActive(_controller.transform.parent.gameObject, msg.Visible);
         }
 
         public override void Destroy()

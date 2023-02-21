@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MaxStack: 1
   _nodeType: 3
-  _requiredTicks: 3
+  _requiredTicks: 130
   _applyOnFinish:
   - {fileID: 11400000, guid: 1f76ef373f7085f41b9dbf4db6c44b4d, type: 2}
   - {fileID: 11400000, guid: b86ec6da9406c7441855d7a9fa029302, type: 2}
-  _stack: -1
+  _stack: 2000
   _relativeGatheringPositions:
   - {x: 0, y: 1}
   - {x: 0, y: -1}
@@ -30,8 +30,11 @@ MonoBehaviour:
   - {x: 1, y: -1}
   _interactionType: 1
   _nodeSprite: {fileID: 0}
-  _stopSelectCommand: {fileID: 0}
-  _selectableHobblerCommandTemplate: {fileID: 0}
+  _unitsPerTile: 1
+  _refillCost: 0
+  _autoRefill: 0
+  _autoRefillCost: 0
+  _destroyOnEmpty: 1
   _item:
     Item: {fileID: 11400000, guid: ee7cbe2a3dd07bd4791f6517be7eba67, type: 2}
     Stack: 1

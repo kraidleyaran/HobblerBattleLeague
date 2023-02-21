@@ -21,6 +21,10 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.SaveData
         public TrainerData[] Trainers = new TrainerData[0];
         public BuildingData[] Buildings = new BuildingData[0];
         public WindowData[] Windows = new WindowData[0];
+        public BattlePositionData[] BattlePositions = new BattlePositionData[0];
+        public AdventureDialogueData[] Dialogue = new AdventureDialogueData[0];
+        public int MaxPopulation = 0;
+        public int MaxRoster = 0;
 
         public void Dispose()
         {

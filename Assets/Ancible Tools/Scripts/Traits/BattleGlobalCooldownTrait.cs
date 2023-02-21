@@ -14,7 +14,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         public override void SetupController(TraitController controller)
         {
             base.SetupController(controller);
-            _globalCooldown = new TickTimer(BattleLeagueController.GlobalCooldownTicks, 0, CooldownFinished, null,false, false);
+            _globalCooldown = new TickTimer(BattleLeagueController.GlobalCooldownTicks, 0, CooldownFinished, null,false);
             SubscribeToMessages();
         }
 

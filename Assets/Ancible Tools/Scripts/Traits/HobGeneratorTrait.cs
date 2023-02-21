@@ -126,7 +126,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
 
                 _currentHobblers[msg.Slot] = null;
                 WorldHobblerManager.RegisterHobbler(unitController.gameObject);
-
+                WorldStashController.RemoveGold(template.Cost);
                 _controller.gameObject.SendMessageTo(RefreshUnitMessage.INSTANCE, _controller.transform.parent.gameObject);
             }
         }

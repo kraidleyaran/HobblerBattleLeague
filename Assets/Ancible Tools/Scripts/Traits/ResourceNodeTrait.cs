@@ -17,8 +17,11 @@ namespace Assets.Ancible_Tools.Scripts.Traits
 
         protected internal override void ApplyToUnit(GameObject obj)
         {
-            base.ApplyToUnit(obj);
-            WorldStashController.AddItem(_item.Item, _item.Stack);
+            if (_currentStack > 0)
+            {
+                base.ApplyToUnit(obj);
+                WorldStashController.AddItem(_item.Item, _item.Stack);
+            }
         }
 
         protected internal override void RegisterNode(MapTile tile)

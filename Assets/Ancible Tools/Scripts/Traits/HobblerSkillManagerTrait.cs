@@ -148,7 +148,12 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             if (levelsGained > 0)
             {
                 instance.ApplyLevels(levelsGained, _controller.transform.parent.gameObject);
-                UiAlertManager.ShowAlert($"+{levelsGained} {msg.Skill.DisplayName}", msg.Skill.Icon, Color.white);
+                SpriteTrait spriteTrait = null;
+                var querySpriteMsg = MessageFactory.GenerateQuerySpriteMsg();
+                querySpriteMsg.DoAfter = sprite => spriteTrait = sprite;
+                _controller.gameObject.SendMessageTo(querySpriteMsg, _controller.transform.parent.gameObject);
+                MessageFactory.CacheMessage(querySpriteMsg);
+                UiAlertManager.ShowAlert($"+{levelsGained} {msg.Skill.DisplayName}", spriteTrait ? spriteTrait.Sprite : msg.Skill.Icon, Color.white);
             }
             _controller.gameObject.SendMessageTo(RefreshUnitMessage.INSTANCE, _controller.transform.parent.gameObject);
         }
@@ -168,9 +173,10 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                         var item = items.Where(it => it.RequiredLevel == highestLevel).ToArray().GetRandom();
                         var searchForResourceNodeMsg = MessageFactory.GenerateSearchForResourceNodeMsg();
                         searchForResourceNodeMsg.Item = item;
+                        searchForResourceNodeMsg.DoAfter = msg.DoAfter;
                         _controller.gameObject.SendMessageTo(searchForResourceNodeMsg, _controller.transform.parent.gameObject);
                         MessageFactory.CacheMessage(searchForResourceNodeMsg);
-                        msg.DoAfter?.Invoke();
+                        //msg.DoAfter?.Invoke();
                         break;
                     }
                 }
@@ -178,9 +184,10 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                 {
                     var searchForCraftingNodeMsg = MessageFactory.GenerateSearchForCraftingNodeMsg();
                     searchForCraftingNodeMsg.Skill = skill.Instance;
+                    searchForCraftingNodeMsg.DoAfter = msg.DoAfter;
                     _controller.gameObject.SendMessageTo(searchForCraftingNodeMsg, _controller.transform.parent.gameObject);
                     MessageFactory.CacheMessage(searchForCraftingNodeMsg);
-                    msg.DoAfter?.Invoke();
+                    //msg.DoAfter?.Invoke();
                 }
 
             }

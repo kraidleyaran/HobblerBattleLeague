@@ -91,7 +91,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             }
             if (_ticks > 0)
             {
-                _statusEffectTimer = new TickTimer(_ticks, -1, null, () => {RemoveStatusEffect(true);}, false);
+                _statusEffectTimer = new TickTimer(_ticks, -1, null, () => {RemoveStatusEffect(true);});
             }
         }
 

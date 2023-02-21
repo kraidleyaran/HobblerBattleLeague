@@ -72,7 +72,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
 
                 var ability = msg.Ability;
                 var target = msg.Target;
-                _castingTimer = new TickTimer(msg.Ability.Instance.CastTime, 0, () => OnCastFinish(ability, target), null, false);
+                _castingTimer = new TickTimer(msg.Ability.Instance.CastTime, 0, () => OnCastFinish(ability, target), null);
                 var updateUnitCastTimerMsg = MessageFactory.GenerateUpdateUnitCastTimerMsg();
                 updateUnitCastTimerMsg.CastTimer = _castingTimer;
                 updateUnitCastTimerMsg.Icon = ability.Instance.Icon;

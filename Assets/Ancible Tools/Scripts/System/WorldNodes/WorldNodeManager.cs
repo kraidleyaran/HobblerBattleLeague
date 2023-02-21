@@ -4,6 +4,7 @@ using Assets.Resources.Ancible_Tools.Scripts.System;
 using Assets.Resources.Ancible_Tools.Scripts.System.Items;
 using Assets.Resources.Ancible_Tools.Scripts.System.Pathing;
 using Assets.Resources.Ancible_Tools.Scripts.System.Skills;
+using Assets.Resources.Ancible_Tools.Scripts.System.UnitCommands;
 using MessageBusLib;
 using UnityEngine;
 
@@ -11,7 +12,17 @@ namespace Assets.Ancible_Tools.Scripts.System.WorldNodes
 {
     public class WorldNodeManager : MonoBehaviour
     {
+        public static UnitCommand AutoRefillCommand_On => _instance._autoRefillCommandOnTemplate;
+        public static UnitCommand AutoRefillCommand_Off => _instance._autoRefillCommandOffTemplate;
+        public static UnitCommand RefillCommand => _instance._refillCommandTemplate;
+        public static int GoldCheckTicks => _instance._goldCheckTicks;
+
         private static WorldNodeManager _instance = null;
+
+        [SerializeField] private UnitCommand _refillCommandTemplate;
+        [SerializeField] private UnitCommand _autoRefillCommandOnTemplate;
+        [SerializeField] private UnitCommand _autoRefillCommandOffTemplate;
+        [SerializeField] private int _goldCheckTicks = 60 * 5;
 
         private Dictionary<WorldNodeType, List<RegisteredWorldNode>> _nodes = new Dictionary<WorldNodeType, List<RegisteredWorldNode>>();
         private Dictionary<WorldItem, List<RegisteredWorldNode>> _resourceNodes = new Dictionary<WorldItem, List<RegisteredWorldNode>>();

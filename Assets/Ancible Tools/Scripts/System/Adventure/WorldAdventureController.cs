@@ -116,6 +116,8 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Adventure
                 setFacingDirectionMsg.Direction = direction;
                 _instance.gameObject.SendMessageTo(setFacingDirectionMsg, Player);
                 MessageFactory.CacheMessage(setFacingDirectionMsg);
+
+                
             }
         }
 

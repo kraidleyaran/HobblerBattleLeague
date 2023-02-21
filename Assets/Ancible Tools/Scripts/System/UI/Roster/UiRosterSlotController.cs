@@ -210,7 +210,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.Roster
             _hobblerIconImage.sprite = _sprite.Sprite;
         }
 
-        private void RefreshHappiness(float happiness, float happy, float moderate, HappinessState state)
+        private void RefreshHappiness(HappinessState state)
         {
             _state = state;
             _happinessIconImage.color = _state.ToColor();
@@ -252,6 +252,17 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.Roster
             _name = null;
             _baseStats = CombatStats.Zero;
             _bonusStats = CombatStats.Zero;
+            if (_hovered)
+            {
+                var removeHoverInfoMsg = MessageFactory.GenerateRemoveHoverInfoMsg();
+                removeHoverInfoMsg.Owner = gameObject;
+                gameObject.SendMessage(removeHoverInfoMsg);
+                MessageFactory.CacheMessage(removeHoverInfoMsg);
+            }
+        }
+
+        void OnDisable()
+        {
             if (_hovered)
             {
                 var removeHoverInfoMsg = MessageFactory.GenerateRemoveHoverInfoMsg();

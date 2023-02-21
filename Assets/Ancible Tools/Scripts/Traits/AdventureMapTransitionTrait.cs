@@ -25,6 +25,11 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         {
             if (obj == WorldAdventureController.Player)
             {
+                var setUnitStateMsg = MessageFactory.GenerateSetAdventureUnitStateMsg();
+                setUnitStateMsg.State = AdventureUnitState.Interaction;
+                _controller.gameObject.SendMessageTo(setUnitStateMsg, WorldAdventureController.Player);
+                MessageFactory.CacheMessage(setUnitStateMsg);
+
                 WorldAdventureController.TransitionToMap(_map, _position, _direction);
             }
         }

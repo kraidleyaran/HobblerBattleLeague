@@ -280,7 +280,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                     //}
                 }
             }
-            else
+            else if (_aiState == AdventureAiState.Aggro)
             {
                 var setAdventureAiStateMsg = MessageFactory.GenerateSetAdventureAiStateMsg();
                 setAdventureAiStateMsg.State = AdventureAiState.Wander;

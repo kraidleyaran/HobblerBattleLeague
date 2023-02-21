@@ -1,4 +1,5 @@
-﻿using DG.Tweening;
+﻿using System;
+using DG.Tweening;
 using MessageBusLib;
 using UnityEngine;
 using UnityEngine.UI;
@@ -41,7 +42,6 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.Dialogue
                 ShowText(_dialogue[_index]);
                 return true;
             }
-
             return false;
 
         }

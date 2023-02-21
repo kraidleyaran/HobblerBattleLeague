@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Assets.Ancible_Tools.Scripts.System.Dialogue;
 using Assets.Resources.Ancible_Tools.Scripts.System;
 using Assets.Resources.Ancible_Tools.Scripts.System.Adventure;
 using Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague;
+using Assets.Resources.Ancible_Tools.Scripts.System.Items;
 using Assets.Resources.Ancible_Tools.Scripts.System.Pathing;
 using MessageBusLib;
 using UnityEngine;
@@ -27,6 +29,8 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         private AdventureUnitState _unitState = AdventureUnitState.Idle;
         private Vector2Int[] _encounterTiles = new Vector2Int[0];
         private bool _activeDialogue = false;
+        private Coroutine _dialogueRoutine = null;
+        private BattleEncounter _currentEncounter = null;
 
         public override void SetupController(TraitController controller)
         {
@@ -79,12 +83,12 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         {
             if (WorldHobblerManager.GetAvailableRoster().Length > 0)
             {
-                var encounter = _encounters.GetRandom();
-                BattleLeagueManager.SetupEncounter(encounter, _controller.transform.parent.gameObject);
+                _currentEncounter = _encounters.GetRandom();
+                BattleLeagueManager.SetupEncounter(_currentEncounter, _controller.transform.parent.gameObject);
             }
             else
             {
-                _controller.gameObject.SubscribeWithFilter<DialogueClosedMessage>(DialogueClosed, _instanceId);
+                _controller.gameObject.SubscribeWithFilter<DialogueClosedMessage>(PreBattleDialogueClosed, _instanceId);
                 var showCustomDialogueMsg = MessageFactory.GenerateShowCustomDialogueMsg();
                 showCustomDialogueMsg.Dialogue = DialogueFactory.MonsterUnpreparedBattle;
                 showCustomDialogueMsg.DoAfter = UnpreparedDialogueFinished;
@@ -127,7 +131,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
 
         private void FinishExclamation(GameObject player)
         {
-            Destroy(_exclamationController.gameObject);
+            //Destroy(_exclamationController.gameObject);
             StartBump(player);
         }
 
@@ -159,6 +163,34 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             WorldAdventureController.SetAdventureState(AdventureState.Overworld);
         }
 
+        private void Defeat()
+        {
+            _controller.gameObject.SubscribeWithFilter<DialogueClosedMessage>(DefeatDialogueClosed, _instanceId);
+            var showDialogueMsg = MessageFactory.GenerateShowCustomDialogueMsg();
+            var dialogue = DialogueFactory.DefaultDefeat.ToList();
+            if (_currentEncounter.GoldRemoveOnDefeat > 0)
+            {
+                dialogue.Add($"You lose {_currentEncounter.GoldRemoveOnDefeat}g");
+            }
+            showDialogueMsg.Dialogue = DialogueFactory.DefaultDefeat;
+            showDialogueMsg.Owner = _controller.gameObject;
+            _controller.gameObject.SendMessage(showDialogueMsg);
+            MessageFactory.CacheMessage(showDialogueMsg);
+            _currentEncounter = null;
+        }
+
+        private void DefeatDialogueFinished()
+        {
+            var setUnitStateMsg = MessageFactory.GenerateSetAdventureUnitStateMsg();
+            setUnitStateMsg.State = AdventureUnitState.Idle;
+            _controller.gameObject.SendMessageTo(setUnitStateMsg, _controller.transform.parent.gameObject);
+
+            _controller.gameObject.SendMessageTo(RespawnPlayerMessage.INSTANCE, WorldAdventureController.Player);
+
+            _controller.gameObject.SendMessageTo(setUnitStateMsg, _controller.transform.parent.gameObject);
+            MessageFactory.CacheMessage(setUnitStateMsg);
+        }
+
         private void SubscribeToMessages()
         {
             _controller.transform.parent.gameObject.SubscribeWithFilter<UpdateAdventureUnitStateMessage>(UpdateUnitState, _instanceId);
@@ -176,6 +208,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         {
             if (msg.Result == BattleResult.Victory)
             {
+                _currentEncounter = null;
                 var setUnitStateMsg = MessageFactory.GenerateSetAdventureUnitStateMsg();
                 setUnitStateMsg.State = AdventureUnitState.Disabled;
                 _controller.gameObject.SendMessageTo(setUnitStateMsg, _controller.transform.parent.gameObject);
@@ -186,12 +219,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             }
             else if (msg.Result == BattleResult.Defeat)
             {
-                var setUnitStateMsg = MessageFactory.GenerateSetAdventureUnitStateMsg();
-                setUnitStateMsg.State = AdventureUnitState.Idle;
-                _controller.gameObject.SendMessageTo(setUnitStateMsg, _controller.transform.parent.gameObject);
-                MessageFactory.CacheMessage(setUnitStateMsg);
-                
-                _controller.gameObject.SendMessageTo(RespawnPlayerMessage.INSTANCE, WorldAdventureController.Player);
+                Defeat();
             }
         }
 
@@ -227,14 +255,17 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             MessageFactory.CacheMessage(setAdventureUnitStateMsg);
 
             var diff = _controller.transform.parent.position.ToVector2() - msg.Owner.transform.position.ToVector2();
+            var faceDirection = diff.normalized.ToVector2Int();
             var setFacingDirectionMsg = MessageFactory.GenerateSetFaceDirectionMsg();
-            setFacingDirectionMsg.Direction = diff.normalized.ToCardinal();
+            setFacingDirectionMsg.Direction = faceDirection;
             _controller.gameObject.SendMessageTo(setFacingDirectionMsg, WorldAdventureController.Player);
             MessageFactory.CacheMessage(setFacingDirectionMsg);
 
+            Debug.Log($"Face Direction on Monster Encounter: {faceDirection}");
+
             var doBumpPixelsMsg = MessageFactory.GenerateDoBumpOverPixelsPerSecondMsg();
             doBumpPixelsMsg.PixelsPerSecond = WorldAdventureController.BattleBumpSpeed;
-            doBumpPixelsMsg.Direction = diff.normalized;
+            doBumpPixelsMsg.Direction = faceDirection;
             doBumpPixelsMsg.Distance = WorldAdventureController.BattleBumpDistance;
             doBumpPixelsMsg.DoAfter = StartEncounter;
             doBumpPixelsMsg.OnBump = () => { };
@@ -331,16 +362,42 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             }
         }
 
-        private void DialogueClosed(DialogueClosedMessage msg)
+        private void PreBattleDialogueClosed(DialogueClosedMessage msg)
         {
             if (_activeDialogue)
             {
                 _activeDialogue = false;
                 _controller.gameObject.Unsubscribe<DialogueClosedMessage>();
-                _controller.StartCoroutine(StaticMethods.WaitForFrames(1, UnpreparedDialogueFinished));
+                _dialogueRoutine = _controller.StartCoroutine(StaticMethods.WaitForFrames(1, UnpreparedDialogueFinished));
             }
         }
 
-        
+        private void DefeatDialogueClosed(DialogueClosedMessage msg)
+        {
+            if (_activeDialogue)
+            {
+                _activeDialogue = false;
+                _controller.gameObject.Unsubscribe<DialogueClosedMessage>();
+                _dialogueRoutine = _controller.StartCoroutine(StaticMethods.WaitForFrames(1, DefeatDialogueFinished));
+            }
+        }
+
+        public override void Destroy()
+        {
+            if (_dialogueRoutine != null)
+            {
+                _controller.StopCoroutine(_dialogueRoutine);
+                _dialogueRoutine = null;
+            }
+
+            if (_activeDialogue)
+            {
+                _controller.gameObject.SendMessage(CloseDialogueMessage.INSTANCE);
+            }
+
+            _encounters = null;
+            _encounterTiles = null;
+            base.Destroy();
+        }
     }
 }

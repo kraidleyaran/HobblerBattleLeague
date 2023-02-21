@@ -73,7 +73,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             }
             else
             {
-                _spawnCooldownTimer = new TickTimer(_spawnCooldown, 0, SpawnCooldownFinish, null, false);
+                _spawnCooldownTimer = new TickTimer(_spawnCooldown, 0, SpawnCooldownFinish, null);
             }
             
 
@@ -94,7 +94,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             }
             else
             {
-                _spawnCheckTimer = new TickTimer(_spawnCheckCooldown, 0, SpawnCheckFinish, null, false);
+                _spawnCheckTimer = new TickTimer(_spawnCheckCooldown, 0, SpawnCheckFinish, null);
             }
         }
 
@@ -114,7 +114,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         private void DespawnUnit(DespawnUnitMessage msg)
         {
             _spawnedUnit.gameObject.SetActive(false);
-            _spawnCooldownTimer = new TickTimer(_spawnCooldown, 0, SpawnCooldownFinish, null, false);
+            _spawnCooldownTimer = new TickTimer(_spawnCooldown, 0, SpawnCooldownFinish, null);
         }
 
         private void SetMapTile(SetMapTileMessage msg)

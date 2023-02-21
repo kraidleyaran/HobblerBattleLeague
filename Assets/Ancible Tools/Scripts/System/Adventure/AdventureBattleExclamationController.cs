@@ -18,7 +18,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Adventure
             _exclamationIcon.color = color;
             if (aliveTimer > 0)
             {
-                _aliveTimer = new TickTimer(aliveTimer, 0, _doAfter, null, false);
+                _aliveTimer = new TickTimer(aliveTimer, 0, _doAfter, null);
             }
         }
 

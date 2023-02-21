@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MaxStack: 1
   _stats:
-    Hunger: 1
-    Boredom: -5
-    Fatigue: 1
+    Hunger: 2
+    Boredom: -3
+    Fatigue: 2
     Ignorance: 0

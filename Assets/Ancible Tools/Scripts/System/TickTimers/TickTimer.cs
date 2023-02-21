@@ -25,9 +25,8 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.TickTimers
         private Action _onFinish = null;
         private int _tickCount = 0;
         private int _loopCount = 0;
-        private bool _world = false;
 
-        public TickTimer(int ticksPerCycle, int loops, Action apply, Action onFinish, bool world = true, bool start = true, Action<int> onTickUpdate = null)
+        public TickTimer(int ticksPerCycle, int loops, Action apply, Action onFinish, bool start = true, Action<int> onTickUpdate = null)
         {
             TicksPerCycle = ticksPerCycle;
             Loops = loops;
@@ -38,7 +37,6 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.TickTimers
                 OnTickFinished += Finish;
             }
             State = TimerState.Stopped;
-            _world = world;
             if (start)
             {
                 Play();
@@ -50,14 +48,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.TickTimers
             if (State != TimerState.Playing)
             {
                 State = TimerState.Playing;
-                if (_world)
-                {
-                    this.Subscribe<WorldTickMessage>(WorldTick);
-                }
-                else
-                {
-                    this.Subscribe<UpdateTickMessage>(UpdateTick);
-                }
+                this.Subscribe<UpdateTickMessage>(UpdateTick);
             }
             else
             {
@@ -85,14 +76,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.TickTimers
             {
                 if (State == TimerState.Playing)
                 {
-                    if (_world)
-                    {
-                        this.Unsubscribe<WorldTickMessage>();
-                    }
-                    else
-                    {
-                        this.Unsubscribe<UpdateTickMessage>();
-                    }
+                    this.Unsubscribe<UpdateTickMessage>();
                 }
                 State = TimerState.Stopped;
                 _tickCount = 0;
@@ -111,14 +95,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.TickTimers
             if (State == TimerState.Playing)
             {
                 State = TimerState.Paused;
-                if (_world)
-                {
-                    this.Unsubscribe<WorldTickMessage>();
-                }
-                else
-                {
-                    this.Unsubscribe<UpdateTickMessage>();
-                }
+                this.Unsubscribe<UpdateTickMessage>();
             }
 
             return this;
@@ -147,15 +124,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.TickTimers
                         State = TimerState.Stopped;
                         _tickCount = 0;
                         _loopCount = 0;
-                        if (_world)
-                        {
-                            this.Unsubscribe<WorldTickMessage>();
-                        }
-                        else
-                        {
-                            this.Unsubscribe<UpdateTickMessage>();
-                        }
-
+                        this.Unsubscribe<UpdateTickMessage>();
                         OnTickFinished?.Invoke();
                     }
                 }
@@ -167,11 +136,6 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.TickTimers
             _onFinish?.Invoke();
         }
 
-        private void WorldTick(WorldTickMessage msg)
-        {
-            Tick();
-        }
-
         private void UpdateTick(UpdateTickMessage msg)
         {
             Tick();
@@ -179,14 +143,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.TickTimers
 
         public void Destroy()
         {
-            if (_world)
-            {
-                this.Unsubscribe<WorldTickMessage>();
-            }
-            else
-            {
-                this.Unsubscribe<UpdateTickMessage>();
-            }
+            this.Unsubscribe<UpdateTickMessage>();
             _applyAction = null;
             _onFinish = null;
             OnDestroyed?.Invoke();

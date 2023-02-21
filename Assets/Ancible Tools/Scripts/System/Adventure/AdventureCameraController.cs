@@ -45,9 +45,13 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Adventure
             //}
         }
 
-        public static void SetCameraPosition(Vector2 pos)
+        public static void SetCameraPosition(Vector2 pos, bool lerp = true)
         {
             _instance._position = pos;
+            if (!lerp)
+            {
+                _instance.transform.SetTransformPosition(_instance._position);
+            }
             //_instance.gameObject.transform.SetTransformPosition(Vector2.Lerp(_instance.transform.position.ToVector2(), pos, DataController.Interpolation));
             //_instance._moved = true;
             //_instance._correct = true;

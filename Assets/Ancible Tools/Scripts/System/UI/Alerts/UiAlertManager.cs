@@ -35,7 +35,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.Alerts
             }
 
             _instance = this;
-            _alertCooldownTimer = new TickTimer(_alertCooldownTime, 0, AlertCooldownFinished, null, false, false);
+            _alertCooldownTimer = new TickTimer(_alertCooldownTime, 0, AlertCooldownFinished, null, false);
 
             base.Awake();
         }

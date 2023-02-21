@@ -13,15 +13,10 @@ MonoBehaviour:
   m_Name: Default Hobbler Happiness Trait
   m_EditorClassIdentifier: 
   MaxStack: 1
-  _minimumHappyPerecent: 0.7
+  _minimumHappyPerecent: 0.66
   _minimumModeratePerecent: 0.3
-  _minStats:
-    Hunger: 0
-    Boredom: 0
-    Fatigue: 0
-    Ignorance: 0
   _maxStats:
-    Hunger: 200
-    Boredom: 200
-    Fatigue: 200
-    Ignorance: 200
+    Hunger: 250
+    Boredom: 175
+    Fatigue: 250
+    Ignorance: 120

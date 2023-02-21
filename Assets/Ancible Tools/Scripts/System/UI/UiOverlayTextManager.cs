@@ -30,7 +30,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI
                 Destroy(gameObject);
                 return;
             }
-            _overlayTextTimer = new TickTimer(_overlayAliveTime, 0, OverlayAlertTextTimerFinished, null, false, false);
+            _overlayTextTimer = new TickTimer(_overlayAliveTime, 0, OverlayAlertTextTimerFinished, null, false);
             _overlayAlertText.text = string.Empty;
             _instance = this;
             base.Awake();

@@ -48,5 +48,29 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI
                 MessageFactory.CacheMessage(removeHoverInfoMsg);
             }
         }
+
+        void OnDisable()
+        {
+            if (_hovered)
+            {
+                _hovered = false;
+                var removeHoverInfoMsg = MessageFactory.GenerateRemoveHoverInfoMsg();
+                removeHoverInfoMsg.Owner = gameObject;
+                gameObject.SendMessage(removeHoverInfoMsg);
+                MessageFactory.CacheMessage(removeHoverInfoMsg);
+            }
+        }
+
+        void OnDestroy()
+        {
+            if (_hovered)
+            {
+                _hovered = false;
+                var removeHoverInfoMsg = MessageFactory.GenerateRemoveHoverInfoMsg();
+                removeHoverInfoMsg.Owner = gameObject;
+                gameObject.SendMessage(removeHoverInfoMsg);
+                MessageFactory.CacheMessage(removeHoverInfoMsg);
+            }
+        }
     }
 }

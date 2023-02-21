@@ -16,11 +16,11 @@ MonoBehaviour:
   Description: 
   _icon: {fileID: -8076947057118016353, guid: 2b8f0602ca246a843860ad4b1b843b9a, type: 3}
   MaxStack: 1
-  GoldValue: 7
+  GoldValue: 45
   Rarity: 0
   _applyOnEquip: []
   AttackSetup:
-    Range: 1
+    Range: 5
     AttackSpeed: 50
     ApplyToTarget:
     - {fileID: 11400000, guid: ed64a5d400030cd4994df73232894c60, type: 2}

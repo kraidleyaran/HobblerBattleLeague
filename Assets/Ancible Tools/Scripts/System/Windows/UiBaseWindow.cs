@@ -94,7 +94,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Windows
 
         public virtual void Close()
         {
-            UiWindowManager.CloseWindow(this, WorldName);
+            UiWindowManager.CloseWindow(this);
         }
 
         public virtual void Destroy()

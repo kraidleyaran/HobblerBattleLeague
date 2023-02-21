@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Assets.Ancible_Tools.Scripts.System.SaveData;
 using Assets.Resources.Ancible_Tools.Scripts.System.Pathing;
 using Assets.Resources.Ancible_Tools.Scripts.System.UI.BattleLeague;
 using MessageBusLib;
@@ -16,6 +17,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague
         private BattleBenchSlotController[] _benchSlots = new BattleBenchSlotController[0];
         private List<MapTile> _availableTiles = new List<MapTile>();
         private List<GameObject> _benchedPieces = new List<GameObject>();
+        private Dictionary<GameObject, BattleUnitData> _units = new Dictionary<GameObject, BattleUnitData>();
 
         public void WakeUp(MapTile[] tiles)
         {
@@ -57,6 +59,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague
 
                 _benchSlots[i].SetCurrentPiece(unitController.gameObject);
                 _benchedPieces.Add(unitController.gameObject);
+                _units.Add(unitController.gameObject, units[i]);
             }
             MessageFactory.CacheMessage(addTraitToUnitMsg);
             MessageFactory.CacheMessage(setGamePieceDataMsg);
@@ -243,6 +246,37 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague
             UiBattleLeagueScoreController.SetReadyButtonInteractable(_placedPieces.Count > 0);
         }
 
+        public BattlePositionData[] GetBattlePositionData()
+        {
+            var pieces = _placedPieces.ToArray();
+            var positionData = new List<BattlePositionData>();
+            foreach (var piece in pieces)
+            {
+                if (_units.TryGetValue(piece.Value, out var data))
+                {
+                    positionData.Add(new BattlePositionData{Id = data.Id, Position = piece.Key.Position.ToData()});
+                }
+            }
+
+            return positionData.ToArray();
+        }
+
+        public void SetUnitsFromPositionData(BattlePositionData[] data)
+        {
+            foreach (var pieceData in data)
+            {
+                var existingUnit = _units.FirstOrDefault(u => u.Value.Id == pieceData.Id);
+                if (existingUnit.Key)
+                {
+                    var tile = _availableTiles.FirstOrDefault(t => t.Position == pieceData.Position.ToVector());
+                    if (tile != null)
+                    {
+                        PlacePieceAtTileFromBench(existingUnit.Key, tile, null);
+                    }
+                }
+            }
+        }
+
         public void Clear()
         {
             for (var i = 0; i < _benchSlots.Length; i++)
@@ -261,6 +295,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague
             _availableTiles.AddRange(tiles);
             _placedPieces.Clear();
             _benchedPieces.Clear();
+            _units.Clear();
             _placedPieces = new Dictionary<MapTile, GameObject>();
             _benchedPieces = new List<GameObject>();
             

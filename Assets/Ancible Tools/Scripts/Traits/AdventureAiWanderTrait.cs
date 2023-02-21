@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Assets.Resources.Ancible_Tools.Scripts.System;
 using Assets.Resources.Ancible_Tools.Scripts.System.Adventure;
 using Assets.Resources.Ancible_Tools.Scripts.System.Pathing;
@@ -41,7 +42,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                     _idleTimer = null;
                 }
 
-                _idleTimer = new TickTimer(_idleTicks.Roll(), 0, IdleFinished, null, false);
+                _idleTimer = new TickTimer(_idleTicks.Roll(), 0, IdleFinished, null);
                 return true;
             }
 
@@ -107,8 +108,8 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                         var path = pathingGrid.GetPath(_currentTile.Position, tile.Position);
                         if (path.Length > 0)
                         {
-                            var nextTile = path[0];
-
+                            _path = path.ToList();
+                            var nextTile = _path[0];
                             var setDirectionMsg = MessageFactory.GenerateSetDirectionMsg();
                             setDirectionMsg.Direction = nextTile.Position - _currentTile.Position;
                             _controller.gameObject.SendMessageTo(setDirectionMsg, _controller.transform.parent.gameObject);

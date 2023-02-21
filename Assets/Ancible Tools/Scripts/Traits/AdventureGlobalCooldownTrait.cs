@@ -18,7 +18,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         public override void SetupController(TraitController controller)
         {
             base.SetupController(controller);
-            _globalCooldown = new TickTimer(_ticks, 0, FinishGlobalCooldown, null, false, false);
+            _globalCooldown = new TickTimer(_ticks, 0, FinishGlobalCooldown, null, false);
             SubscribeToMessages();
         }
 
@@ -26,10 +26,10 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         {
             if (_unitState == AdventureUnitState.GlobalCooldown)
             {
-                var updateUnitStateMsg = MessageFactory.GenerateUpdateAdventureUnitStateMsg();
-                updateUnitStateMsg.State = AdventureUnitState.Idle;
-                _controller.gameObject.SendMessageTo(updateUnitStateMsg, _controller.transform.parent.gameObject);
-                MessageFactory.CacheMessage(updateUnitStateMsg);
+                var setUnitStateMsg = MessageFactory.GenerateSetAdventureUnitStateMsg();
+                setUnitStateMsg.State = AdventureUnitState.Idle;
+                _controller.gameObject.SendMessageTo(setUnitStateMsg, _controller.transform.parent.gameObject);
+                MessageFactory.CacheMessage(setUnitStateMsg);
             }
         }
 

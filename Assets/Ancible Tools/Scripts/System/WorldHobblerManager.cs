@@ -195,7 +195,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
             var hobblers = new List<GameObject>();
             var queryHappinessMsg = MessageFactory.GenerateQueryHappinessMsg();
             var state = HappinessState.Moderate;
-            queryHappinessMsg.DoAfter = (happiness, happy, moderate, happinessState) => {  state = happinessState; };
+            queryHappinessMsg.DoAfter = (happinessState) => {  state = happinessState; };
             for (var i = 0; i < Roster.Count; i++)
             {
                 _instance.gameObject.SendMessageTo(queryHappinessMsg, Roster[i]);

@@ -16,6 +16,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague
         public LootTable RepeatableLoot = null;
         public virtual int TotalUnits => 0;
         public bool Save;
+        public int GoldRemoveOnDefeat = 0;
 
         public virtual KeyValuePair<MapTile, int>[] GetBattleUnits(Vector2Int min, MapTile[] available)
         {

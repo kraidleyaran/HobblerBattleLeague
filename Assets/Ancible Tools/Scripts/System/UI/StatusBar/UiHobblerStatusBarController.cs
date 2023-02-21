@@ -15,9 +15,6 @@ namespace Assets.Ancible_Tools.Scripts.System.UI.StatusBar
 
         [SerializeField] private Transform _iconTransform;
         [SerializeField] private Text _nameText;
-        [SerializeField] private UiFillBarController _happinessBar;
-        [SerializeField] private Color _negativeFillColor = Color.white;
-        [SerializeField] [Range(0f,1f)] private float _minimumNegativePercent = .01f;
 
         private GameObject _obj;
         private Vector2 _offset = Vector2.zero;
@@ -44,11 +41,6 @@ namespace Assets.Ancible_Tools.Scripts.System.UI.StatusBar
             queryNameMsg.DoAfter = RefreshName;
             gameObject.SendMessageTo(queryNameMsg, _obj);
             MessageFactory.CacheMessage(queryNameMsg);
-
-            var queryHappinessMsg = MessageFactory.GenerateQueryHappinessMsg();
-            queryHappinessMsg.DoAfter = RefreshHappiness;
-            gameObject.SendMessageTo(queryHappinessMsg, _obj);
-            MessageFactory.CacheMessage(queryHappinessMsg);
         }
 
         private void RefreshName(string hobblerName)
@@ -83,17 +75,6 @@ namespace Assets.Ancible_Tools.Scripts.System.UI.StatusBar
             {
                 _iconControllers[currentTypes[i]].transform.SetSiblingIndex(i);
             }
-        }
-
-        private void RefreshHappiness(float current, float happy, float moderate,HappinessState state)
-        {
-            
-            if (state == HappinessState.Unhappy)
-            {
-                var percent = Mathf.Max(_minimumNegativePercent, current);
-                _happinessBar.Setup(percent, $"{current}", state.ToColor());
-            }
-            _happinessBar.gameObject.SetActive(state == HappinessState.Unhappy);
         }
 
         private void SubscribeToMessages()

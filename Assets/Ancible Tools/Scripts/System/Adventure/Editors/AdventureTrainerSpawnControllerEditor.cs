@@ -1,8 +1,9 @@
 ﻿#if UNITY_EDITOR
+using Assets.Resources.Ancible_Tools.Scripts.System.Adventure;
 using UnityEditor;
 using UnityEngine;
 
-namespace Assets.Resources.Ancible_Tools.Scripts.System.Adventure
+namespace Assets.Ancible_Tools.Scripts.System.Adventure.Editors
 {
     [CustomEditor(typeof(AdventureTrainerSpawnController))]
     public class AdventureTrainerSpawnControllerEditor : Editor

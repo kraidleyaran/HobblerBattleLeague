@@ -9,7 +9,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
     public class ApplyManaTrait : Trait
     {
         public override bool Instant => true;
-        [SerializeField] private IntNumberRange _amount = IntNumberRange.One;
+        [SerializeField] private FloatNumberRange _amount = FloatNumberRange.Zero;
 
         public override void SetupController(TraitController controller)
         {

@@ -27,6 +27,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.SaveData
         public HobblerBattleHistory[] BattleHistory = new HobblerBattleHistory[0];
         public int Level = 0;
         public int Experience = 0;
+        public int ExperiencePool = 0;
 
         public void Dispose()
         {
@@ -44,6 +45,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.SaveData
             BattleHistory = null;
             Level = 0;
             Experience = 0;
+            ExperiencePool = 0;
         }
     }
 }

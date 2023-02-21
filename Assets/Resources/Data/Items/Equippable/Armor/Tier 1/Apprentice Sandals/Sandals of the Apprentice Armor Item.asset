@@ -19,4 +19,4 @@ MonoBehaviour:
   GoldValue: 30
   Rarity: 0
   _applyOnEquip:
-  - {fileID: 11400000, guid: c157ae30c092a7b419e405b0de1dee72, type: 2}
+  - {fileID: 11400000, guid: 192eaa09c64190e44a70f3ee9cd91213, type: 2}

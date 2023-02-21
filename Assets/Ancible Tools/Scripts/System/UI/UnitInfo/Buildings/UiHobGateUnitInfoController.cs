@@ -47,7 +47,7 @@ namespace Assets.Ancible_Tools.Scripts.System.UI.UnitInfo.Buildings
         {
             var remainingTicks = max - current;
             var percent = (float) remainingTicks / max;
-            _fillBarController.Setup(percent, $"{remainingTicks}", _timerFillColor);
+            _fillBarController.Setup(percent, $"{(int)(remainingTicks * TickController.TickRate)}", _timerFillColor);
         }
 
         private void RefreshHobs(KeyValuePair<int, HobblerTemplate>[] hobblers, TickTimer timer, int rerollCost)

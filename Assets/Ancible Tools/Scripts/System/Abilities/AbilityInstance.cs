@@ -16,7 +16,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Abilities
         {
             Instance = ability;
             OnCooldown = false;
-            _cooldown = new TickTimer(Instance.Cooldown, 0, CooldownFinish, null, false, false);
+            _cooldown = new TickTimer(Instance.Cooldown, 0, CooldownFinish, null, false);
         }
 
         public void UseAbility(GameObject owner, GameObject target)

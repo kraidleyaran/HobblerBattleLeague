@@ -65,9 +65,29 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.Dialogue
         {
             if (!msg.Previous.Interact && msg.Current.Interact && !_answerManager.gameObject.activeSelf)
             {
-                if (!_dialogueTextController.SkipText() &&  (!_currentDialogue || _currentDialogue.Tree.Dialogue.Length <= 0))
+                if (!_dialogueTextController.SkipText())
                 {
-                    Close();
+                    if (_currentDialogue && (_currentDialogue.ApplyToOwner.Length > 0 || _currentDialogue.ApplyToPlayer.Length > 0))
+                    {
+                        var addTraitToUnitMsg = MessageFactory.GenerateAddTraitToUnitMsg();
+                        foreach (var trait in _currentDialogue.ApplyToOwner)
+                        {
+                            addTraitToUnitMsg.Trait = trait;
+                            gameObject.SendMessageTo(addTraitToUnitMsg, _owner);
+                        }
+
+                        foreach (var trait in _currentDialogue.ApplyToPlayer)
+                        {
+                            addTraitToUnitMsg.Trait = trait;
+                            gameObject.SendMessageTo(addTraitToUnitMsg, WorldAdventureController.Player);
+                        }
+                        MessageFactory.CacheMessage(addTraitToUnitMsg);
+                    }
+                    if ((!_currentDialogue || _currentDialogue.Tree.Dialogue.Length <= 0))
+                    {
+                        Close();
+                    }
+                    
                 }
             }
         }

@@ -21,7 +21,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         private CombatStats _bonusStats = CombatStats.Zero;
 
         private int _currentHealth = 0;
-        private int _currentMana = 0;
+        private float _currentMana = 0;
 
         public override void SetupController(TraitController controller)
         {
@@ -169,7 +169,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
 
         private void QueryMana(QueryManaMessage msg)
         {
-            msg.DoAfter.Invoke(_currentMana, _baseStats.Mana + _bonusStats.Mana);
+            msg.DoAfter.Invoke((int)_currentMana, _baseStats.Mana + _bonusStats.Mana);
         }
 
         private void Heal(HealMessage msg)

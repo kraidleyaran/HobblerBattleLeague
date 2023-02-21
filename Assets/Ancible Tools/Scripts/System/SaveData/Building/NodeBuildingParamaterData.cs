@@ -6,11 +6,13 @@ namespace Assets.Ancible_Tools.Scripts.System.SaveData.Building
     public class NodeBuildingParamaterData : BuildingParameterData
     {
         public int Stack;
+        public bool AutoRefillEnabled = false;
 
         public override void Dispose()
         {
             base.Dispose();
             Stack = 0;
+            AutoRefillEnabled = false;
         }
     }
 }

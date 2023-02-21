@@ -13,5 +13,4 @@ MonoBehaviour:
   m_Name: Level 1 Food Unit Command Trait
   m_EditorClassIdentifier: 
   MaxStack: 1
-  _startingCommands:
-  - {fileID: 11400000, guid: 38a16d4f01a430a43bc09ba88f716621, type: 2}
+  _startingCommands: []

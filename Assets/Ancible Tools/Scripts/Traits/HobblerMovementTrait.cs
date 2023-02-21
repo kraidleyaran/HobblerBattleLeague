@@ -34,6 +34,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             _controller.transform.parent.gameObject.SubscribeWithFilter<SetPathMessage>(SetPath, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<UpdateMonsterStateMessage>(UpdateMonsterState, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<SetDirectionMessage>(SetDirection, _instanceId);
+            _controller.transform.parent.gameObject.SubscribeWithFilter<ClearPathMessage>(ClearPath, _instanceId);
         }
 
         private void UpdateTick(UpdateTickMessage msg)
@@ -68,7 +69,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             {
                 var moveSpeed = (_moveSpeed * DataController.Interpolation) / TickController.OneSecond;
                 {
-                    var direction = _path[0].Position - _currentTile.Position;
+                    var direction = (_path[0].Position - _currentTile.Position).Normalize();
                     var updateDirectionMsg = MessageFactory.GenerateUpdateDirectionMsg();
                     updateDirectionMsg.Direction = direction;
                     _controller.gameObject.SendMessageTo(updateDirectionMsg, _controller.transform.parent.gameObject);
@@ -98,17 +99,18 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                                 var nextTile = _path[waypoint];
                                 if (nextTile.Block)
                                 {
-                                    var obstacleMsg = MessageFactory.GenerateObstacleMsg();
-                                    obstacleMsg.Direction = (nextTile.Position - _currentTile.Position).Normalize();
-                                    _controller.gameObject.SendMessageTo(obstacleMsg, _controller.transform.parent.gameObject);
-                                    MessageFactory.CacheMessage(obstacleMsg);
-
-                                    _path = new MapTile[0];
                                     if (_moveTween != null)
                                     {
                                         _moveTween.Kill();
                                         _moveTween = null;
                                     }
+
+                                    _path = new MapTile[0];
+
+                                    var obstacleMsg = MessageFactory.GenerateObstacleMsg();
+                                    obstacleMsg.Direction = (nextTile.Position - _currentTile.Position).Normalize();
+                                    _controller.gameObject.SendMessageTo(obstacleMsg, _controller.transform.parent.gameObject);
+                                    MessageFactory.CacheMessage(obstacleMsg);
                                 }
                             }
                         }
@@ -156,6 +158,19 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             updateDirectionMsg.Direction = msg.Direction;
             _controller.gameObject.SendMessageTo(updateDirectionMsg, _controller.transform.parent.gameObject);
             MessageFactory.CacheMessage(updateDirectionMsg);
+        }
+
+        private void ClearPath(ClearPathMessage msg)
+        {
+            if (_moveTween != null)
+            {
+                if (_moveTween.IsActive())
+                {
+                    _moveTween.Kill();
+                }
+
+                _moveTween = null;
+            }
         }
 
         public override void Destroy()

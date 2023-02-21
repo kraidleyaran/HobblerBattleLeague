@@ -8,6 +8,7 @@ using Assets.Ancible_Tools.Scripts.System.SaveData;
 using Assets.Ancible_Tools.Scripts.System.SaveData.Building;
 using Assets.Ancible_Tools.Scripts.Traits;
 using Assets.Resources.Ancible_Tools.Scripts.System.Adventure;
+using Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague;
 using Assets.Resources.Ancible_Tools.Scripts.System.Building;
 using Assets.Resources.Ancible_Tools.Scripts.System.Items;
 using Assets.Resources.Ancible_Tools.Scripts.System.Pathing;
@@ -76,6 +77,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.SaveData
             data.Stash = WorldStashController.GetStashData();
             data.Buildings = WorldBuildingManager.GetData();
             data.Windows = UiWindowManager.GetWindowData();
+            data.BattlePositions = BattleLeagueManager.GetSavedBattlePositionData();
 
             if (WorldAdventureController.Player)
             {
@@ -152,6 +154,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.SaveData
                 LoadHobblers(data.HobblerFolderPath);
                 WorldStashController.SetStashFromData(data.Stash, data.Gold);
                 WorldBuildingManager.SetFromBuildingsData(data.Buildings);
+                BattleLeagueManager.SetSavedBattlePositions(data.BattlePositions);
                 _instance.gameObject.SendMessage(LoadWorldDataMessage.INSTANCE);
 
                 var map = WorldAdventureController.GetAdventuerMapByName(data.Map);
@@ -199,6 +202,11 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.SaveData
         public static BuildingData GetBuildingData(string id)
         {
             return _instance._playerData?.Buildings.FirstOrDefault(t => t.Id == id);
+        }
+
+        public static AdventureDialogueData GetDialogueDataById(string id)
+        {
+            return _instance._playerData?.Dialogue.FirstOrDefault(d => d.Id == id);
         }
 
         private static void ApplySpriteToData(SpriteTrait trait)

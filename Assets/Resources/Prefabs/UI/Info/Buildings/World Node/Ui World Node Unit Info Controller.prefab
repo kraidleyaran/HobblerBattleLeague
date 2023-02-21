@@ -888,7 +888,7 @@ MonoBehaviour:
   _unitNameText: {fileID: 6623860703767272550}
   _stacksFillbar: {fileID: 8421026766291458259}
   _hobblerIconTemplate: {fileID: 4143843370056751526, guid: 8dded566d0206a547bfbe0d5283edf37, type: 3}
-  _stackFillColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  _stackFillColor: {r: 1, g: 0.73333335, b: 0.19215687, a: 1}
   _hobblerGrid: {fileID: 7510327820085195253}
   _hobblerContent: {fileID: 7568621198722237931}
   _hobblerGroup: {fileID: 4151117640173616936}

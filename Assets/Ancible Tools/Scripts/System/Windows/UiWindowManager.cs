@@ -126,13 +126,12 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Windows
 
         }
 
-        public static bool CloseWindow(UiBaseWindow window, string id = "")
+        public static bool CloseWindow(UiBaseWindow window)
         {
             if (window.Static)
             {
-                if (_instance._staticWindows.TryGetValue(window.name, out var openWindow))
+                if (_instance._staticWindows.TryGetValue(window.WorldName, out var openWindow))
                 {
-                    
                     _instance._staticWindows.Remove(window.name);
                     if (_instance._windowData.TryGetValue(openWindow.WorldName, out var data))
                     {
@@ -147,13 +146,11 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Windows
                     return true;
                 }
             }
-            else if (!string.IsNullOrEmpty(id))
+            else
             {
-                var windowName = window.Instantiated ? window.name : $"{window.name} {id}";
-                var openWindow = _instance._openWindows.FirstOrDefault(w => w.name == windowName);
+                var openWindow = _instance._openWindows.FirstOrDefault(w => w == window);
                 if (openWindow)
                 {
-                    
                     if (_instance._windowData.TryGetValue(openWindow.WorldName, out var data))
                     {
                         data.Position = openWindow.transform.localPosition.ToVector2().ToVector2Int().ToData();
@@ -162,18 +159,13 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Windows
                     {
                         _instance._windowData.Add(openWindow.WorldName, new WindowData { Window = window.name, Id = window.WorldName, Position = openWindow.transform.localPosition.ToVector2().ToVector2Int().ToData() });
                     }
-                    openWindow.Destroy();
                     _instance._openWindows.Remove(openWindow);
+                    openWindow.Destroy();
                     Destroy(openWindow.gameObject);
+                    return true;
                 }
             }
-            else if (_instance._openWindows.Contains(window))
-            {
-                window.Destroy();
-                _instance._openWindows.Remove(window);
-                Destroy(window.gameObject);
-                return true;
-            }
+
 
             return false;
         }
@@ -182,7 +174,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Windows
         {
             if (_instance._staticWindows.TryGetValue(template.name, out var window))
             {
-                CloseWindow(window, window.WorldName);
+                CloseWindow(window);
                 return null;
             }
 

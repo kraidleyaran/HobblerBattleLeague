@@ -69,9 +69,9 @@ namespace Assets.Ancible_Tools.Scripts.System.UI.UnitInfo
             _nameText.text = unitName;
         }
 
-        private void RefreshHappiness(float happiness, float happy, float moderate, HappinessState state)
+        private void RefreshHappiness(HappinessState state)
         {
-            _happinessController.Setup(happiness, state);
+            _happinessController.Setup(state);
         }
 
         private void RefreshWellbeing(WellbeingStats stats, WellbeingStats max)

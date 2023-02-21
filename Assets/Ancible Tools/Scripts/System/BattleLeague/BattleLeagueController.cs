@@ -122,6 +122,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague
 
             gameObject.SetActive(true);
             LeftBench.Setup(left);
+            LeftBench.SetUnitsFromPositionData(BattleLeagueManager.GetSavedBattlePositionData());
             RightBench.Setup(right);
             MatchId = GUID.Generate().ToString();
             StartPrepTimer();
@@ -143,6 +144,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague
             gameObject.SetActive(true);
 
             LeftBench.Setup(player);
+            LeftBench.SetUnitsFromPositionData(BattleLeagueManager.GetSavedBattlePositionData());
             _encounterBenchController.Setup(encounter);
             MatchId = GUID.Generate().ToString();
             StartPrepTimer();
@@ -244,6 +246,11 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague
         private void SetupRound()
         {
             _pathingGrid.Clear();
+            var positionData = LeftBench.GetBattlePositionData();
+            if (positionData.Length > 0)
+            {
+                BattleLeagueManager.SetSavedBattlePositions(positionData);
+            }
             var addTraitToUnitMsg = MessageFactory.GenerateAddTraitToUnitMsg();
             var setMapTileMsg = MessageFactory.GenerateSetMapTileMsg();
             var setAbilitiesMsg = MessageFactory.GenerateSetAbilitiesMsg();
@@ -347,7 +354,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague
             {
                 _victoryTimer.Destroy();
                 _victoryTimer = null;
-            }, false);
+            });
         }
 
         private void CleanUpRound()
@@ -436,7 +443,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague
             {
                 _prepPhaseTimer.Destroy();
                 _prepPhaseTimer = null;
-            }, false);
+            });
             _prepPhaseTimer.OnTickUpdate += (current, max) => { UiBattleLeagueTimerController.UpdateTimer(current, max, BattleState.Prep, _round, IsOvertime());};
         }
 
@@ -458,7 +465,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague
                 _preBattleTimer.Destroy();
                 _preBattleTimer = null;
                 UiBattleLeagueTimerController.UpdateTimer(1,1, BattleState.Battle, _round, IsOvertime());
-            }, false);
+            });
             _preBattleTimer.OnTickUpdate += (current, max) => { UiBattleLeagueTimerController.UpdateTimer(current,max, BattleState.Countdown, _round, IsOvertime());};
         }
 

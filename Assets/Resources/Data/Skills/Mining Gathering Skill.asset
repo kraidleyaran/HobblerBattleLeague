@@ -18,6 +18,27 @@ MonoBehaviour:
   Icon: {fileID: -8930745273272892969, guid: 2b8f0602ca246a843860ad4b1b843b9a, type: 3}
   ExperienceMultiplier: 1
   LevelExperience: 100
+  Levels:
+  - ApplyOnLevel: []
+    Bonus: 1
+  - ApplyOnLevel: []
+    Bonus: 1
+  - ApplyOnLevel: []
+    Bonus: 1
+  - ApplyOnLevel: []
+    Bonus: 1
+  - ApplyOnLevel: []
+    Bonus: 1
+  - ApplyOnLevel: []
+    Bonus: 1
+  - ApplyOnLevel: []
+    Bonus: 1
+  - ApplyOnLevel: []
+    Bonus: 1
+  - ApplyOnLevel: []
+    Bonus: 1
+  - ApplyOnLevel: []
+    Bonus: 1
   Command: {fileID: 0}
   Items:
   - {fileID: 11400000, guid: ee7cbe2a3dd07bd4791f6517be7eba67, type: 2}

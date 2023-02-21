@@ -36,7 +36,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Minigame
             }
             for (var i = 0; i < _openWindows.Length; i++)
             {
-                UiWindowManager.CloseWindow(_openWindows[i], _openWindows[i].WorldName);
+                UiWindowManager.CloseWindow(_openWindows[i]);
             }
             _openWindows = new UiBaseWindow[0];
             LoadMinigame(_settings);
@@ -80,7 +80,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Minigame
             //Debug.Log($"Minigame Result: {msg.Result}");
             for (var i = 0; i < _openWindows.Length; i++)
             {
-                UiWindowManager.CloseWindow(_openWindows[i], _openWindows[i].WorldName);
+                UiWindowManager.CloseWindow(_openWindows[i]);
             }
             _openWindows = new UiBaseWindow[0];
 

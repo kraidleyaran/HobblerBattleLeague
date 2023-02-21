@@ -31,13 +31,12 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             _controller.transform.parent.gameObject.SubscribeWithFilter<SetPlayerCheckpointMessage>(SetPlayerCheckpoint, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<RespawnPlayerMessage>(RespawnPlayer, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<QueryPlayerCheckpointMessage>(QueryPlayerCheckpoint, _instanceId);
+            _controller.transform.parent.gameObject.SubscribeWithFilter<MovementCompletedMessage>(MovementCompleted, _instanceId);
         }
 
         private void UpdateMapTile(UpdateMapTileMessage msg)
         {
             _currentTile = msg.Tile;
-            msg.Tile.ApplyEvent(_controller.transform.parent.gameObject);
-            WorldAdventureController.SetPlayerTile(msg.Tile);
         }
 
         private void Obstacle(ObstacleMessage msg)
@@ -86,6 +85,12 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         private void QueryPlayerCheckpoint(QueryPlayerCheckpointMessage msg)
         {
             msg.DoAfter.Invoke(_checkpointMap.name, _checkpoint);
+        }
+
+        private void MovementCompleted(MovementCompletedMessage msg)
+        {
+            _currentTile.ApplyEvent(_controller.transform.parent.gameObject);
+            WorldAdventureController.SetPlayerTile(_currentTile);
         }
     }
 }

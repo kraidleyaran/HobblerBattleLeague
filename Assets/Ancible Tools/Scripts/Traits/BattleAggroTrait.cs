@@ -118,7 +118,8 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                             {
                                 if (!availableSurroundingTiles.Contains(_currentTile))
                                 {
-                                    var goToTile = availableSurroundingTiles.GetRandom();
+                                    var orderedTiles = availableSurroundingTiles.Where(t => !t.Block).OrderBy(t => (_currentTile.World - t.World).sqrMagnitude).ToArray();
+                                    var goToTile = orderedTiles[0];
                                     var path = BattleLeagueController.PathingGrid.GetPath(_currentTile.Position, goToTile.Position, _diagonalCost);
                                     if (path.Length > 0)
                                     {

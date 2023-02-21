@@ -2,6 +2,7 @@
 using Assets.Resources.Ancible_Tools.Scripts.System;
 using Assets.Resources.Ancible_Tools.Scripts.System.Adventure;
 using Assets.Resources.Ancible_Tools.Scripts.System.Pathing;
+using Assets.Resources.Ancible_Tools.Scripts.System.SaveData;
 using MessageBusLib;
 using UnityEngine;
 
@@ -11,6 +12,8 @@ namespace Assets.Ancible_Tools.Scripts.Traits
     public class AdventureDialogueInteractionTrait : Trait
     {
         [SerializeField] private DialogueData _dialogue = null;
+        public bool Save;
+        [HideInInspector] public string SaveId;
 
         private AdventureUnitState _unitState = AdventureUnitState.Idle;
 
@@ -20,6 +23,18 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         public override void SetupController(TraitController controller)
         {
             base.SetupController(controller);
+            if (Save && !string.IsNullOrEmpty(SaveId))
+            {
+                var data = PlayerDataController.GetDialogueDataById(SaveId);
+                if (data != null)
+                {
+                    var dialogue = DialogueFactory.GetDialogueFromName(data.Dialogue);
+                    if (dialogue)
+                    {
+                        _dialogue = dialogue;
+                    }
+                }
+            }
             SubscribeToMessages();
         }
 

@@ -13,6 +13,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
 
         private int _experience = 0;
         private int _level = 0;
+        private int _experiencePool = 0;
 
         public override void SetupController(TraitController controller)
         {
@@ -20,17 +21,13 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             SubscribeToMessages();
         }
 
-        private void SubscribeToMessages()
+        private void AddExperience(int amount, bool addToPool = true)
         {
-            _controller.transform.parent.gameObject.SubscribeWithFilter<AddExperienceMessage>(AddExperience, _instanceId);
-            _controller.transform.parent.gameObject.SubscribeWithFilter<QueryExperienceMessage>(QueryExperience, _instanceId);
-            _controller.transform.parent.gameObject.SubscribeWithFilter<SetHobblerExperienceMessage>(SetHobblerExperience, _instanceId);
-            _controller.transform.parent.gameObject.SubscribeWithFilter<QueryRequiredLevelExperienceMessage>(QueryRequiredLevelExeperience, _instanceId);
-        }
-
-        private void AddExperience(AddExperienceMessage msg)
-        {
-            _experience += msg.Amount;
+            _experience += amount;
+            if (addToPool)
+            {
+                _experiencePool += amount;
+            }
             var requiredExperience = StaticMethods.CalculateNextLevel(_level, _baseExperience, _xpRate);
             var leveldUp = false;
             while (_experience >= requiredExperience)
@@ -51,11 +48,26 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             MessageFactory.CacheMessage(updateHobblerExperienceMsg);
             _controller.gameObject.SendMessageTo(RefreshUnitMessage.INSTANCE, _controller.transform.parent.gameObject);
 
-            var ignorance = msg.Amount * WellBeingController.IgnorancePerExperience;
+            var ignorance = Mathf.RoundToInt(amount * WellBeingController.IgnorancePerExperience);
             var applyWellbeingStatsMsg = MessageFactory.GenerateApplyWellbeingStatsMsg();
-            applyWellbeingStatsMsg.Stats = new WellbeingStats {Ignorance = ignorance};
+            applyWellbeingStatsMsg.Stats = new WellbeingStats { Ignorance = ignorance };
             _controller.gameObject.SendMessageTo(applyWellbeingStatsMsg, _controller.transform.parent.gameObject);
             MessageFactory.CacheMessage(applyWellbeingStatsMsg);
+        }
+
+        private void SubscribeToMessages()
+        {
+            _controller.gameObject.Subscribe<ApplyGlobalExperienceMessage>(ApplyGlobalExperience);
+            _controller.transform.parent.gameObject.SubscribeWithFilter<AddExperienceMessage>(AddExperience, _instanceId);
+            _controller.transform.parent.gameObject.SubscribeWithFilter<QueryExperienceMessage>(QueryExperience, _instanceId);
+            _controller.transform.parent.gameObject.SubscribeWithFilter<SetHobblerExperienceMessage>(SetHobblerExperience, _instanceId);
+            _controller.transform.parent.gameObject.SubscribeWithFilter<QueryRequiredLevelExperienceMessage>(QueryRequiredLevelExeperience, _instanceId);
+            _controller.transform.parent.gameObject.SubscribeWithFilter<QueryExperiencePoolMessage>(QueryExperiencePool, _instanceId);
+        }
+
+        private void AddExperience(AddExperienceMessage msg)
+        {
+            AddExperience(msg.Amount);
         }
 
         private void QueryExperience(QueryExperienceMessage msg)
@@ -72,6 +84,23 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         private void QueryRequiredLevelExeperience(QueryRequiredLevelExperienceMessage msg)
         {
             msg.DoAfter.Invoke(StaticMethods.CalculateNextLevel(msg.Level - 1, _baseExperience, _xpRate));
+        }
+
+        private void ApplyGlobalExperience(ApplyGlobalExperienceMessage msg)
+        {
+            if (msg.Owner == _controller.transform.parent.gameObject)
+            {
+                _experiencePool = Mathf.Max(0, _experiencePool - msg.Amount);
+            }
+            else
+            {
+                AddExperience(msg.Amount, false);
+            }
+        }
+
+        private void QueryExperiencePool(QueryExperiencePoolMessage msg)
+        {
+            msg.DoAfter.Invoke(_experiencePool);
         }
     }
 }

@@ -993,14 +993,14 @@ MonoBehaviour:
   _manaPerDamageDone: 0.25
   _manaPerDamageTaken: 0.25
   _applyOnVictory:
-    Hunger: 2
-    Boredom: -4
-    Fatigue: 2
+    Hunger: 3
+    Boredom: -40
+    Fatigue: 3
     Ignorance: 0
   _applyOnDefeat:
-    Hunger: 2
-    Boredom: -1
-    Fatigue: 2
+    Hunger: 4
+    Boredom: -15
+    Fatigue: 4
     Ignorance: 0
 --- !u!1 &1015332609595145519
 GameObject:
@@ -1148,7 +1148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a160d838ff8b4b4693ac20007e008c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_AssetsPPU: 8
+  m_AssetsPPU: 7
   m_RefResolutionX: 1600
   m_RefResolutionY: 900
   m_UpscaleRT: 0
@@ -2701,6 +2701,8 @@ MonoBehaviour:
   _trainerUnpreparedBattle:
   - Hey, you shouldn't be wandering around if you're not prepared to battle!
   - You know the rules - Come back when you're ready!
+  _defaultDefeat:
+  - You've lost the battle and will be teleported back to your last way point.
 --- !u!1 &3027752164200329843
 GameObject:
   m_ObjectHideFlags: 0
@@ -4625,16 +4627,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _wellbeingWarningPerecent: 0.25
   _ignorancePerExperience: 1
-  _happinesPerHunger: 1
-  _happinessPerBoredom: 1
-  _happinessPerFatigue: 1
-  _happinessPerIgnorance: 1
   _happinessIcon: {fileID: 21300000, guid: e5ceacb1a9520cd4a82bce1d00d28035, type: 3}
-  _ticksPerHungerEffect: 10
+  _ticksPerHungerEffect: 300
   _hungerPerEffect: 1
-  _ticksPerBoredomEffect: 10
+  _ticksPerBoredomEffect: 300
   _boredomPerEffect: 1
-  _ticksPerFatigueEffect: 10
+  _ticksPerFatigueEffect: 300
   _fatiguePerEffect: 1
   _hungerPositive: Food
   _fatiugePositive: Energy
@@ -5845,7 +5843,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a160d838ff8b4b4693ac20007e008c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_AssetsPPU: 16
+  m_AssetsPPU: 12
   m_RefResolutionX: 1600
   m_RefResolutionY: 900
   m_UpscaleRT: 0
@@ -5909,13 +5907,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbd4a536d99a09a46aca9b1d25e2c553, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _startingItems:
-  - Item: {fileID: 11400000, guid: 0718201bb43693b4e9efe09fb829c4d7, type: 2}
-    Stack: 1
-  - Item: {fileID: 11400000, guid: 0718201bb43693b4e9efe09fb829c4d7, type: 2}
-    Stack: 1
-  - Item: {fileID: 11400000, guid: 0718201bb43693b4e9efe09fb829c4d7, type: 2}
-    Stack: 1
+  _startingItems: []
   _startingGold: 1000
 --- !u!1 &6722785230403697433
 GameObject:
@@ -6361,6 +6353,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92a8e14211cd9c34f95d728a914d1e6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _refillCommandTemplate: {fileID: 11400000, guid: db6caf05e2fdb4941a042567963b923e, type: 2}
+  _autoRefillCommandOnTemplate: {fileID: 11400000, guid: 84b4102b3acdcd14a939f0013c465e93, type: 2}
+  _autoRefillCommandOffTemplate: {fileID: 11400000, guid: e1c8135f9a460cd4abe5913d6249ccce, type: 2}
+  _goldCheckTicks: 300
 --- !u!1 &7496678896652290938
 GameObject:
   m_ObjectHideFlags: 0
@@ -6405,7 +6401,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rosterLimit: 3
-  _populationLimit: 100
+  _populationLimit: 5
   _templateFolder: Data/Hobbler Templates
   _exileAmountPercent: 0.33
   _applyOnExile:

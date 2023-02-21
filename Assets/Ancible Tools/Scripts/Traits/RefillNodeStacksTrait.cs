@@ -11,24 +11,13 @@ namespace Assets.Ancible_Tools.Scripts.Traits
     {
         public override bool Instant => true;
 
-        [SerializeField] private int _stacks = 1;
-        [SerializeField] private int _refillCost = 0;
+        //[SerializeField] private int _stacks = 1;
+        //[SerializeField] private int _refillCost = 0;
 
         public override void SetupController(TraitController controller)
         {
             base.SetupController(controller);
-            if (WorldStashController.Gold >= _refillCost)
-            {
-                WorldStashController.RemoveGold(_refillCost);
-                var refillNodeStacksMsg = MessageFactory.GenerateRefillNodeStacksMsg();
-                refillNodeStacksMsg.Max = _stacks;
-                _controller.gameObject.SendMessageTo(refillNodeStacksMsg, _controller.transform.parent.gameObject);
-                MessageFactory.CacheMessage(refillNodeStacksMsg);
-            }
-            else
-            {
-                UiOverlayTextManager.ShowOverlayAlert("Not enough gold", ColorFactoryController.ErrorAlertText);
-            }
+            _controller.gameObject.SendMessageTo(RefillNodeStacksMessage.INSTANCE, _controller.transform.parent.gameObject);
 
         }
     }

@@ -90,7 +90,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
 
                     if (_cooldownTicks > 0)
                     {
-                        _cooldown = new TickTimer(_cooldownTicks, 0, CooldownFinished, null, false);
+                        _cooldown = new TickTimer(_cooldownTicks, 0, CooldownFinished, null);
                     }
                 }
             }

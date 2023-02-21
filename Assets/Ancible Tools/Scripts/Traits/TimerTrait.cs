@@ -103,7 +103,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                 _appliedTraits = traits.ToArray();
             }
 
-            _tickTimer = new TickTimer(_ticks, _loops, ApplyComplete, Finish, false);
+            _tickTimer = new TickTimer(_ticks, _loops, ApplyComplete, Finish);
             SubscribeToMessages();
         }
 

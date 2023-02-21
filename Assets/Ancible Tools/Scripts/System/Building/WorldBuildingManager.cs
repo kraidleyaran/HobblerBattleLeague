@@ -190,6 +190,18 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Building
             }
         }
 
+        public static void RemoveBuilding(GameObject obj)
+        {
+            var pair = _instance._currentBuildings.FirstOrDefault(kv => kv.Value == obj);
+            if (pair.Value)
+            {
+                _instance._currentBuildings.Remove(pair.Key);
+                pair.Key.Dispose();
+                Destroy(obj);
+            }
+
+        }
+
         public static int CalculateSellbackValue(int gold)
         {
             return Mathf.RoundToInt(gold * SellBackPerecent);

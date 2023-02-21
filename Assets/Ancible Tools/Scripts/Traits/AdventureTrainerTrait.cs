@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Assets.Ancible_Tools.Scripts.System.Dialogue;
 using Assets.Resources.Ancible_Tools.Scripts.System;
@@ -18,6 +19,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         [SerializeField] private int _engagePlayerDistance = 1;
         [SerializeField] private DialogueData _preBattleDialogue = null;
         [SerializeField] private DialogueData _defeatedDialogue = null;
+        [SerializeField] private string[] _victoryDialogue = new string[0];
         [SerializeField] private Color _exclamationColor = Color.red;
         [SerializeField] private Vector2Int _exclamationOffset = Vector2Int.zero;
         [SerializeField] private int _exclamationTicks = 30;
@@ -51,6 +53,34 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             BattleLeagueManager.SetupEncounter(_encounter, _controller.transform.parent.gameObject);
         }
 
+        private void VictoryDialogueClosed()
+        {
+            _dialogueRoutine = null;
+            
+            _controller.gameObject.SubscribeWithFilter<DialogueClosedMessage>(VictoryDefaultDialogueClosed, _instanceId);
+            var showDialogueMsg = MessageFactory.GenerateShowCustomDialogueMsg();
+            var defaultVictory = DialogueFactory.DefaultDefeat.ToList();
+            if (_encounter.GoldRemoveOnDefeat > 0)
+            {
+                defaultVictory.Add($"You lose {_encounter.GoldRemoveOnDefeat}g");
+            }
+            showDialogueMsg.Owner = _controller.gameObject;
+            showDialogueMsg.Dialogue = defaultVictory.ToArray();
+            _controller.gameObject.SendMessage(showDialogueMsg);
+            MessageFactory.CacheMessage(showDialogueMsg);
+        }
+
+        private void DefaultVictoryDialogueClosed()
+        {
+            _dialogueRoutine = null;
+
+            _controller.gameObject.SendMessageTo(RespawnPlayerMessage.INSTANCE, WorldAdventureController.Player);
+            var setMapTileMsg = MessageFactory.GenerateSetMapTileMsg();
+            setMapTileMsg.Tile = _originTile;
+            _controller.gameObject.SendMessageTo(setMapTileMsg, _controller.transform.parent.gameObject);
+            MessageFactory.CacheMessage(setMapTileMsg);
+        }
+
         private void DefeatDialogueClosed()
         {
             _dialogueRoutine = null;
@@ -60,6 +90,19 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             _controller.gameObject.SendMessageTo(setUnitStateMsg, WorldAdventureController.Player);
             _controller.gameObject.SendMessageTo(setUnitStateMsg, _controller.transform.parent.gameObject);
             MessageFactory.CacheMessage(setUnitStateMsg);
+        }
+
+        private void UnpreparedDialogueClosed()
+        {
+            _dialogueRoutine = null;
+            var setUnitStateMsg = MessageFactory.GenerateSetAdventureUnitStateMsg();
+            setUnitStateMsg.State = AdventureUnitState.Idle;
+            _controller.gameObject.SendMessageTo(setUnitStateMsg, _controller.transform.parent.gameObject);
+            MessageFactory.CacheMessage(setUnitStateMsg);
+
+            WorldController.SetWorldState(WorldState.World);
+            _controller.gameObject.SendMessageTo(RespawnPlayerMessage.INSTANCE, WorldAdventureController.Player);
+            WorldAdventureController.SetAdventureState(AdventureState.Overworld);
         }
 
         private void ForceEncounter(GameObject obj)
@@ -118,6 +161,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
 
         private void StartEncounter()
         {
+
             var setFacingDirectionMsg = MessageFactory.GenerateSetFaceDirectionMsg();
             setFacingDirectionMsg.Direction = (WorldAdventureController.Player.transform.position.ToVector2() - _controller.transform.parent.position.ToVector2()).normalized.ToVector2Int();
             _controller.gameObject.SendMessageTo(setFacingDirectionMsg, _controller.transform.parent.gameObject);
@@ -132,19 +176,27 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             setplayerInteractionObjMsg.Interact = _controller.transform.parent.gameObject;
             _controller.gameObject.SendMessageTo(setplayerInteractionObjMsg, WorldAdventureController.Player);
             MessageFactory.CacheMessage(setplayerInteractionObjMsg);
-
-            _isBattling = true;
-            if (_preBattleDialogue)
+            if (WorldHobblerManager.GetAvailableRoster().Length > 0)
             {
-                var showDialogueMsg = MessageFactory.GenerateShowDialogueMsg();
-                showDialogueMsg.Owner = _controller.gameObject;
-                showDialogueMsg.Dialogue = _preBattleDialogue;
-                _controller.gameObject.SendMessage(showDialogueMsg);
-                MessageFactory.CacheMessage(showDialogueMsg);
+                _isBattling = true;
+                if (_preBattleDialogue)
+                {
+                    _controller.gameObject.SubscribeWithFilter<DialogueClosedMessage>(BattleDialogueClosed, _instanceId);
+                    var showDialogueMsg = MessageFactory.GenerateShowDialogueMsg();
+                    showDialogueMsg.Owner = _controller.gameObject;
+                    showDialogueMsg.Dialogue = _preBattleDialogue;
+                    _controller.gameObject.SendMessage(showDialogueMsg);
+                    MessageFactory.CacheMessage(showDialogueMsg);
+                }
+                else
+                {
+                    PreBattleDialogueClosed();
+
+                }
             }
             else
             {
-                PreBattleDialogueClosed();
+                Unprepared();
             }
             
         }
@@ -201,6 +253,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
 
             if (_defeatedDialogue)
             {
+                _controller.gameObject.SubscribeWithFilter<DialogueClosedMessage>(BattleDialogueClosed, _instanceId);
                 var showDialogueMsg = MessageFactory.GenerateShowDialogueMsg();
                 showDialogueMsg.Dialogue = _defeatedDialogue;
                 showDialogueMsg.Owner = _controller.gameObject;
@@ -216,11 +269,22 @@ namespace Assets.Ancible_Tools.Scripts.Traits
 
         private void Defeat()
         {
-            _controller.gameObject.SendMessageTo(RespawnPlayerMessage.INSTANCE, WorldAdventureController.Player);
-            var setMapTileMsg = MessageFactory.GenerateSetMapTileMsg();
-            setMapTileMsg.Tile = _originTile;
-            _controller.gameObject.SendMessageTo(setMapTileMsg, _controller.transform.parent.gameObject);
-            MessageFactory.CacheMessage(setMapTileMsg);
+            _controller.gameObject.SubscribeWithFilter<DialogueClosedMessage>(VictoryDialogueClosed, _instanceId);
+            var showDialogueMsg = MessageFactory.GenerateShowCustomDialogueMsg();
+            showDialogueMsg.Dialogue = _victoryDialogue;
+            showDialogueMsg.Owner = _controller.gameObject;
+            _controller.gameObject.SendMessage(showDialogueMsg);
+            MessageFactory.CacheMessage(showDialogueMsg);
+        }
+
+        private void Unprepared()
+        {
+            _controller.gameObject.SubscribeWithFilter<DialogueClosedMessage>(UnpreparedDialogueClosed, _instanceId);
+            var showDialogueMsg = MessageFactory.GenerateShowCustomDialogueMsg();
+            showDialogueMsg.Dialogue = DialogueFactory.TrainerUnpreparedBattle;
+            showDialogueMsg.Owner = _controller.gameObject;
+            _controller.gameObject.SendMessage(showDialogueMsg);
+            MessageFactory.CacheMessage(showDialogueMsg);
         }
 
         private void StartExclamation(GameObject obj)
@@ -244,7 +308,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
 
         private void SubscribeToMessages()
         {
-            _controller.gameObject.SubscribeWithFilter<DialogueClosedMessage>(DialogueClosed, _instanceId);
+            
 
             _controller.transform.parent.gameObject.SubscribeWithFilter<UpdateFacingDirectionMessage>(UpdateFaceDirection, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<UpdateMapTileMessage>(UpdateMapTile, _instanceId);
@@ -294,9 +358,28 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             }
         }
 
-        private void DialogueClosed(DialogueClosedMessage msg)
+        private void BattleDialogueClosed(DialogueClosedMessage msg)
         {
+            _controller.gameObject.Unsubscribe<DialogueClosedMessage>();
             _dialogueRoutine = _controller.StartCoroutine(_isBattling ? StaticMethods.WaitForFrames(1, PreBattleDialogueClosed) : StaticMethods.WaitForFrames(1, DefeatDialogueClosed));
+        }
+
+        private void UnpreparedDialogueClosed(DialogueClosedMessage msg)
+        {
+            _controller.gameObject.Unsubscribe<DialogueClosedMessage>();
+            _dialogueRoutine = _controller.StartCoroutine(StaticMethods.WaitForFrames(1, UnpreparedDialogueClosed));
+        }
+
+        private void VictoryDialogueClosed(DialogueClosedMessage msg)
+        {
+            _controller.gameObject.Unsubscribe<DialogueClosedMessage>();
+            _dialogueRoutine = _controller.StartCoroutine(StaticMethods.WaitForFrames(1, VictoryDialogueClosed));
+        }
+
+        private void VictoryDefaultDialogueClosed(DialogueClosedMessage msg)
+        {
+            _controller.gameObject.Unsubscribe<DialogueClosedMessage>();
+            _dialogueRoutine = _controller.StartCoroutine(StaticMethods.WaitForFrames(1, DefaultVictoryDialogueClosed));
         }
 
         private void PlayerInteract(PlayerInteractMessage msg)

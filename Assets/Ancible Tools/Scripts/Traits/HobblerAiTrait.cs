@@ -4,6 +4,7 @@ using Assets.Ancible_Tools.Scripts.System.Wellbeing;
 using Assets.Ancible_Tools.Scripts.System.WorldNodes;
 using Assets.Resources.Ancible_Tools.Scripts.System;
 using MessageBusLib;
+using ProceduralToolkit;
 using UnityEngine;
 
 namespace Assets.Ancible_Tools.Scripts.Traits
@@ -26,7 +27,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
 
         private void SubscribeToMessages()
         {
-            _controller.gameObject.SubscribeWithFilter<UpdateTickMessage>(UpdateTick);
+            _controller.gameObject.Subscribe<UpdateTickMessage>(UpdateTick);
             _controller.transform.parent.gameObject.SubscribeWithFilter<UpdateWellbeingMessage>(UpdateWellbeing, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<SetHobblerAiStateMessage>(SetHobblerAiState, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<UpdateMonsterStateMessage>(UpdateMonsterState, _instanceId);
@@ -40,21 +41,19 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             {
                 if (_needs.ContainsKey(WorldNodeType.Activity))
                 {
-                    _needs[WorldNodeType.Activity] = msg.Stats.Boredom;
+                    _needs[WorldNodeType.Activity] = percents.Boredom;
                 }
                 else
                 {
-                    _needs.Add(WorldNodeType.Activity, msg.Stats.Boredom);
+                    _needs.Add(WorldNodeType.Activity, percents.Boredom);
                 }
+
             }
-            else
+            else if(_needs.ContainsKey(WorldNodeType.Activity) && percents.Boredom >= 1f)
             {
-                if (_needs.ContainsKey(WorldNodeType.Activity))
-                {
-                    _needs.Remove(WorldNodeType.Activity);
-                }
+                _needs.Remove(WorldNodeType.Activity);
                 
-                if (_monsterState == MonsterState.Gathering && _happinessState == HappinessState.Unhappy)
+                if (_monsterState == MonsterState.Gathering)
                 {
                     _fulfillingNeed = false;
                     var setMonsterStateMsg = MessageFactory.GenerateSetMonsterStateMsg();
@@ -68,19 +67,17 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             {
                 if (_needs.ContainsKey(WorldNodeType.Bed))
                 {
-                    _needs[WorldNodeType.Bed] = msg.Stats.Fatigue;
+                    _needs[WorldNodeType.Bed] = percents.Fatigue;
                 }
                 else
                 {
-                    _needs.Add(WorldNodeType.Bed, msg.Stats.Fatigue);
+                    _needs.Add(WorldNodeType.Bed, percents.Fatigue);
                 }
+
             }
-            else
+            else if (_needs.ContainsKey(WorldNodeType.Bed) && percents.Fatigue >= 1f)
             {
-                if (_needs.ContainsKey(WorldNodeType.Bed))
-                {
-                    _needs.Remove(WorldNodeType.Bed);
-                }
+                _needs.Remove(WorldNodeType.Bed);
                 
                 if (_monsterState == MonsterState.Resting)
                 {
@@ -93,25 +90,21 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             }
 
 
-            if (percents.Ignorance < WellBeingController.WarningPercent)
+            if (percents.Ignorance <= WellBeingController.WarningPercent)
             {
                 if (_needs.ContainsKey(WorldNodeType.Book))
                 {
-                    _needs[WorldNodeType.Book] = msg.Stats.Ignorance;
+                    _needs[WorldNodeType.Book] = percents.Ignorance;
                 }
                 else
                 {
-                    _needs.Add(WorldNodeType.Book, msg.Stats.Ignorance);
+                    _needs.Add(WorldNodeType.Book, percents.Ignorance);
                 }
-                
+
             }
-            else
+            else if (_needs.ContainsKey(WorldNodeType.Book) && percents.Ignorance >= 1f)
             {
-                if (_needs.ContainsKey(WorldNodeType.Book))
-                {
-                    _needs.Remove(WorldNodeType.Book);
-                }
-                
+                _needs.Remove(WorldNodeType.Book);
                 if (_monsterState == MonsterState.Studying)
                 {
                     _fulfillingNeed = false;
@@ -126,15 +119,15 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             {
                 if (_needs.ContainsKey(WorldNodeType.Food))
                 {
-                    _needs[WorldNodeType.Food] = msg.Stats.Hunger;
+                    _needs[WorldNodeType.Food] = percents.Hunger;
                 }
                 else
                 {
-                    _needs.Add(WorldNodeType.Food, msg.Stats.Hunger);
+                    _needs.Add(WorldNodeType.Food, percents.Hunger);
                 }
-                
+
             }
-            else
+            else if (_needs.ContainsKey(WorldNodeType.Food) && percents.Hunger >= 1f)
             {
                 if(_needs.ContainsKey(WorldNodeType.Food))
                 {
@@ -154,23 +147,33 @@ namespace Assets.Ancible_Tools.Scripts.Traits
 
         private void UpdateTick(UpdateTickMessage msg)
         {
-            if (!_fulfillingNeed)
+            if (!_fulfillingNeed && _monsterState != MonsterState.Battle)
             {
-                if (_aiState == HobblerAiState.Command && _happinessState == HappinessState.Unhappy)
-                {
-                    _aiState = HobblerAiState.Auto;
-                }
                 if (_aiState != HobblerAiState.Command)
                 {
                     if (_needs.Count > 0)
                     {
-                        var orderedNeeds = _needs.OrderByDescending(kv => kv.Value).ToArray();
+                        var orderedNeeds = _needs.OrderBy(kv => kv.Value).ToArray();
+                        var topNeeds = orderedNeeds.Where(n => n.Value <= WellBeingController.WarningPercent).ToArray();
                         var needIndex = 0;
                         var searchForNodeMsg = MessageFactory.GenerateSearchForNodeMsg();
+                        var needs = topNeeds.ToList();
+                        var remainingNeeds = orderedNeeds.Where(n => !needs.Contains(n)).ToArray();
+                        remainingNeeds.Shuffle();
                         searchForNodeMsg.DoAfter = () => { _fulfillingNeed = true; };
-                        while (!_fulfillingNeed && needIndex < orderedNeeds.Length)
+                        if (topNeeds.Length <= 0)
                         {
-                            var need = orderedNeeds[needIndex];
+                            needs.AddRange(remainingNeeds);
+                            remainingNeeds = new KeyValuePair<WorldNodeType, float>[0];
+                        }
+                        else
+                        {
+                            needs.Shuffle();
+                        }
+                        
+                        while (!_fulfillingNeed && needIndex < needs.Count)
+                        {
+                            var need = needs[needIndex];
                             switch (need.Key)
                             {
                                 case WorldNodeType.Food:
@@ -200,6 +203,11 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                             }
                             _controller.gameObject.SendMessageTo(searchForNodeMsg, _controller.transform.parent.gameObject);
                             needIndex++;
+                            if (needIndex >= needs.Count)
+                            {
+                                needs.AddRange(remainingNeeds);
+                                remainingNeeds = new KeyValuePair<WorldNodeType, float>[0];
+                            }
                         }
                         MessageFactory.CacheMessage(searchForNodeMsg);
                         if (_fulfillingNeed)
@@ -262,7 +270,12 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         private void UpdateMonsterState(UpdateMonsterStateMessage msg)
         {
             _monsterState = msg.State;
-            if (_monsterState == MonsterState.Idle && _fulfillingNeed)
+            if (_monsterState == MonsterState.Idle)
+            {
+                _aiState = HobblerAiState.Auto;
+                _fulfillingNeed = false;
+            }
+            else if (_monsterState == MonsterState.Battle)
             {
                 _fulfillingNeed = false;
             }
@@ -271,6 +284,11 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         private void UpdateHappiness(UpdateHappinessMessage msg)
         {
             _happinessState = msg.State;
+            if (_happinessState == HappinessState.Unhappy)
+            {
+                _aiState = HobblerAiState.Auto;
+            }
+
         }
     }
 }

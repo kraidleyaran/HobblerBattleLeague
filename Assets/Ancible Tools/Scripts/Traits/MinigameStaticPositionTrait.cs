@@ -75,6 +75,16 @@ namespace Assets.Ancible_Tools.Scripts.Traits
 
             _unitState = msg.State;
         }
+
+        public override void Destroy()
+        {
+            if (_blocking && _mapTile != null)
+            {
+                MinigameController.Pathing.RemoveTileBlock(_controller.transform.parent.gameObject, _mapTile.Position);
+                MinigameFogOfWarController.RemoveBlockOnTile(_mapTile.Position);
+            }
+            base.Destroy();
+        }
     }
 
 }

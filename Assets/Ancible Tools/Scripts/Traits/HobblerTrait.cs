@@ -218,6 +218,8 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             querySpriteMsg.DoAfter = trait => data.Sprite = trait;
             _controller.gameObject.SendMessageTo(querySpriteMsg, _controller.transform.parent.gameObject);
             MessageFactory.CacheMessage(querySpriteMsg);
+
+
             
             msg.DoAfter.Invoke(data);
         }

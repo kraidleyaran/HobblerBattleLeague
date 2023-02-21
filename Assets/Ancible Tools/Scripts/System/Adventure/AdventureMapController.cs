@@ -22,7 +22,18 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Adventure
             gameObject.SendMessageTo(setMapTileMsg, WorldAdventureController.Player);
             MessageFactory.CacheMessage(setMapTileMsg);
 
+            WorldAdventureController.SetPlayerTile(playerTile);
+            AdventureCameraController.SetCameraPosition(playerTile.World);
+
             gameObject.SendMessage(SpawnAdventureUnitsMessage.INSTANCE);
+
+            if (WorldController.State == WorldState.Adventure)
+            {
+                var setUnitStateMsg = MessageFactory.GenerateSetAdventureUnitStateMsg();
+                setUnitStateMsg.State = AdventureUnitState.Idle;
+                gameObject.SendMessageTo(setUnitStateMsg, WorldAdventureController.Player);
+                MessageFactory.CacheMessage(setUnitStateMsg);
+            }
         }
 
         public void SetBlockingTile(GameObject block, Vector2Int tile)

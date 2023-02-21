@@ -126,6 +126,8 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI
             {
                 Button.onClick.RemoveAllListeners();
             }
+
+            Hobbler = null;
             _sprite = null;
             _name = null;
         }

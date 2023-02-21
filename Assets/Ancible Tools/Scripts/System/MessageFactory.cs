@@ -224,6 +224,9 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
         private static List<DoJumpMessage> _doJumpCache = new List<DoJumpMessage>();
         private static List<ApplyGlobalCooldownBonusMessage> _applyGlobalCooldownBonusCache = new List<ApplyGlobalCooldownBonusMessage>();
         private static List<SetWellbeingStatsMessage> _setWellbeingStatsCache = new List<SetWellbeingStatsMessage>();
+        private static List<SetNodeAutoRefillStateMessage> _setNodeAutoRefillStateCache = new List<SetNodeAutoRefillStateMessage>();
+        private static List<ApplyGlobalExperienceMessage> _applyGlobalExperienceCache = new List<ApplyGlobalExperienceMessage>();
+        private static List<QueryExperiencePoolMessage> _queryExperiencePoolCache = new List<QueryExperiencePoolMessage>();
 
         public static AddTraitToUnitMessage GenerateAddTraitToUnitMsg()
         {
@@ -2672,6 +2675,42 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
             return new SetWellbeingStatsMessage();
         }
 
+        public static SetNodeAutoRefillStateMessage GenerateSetNodeAutoRefillStateMsg()
+        {
+            if (_setNodeAutoRefillStateCache.Count > 0)
+            {
+                var message = _setNodeAutoRefillStateCache[0];
+                _setNodeAutoRefillStateCache.Remove(message);
+                return message;
+            }
+
+            return new SetNodeAutoRefillStateMessage();
+        }
+
+        public static ApplyGlobalExperienceMessage GenerateApplyGlobalExperienceMsg()
+        {
+            if (_applyGlobalExperienceCache.Count > 0)
+            {
+                var message = _applyGlobalExperienceCache[0];
+                _applyGlobalExperienceCache.Remove(message);
+                return message;
+            }
+
+            return new ApplyGlobalExperienceMessage();
+        }
+
+        public static QueryExperiencePoolMessage GenerateQueryExperiencePoolMsg()
+        {
+            if (_queryExperiencePoolCache.Count > 0)
+            {
+                var message = _queryExperiencePoolCache[0];
+                _queryExperiencePoolCache.Remove(message);
+                return message;
+            }
+
+            return new QueryExperiencePoolMessage();
+        }
+
         //TODO: Start Cache
 
         public static void CacheMessage(AddTraitToUnitMessage msg)
@@ -2812,7 +2851,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
 
         public static void CacheMessage(UpdateHappinessMessage msg)
         {
-            msg.Happiness = 0;
+            msg.State = HappinessState.Unhappy;
             msg.Sender = null;
             _updateHappinessCache.Add(msg);
         }
@@ -2973,9 +3012,9 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
             _showNewCommandTreeCache.Add(msg);
         }
 
+        //TODO: Remove - use to not be static
         public static void CacheMessage(RefillNodeStacksMessage msg)
         {
-            msg.Max = 0;
             msg.Sender = null;
             _refillNodeStacksCache.Add(msg);
         }
@@ -4190,6 +4229,28 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
             msg.Maximum = WellbeingStats.Zero;
             msg.Sender = null;
             _setWellbeingStatsCache.Add(msg);
+        }
+
+        public static void CacheMessage(SetNodeAutoRefillStateMessage msg)
+        {
+            msg.AutoRefill = false;
+            msg.Sender = null;
+            _setNodeAutoRefillStateCache.Add(msg);
+        }
+
+        public static void CacheMessage(ApplyGlobalExperienceMessage msg)
+        {
+            msg.Amount = 0;
+            msg.Owner = null;
+            msg.Sender = null;
+            _applyGlobalExperienceCache.Add(msg);
+        }
+
+        public static void CacheMessage(QueryExperiencePoolMessage msg)
+        {
+            msg.DoAfter = null;
+            msg.Sender = null;
+            _queryExperiencePoolCache.Add(msg);
         }
     }
 }

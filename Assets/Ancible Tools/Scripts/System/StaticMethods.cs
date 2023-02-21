@@ -490,7 +490,10 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
 
         public static float CalculateHappiness(this WellbeingStats stats, WellbeingStats max)
         {
-            return ((max - stats) / max).ToAveragePercent();
+            var currentPoints = stats.GetCombinedValues();
+            var maxPoints = max.GetCombinedValues();
+            return (float) (maxPoints - currentPoints) / maxPoints;
+            //return ((max - stats) / max).ToAveragePercent();
             //var happiness = max;
             //happiness -= Mathf.RoundToInt(stats.Hunger * WellBeingController.HappinessPerHunger);
             //happiness -= Mathf.RoundToInt(stats.Fatigue * WellBeingController.HappinessPerFatigue);
@@ -796,7 +799,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
             return new SkillData
             {
                 Skill = skill.Value.Instance.name,
-                Experience = skill.Value.Instance.LevelExperience,
+                Experience = skill.Value.Experience,
                 Level = skill.Value.Level,
                 Priority = skill.Key,
                 Permanent = skill.Value.Permanent
@@ -889,17 +892,21 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
             
         }
 
-        public static HappinessState GetHappinesState(float happiness, float happy, float moderate)
+        public static HappinessState GetHappinesState(float happiness, float happy, float moderate, HappinessState currentState)
         {
+            if (currentState == HappinessState.Unhappy)
+            {
+                return happiness >= 1f ? HappinessState.Happy : currentState;
+            }
             if (happiness < moderate)
             {
                 return HappinessState.Unhappy;
             }
-
-            if (happiness < happy)
+            if (happiness < happy && happiness >= moderate)
             {
                 return HappinessState.Moderate;
             }
+
 
             return HappinessState.Happy;
         }

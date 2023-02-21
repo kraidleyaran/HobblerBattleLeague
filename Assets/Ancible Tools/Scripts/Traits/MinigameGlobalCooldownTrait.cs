@@ -16,7 +16,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         public override void SetupController(TraitController controller)
         {
             base.SetupController(controller);
-            _cooldownTimer = new TickTimer(_globalCooldown, 0, CooldownFinished, null, false, false);
+            _cooldownTimer = new TickTimer(_globalCooldown, 0, CooldownFinished, null, false);
             SubscribeToMessages();
         }
 

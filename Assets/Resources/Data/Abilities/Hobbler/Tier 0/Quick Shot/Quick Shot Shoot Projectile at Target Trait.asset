@@ -17,7 +17,7 @@ MonoBehaviour:
   _applyOnContact:
   - {fileID: 11400000, guid: 9a24c30ba7e44b341b8748e29a4a836c, type: 2}
   - {fileID: 11400000, guid: 779f9499d9c12044aa589a12258b9af8, type: 2}
-  _pixelsPerSecond: 60
+  _pixelsPerSecond: 150
   _offset: 1.25
   _rotate: 1
   _rotationOffset: -90

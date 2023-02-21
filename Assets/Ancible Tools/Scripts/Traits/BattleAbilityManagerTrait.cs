@@ -49,7 +49,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         private void StartCastingAbility(AbilityInstance ability, GameObject target)
         {
             _castingTimer?.Destroy();
-            _castingTimer = new TickTimer(ability.Instance.CastTime, 0, () => {FinishCasting(ability, target);}, null, false);
+            _castingTimer = new TickTimer(ability.Instance.CastTime, 0, () => {FinishCasting(ability, target);}, null);
             var updateUnitCastingTimerMsg = MessageFactory.GenerateUpdateUnitCastTimerMsg();
             updateUnitCastingTimerMsg.CastTimer = _castingTimer;
             updateUnitCastingTimerMsg.Icon = ability.Instance.Icon;

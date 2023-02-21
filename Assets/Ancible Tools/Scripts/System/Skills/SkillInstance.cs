@@ -79,6 +79,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Skills
                 }
 
                 var applySkillBonusMsg = MessageFactory.GenerateApplySkillBonusMsg();
+                applySkillBonusMsg.Skill = Instance;
                 applySkillBonusMsg.Bonus = Instance.Levels[Level - 1].Bonus;
                 applySkillBonusMsg.Permanent = true;
                 owner.SendMessageTo(applySkillBonusMsg, owner);

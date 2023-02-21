@@ -13,15 +13,16 @@ MonoBehaviour:
   m_Name: Apprentice Staff Weapon Item
   m_EditorClassIdentifier: 
   DisplayName: Apprentice Staff
-  Description: Sometime's it's how big it is, not the functionality
+  Description: 
   _icon: {fileID: -2300029148869845589, guid: 19377d61da5e5314d9a1d302f93d0b0c, type: 3}
   MaxStack: 1
-  GoldValue: 10
+  GoldValue: 45
   Rarity: 0
   _applyOnEquip: []
   AttackSetup:
     Range: 1
-    AttackSpeed: 35
+    AttackSpeed: 25
     ApplyToTarget:
-    - {fileID: 11400000, guid: 003d30de871ce16498df8445103e05f2, type: 2}
+    - {fileID: 11400000, guid: 02486a3c62e4140468746a5a87775e99, type: 2}
+    - {fileID: 11400000, guid: b2417fc8ec9754a448d67830b84e29f6, type: 2}
     ApplyToOwner: []

@@ -97,16 +97,13 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
 
     public class UpdateHappinessMessage : EventMessage
     {
-        public float Happiness;
-        public float HappyMinimum;
-        public float ModerateMinimum;
         public HappinessState State;
     }
 
     public class QueryHappinessMessage : EventMessage
     {
         //Happiness, HappyMinimum, ModerateMinimum
-        public Action<float, float, float, HappinessState> DoAfter;
+        public Action<HappinessState> DoAfter;
     }
 
     public class ApplyWellbeingStatsMessage : EventMessage
@@ -305,7 +302,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
 
     public class RefillNodeStacksMessage : EventMessage
     {
-        public int Max;
+        public static RefillNodeStacksMessage INSTANCE = new RefillNodeStacksMessage();
     }
 
     public class AddExperienceMessage : EventMessage
@@ -1348,7 +1345,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
 
     public class ApplyManaMessage : EventMessage
     {
-        public int Amount;
+        public float Amount;
     }
 
     public class ResetPositionMessage : EventMessage
@@ -1525,5 +1522,31 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
     {
         public WellbeingStats Stats;
         public WellbeingStats Maximum;
+    }
+
+    public class SetNodeAutoRefillStateMessage : EventMessage
+    {
+        public bool AutoRefill;
+    }
+
+    public class ApplyGlobalExperienceMessage : EventMessage
+    {
+        public int Amount;
+        public GameObject Owner;
+    }
+
+    public class QueryExperiencePoolMessage : EventMessage
+    {
+        public Action<int> DoAfter;
+    }
+
+    public class ClearPathMessage : EventMessage
+    {
+        public static ClearPathMessage INSTANCE = new ClearPathMessage();
+    }
+
+    public class LoadAdventureDataMessage : EventMessage
+    {
+        public static LoadAdventureDataMessage INSTANCE = new LoadAdventureDataMessage();
     }
 }

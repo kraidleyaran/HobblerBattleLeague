@@ -11,29 +11,35 @@ namespace Assets.Ancible_Tools.Scripts.System.UI.UnitInfo
 {
     public class UiHappinessStatController : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
-        [SerializeField] private UiFillBarController _fillBarController;
-        [SerializeField] [Range(0f, 1f)] private float _defaultNegativePercent = .05f;
-
-        private float _percent;
         private HappinessState _state = HappinessState.Moderate;
+        [SerializeField] private Image _happinessIcon = null;
+        [SerializeField] private Text _happinessText = null;
 
         private bool _hovered = false;
 
-        public void Setup(float percent, HappinessState state)
+        public void Setup(HappinessState state)
         {
             _state = state;
-            _percent = percent;
-            var barPercent = Mathf.Max(_defaultNegativePercent, _percent);
-            _fillBarController.Setup(barPercent, $"{(int)(_percent * 100f)}/100", _state.ToColor());
-            if (_hovered)
+            switch (state)
             {
-                RefreshHoverInfo();
+                case HappinessState.Unhappy:
+                    _happinessIcon.color = ColorFactoryController.Moderate;
+                    break;
+                case HappinessState.Moderate:
+                    _happinessIcon.color = ColorFactoryController.Moderate;
+                    
+                    break;
+                case HappinessState.Happy:
+                    _happinessIcon.color = ColorFactoryController.Happiness;
+                    break;
             }
+            _happinessText.text = _state.ToStateString(true);
+            _happinessIcon.color = _state.ToColor();
         }
 
         public void Clear()
         {
-            _fillBarController.Clear();
+            
         }
 
         public void OnPointerEnter(PointerEventData eventData)
@@ -60,7 +66,7 @@ namespace Assets.Ancible_Tools.Scripts.System.UI.UnitInfo
             showHoverinfoMsg.Title = WellBeingController.Happiness;
 
             var description = DescriptionFactoryController.Happiness;
-            description = $"{description}{StaticMethods.DoubleNewLine()}Happiness: {(int)(_percent * 100f)}/100{StaticMethods.DoubleNewLine()}Status: {_state.ToStateString(true)}{Environment.NewLine}";
+            description = $"{description}{StaticMethods.DoubleNewLine()}Status:{_state.ToStateString(true)}{Environment.NewLine}";
             showHoverinfoMsg.Description = description;
             showHoverinfoMsg.Icon = WellBeingController.HappinessIcon;
             showHoverinfoMsg.Position = transform.position.ToVector2();

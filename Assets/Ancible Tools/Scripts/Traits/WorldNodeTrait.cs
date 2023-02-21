@@ -1,17 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Assets.Ancible_Tools.Scripts.System.SaveData;
 using Assets.Ancible_Tools.Scripts.System.SaveData.Building;
 using Assets.Ancible_Tools.Scripts.System.WorldNodes;
 using Assets.Resources.Ancible_Tools.Scripts.System;
 using Assets.Resources.Ancible_Tools.Scripts.System.Animation;
+using Assets.Resources.Ancible_Tools.Scripts.System.Building;
+using Assets.Resources.Ancible_Tools.Scripts.System.Items;
 using Assets.Resources.Ancible_Tools.Scripts.System.Pathing;
 using Assets.Resources.Ancible_Tools.Scripts.System.SaveData;
+using Assets.Resources.Ancible_Tools.Scripts.System.TickTimers;
+using Assets.Resources.Ancible_Tools.Scripts.System.UI;
 using Assets.Resources.Ancible_Tools.Scripts.System.UnitCommands;
 using MessageBusLib;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 namespace Assets.Ancible_Tools.Scripts.Traits
 {
@@ -26,25 +28,49 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         [SerializeField] private NodeInteractionType _interactionType = NodeInteractionType.Bump;
         [SerializeField] private SpriteTrait _nodeSprite = null;
         [SerializeField] private int _unitsPerTile = 1;
-        
+        [SerializeField] private int _refillCost = 0;
+        [SerializeField] private bool _autoRefill = false;
+        [SerializeField] private int _autoRefillCost = 0;
+        [SerializeField] private bool _destroyOnEmpty = false;
 
-        private int _currentStack = 0;
-        private int _unitLimit = 0;
-        protected internal RegisteredWorldNode _registeredNode = null;
-        private List<MapTile> _gatheringTiles = new List<MapTile>();
         protected internal MapTile _mapTile = null;
+        protected internal RegisteredWorldNode _registeredNode = null;
+        protected internal bool _autoRefillEnabled = false;
+
+        protected internal int _currentStack = 0;
+        private int _unitLimit = 0;
+        private List<MapTile> _gatheringTiles = new List<MapTile>();
+        
         private NodeBuildingParamaterData _data = null;
         
         private NodeBuildingParamaterData _nodeData = null;
+
+        private CommandInstance _refillCommandInstance = null;
+        private CommandInstance _autoRefillOnInstance = null;
+        private CommandInstance _autoRefillOffInstance = null;
 
         protected internal SpriteController _nodeSpriteController = null;
 
         private Dictionary<GameObject, MapTile> _interactingHobblers = new Dictionary<GameObject, MapTile>();
 
+        private TickTimer _goldCheckTimer = null;
+
         public override void SetupController(TraitController controller)
         {
             base.SetupController(controller);
             _currentStack = _stack;
+            var refillCommand = Instantiate(WorldNodeManager.RefillCommand, _controller.transform);
+            refillCommand.GoldValue = _refillCost;
+            _refillCommandInstance = refillCommand.GenerateInstance();
+
+            if (_autoRefill)
+            {
+                var autoRefillOnCommand = Instantiate(WorldNodeManager.AutoRefillCommand_On, _controller.transform);
+                autoRefillOnCommand.GoldValue = _autoRefillCost;
+                _autoRefillOnInstance = autoRefillOnCommand.GenerateInstance();
+                _autoRefillOffInstance = WorldNodeManager.AutoRefillCommand_Off.GenerateInstance();
+            }
+
             _nodeSpriteController = Instantiate(FactoryController.SPRITE_CONTROLLER, _controller.transform.parent);
             RefreshNodeSprite(true);
             SubscribeToMessages();
@@ -59,7 +85,6 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         {
             WorldNodeManager.UnregisterNode(_controller.transform.parent.gameObject, _nodeType);
             _registeredNode = null;
-            RefreshNodeSprite(false);
         }
 
         protected internal virtual void RefreshNodeSprite(bool refreshTrait)
@@ -76,41 +101,100 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                     _nodeSpriteController.FlipX(_nodeSprite.FlipY);
                 }
             }
-            _nodeSpriteController.gameObject.SetActive(_nodeSprite && _registeredNode != null);
+            _nodeSpriteController.gameObject.SetActive(_nodeSprite && (_stack <= 0 || _currentStack > 0));
         }
 
         protected internal virtual bool FinishGatheringCheck(GameObject obj)
         {
-            if (_currentStack == 0)
+            if (_stack > 0 && _currentStack <= 0)
             {
-                var stopGatheringMsg = MessageFactory.GenerateStopGatheringMsg();
-                stopGatheringMsg.Node = _controller.transform.parent.gameObject;
-                _controller.gameObject.SendMessageTo(stopGatheringMsg, obj);
-                MessageFactory.CacheMessage(stopGatheringMsg);
-
-                if (_registeredNode != null)
+                if (_autoRefillEnabled)
                 {
-                    UnregisterNode();
+                    RefillNode(true);
+                }
+                //We refill the node so we nee to check and make sure it's stack got refilled - may not have enough gold
+                if (_currentStack <= 0)
+                {
+                    //The refill didn't work, so let's see if we should check for gold or not
+                    if (_autoRefillEnabled && _goldCheckTimer == null)
+                    {
+                        _goldCheckTimer = new TickTimer(WorldNodeManager.GoldCheckTicks, -1, GoldCheck, null);
+                    }
+                    var stopGatheringMsg = MessageFactory.GenerateStopGatheringMsg();
+                    stopGatheringMsg.Node = _controller.transform.parent.gameObject;
+                    _controller.gameObject.SendMessageTo(stopGatheringMsg, obj);
+                    MessageFactory.CacheMessage(stopGatheringMsg);
+
+                    if (_registeredNode != null)
+                    {
+                        UnregisterNode();
+                    }
+
+                    if (_destroyOnEmpty)
+                    {
+                        WorldBuildingManager.RemoveBuilding(_controller.transform.parent.gameObject);
+                    }
+                    return true;
+                }
+                else
+                {
+                    return false;
                 }
 
-                return true;
+                
             }
 
-            return false;
+            if (_controller && (_stack <= 0 || _currentStack > 0))
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
 
         protected internal virtual void ApplyToUnit(GameObject obj)
         {
-            var addTraitToUnitMsg = MessageFactory.GenerateAddTraitToUnitMsg();
-            for (var i = 0; i < _applyOnFinish.Length; i++)
-            {
-                addTraitToUnitMsg.Trait = _applyOnFinish[i];
-                _controller.gameObject.SendMessageTo(addTraitToUnitMsg, obj);
-            }
-            MessageFactory.CacheMessage(addTraitToUnitMsg);
-            if (_currentStack > 0 && _stack > 0)
-            {
+            if (_stack <= 0 || _currentStack > 0)
+            {                
+                var addTraitToUnitMsg = MessageFactory.GenerateAddTraitToUnitMsg();
+                for (var i = 0; i < _applyOnFinish.Length; i++)
+                {
+                    addTraitToUnitMsg.Trait = _applyOnFinish[i];
+                    _controller.gameObject.SendMessageTo(addTraitToUnitMsg, obj);
+                }
+                MessageFactory.CacheMessage(addTraitToUnitMsg);
+
                 _currentStack--;
+                RefreshNodeSprite(true);
+                _controller.gameObject.SendMessageTo(RefreshUnitMessage.INSTANCE, _controller.transform.parent.gameObject);
+            }
+        }
+        
+        protected internal virtual void RefillNode(bool auto)
+        {
+            if (_stack > 0)
+            {
+                var cost = auto ? _autoRefillCost : _refillCost;
+                if (WorldStashController.Gold >= cost)
+                {
+                    _currentStack = _stack;
+                    if (_registeredNode == null)
+                    {
+                        RegisterNode(_mapTile);
+                        RefreshNodeSprite(false);
+                    }
+                    _goldCheckTimer?.Destroy();
+                    _goldCheckTimer = null;
+                    WorldStashController.RemoveGold(cost);
+                    _controller.gameObject.SendMessageTo(RefreshUnitMessage.INSTANCE, _controller.transform.parent.gameObject);
+                }
+                else if (!auto)
+                {
+                    UiOverlayTextManager.ShowOverlayAlert("Not enough gold", ColorFactoryController.ErrorAlertText);
+                }
+
             }
         }
 
@@ -186,12 +270,27 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             return _requiredTicks;
         }
 
+        private void GoldCheck()
+        {
+            if (WorldStashController.Gold >= _autoRefillCost)
+            {
+                _goldCheckTimer?.Destroy();
+                _goldCheckTimer = null;
+                RefillNode(true);
+            }
+        }
+
         protected internal virtual void SubscribeToMessages()
         {
             if (_stack > 0)
             {
                 _controller.transform.parent.gameObject.SubscribeWithFilter<UpdateBuildingIdMessage>(UpdateBuildingId, _instanceId);
                 _controller.transform.parent.gameObject.SubscribeWithFilter<QueryBuildingParamterDataMessage>(QueryBuildingParameterData, _instanceId);
+                _controller.transform.parent.gameObject.SubscribeWithFilter<QueryCommandsMessage>(QueryCommands, _instanceId);
+                if (_autoRefill)
+                {
+                    _controller.transform.parent.gameObject.SubscribeWithFilter<SetNodeAutoRefillStateMessage>(SetNodeAutoRefillState, _instanceId);
+                }
             }
             _controller.transform.parent.gameObject.SubscribeWithFilter<QueryNodeMessage>(QueryNode, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<UpdateMapTileMessage>(UpdateMapTile, _instanceId);
@@ -255,52 +354,51 @@ namespace Assets.Ancible_Tools.Scripts.Traits
 
         private void Interact(InteractMessage msg)
         {
-            var gatherMsg = MessageFactory.GenerateGatherMsg();
-            gatherMsg.Node = _controller.transform.parent.gameObject;
-            gatherMsg.NodeType = _nodeType;
-            gatherMsg.DoAfter = FinishGathering;
-            gatherMsg.Ticks = GetRequiredTicks(msg.Owner);
-            var tile = _gatheringTiles.GetRandom();
-            if (_unitsPerTile <= 1)
+            if (_gatheringTiles.Count > 0)
             {
-                _gatheringTiles.Remove(tile);
-            }
-            else if (_interactingHobblers.Values.Count(t => t == tile) + 1 < _unitsPerTile)
-            {
-                _gatheringTiles.Remove(tile);
-            }
-            gatherMsg.GatheringTile = tile;
-            gatherMsg.Invisible = _interactionType == NodeInteractionType.Invisible;
-            _controller.gameObject.SendMessageTo(gatherMsg, msg.Owner);
-            MessageFactory.CacheMessage(gatherMsg);
+                var gatherMsg = MessageFactory.GenerateGatherMsg();
+                gatherMsg.Node = _controller.transform.parent.gameObject;
+                gatherMsg.NodeType = _nodeType;
+                gatherMsg.DoAfter = FinishGathering;
+                gatherMsg.Ticks = GetRequiredTicks(msg.Owner);
+                var tile = _gatheringTiles.GetRandom();
+                if (_unitsPerTile == 1)
+                {
+                    _gatheringTiles.Remove(tile);
+                }
+                else if (_interactingHobblers.Values.Count(t => t == tile) + 1 >= _unitsPerTile)
+                {
+                    _gatheringTiles.Remove(tile);
+                }
+                gatherMsg.GatheringTile = tile;
+                gatherMsg.Invisible = _interactionType == NodeInteractionType.Invisible;
+                _controller.gameObject.SendMessageTo(gatherMsg, msg.Owner);
+                MessageFactory.CacheMessage(gatherMsg);
 
-            if (_interactingHobblers.TryGetValue(msg.Owner, out var mapTile))
-            {
-                _gatheringTiles.Add(mapTile);
-                _interactingHobblers[msg.Owner] = tile;
+                if (_interactingHobblers.TryGetValue(msg.Owner, out var mapTile))
+                {
+                    _gatheringTiles.Add(mapTile);
+                    _interactingHobblers[msg.Owner] = tile;
+                }
+                else
+                {
+                    _interactingHobblers.Add(msg.Owner, tile);
+                }
+                if (_registeredNode != null && _gatheringTiles.Count <= 0)
+                {
+                    UnregisterNode();
+                }
             }
-            else
-            {
-                _interactingHobblers.Add(msg.Owner, tile);
-            }
-            if (_gatheringTiles.Count <= 0 && _registeredNode != null && _interactingHobblers.Count >= _unitLimit)
+            else if (_registeredNode != null)
             {
                 UnregisterNode();
             }
+
         }
 
         private void RefillNodeStacks(RefillNodeStacksMessage msg)
         {
-            if (_stack > 0)
-            {
-                var max = Mathf.Min(msg.Max, _stack);
-                _currentStack = max;
-                if (_registeredNode == null)
-                {
-                    RegisterNode(_mapTile);
-                    RefreshNodeSprite(false);
-                }
-            }
+            RefillNode(false);
         }
 
         private void UnregisterFromNode(UnregisterFromGatheringNodeMessage msg)
@@ -320,6 +418,19 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             if (data != null && data.Parameter is NodeBuildingParamaterData nodeData)
             {
                 _currentStack = nodeData.Stack;
+                if (_autoRefill)
+                {
+                    _autoRefillEnabled = nodeData.AutoRefillEnabled;
+                }
+
+                if (_currentStack <= 0 && _autoRefillEnabled)
+                {
+                    RefillNode(true);
+                    if (_currentStack <= 0 && _autoRefillEnabled && _goldCheckTimer == null)
+                    {
+                        _goldCheckTimer = new TickTimer(WorldNodeManager.GoldCheckTicks, -1, GoldCheck, null);
+                    }
+                }
                 RefreshNodeSprite(false);
             }
         }
@@ -331,10 +442,29 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                 _nodeData = new NodeBuildingParamaterData();
             }
             _nodeData.Stack = _currentStack;
+            _nodeData.AutoRefillEnabled = _autoRefill && _autoRefillEnabled;
             msg.DoAfter.Invoke(_nodeData);
         }
 
-        
+        protected internal virtual void QueryCommands(QueryCommandsMessage msg)
+        {
+            var commands = new List<CommandInstance>{_refillCommandInstance};
+            if (_autoRefill)
+            {
+                commands.Add(_autoRefillEnabled ? _autoRefillOffInstance : _autoRefillOnInstance);
+            }
+            msg.DoAfter.Invoke(commands.ToArray());
+        }
+
+        protected internal virtual void SetNodeAutoRefillState(SetNodeAutoRefillStateMessage msg)
+        {
+            _autoRefillEnabled = msg.AutoRefill;
+            if (_autoRefillEnabled && _currentStack <= 0)
+            {
+                RefillNode(true);
+            }
+            _controller.gameObject.SendMessageTo(ResetCommandCardMessage.INSTANCE, _controller.transform.parent.gameObject);
+        }
 
         public override void Destroy()
         {
@@ -343,10 +473,20 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             stopGatheringMsg.Node = _controller.transform.parent.gameObject;
             foreach (var hobbler in hobblers)
             {
-                _controller.gameObject.SendMessageTo(stopGatheringMsg, hobbler);
+                _controller.gameObject.SendMessageTo(stopGatheringMsg, hobbler.Key);
             }
             MessageFactory.CacheMessage(stopGatheringMsg);
             _interactingHobblers.Clear();
+            _refillCommandInstance?.Destroy(true);
+            _refillCommandInstance = null;
+
+            if (_autoRefill)
+            {
+                _autoRefillOnInstance.Destroy(true);
+                _autoRefillOnInstance = null;
+                _autoRefillOffInstance.Destroy();
+                _autoRefillOffInstance = null;
+            }
             base.Destroy();
         }
     }

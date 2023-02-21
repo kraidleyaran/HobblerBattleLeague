@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Assets.Ancible_Tools.Scripts.System.SaveData;
 using Assets.Ancible_Tools.Scripts.System.Wellbeing;
 using Assets.Resources.Ancible_Tools.Scripts.System.Items;
 using Assets.Resources.Ancible_Tools.Scripts.System.Windows;
@@ -35,6 +36,8 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague
         private bool _repeat = false;
         private ItemStack[] _loot = new ItemStack[0];
         private int _experienceGained = 0;
+
+        private BattlePositionData[] _savedBattlePositions = new BattlePositionData[0];
 
         private Dictionary<BattleUnitData, GameObject> _hobblers = new Dictionary<BattleUnitData, GameObject>();
 
@@ -131,6 +134,16 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague
             return amount * _instance._manaPerDamageDone;
         }
 
+        public static void SetSavedBattlePositions(BattlePositionData[] positions)
+        {
+            _instance._savedBattlePositions = positions.ToArray();
+        }
+
+        public static BattlePositionData[] GetSavedBattlePositionData()
+        {
+            return _instance._savedBattlePositions.ToArray();
+        }
+
         private void SubscribeToMessages()
         {
             gameObject.Subscribe<ShowBattleResultsWindowMessage>(ShowBattleResultsWindow);
@@ -195,7 +208,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague
             _currentEncounter = null;
             for (var i = 0; i < _openBattleWindows.Length; i++)
             {
-                UiWindowManager.CloseWindow(_openBattleWindows[i], _openBattleWindows[i].WorldName);
+                UiWindowManager.CloseWindow(_openBattleWindows[i]);
             }
             _openBattleWindows = new UiBaseWindow[0];
             BattleLeagueCameraController.SetActive(false);

@@ -89,7 +89,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                             {
                                 _cooldownTimer.Destroy();
                                 _cooldownTimer = null;
-                            }, false);
+                            });
                         }
                     }
 

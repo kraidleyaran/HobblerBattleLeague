@@ -35,6 +35,11 @@ namespace Assets.Ancible_Tools.Scripts.System.Wellbeing
             ApplyMaximum(max);
         }
 
+        public int GetCombinedValues()
+        {
+            return (int)(Hunger + Boredom + Fatigue + Ignorance);
+        }
+
         public static WellbeingStats operator +(WellbeingStats a) => a;
 
         public static WellbeingStats operator -(WellbeingStats a) => new WellbeingStats

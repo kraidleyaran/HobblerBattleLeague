@@ -4,9 +4,23 @@ using Random = UnityEngine.Random;
 namespace Assets.Resources.Ancible_Tools.Scripts.System
 {
     [Serializable]
-    public class FloatNumberRange
+    public struct FloatNumberRange
     {
-        public float Minimum = 0f;
-        public float Maximum = 1f;
+        public static FloatNumberRange Zero => new FloatNumberRange(0f, 0f);
+
+        public float Minimum;
+        public float Maximum;
+
+        public FloatNumberRange(float min, float max)
+        {
+            Minimum = min;
+            Maximum = max;
+        }
+
+
+        public override string ToString()
+        {
+            return $"{Minimum:N}-{Maximum:N}";
+        }
     }
 }

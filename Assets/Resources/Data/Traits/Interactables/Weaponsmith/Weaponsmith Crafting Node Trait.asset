@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MaxStack: 1
   _nodeType: 5
-  _requiredTicks: 10
+  _requiredTicks: 300
   _applyOnFinish: []
   _stack: 0
   _relativeGatheringPositions:
@@ -24,8 +24,7 @@ MonoBehaviour:
   - {x: 1, y: 0}
   _interactionType: 1
   _nodeSprite: {fileID: 0}
-  _stopSelectCommand: {fileID: 0}
-  _selectableHobblerCommandTemplate: {fileID: 0}
+  _unitsPerTile: 1
   _startingRecipes:
   - {fileID: 11400000, guid: bf01f0081cd7c1a4694d5c6b536fcadc, type: 2}
   _defaultItemScale: {x: 31.25, y: 31.25}

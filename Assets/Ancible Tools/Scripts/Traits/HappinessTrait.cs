@@ -12,7 +12,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
     public class HappinessTrait : Trait
     {
         [SerializeField] [Range(0f,1f)] private float _minimumHappyPerecent = .71f;
-        [SerializeField] [Range(0f, 1f)] private float _minimumModeratePerecent = .71f;
+        [SerializeField] [Range(0f,1f)] private float _minimumModeratePerecent = .71f;
         [SerializeField] private WellbeingStats _maxStats = new WellbeingStats();
 
         private WellbeingStats _wellBeingStats = new WellbeingStats();
@@ -42,14 +42,24 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             MessageFactory.CacheMessage(updateWellbeingMsg);
 
             var happiness = _wellBeingStats.CalculateHappiness(_maxStats);
-            _happinessState = StaticMethods.GetHappinesState(happiness, _minimumHappyPerecent, _minimumModeratePerecent); ;
-            var updateHappinessMsg = MessageFactory.GenerateUpdateHappinessMsg();
-            updateHappinessMsg.Happiness = happiness;
-            updateHappinessMsg.HappyMinimum = _minimumHappyPerecent;
-            updateHappinessMsg.ModerateMinimum = _minimumModeratePerecent;
-            updateHappinessMsg.State = _happinessState;
-            _controller.gameObject.SendMessageTo(updateHappinessMsg, _controller.transform.parent.gameObject);
-            MessageFactory.CacheMessage(updateHappinessMsg);
+            var prevState = _happinessState;
+            _happinessState = StaticMethods.GetHappinesState(happiness, _minimumHappyPerecent, _minimumModeratePerecent, _happinessState);
+            if (prevState != _happinessState)
+            {
+                if (prevState == HappinessState.Unhappy)
+                {
+                    WorldHobblerManager.RemoveUnhappyHobbler(_controller.transform.parent.gameObject);
+                }
+                else if (prevState == HappinessState.Happy && _happinessState == HappinessState.Unhappy)
+                {
+                    WorldHobblerManager.AddUnhappyHobbler(_controller.transform.parent.gameObject);
+                }
+                var updateHappinessMsg = MessageFactory.GenerateUpdateHappinessMsg();
+                updateHappinessMsg.State = _happinessState;
+                _controller.gameObject.SendMessageTo(updateHappinessMsg, _controller.transform.parent.gameObject);
+                MessageFactory.CacheMessage(updateHappinessMsg);
+            }
+
 
             _controller.gameObject.SendMessageTo(RefreshUnitMessage.INSTANCE, _controller.transform.parent.gameObject);
             
@@ -89,9 +99,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
 
         private void QueryHappiness(QueryHappinessMessage msg)
         {
-            var stat = _wellBeingStats.CalculateHappiness(_maxStats);
-            var state = StaticMethods.GetHappinesState(stat, _minimumHappyPerecent, _minimumModeratePerecent);
-            msg.DoAfter.Invoke(stat, _minimumHappyPerecent, _minimumModeratePerecent, state);
+            msg.DoAfter.Invoke(_happinessState);
         }
 
         private void ApplyWellBeingStats(ApplyWellbeingStatsMessage msg)
@@ -125,6 +133,9 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         {
             switch (_monsterState)
             {
+                case MonsterState.Gathering:
+                    _wellbeingTimers[WellbeingStatType.Boredom].Play();
+                    break;
                 case MonsterState.Eating:
                     _wellbeingTimers[WellbeingStatType.Hunger].Play();
                     break;
@@ -132,6 +143,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                     _wellbeingTimers[WellbeingStatType.Fatigue].Play();
                     break;
                 case MonsterState.Minigame:
+                case MonsterState.Battle:
                     _wellbeingTimers[WellbeingStatType.Hunger].Play();
                     _wellbeingTimers[WellbeingStatType.Fatigue].Play();
                     _wellbeingTimers[WellbeingStatType.Boredom].Play();
@@ -145,15 +157,18 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                     _wellbeingTimers[WellbeingStatType.Hunger].Pause();
                     break;
                 case MonsterState.Gathering:
+                    _wellbeingTimers[WellbeingStatType.Boredom].Pause();
                     break;
                 case MonsterState.Resting:
                     _wellbeingTimers[WellbeingStatType.Fatigue].Pause();
                     break;
+                case MonsterState.Battle:
                 case MonsterState.Minigame:
                     _wellbeingTimers[WellbeingStatType.Boredom].Pause();
                     _wellbeingTimers[WellbeingStatType.Fatigue].Pause();
                     _wellbeingTimers[WellbeingStatType.Hunger].Pause();
                     break;
+
             }
 
             _monsterState = msg.State;
@@ -167,7 +182,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         private void SetWellbeingStats(SetWellbeingStatsMessage msg)
         {
             _wellBeingStats = msg.Stats;
-            _maxStats = msg.Stats;
+            _maxStats = msg.Maximum;
             UpdateParent();
         }
 

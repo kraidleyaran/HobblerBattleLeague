@@ -123,6 +123,8 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             updateMapTileMsg.Tile = _currentTile;
             _controller.gameObject.SendMessageTo(updateMapTileMsg, _controller.transform.parent.gameObject);
             MessageFactory.CacheMessage(updateMapTileMsg);
+
+            //_controller.gameObject.SendMessageTo(MovementCompletedMessage.INSTANCE, _controller.transform.parent.gameObject);
             
         }
 
@@ -257,6 +259,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                         _rigidBody.position = _currentTile.World;
                     }
                 }
+                //_direction = Vector2Int.zero;
             }
 
             if (_unitState == AdventureUnitState.Disabled)

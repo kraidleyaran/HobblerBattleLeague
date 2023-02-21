@@ -141,7 +141,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
 
             _controller.gameObject.SendMessageTo(setMonsterStateMsg, _controller.transform.parent.gameObject);
             MessageFactory.CacheMessage(setMonsterStateMsg);
-            _gatheringTimer = new TickTimer(msg.Ticks, -1, () => {doAfter.Invoke(_controller.transform.parent.gameObject);}, null, true, false);
+            _gatheringTimer = new TickTimer(msg.Ticks, -1, () => {doAfter.Invoke(_controller.transform.parent.gameObject);}, null, false);
             _gatheringTile = msg.GatheringTile;
             var path = WorldController.Pathing.GetPath(_currentTile.Position, _gatheringTile.Position);
             var setPathMsg = MessageFactory.GenerateSetPathMsg();
@@ -154,7 +154,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         {
             if (_currentNode != null && msg.Node == _currentNode)
             {
-                if (_currentNodeType == WorldNodeType.Bed)
+                if (_invisibleOnGather)
                 {
                     var setSpriteVisibilityMsg = MessageFactory.GenerateSetSpriteVisibilityMsg();
                     setSpriteVisibilityMsg.Visible = true;
@@ -166,7 +166,10 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                     _controller.gameObject.SendMessageTo(setActiveSelectableStateMsg, _controller.transform.parent.gameObject);
                     MessageFactory.CacheMessage(setActiveSelectableStateMsg);
                 }
-
+                else
+                {
+                    _controller.gameObject.SendMessageTo(InterruptBumpMessage.INSTANCE, _controller.transform.parent.gameObject);
+                }
                 _gatheringTile = null;
                 _currentNode = null;
                 _gatheringTimer?.Destroy();
@@ -207,7 +210,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                 else
                 {
                     var setDirectionMsg = MessageFactory.GenerateSetDirectionMsg();
-                    setDirectionMsg.Direction = (_currentNode.transform.position.ToVector2() - _currentTile.World).normalized;
+                    setDirectionMsg.Direction = (_currentNode.transform.position.ToVector2() - _currentTile.World).normalized.ToVector2Int(true);
                     _controller.gameObject.SendMessageTo(setDirectionMsg, _controller.transform.parent.gameObject);
                     MessageFactory.CacheMessage(setDirectionMsg);
                 }
@@ -224,6 +227,28 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                     unregisterFromNodeMsg.Unit = _controller.transform.parent.gameObject;
                     _controller.gameObject.SendMessageTo(unregisterFromNodeMsg, _currentNode);
                     MessageFactory.CacheMessage(unregisterFromNodeMsg);
+
+                    if (_invisibleOnGather)
+                    {
+                        var setSpriteVisibilityMsg = MessageFactory.GenerateSetSpriteVisibilityMsg();
+                        setSpriteVisibilityMsg.Visible = true;
+                        _controller.gameObject.SendMessageTo(setSpriteVisibilityMsg, _controller.transform.parent.gameObject);
+                        MessageFactory.CacheMessage(setSpriteVisibilityMsg);
+
+                        var setActiveSelectableStateMsg = MessageFactory.GenerateSetActiveSelectableStateMsg();
+                        setActiveSelectableStateMsg.Selectable = true;
+                        _controller.gameObject.SendMessageTo(setActiveSelectableStateMsg, _controller.transform.parent.gameObject);
+                        MessageFactory.CacheMessage(setActiveSelectableStateMsg);
+                    }
+
+                    _gatheringTile = null;
+                    _currentNode = null;
+                    _gatheringTimer?.Destroy();
+                    _gatheringTimer = null;
+                    _invisibleOnGather = false;
+                    _currentNodeType = WorldNodeType.Food;
+                    _controller.gameObject.SendMessageTo(InterruptBumpMessage.INSTANCE, _controller.transform.parent.gameObject);
+                    _controller.gameObject.SendMessageTo(ClearPathMessage.INSTANCE, _controller.transform.parent.gameObject);
                 }
             }
 

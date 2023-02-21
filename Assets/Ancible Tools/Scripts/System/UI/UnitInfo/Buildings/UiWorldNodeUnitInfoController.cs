@@ -39,8 +39,11 @@ namespace Assets.Ancible_Tools.Scripts.System.UI.UnitInfo.Buildings
             var removedHobblers = _hobblers.Where(kv => Array.IndexOf(hobblers, kv.Key) < 0).ToArray();
             foreach (var hobbler in removedHobblers)
             {
-                hobbler.Value.Destroy();
-                Destroy(hobbler.Value.gameObject);
+                if (hobbler.Value)
+                {
+                    hobbler.Value.Destroy();
+                    Destroy(hobbler.Value.gameObject);
+                }
             }
 
             if (hobblers.Length > 0)
@@ -75,8 +78,11 @@ namespace Assets.Ancible_Tools.Scripts.System.UI.UnitInfo.Buildings
             var hobblers = _hobblers.ToArray();
             foreach (var hobbler in hobblers)
             {
-                hobbler.Value.Destroy();
-                Destroy(hobbler.Value.gameObject);
+                if (hobbler.Value)
+                {
+                    hobbler.Value.Destroy();
+                    Destroy(hobbler.Value.gameObject);
+                }
             }
             _hobblers.Clear();
             base.Destroy();

@@ -69,6 +69,14 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.Building
         void OnDisable()
         {
             _frameImage.color = Color.white;
+            if (_hovered)
+            {
+                _hovered = false;
+                var removeHoveredInfoMsg = MessageFactory.GenerateRemoveHoverInfoMsg();
+                removeHoveredInfoMsg.Owner = gameObject;
+                gameObject.SendMessage(removeHoveredInfoMsg);
+                MessageFactory.CacheMessage(removeHoveredInfoMsg);
+            }
         }
 
         public void Destroy()

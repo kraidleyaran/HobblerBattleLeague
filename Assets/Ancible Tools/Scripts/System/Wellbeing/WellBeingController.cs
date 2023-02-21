@@ -6,11 +6,6 @@ namespace Assets.Ancible_Tools.Scripts.System.Wellbeing
     {
         public const string Happiness = "Happiness";
 
-        public static float HappinessPerHunger => _instance._happinesPerHunger;
-        public static float HappinessPerBoredom => _instance._happinessPerBoredom;
-        public static float HappinessPerFatigue => _instance._happinessPerFatigue;
-        public static float HappinessPerIgnorance => _instance._happinessPerIgnorance;
-
         public static int TicksPerHungerEffect => _instance._ticksPerHungerEffect;
         public static int HungerPerEffect => _instance._hungerPerEffect;
         public static int TicksPerBoredomEffect => _instance._ticksPerBoredomEffect;
@@ -30,10 +25,6 @@ namespace Assets.Ancible_Tools.Scripts.System.Wellbeing
         [SerializeField] private float _ignorancePerExperience = 1f;
 
         [Header("Happiness")]
-        [SerializeField] private float _happinesPerHunger;
-        [SerializeField] private float _happinessPerBoredom;
-        [SerializeField] private float _happinessPerFatigue;
-        [SerializeField] private float _happinessPerIgnorance;
         [SerializeField] private Sprite _happinessIcon;
 
         [Header("Well Being Timers")]

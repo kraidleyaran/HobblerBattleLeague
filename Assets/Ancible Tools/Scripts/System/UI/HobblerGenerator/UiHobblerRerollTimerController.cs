@@ -28,20 +28,23 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.HobblerGenerator
             var percent = 0f;
             if (remainingTicks > 0)
             {
-                remainingSeconds = (int)(TickController.WorldTickRate * remainingTicks);
+                remainingSeconds = (int)(TickController.TickRate * remainingTicks);
                 percent = (float)remainingTicks / max;
             }
             else
             {
                 percent = 1f;
-                remainingSeconds = (int) (TickController.WorldTickRate * max);
+                remainingSeconds = (int) (TickController.TickRate * remainingTicks);
             }
             _timerFillbar.Setup(percent, $"{remainingSeconds}", _fillColor);
         }
 
         public void Destroy()
         {
-            Timer.OnTickUpdate -= UpdateTick;
+            if (Timer != null)
+            {
+                Timer.OnTickUpdate -= UpdateTick;
+            }
             Timer = null;
         }
     }
