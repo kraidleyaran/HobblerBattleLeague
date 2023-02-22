@@ -94,12 +94,12 @@ MonoBehaviour:
     paramContainer:
       m_paramList: []
     prefabData:
-      prefab: {fileID: 0}
+      prefab: {fileID: 1844962206000158819, guid: 224a1490ee87d1a4c80ab13d22b0366c, type: 3}
       offset: {x: 0, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0}
       offsetMode: 0
       showTileWithPrefab: 0
-      showPrefabPreviewInTilePalette: 0
+      showPrefabPreviewInTilePalette: 1
     autilingGroup: 0
   - uv:
       serializedVersion: 2
@@ -1614,12 +1614,12 @@ MonoBehaviour:
     paramContainer:
       m_paramList: []
     prefabData:
-      prefab: {fileID: 0}
+      prefab: {fileID: 5269940810520939372, guid: b0847ffbd9d71304da7289431d9d81d9, type: 3}
       offset: {x: 0, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0}
       offsetMode: 0
       showTileWithPrefab: 0
-      showPrefabPreviewInTilePalette: 0
+      showPrefabPreviewInTilePalette: 1
     autilingGroup: 0
   - uv:
       serializedVersion: 2
@@ -1633,12 +1633,12 @@ MonoBehaviour:
     paramContainer:
       m_paramList: []
     prefabData:
-      prefab: {fileID: 0}
+      prefab: {fileID: 5269940810520939372, guid: 62fff7a6bf48be84781f1641e6e9fead, type: 3}
       offset: {x: 0, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0}
       offsetMode: 0
       showTileWithPrefab: 0
-      showPrefabPreviewInTilePalette: 0
+      showPrefabPreviewInTilePalette: 1
     autilingGroup: 0
   - uv:
       serializedVersion: 2
@@ -1652,12 +1652,12 @@ MonoBehaviour:
     paramContainer:
       m_paramList: []
     prefabData:
-      prefab: {fileID: 0}
+      prefab: {fileID: 5269940810520939372, guid: 8ed2e0432b0dd084e9529105493ed718, type: 3}
       offset: {x: 0, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0}
       offsetMode: 0
       showTileWithPrefab: 0
-      showPrefabPreviewInTilePalette: 0
+      showPrefabPreviewInTilePalette: 1
     autilingGroup: 0
   - uv:
       serializedVersion: 2
@@ -1671,12 +1671,12 @@ MonoBehaviour:
     paramContainer:
       m_paramList: []
     prefabData:
-      prefab: {fileID: 0}
+      prefab: {fileID: 5269940810520939372, guid: d9210c4a203abef4da85c913e8b4bb58, type: 3}
       offset: {x: 0, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0}
       offsetMode: 0
       showTileWithPrefab: 0
-      showPrefabPreviewInTilePalette: 0
+      showPrefabPreviewInTilePalette: 1
     autilingGroup: 0
   - uv:
       serializedVersion: 2

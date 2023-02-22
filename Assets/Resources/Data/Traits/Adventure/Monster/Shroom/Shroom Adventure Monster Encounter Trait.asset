@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1b382da3074e51448e9a18404b2f042, type: 3}
+  m_Name: Shroom Adventure Monster Encounter Trait
+  m_EditorClassIdentifier: 
+  MaxStack: 1
+  _encounters:
+  - {fileID: 11400000, guid: e659d15453e83b947a8d79b4fad06b64, type: 2}
+  - {fileID: 11400000, guid: 485f9b013c9f28a428f95dd65b8473c4, type: 2}
+  - {fileID: 11400000, guid: b5a7f068c23f71541a2cbc6e8b184713, type: 2}
+  - {fileID: 11400000, guid: 56d85cf65e35e184ba98e5fe3141132d, type: 2}
+  - {fileID: 11400000, guid: d11162ec6248c37438faa067ed109aa3, type: 2}
+  - {fileID: 11400000, guid: b4620311560721246b7b09b60a4fa835, type: 2}
+  _exclamationColor: {r: 0.9647059, g: 0.56078434, b: 0.21568628, a: 1}
+  _exclamationOffset: {x: 0, y: 20}
+  _exclamationTicks: 30

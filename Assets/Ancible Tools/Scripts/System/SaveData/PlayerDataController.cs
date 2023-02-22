@@ -13,6 +13,7 @@ using Assets.Resources.Ancible_Tools.Scripts.System.Building;
 using Assets.Resources.Ancible_Tools.Scripts.System.Items;
 using Assets.Resources.Ancible_Tools.Scripts.System.Pathing;
 using Assets.Resources.Ancible_Tools.Scripts.System.Windows;
+using Assets.Resources.Ancible_Tools.Scripts.System.WorldEvents;
 using FileDataLib;
 using MessageBusLib;
 using UnityEngine;
@@ -31,6 +32,9 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.SaveData
         [SerializeField] private string _hobblerFolder = string.Empty;
 
         private PlayerData _playerData = null;
+
+        private Dictionary<string, TrainerData> _trainers = new Dictionary<string, TrainerData>();
+        private Dictionary<string, AdventureDialogueData> _dialogue = new Dictionary<string, AdventureDialogueData>();
 
         private string _playerFolderPath = string.Empty;
 
@@ -78,6 +82,12 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.SaveData
             data.Buildings = WorldBuildingManager.GetData();
             data.Windows = UiWindowManager.GetWindowData();
             data.BattlePositions = BattleLeagueManager.GetSavedBattlePositionData();
+            data.MaxPopulation = WorldHobblerManager.PopulationLimit;
+            data.MaxRoster = WorldHobblerManager.RosterLimit;
+            data.Trainers = _instance._trainers.Values.ToArray();
+            data.Dialogue = _instance._dialogue.Values.ToArray();
+            data.WorldEvents = WorldEventManager.GetData();
+            data.WorldEventReceivers = WorldEventManager.GetAllReceiverData();
 
             if (WorldAdventureController.Player)
             {
@@ -103,14 +113,6 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.SaveData
                 data.Map = WorldAdventureController.Current.name;
                 data.AdventureCheckpoint = WorldAdventureController.Current.DefaultTile.ToData();   
             }
-
-            var trainerData = new List<TrainerData>();
-            var queryTrainerDataMsg = MessageFactory.GenerateQueryTrainerDataMsg();
-            queryTrainerDataMsg.DoAfter = trainer => trainerData.Add(new TrainerData{Id = trainer});
-            _instance.gameObject.SendMessage(queryTrainerDataMsg);
-            MessageFactory.CacheMessage(queryTrainerDataMsg);
-
-            data.Trainers = trainerData.ToArray();
 
             var playerFilePath = $"{GeneratePlayerFolder(data.Name)}{data.Name}.{PlayerData.EXTENSION}";
             var playerResult = FileData.SaveData(playerFilePath, data);
@@ -151,10 +153,16 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.SaveData
             {
                 _instance._playerData = playerLoadResult.Data;
                 var data = _instance._playerData;
+                WorldHobblerManager.SetMaxPopulation(data.MaxPopulation);
+                WorldHobblerManager.SetMaxRoster(data.MaxRoster);
                 LoadHobblers(data.HobblerFolderPath);
+                _instance.ApplyTrainerData(data.Trainers);
+                _instance.ApplyDialoguedata(data.Dialogue);
                 WorldStashController.SetStashFromData(data.Stash, data.Gold);
                 WorldBuildingManager.SetFromBuildingsData(data.Buildings);
                 BattleLeagueManager.SetSavedBattlePositions(data.BattlePositions);
+                WorldEventManager.LoadEvents(data.WorldEvents);
+                WorldEventManager.LoadReceivers(data.WorldEventReceivers);
                 _instance.gameObject.SendMessage(LoadWorldDataMessage.INSTANCE);
 
                 var map = WorldAdventureController.GetAdventuerMapByName(data.Map);
@@ -196,7 +204,16 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.SaveData
 
         public static TrainerData GetTrainerDataById(string id)
         {
-            return _instance._playerData?.Trainers.FirstOrDefault(t => t.Id == id);
+            return _instance._trainers.TryGetValue(id, out var data) ? data : null;
+        }
+
+        public static void SetTrainerData(string id)
+        {
+            if (!_instance._trainers.TryGetValue(id, out var data))
+            {
+                data = new TrainerData {Id = id};
+                _instance._trainers.Add(data.Id, data);
+            }
         }
 
         public static BuildingData GetBuildingData(string id)
@@ -206,7 +223,19 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.SaveData
 
         public static AdventureDialogueData GetDialogueDataById(string id)
         {
-            return _instance._playerData?.Dialogue.FirstOrDefault(d => d.Id == id);
+            return _instance._dialogue.TryGetValue(id, out var data) ? data : null;
+
+            //return _instance._playerData?.Dialogue.FirstOrDefault(d => d.Id == id);
+        }
+
+        public static void SetDialogueData(string id, string dialouge)
+        {
+            if (!_instance._dialogue.TryGetValue(id, out var data))
+            {
+                data = new AdventureDialogueData {Id = id};
+                _instance._dialogue.Add(id, data);
+            }
+            data.Dialogue = dialouge;
         }
 
         private static void ApplySpriteToData(SpriteTrait trait)
@@ -267,6 +296,25 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.SaveData
             WorldHobblerManager.LoadHobblersFromData(hobblerData.ToArray());
 
         }
+
+        private void ApplyTrainerData(TrainerData[] trainers)
+        {
+            _trainers.Clear();
+            foreach (var data in trainers)
+            {
+                _trainers.Add(data.Id, data);
+            }
+        }
+
+        private void ApplyDialoguedata(AdventureDialogueData[] dialogue)
+        {
+            _dialogue.Clear();
+            foreach (var data in dialogue)
+            {
+                _dialogue.Add(data.Id, data);
+            }
+        }
+
 
         private void SubscribeToMessages()
         {

@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b50578a9ff9ff194fb5642971ddc2285, type: 3}
+  m_Name: Players past Reutzel Maze World Event Receiver
+  m_EditorClassIdentifier: 
+  MaxStack: 1
+  _event: {fileID: 11400000, guid: e912efdfeb65c8d468a0df6258795fd5, type: 2}
+  _applyOnWorldEvent:
+  - {fileID: 11400000, guid: cabd17241673cf143a2c8ab05c9db781, type: 2}
+  _applyMax: 1
+  Save: 1
+  SaveId: 

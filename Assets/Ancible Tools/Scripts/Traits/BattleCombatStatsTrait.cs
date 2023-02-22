@@ -72,6 +72,8 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             _controller.transform.parent.gameObject.SubscribeWithFilter<QueryManaMessage>(QueryMana, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<ApplyManaMessage>(ApplyMana, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<QueryCombatStatsMessage>(QueryCombatStats, _instanceId);
+            _controller.transform.parent.gameObject.SubscribeWithFilter<QueryBonusDamageMessage>(QueryBonusDamage, _instanceId);
+            _controller.transform.parent.gameObject.SubscribeWithFilter<QueryBonusHealMessage>(QueryBonusHeal, _instanceId);
         }
 
         private void SetCombatStats(SetCombatStatsMessage msg)
@@ -233,6 +235,18 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         private void QueryCombatStats(QueryCombatStatsMessage msg)
         {
             msg.DoAfter.Invoke(_baseStats, _bonusStats, GeneticCombatStats.Zero);
+        }
+
+        private void QueryBonusDamage(QueryBonusDamageMessage msg)
+        {
+            var bonusDamage = WorldCombatController.CalculateDamage(_baseStats + _bonusStats, msg.Type);
+            msg.DoAfter.Invoke(bonusDamage);
+        }
+
+        private void QueryBonusHeal(QueryBonusHealMessage msg)
+        {
+            var bonusHeal = WorldCombatController.CalculateHeal(_baseStats + _bonusStats, msg.Type);
+            msg.DoAfter.Invoke(bonusHeal);
         }
     }
 }

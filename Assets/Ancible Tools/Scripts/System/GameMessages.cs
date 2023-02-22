@@ -1549,4 +1549,20 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
     {
         public static LoadAdventureDataMessage INSTANCE = new LoadAdventureDataMessage();
     }
+
+    public class SetDialogueMessage : EventMessage
+    {
+        public DialogueData Dialogue;
+    }
+
+    public class QueryBonusHealMessage : EventMessage
+    {
+        public Action<int> DoAfter;
+        public DamageType Type;
+    }
+
+    public class TriggerWorldEventMessage : EventMessage
+    {
+        public static TriggerWorldEventMessage INSTANCE = new TriggerWorldEventMessage();
+    }
 }

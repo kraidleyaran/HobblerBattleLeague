@@ -227,6 +227,8 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
         private static List<SetNodeAutoRefillStateMessage> _setNodeAutoRefillStateCache = new List<SetNodeAutoRefillStateMessage>();
         private static List<ApplyGlobalExperienceMessage> _applyGlobalExperienceCache = new List<ApplyGlobalExperienceMessage>();
         private static List<QueryExperiencePoolMessage> _queryExperiencePoolCache = new List<QueryExperiencePoolMessage>();
+        private static List<SetDialogueMessage> _setDialogueCache = new List<SetDialogueMessage>();
+        private static List<QueryBonusHealMessage> _queryBonusHealCache = new List<QueryBonusHealMessage>();
 
         public static AddTraitToUnitMessage GenerateAddTraitToUnitMsg()
         {
@@ -2711,6 +2713,30 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
             return new QueryExperiencePoolMessage();
         }
 
+        public static SetDialogueMessage GenerateSetDialogueMsg()
+        {
+            if (_setDialogueCache.Count > 0)
+            {
+                var message = _setDialogueCache[0];
+                _setDialogueCache.Remove(message);
+                return message;
+            }
+
+            return new SetDialogueMessage();
+        }
+
+        public static QueryBonusHealMessage GenerateQueryBonusHealMsg()
+        {
+            if (_queryBonusHealCache.Count > 0)
+            {
+                var message = _queryBonusHealCache[0];
+                _queryBonusHealCache.Remove(message);
+                return message;
+            }
+
+            return new QueryBonusHealMessage();
+        }
+
         //TODO: Start Cache
 
         public static void CacheMessage(AddTraitToUnitMessage msg)
@@ -4251,6 +4277,21 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
             msg.DoAfter = null;
             msg.Sender = null;
             _queryExperiencePoolCache.Add(msg);
+        }
+
+        public static void CacheMessage(SetDialogueMessage msg)
+        {
+            msg.Dialogue = null;
+            msg.Sender = null;
+            _setDialogueCache.Add(msg);
+        }
+
+        public static void CacheMessage(QueryBonusHealMessage msg)
+        {
+            msg.DoAfter = null;
+            msg.Type = DamageType.Physical;
+            msg.Sender = null;
+            _queryBonusHealCache.Add(msg);
         }
     }
 }

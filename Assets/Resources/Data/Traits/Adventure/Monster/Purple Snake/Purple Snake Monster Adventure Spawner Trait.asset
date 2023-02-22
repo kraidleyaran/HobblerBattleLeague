@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c44509396da22f9488d374d2b7100202, type: 3}
+  m_Name: Purple Snake Monster Adventure Spawner Trait
+  m_EditorClassIdentifier: 
+  MaxStack: 1
+  _template: {fileID: 0}
+  _additionalTraits:
+  - {fileID: 11400000, guid: 54a416ec71694904f905f541fd04a1e6, type: 2}
+  - {fileID: 11400000, guid: c03d6a6a0bf58e343afa380b60d6372f, type: 2}
+  - {fileID: 11400000, guid: 0633ccc6fe74cf243b3e8cffd63fee6b, type: 2}
+  - {fileID: 11400000, guid: 09a51616f44030441b0778861a587fc3, type: 2}
+  - {fileID: 11400000, guid: 3ae08c8bb4de22d4e8876eaeef4af475, type: 2}
+  - {fileID: 11400000, guid: 3e3032d7cc8c2bd4d98b4d1091fcb969, type: 2}
+  - {fileID: 11400000, guid: b32bfd6cbb83ba44f8c5393f06996f47, type: 2}
+  - {fileID: 11400000, guid: 3719262a665b2da47965f0de94703651, type: 2}
+  _spawnCooldown: 18000
+  _chanceToSpawn: 1
+  _spawnCheckCooldown: 0
+  _isMonster: 1
+  _spawnArea: 1

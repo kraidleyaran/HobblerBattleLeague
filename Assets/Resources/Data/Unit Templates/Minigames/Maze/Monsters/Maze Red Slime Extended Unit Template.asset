@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 992dfd0a50edcf0448772bf6f6355dd1, type: 3}
+  m_Name: Maze Red Slime Extended Unit Template
+  m_EditorClassIdentifier: 
+  _traits:
+  - {fileID: 11400000, guid: 2e7e4f2d5def8344fbeaacee86315f2d, type: 2}
+  - {fileID: 11400000, guid: 78bbce8614ec33d4b91cedbeac6039cf, type: 2}
+  - {fileID: 11400000, guid: 11bf9577ad4afed4aa200fb863758e9b, type: 2}
+  - {fileID: 11400000, guid: d6f84175d65afc948b42a3b55967e408, type: 2}
+  - {fileID: 11400000, guid: 15296b30855191d4bbb8f8c696f9e206, type: 2}
+  - {fileID: 11400000, guid: bbe61d8dc8e66004386875594f128e68, type: 2}
+  - {fileID: 11400000, guid: b1c2c97629cb31b46a1c5c5a2a9bdda2, type: 2}
+  - {fileID: 11400000, guid: ea48e297c89a75c41b3b1305708a4795, type: 2}
+  - {fileID: 11400000, guid: 21cca670868fae443bd7417351f6edb8, type: 2}
+  _baseTemplate: {fileID: 11400000, guid: 3cde5ed5379d8c54fbb0e536e7cf94b6, type: 2}

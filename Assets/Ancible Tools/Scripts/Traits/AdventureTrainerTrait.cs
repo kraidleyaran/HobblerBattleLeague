@@ -243,7 +243,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             if (!_defeated)
             {
                 _defeated = true;
-                _controller.gameObject.Subscribe<QueryTrainerDataMessage>(QueryTrainerData);
+                PlayerDataController.SetTrainerData(SaveId);
             }
             
             foreach (var tile in _subscribedTiles)

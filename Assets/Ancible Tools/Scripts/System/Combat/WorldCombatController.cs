@@ -11,6 +11,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Combat
         [SerializeField] private float _physicalDamagePerStrength = 1f;
         [SerializeField] private float _moveSpeedPerAgility = 1f;
         [SerializeField] private float _attackSpeedPerAgility = 1f;
+        [SerializeField] private float _castSpeedPerAgility = 1f;
         [SerializeField] private float _magicDamagePerMagic = 1f;
         [SerializeField] private float _physicalResistancePerArmor = 1f;
         [SerializeField] private float _magicalResistancePerFaith = 1f;
@@ -62,15 +63,20 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Combat
 
         public static float CalculateMoveSpeed(CombatStats stats)
         {
-            return (int)(stats.Agility * _instance._moveSpeedPerAgility) / TickController.OneSecond;
+            return stats.Agility * _instance._moveSpeedPerAgility / TickController.OneSecond;
         }
 
         public static float CalculateAttackSpeed(CombatStats stats)
         {
-            return (int) (stats.Agility * _instance._attackSpeedPerAgility) / TickController.OneSecond;
+            return stats.Agility * _instance._attackSpeedPerAgility / TickController.OneSecond;
         }
 
-        public static int CalculateHeal(CombatStats stats, int amount, DamageType type)
+        public static float CalculateCastSpeed(CombatStats stats)
+        {
+            return (stats.Agility * _instance._castSpeedPerAgility) / TickController.OneSecond;
+        }
+
+        public static int CalculateHeal(CombatStats stats, DamageType type)
         {
             switch (type)
             {
@@ -78,8 +84,6 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Combat
                     return 0;
                 case DamageType.Magical:
                     return Mathf.RoundToInt(stats.Faith * _instance._magicalHealPerFaith);
-                case DamageType.Pure:
-                    return amount;
                 default:
                     return 0;
             }

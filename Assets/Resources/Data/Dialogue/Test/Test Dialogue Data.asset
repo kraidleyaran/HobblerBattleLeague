@@ -9,14 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bb4f7823a92cf1b45b912f1114bed653, type: 3}
+  m_Script: {fileID: 11500000, guid: ada3ac500a2444348bbf4a44eccadd01, type: 3}
   m_Name: Test Dialogue Data
   m_EditorClassIdentifier: 
   Subject: 
-  Dialogue:
-  - This is some test dialogue!
-  - I have multiple things to say!
+  Dialogue: []
+  ApplyToPlayer: []
+  ApplyToOwner: []
   Tree:
-    Dialogue:
-    - {fileID: 11400000, guid: 148ede868c5801c49b0a5c5324e648d6, type: 2}
-    - {fileID: 11400000, guid: 16131c8f668f25b4fb9e20b243b045b0, type: 2}
+    Dialogue: []

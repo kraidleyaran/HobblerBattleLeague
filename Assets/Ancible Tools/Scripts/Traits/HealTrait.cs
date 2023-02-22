@@ -26,17 +26,14 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             var heal = _amount.Roll();
             if (owner)
             {
-                var combatStats = CombatStats.Zero;
+                var bonus = 0;
 
-                var queryCombatStatsMsg = MessageFactory.GenerateQueryCombatStatsMsg();
-                queryCombatStatsMsg.DoAfter = (baseStats, bonusStats, genetics) =>
-                {
-                    combatStats = baseStats + bonusStats + genetics;
-                };
-                _controller.gameObject.SendMessageTo(queryCombatStatsMsg, owner);
-                MessageFactory.CacheMessage(queryCombatStatsMsg);
+                var queryBonusHealMsg = MessageFactory.GenerateQueryBonusHealMsg();
+                queryBonusHealMsg.DoAfter = amount => bonus += amount;
+                _controller.gameObject.SendMessageTo(queryBonusHealMsg, owner);
+                MessageFactory.CacheMessage(queryBonusHealMsg);
 
-                heal += WorldCombatController.CalculateHeal(combatStats, heal, _type);
+                heal += bonus;
             }
 
             var healMsg = MessageFactory.GenerateHealMsg();

@@ -25,6 +25,8 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.SaveData
         public AdventureDialogueData[] Dialogue = new AdventureDialogueData[0];
         public int MaxPopulation = 0;
         public int MaxRoster = 0;
+        public WorldEventData[] WorldEvents = new WorldEventData[0];
+        public WorldEventReceiverData[] WorldEventReceivers = new WorldEventReceiverData[0];
 
         public void Dispose()
         {

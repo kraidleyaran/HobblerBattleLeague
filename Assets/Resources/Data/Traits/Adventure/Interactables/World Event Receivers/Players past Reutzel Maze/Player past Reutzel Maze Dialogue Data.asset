@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ada3ac500a2444348bbf4a44eccadd01, type: 3}
+  m_Name: Player past Reutzel Maze Dialogue Data
+  m_EditorClassIdentifier: 
+  Subject: 
+  Dialogue:
+  - Congratulations! You've made it past the first area!
+  - The League Council has decided to allow you to care for 3 more hobblers and add
+    one more to your roster!
+  - But beware.... the next area is harder!
+  - Good luck!!!
+  ApplyToPlayer:
+  - {fileID: 11400000, guid: 011ac05351ee12a4e8474230de70314d, type: 2}
+  - {fileID: 11400000, guid: 8d901f0e93bd94842aed6196086ed1df, type: 2}
+  ApplyToOwner: []
+  Tree:
+    Dialogue: []

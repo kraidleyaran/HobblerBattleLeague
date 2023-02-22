@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c44509396da22f9488d374d2b7100202, type: 3}
+  m_Name: Shroom Monster Adventure Spawner Trait
+  m_EditorClassIdentifier: 
+  MaxStack: 1
+  _template: {fileID: 0}
+  _additionalTraits:
+  - {fileID: 11400000, guid: 7baf6430a7b6575478947a970047aba7, type: 2}
+  - {fileID: 11400000, guid: 498a94c1c4e9d5d418d3ec754e37bf8d, type: 2}
+  - {fileID: 11400000, guid: b49670e919624244c9e0fe0dbfc52116, type: 2}
+  - {fileID: 11400000, guid: 8cb011af8610b0d4d8b5dd72699fbeb2, type: 2}
+  - {fileID: 11400000, guid: 269d29f9f0a340f488aa02c28461e2f7, type: 2}
+  - {fileID: 11400000, guid: 0288deec2d074384fb1337727a268be0, type: 2}
+  - {fileID: 11400000, guid: b32bfd6cbb83ba44f8c5393f06996f47, type: 2}
+  - {fileID: 11400000, guid: 3719262a665b2da47965f0de94703651, type: 2}
+  _spawnCooldown: 18000
+  _chanceToSpawn: 1
+  _spawnCheckCooldown: 0
+  _isMonster: 1
+  _spawnArea: 1

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Purple Snake Battle Monster Template
   m_EditorClassIdentifier: 
   Data:
-    Name: 
+    Name: Snake
     Id: 
     Stats:
       Health: 7
@@ -32,6 +32,7 @@ MonoBehaviour:
       AttackSpeed: 45
       ApplyToTarget:
       - {fileID: 11400000, guid: e28fca01a5796384192c39eb456f3046, type: 2}
+      ApplyToOwner: []
     TotalDamageDone: 0
     TotalHeals: 0
     TotalDamageTaken: 0

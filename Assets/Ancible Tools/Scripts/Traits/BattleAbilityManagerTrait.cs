@@ -3,6 +3,7 @@ using System.Linq;
 using Assets.Resources.Ancible_Tools.Scripts.System;
 using Assets.Resources.Ancible_Tools.Scripts.System.Abilities;
 using Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague;
+using Assets.Resources.Ancible_Tools.Scripts.System.Combat;
 using Assets.Resources.Ancible_Tools.Scripts.System.Pathing;
 using Assets.Resources.Ancible_Tools.Scripts.System.TickTimers;
 using MessageBusLib;
@@ -23,6 +24,8 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         private Dictionary<int, AbilityInstance> _abilities = new Dictionary<int, AbilityInstance>();
 
         private TickTimer _castingTimer = null;
+
+        private float _combatBonusTicks = 0f;
 
         public override void SetupController(TraitController controller)
         {
@@ -49,7 +52,8 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         private void StartCastingAbility(AbilityInstance ability, GameObject target)
         {
             _castingTimer?.Destroy();
-            _castingTimer = new TickTimer(ability.Instance.CastTime, 0, () => {FinishCasting(ability, target);}, null);
+            var castingTicks = Mathf.RoundToInt(ability.Instance.CastTime - _combatBonusTicks) ;
+            _castingTimer = new TickTimer(castingTicks, 0, () => {FinishCasting(ability, target);}, null);
             var updateUnitCastingTimerMsg = MessageFactory.GenerateUpdateUnitCastTimerMsg();
             updateUnitCastingTimerMsg.CastTimer = _castingTimer;
             updateUnitCastingTimerMsg.Icon = ability.Instance.Icon;
@@ -193,6 +197,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             _controller.transform.parent.gameObject.SubscribeWithFilter<StunMessage>(Stun, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<SilenceMessage>(Silence, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<QueryCastingMessage>(QueryCasting, _instanceId);
+            _controller.transform.parent.gameObject.SubscribeWithFilter<UpdateCombatStatsMessage>(UpdateCombatStats, _instanceId);
         }
 
         private void BattleAbilityCheck(BattleAbilityCheckMessage msg)
@@ -306,6 +311,11 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             {
                 msg.DoAfter.Invoke();
             }
+        }
+
+        private void UpdateCombatStats(UpdateCombatStatsMessage msg)
+        {
+            _combatBonusTicks = WorldCombatController.CalculateCastSpeed(msg.Base + msg.Bonus);
         }
 
         public override void Destroy()

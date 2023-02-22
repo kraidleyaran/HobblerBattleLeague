@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c44509396da22f9488d374d2b7100202, type: 3}
+  m_Name: Brown One-Eyed Bat Monster Adventure Spawner Trait
+  m_EditorClassIdentifier: 
+  MaxStack: 1
+  _template: {fileID: 0}
+  _additionalTraits:
+  - {fileID: 11400000, guid: 94071e94d4ca9fb4ba96445563e1342b, type: 2}
+  - {fileID: 11400000, guid: 3b8c86cb0725b9a4ea1b0d0e9984c13e, type: 2}
+  - {fileID: 11400000, guid: fdc6ef0987a82fc48881aaad08e3a822, type: 2}
+  - {fileID: 11400000, guid: 7fa9c729238bb6f448d3ae9e7cda9b25, type: 2}
+  - {fileID: 11400000, guid: 3e0536e494f381b498da2ea19dfc9c2e, type: 2}
+  - {fileID: 11400000, guid: bf89a3e560edc0943a0647cc1b091f0f, type: 2}
+  - {fileID: 11400000, guid: b32bfd6cbb83ba44f8c5393f06996f47, type: 2}
+  - {fileID: 11400000, guid: 3719262a665b2da47965f0de94703651, type: 2}
+  _spawnCooldown: 18000
+  _chanceToSpawn: 1
+  _spawnCheckCooldown: 0
+  _isMonster: 1
+  _spawnArea: 1

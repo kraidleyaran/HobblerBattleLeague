@@ -196,7 +196,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             _controller.transform.parent.gameObject.SubscribeWithFilter<UpdateAdventureUnitStateMessage>(UpdateUnitState, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<SetUnitSpawnerMessage>(SetUnitSpawner, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<ObstacleMessage>(Obstacle, _instanceId);
-            _controller.transform.parent.gameObject.SubscribeWithFilter<InteractMessage>(Interact, _instanceId);
+            //_controller.transform.parent.gameObject.SubscribeWithFilter<InteractMessage>(Interact, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<EncounterFinishedMessage>(EncounterFinished, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<UpdateMapTileMessage>(UpdateMapTile, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<UpdateAdventureAiStateMessage>(UpdateAdventureAiState, _instanceId);

@@ -22,7 +22,9 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.BattleLeague
         [SerializeField] private Text _unitNameText = null;
         [SerializeField] private int _maxAbilityCount = 8;
         [SerializeField] private RectTransform _abilityTransform;
+        [SerializeField] private GameObject _abilitiesAndAttackInfoGroup;
         [SerializeField] private GameObject _equippedItemsGroup = null;
+        [SerializeField] private UiBattleBasicAttackInfoController _basicAttackInfo = null;
 
         [Header("Stats")]
         [SerializeField] private UiCombatStatController _healthController = null;
@@ -81,8 +83,17 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.BattleLeague
             gameObject.SendMessageTo(queryCombatStatsMsg, _unit);
             MessageFactory.CacheMessage(queryCombatStatsMsg);
             //UpdateCombatStats(unitData.Stats);
-            UpdateAbilities(unitData.Abilities);
             UpdateEquipment(unitData.EquippedItems);
+            if (_weaponController.Item)
+            {
+                _basicAttackInfo.Clear();
+            }
+            else
+            {
+                _basicAttackInfo.Setup(unitData.BasicAttack);
+            }
+            UpdateAbilities(unitData.Abilities);
+            _abilitiesAndAttackInfoGroup.gameObject.SetActive(_abilityTransform.gameObject.activeSelf || _basicAttackInfo.gameObject.activeSelf);
             gameObject.SetActive(true);
         }
 

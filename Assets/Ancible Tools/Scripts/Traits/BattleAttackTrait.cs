@@ -16,6 +16,8 @@ namespace Assets.Ancible_Tools.Scripts.Traits
 
         private UnitBattleState _battleState = UnitBattleState.Active;
 
+        private float _combatBonusAttackSpeed = 0f;
+
         public override void SetupController(TraitController controller)
         {
             base.SetupController(controller);
@@ -76,6 +78,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             _controller.transform.parent.gameObject.SubscribeWithFilter<UpdateUnitBattleStateMessage>(UpdateUnitBattleState, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<StunMessage>(Stun, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<DisarmMessage>(Disarm, _instanceId);
+            _controller.transform.parent.gameObject.SubscribeWithFilter<UpdateCombatStatsMessage>(UpdateCombatStats, _instanceId);
         }
 
         private void DoBasicAttack(DoBasicAttackMessage msg)
@@ -98,7 +101,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                 doBumpMsg.Direction = diff.normalized;
                 doBumpMsg.OnBump = () => { ApplyAttack(target); };
                 doBumpMsg.DoAfter = CleanupAttack;
-                doBumpMsg.PixelsPerSecond = (int)(_currentAttackSetup.AttackSpeed * BattleLeagueController.AttackSpeedModifier);
+                doBumpMsg.PixelsPerSecond = (int)(Mathf.RoundToInt(_currentAttackSetup.AttackSpeed + _combatBonusAttackSpeed) * BattleLeagueController.AttackSpeedModifier);
                 doBumpMsg.Distance = _defaultAttackRange;
                 _controller.gameObject.SendMessageTo(doBumpMsg, _controller.transform.parent.gameObject);
                 MessageFactory.CacheMessage(doBumpMsg);
@@ -157,6 +160,11 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         private void Disarm(DisarmMessage msg)
         {
             InterruptAttack();
+        }
+
+        private void UpdateCombatStats(UpdateCombatStatsMessage msg)
+        {
+            _combatBonusAttackSpeed = WorldCombatController.CalculateAttackSpeed(msg.Base + msg.Bonus);
         }
     }
 }

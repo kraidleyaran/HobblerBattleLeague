@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 992dfd0a50edcf0448772bf6f6355dd1, type: 3}
+  m_Name: Maze Shroom Extended Unit Template
+  m_EditorClassIdentifier: 
+  _traits:
+  - {fileID: 11400000, guid: fd4c1257baa603b42b7988318026c61a, type: 2}
+  - {fileID: 11400000, guid: 1e7139e316091c340b5a8354d61fa258, type: 2}
+  - {fileID: 11400000, guid: 269d29f9f0a340f488aa02c28461e2f7, type: 2}
+  - {fileID: 11400000, guid: 3cc7ea25cda7b8e4d92f0afaa7427be8, type: 2}
+  - {fileID: 11400000, guid: 23dad557dedbec14aaa920790f61ce00, type: 2}
+  - {fileID: 11400000, guid: 7cbf226eda6150d409f79dcba76c1acb, type: 2}
+  - {fileID: 11400000, guid: d051d5ddc58cb7b488584e31cef99165, type: 2}
+  - {fileID: 11400000, guid: d6975da4fcb790c4298c3003980064cc, type: 2}
+  - {fileID: 11400000, guid: dd66b200cb8ef2f448a7a80b817b7e13, type: 2}
+  _baseTemplate: {fileID: 11400000, guid: 3cde5ed5379d8c54fbb0e536e7cf94b6, type: 2}

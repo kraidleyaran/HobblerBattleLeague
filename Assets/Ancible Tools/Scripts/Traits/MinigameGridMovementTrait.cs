@@ -1,4 +1,5 @@
 ﻿using Assets.Resources.Ancible_Tools.Scripts.System;
+using Assets.Resources.Ancible_Tools.Scripts.System.Combat;
 using Assets.Resources.Ancible_Tools.Scripts.System.Minigame;
 using Assets.Resources.Ancible_Tools.Scripts.System.Pathing;
 using DG.Tweening;
@@ -23,7 +24,8 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         private Rigidbody2D _rigidBody = null;
         private Vector2 _position = Vector2.zero;
         private Sequence _cooldownSequence = null;
-        
+
+        private float _bonusCombatSpeed = 0f;
 
         public override void SetupController(TraitController controller)
         {
@@ -160,6 +162,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             _controller.transform.parent.gameObject.SubscribeWithFilter<UpdateMinigameUnitStateMessage>(UpdateMinigameUnitState, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<StunMessage>(Stun, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<RootMessage>(Root, _instanceId);
+            _controller.transform.parent.gameObject.SubscribeWithFilter<UpdateCombatStatsMessage>(UpdateCombatStats, _instanceId);
         }
 
         private void UpdateTick(UpdateTickMessage msg)
@@ -283,6 +286,11 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         private void Root(RootMessage msg)
         {
             InterruptMovement();
+        }
+
+        private void UpdateCombatStats(UpdateCombatStatsMessage msg)
+        {
+            _bonusCombatSpeed = WorldCombatController.CalculateMoveSpeed(msg.Base + msg.Bonus);
         }
 
         public override void Destroy()

@@ -1,5 +1,6 @@
 ﻿using Assets.Resources.Ancible_Tools.Scripts.System;
 using Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague;
+using Assets.Resources.Ancible_Tools.Scripts.System.Combat;
 using Assets.Resources.Ancible_Tools.Scripts.System.Pathing;
 using DG.Tweening;
 using MessageBusLib;
@@ -19,6 +20,9 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         private UnitBattleState _battleState = UnitBattleState.Active;
 
         private Tween _moveTween = null;
+
+        private float _bonusSpeed = 0;
+        private float _combatBonusSpeed = 0;
 
         public override void SetupController(TraitController controller)
         {
@@ -41,7 +45,8 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             }
 
             var distance = (tile.World - _rigidBody.position).magnitude;
-            var moveSpeed = TickController.OneSecond / (_moveSpeed * DataController.Interpolation * BattleLeagueController.MoveSpeedModifier) * distance;
+            var speed = _moveSpeed + (int) (_bonusSpeed + _combatBonusSpeed);
+            var moveSpeed = TickController.OneSecond / (speed * DataController.Interpolation * BattleLeagueController.MoveSpeedModifier) * distance;
             BattleLeagueController.PathingGrid.SetTileBlock(_controller.transform.parent.gameObject,tile.Position);
 
             var updateDirectionMsg = MessageFactory.GenerateUpdateDirectionMsg();
@@ -115,6 +120,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             _controller.transform.parent.gameObject.SubscribeWithFilter<DoVictoryAnimationMessage>(DoVictoryAnimation, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<StunMessage>(Stun, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<RootMessage>(Root, _instanceId);
+            _controller.transform.parent.gameObject.SubscribeWithFilter<UpdateCombatStatsMessage>(UpdateCombatStats, _instanceId);
         }
 
         private void UpdateTick(UpdateTickMessage msg)
@@ -232,6 +238,11 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                     _moveTween.Complete(true);
                 }
             }
+        }
+
+        private void UpdateCombatStats(UpdateCombatStatsMessage msg)
+        {
+            _combatBonusSpeed = WorldCombatController.CalculateMoveSpeed(msg.Base + msg.Bonus);
         }
 
         public override void Destroy()

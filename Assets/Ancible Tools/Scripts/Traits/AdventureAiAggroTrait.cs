@@ -322,7 +322,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         {
             if (_unitState != AdventureUnitState.Disabled)
             {
-                WorldAdventureController.Player.gameObject.UnsubscribeFromAllMessagesWithFilter(_instanceId);
+                WorldAdventureController.Player?.gameObject.UnsubscribeFromAllMessagesWithFilter(_instanceId);
             }
             _path.Clear();
             _aggroPositions.Clear();

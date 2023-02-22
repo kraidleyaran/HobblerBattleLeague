@@ -8,7 +8,6 @@ namespace Assets.Ancible_Tools.Scripts.Traits
     [CreateAssetMenu(fileName = "Damage Trait", menuName = "Ancible Tools/Traits/Combat/Damage")]
     public class DamageTrait : Trait
     {
-
         public override bool Instant => true;
         public override int DescriptionPriority => 100;
         

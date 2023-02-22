@@ -12,18 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c92b475d68d234e428a056e65acbd67a, type: 3}
   m_Name: Tornado Monster Battle Encounter - 5
   m_EditorClassIdentifier: 
-  MaxPlayableMonsters: 5
-  RequiredPoints: 15
+  MaxPlayableMonsters: 4
+  RequiredPoints: 12
   MaximumRounds: 3
   VictoryExperiencePerPoint: 1
   DefeatExperiencePerPoint: 0
   RepeatableLoot: {fileID: 11400000, guid: 6d447411fb456ec47a65b11fd6a2ae4d, type: 2}
   Save: 0
+  GoldRemoveOnDefeat: 0
   Monsters:
   - Template: {fileID: 11400000, guid: 602055a5f2eba044980cd30834a633cc, type: 2}
-    Priority: 0
+    Priority: 1
   - Template: {fileID: 11400000, guid: 602055a5f2eba044980cd30834a633cc, type: 2}
-    Priority: 0
+    Priority: 1
   - Template: {fileID: 11400000, guid: 602055a5f2eba044980cd30834a633cc, type: 2}
     Priority: 0
   - Template: {fileID: 11400000, guid: ff056ac3a44ec1046a46f1c0d863a7ca, type: 2}

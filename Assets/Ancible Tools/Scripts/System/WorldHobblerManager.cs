@@ -16,10 +16,10 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
         public static List<GameObject> Roster { get; private set; }
         public static List<GameObject> All { get; private set; }
         public static List<GameObject> Unhappy { get; private set; }
-        public static int PopulationLimit => _instance._populationLimit;
+        public static int PopulationLimit => _instance._maxPopulation;
         public static bool AvailablePopulation => All.Count < PopulationLimit;
         public static Transform Transform => _instance.transform;
-        public static int RosterLimit => _instance._rosterLimit;
+        public static int RosterLimit => _instance._maxRoster;
         public static float ExileAmountPercent => _instance._exileAmountPercent;
 
         private static WorldHobblerManager _instance = null;
@@ -35,6 +35,9 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
         private SetupHobblerFromDataMessage _setupHobblerFromDataMsg = new SetupHobblerFromDataMessage();
         private ApplyRosterStatusMessage _applyRosterStatusMsg = new ApplyRosterStatusMessage();
 
+        private int _maxPopulation = 0;
+        private int _maxRoster = 0;
+
         void Awake()
         {
             if (_instance)
@@ -44,6 +47,8 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
             }
 
             _instance = this;
+            _maxPopulation = _populationLimit;
+            _maxRoster = _rosterLimit;
             Roster = new List<GameObject>();
             All = new List<GameObject>();
             Unhappy = new List<GameObject>();
@@ -145,6 +150,30 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
             }
 
             return null;
+        }
+
+        public static void SetMaxPopulation(int max)
+        {
+            _instance._maxPopulation = max;
+            _instance.gameObject.SendMessage(WorldPopulationUpdatedMessage.INSTANCE);
+        }
+
+        public static void SetMaxRoster(int max)
+        {
+            _instance._maxRoster = max;
+            _instance.gameObject.SendMessage(WorldPopulationUpdatedMessage.INSTANCE);
+        }
+
+        public static void IncreaseMaxPopulation(int amount)
+        {
+            _instance._maxPopulation += amount;
+            _instance.gameObject.SendMessage(WorldPopulationUpdatedMessage.INSTANCE);
+        }
+
+        public static void IncreaseMaxRoster(int amount)
+        {
+            _instance._maxRoster += amount;
+            _instance.gameObject.SendMessage(WorldPopulationUpdatedMessage.INSTANCE);
         }
 
         public static void LoadHobblersFromData(HobblerData[] hobblers)

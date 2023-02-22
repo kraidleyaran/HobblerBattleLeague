@@ -13,12 +13,13 @@ MonoBehaviour:
   m_Name: White Moth Monster Battle Encounter - 3
   m_EditorClassIdentifier: 
   MaxPlayableMonsters: 4
-  RequiredPoints: 12
+  RequiredPoints: 9
   MaximumRounds: 3
   VictoryExperiencePerPoint: 1
   DefeatExperiencePerPoint: 0
   RepeatableLoot: {fileID: 11400000, guid: 6d447411fb456ec47a65b11fd6a2ae4d, type: 2}
   Save: 0
+  GoldRemoveOnDefeat: 0
   Monsters:
   - Template: {fileID: 11400000, guid: 6cac1a3319337af4397d6e48b299ec2c, type: 2}
     Priority: 0

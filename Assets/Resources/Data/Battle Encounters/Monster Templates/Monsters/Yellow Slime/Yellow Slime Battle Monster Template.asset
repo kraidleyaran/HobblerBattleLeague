@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Yellow Slime Battle Monster Template
   m_EditorClassIdentifier: 
   Data:
-    Name: 
+    Name: Slime
     Id: 
     Stats:
       Health: 7
@@ -32,6 +32,7 @@ MonoBehaviour:
       AttackSpeed: 30
       ApplyToTarget:
       - {fileID: 11400000, guid: c7a254c2b147f1549b65e3468f96f061, type: 2}
+      ApplyToOwner: []
     TotalDamageDone: 0
     TotalHeals: 0
     TotalDamageTaken: 0

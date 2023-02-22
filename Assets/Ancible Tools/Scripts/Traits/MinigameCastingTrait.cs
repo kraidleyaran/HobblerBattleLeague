@@ -1,5 +1,6 @@
 ﻿using Assets.Resources.Ancible_Tools.Scripts.System;
 using Assets.Resources.Ancible_Tools.Scripts.System.Abilities;
+using Assets.Resources.Ancible_Tools.Scripts.System.Combat;
 using Assets.Resources.Ancible_Tools.Scripts.System.Minigame;
 using Assets.Resources.Ancible_Tools.Scripts.System.TickTimers;
 using MessageBusLib;
@@ -13,6 +14,8 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         private TickTimer _castingTimer = null;
 
         private MinigameUnitState _unitState = MinigameUnitState.Idle;
+
+        private float _bonusCombatTicks = 0f;
 
         public override void SetupController(TraitController controller)
         {
@@ -58,6 +61,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             _controller.transform.parent.gameObject.SubscribeWithFilter<UpdateMinigameUnitStateMessage>(UpdateMinigameUnitState, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<StunMessage>(Stun, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<SilenceMessage>(Silence, _instanceId);
+            _controller.transform.parent.gameObject.SubscribeWithFilter<UpdateCombatStatsMessage>(UpdateCombatStats, _instanceId);
         }
 
         private void CastAbility(CastAbilityMessage msg)
@@ -72,7 +76,8 @@ namespace Assets.Ancible_Tools.Scripts.Traits
 
                 var ability = msg.Ability;
                 var target = msg.Target;
-                _castingTimer = new TickTimer(msg.Ability.Instance.CastTime, 0, () => OnCastFinish(ability, target), null);
+                var castingTicks = Mathf.RoundToInt(msg.Ability.Instance.CastTime - _bonusCombatTicks);
+                _castingTimer = new TickTimer(castingTicks, 0, () => OnCastFinish(ability, target), null);
                 var updateUnitCastTimerMsg = MessageFactory.GenerateUpdateUnitCastTimerMsg();
                 updateUnitCastTimerMsg.CastTimer = _castingTimer;
                 updateUnitCastTimerMsg.Icon = ability.Instance.Icon;
@@ -110,6 +115,11 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         private void Stun(StunMessage msg)
         {
             InterruptCast();
+        }
+
+        private void UpdateCombatStats(UpdateCombatStatsMessage msg)
+        {
+            _bonusCombatTicks = WorldCombatController.CalculateCastSpeed(msg.Base + msg.Bonus);
         }
     }
 }

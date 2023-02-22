@@ -9,12 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bb4f7823a92cf1b45b912f1114bed653, type: 3}
+  m_Script: {fileID: 11500000, guid: ada3ac500a2444348bbf4a44eccadd01, type: 3}
   m_Name: Test Answer 2 Dialogue Data
   m_EditorClassIdentifier: 
-  Subject: No
-  Dialogue:
-  - I didn't even ask you a question!
-  - And you're being rude!
+  Subject: 
+  Dialogue: []
+  ApplyToPlayer: []
+  ApplyToOwner: []
   Tree:
     Dialogue: []

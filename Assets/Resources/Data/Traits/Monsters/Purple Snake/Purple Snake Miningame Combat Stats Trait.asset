@@ -14,13 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MaxStack: 1
   _startingStats:
-    Health: 10
+    Health: 25
     Mana: 0
     Strength: 0
-    Agility: 0
+    Agility: 3
     Magic: 0
     Faith: 0
-    Defense: 0
+    Defense: 2
     Spirit: 0
   _alignment: 1
   _disableOnDeath: 1
+  _floatingTextOffset: {x: 0, y: 0}

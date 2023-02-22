@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 992dfd0a50edcf0448772bf6f6355dd1, type: 3}
+  m_Name: Maze Brown One-eyed Bat Extended Unit Template
+  m_EditorClassIdentifier: 
+  _traits:
+  - {fileID: 11400000, guid: 1cba9232bd94b7c448c6b43cfc02dc54, type: 2}
+  - {fileID: 11400000, guid: fa97fd4778faafe4dbc37272f687e7dd, type: 2}
+  - {fileID: 11400000, guid: 3e0536e494f381b498da2ea19dfc9c2e, type: 2}
+  - {fileID: 11400000, guid: 4f8962c062c033045a9b67d725f65352, type: 2}
+  - {fileID: 11400000, guid: 28b1b8418dfdc3642acde834206e9e01, type: 2}
+  - {fileID: 11400000, guid: dd3ed7b0d9aaa4242b7f317805968985, type: 2}
+  - {fileID: 11400000, guid: 7dc2d7884c5e27646b5f6e71c1d4fd41, type: 2}
+  - {fileID: 11400000, guid: d188537c17a7a01428987f1734d1cfd4, type: 2}
+  - {fileID: 11400000, guid: 0102f38e918e7484695bfceb554c1951, type: 2}
+  _baseTemplate: {fileID: 11400000, guid: 3cde5ed5379d8c54fbb0e536e7cf94b6, type: 2}

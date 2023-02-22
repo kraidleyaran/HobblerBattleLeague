@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c92b475d68d234e428a056e65acbd67a, type: 3}
+  m_Name: Purple Snake Monster Battle Encounter - 5
+  m_EditorClassIdentifier: 
+  MaxPlayableMonsters: 4
+  RequiredPoints: 12
+  MaximumRounds: 3
+  VictoryExperiencePerPoint: 1
+  DefeatExperiencePerPoint: 0
+  RepeatableLoot: {fileID: 11400000, guid: 6d447411fb456ec47a65b11fd6a2ae4d, type: 2}
+  Save: 0
+  GoldRemoveOnDefeat: 0
+  Monsters:
+  - Template: {fileID: 11400000, guid: 728c1635a9f11234a98aac97dfcd557c, type: 2}
+    Priority: 1
+  - Template: {fileID: 11400000, guid: 728c1635a9f11234a98aac97dfcd557c, type: 2}
+    Priority: 1
+  - Template: {fileID: 11400000, guid: 728c1635a9f11234a98aac97dfcd557c, type: 2}
+    Priority: 0
+  - Template: {fileID: 11400000, guid: 728c1635a9f11234a98aac97dfcd557c, type: 2}
+    Priority: 0
+  - Template: {fileID: 11400000, guid: ff056ac3a44ec1046a46f1c0d863a7ca, type: 2}
+    Priority: 0
