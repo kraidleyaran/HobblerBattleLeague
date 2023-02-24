@@ -1364,6 +1364,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
     {
         public int Level;
         public int Experience;
+        public int Pool;
     }
 
     public class QueryCastingMessage : EventMessage
@@ -1564,5 +1565,12 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
     public class TriggerWorldEventMessage : EventMessage
     {
         public static TriggerWorldEventMessage INSTANCE = new TriggerWorldEventMessage();
+    }
+
+    public class SetAdventureChestMessage : EventMessage
+    {
+        public SpriteTrait OpenSprite;
+        public ItemStack Item;
+        public string Id;
     }
 }

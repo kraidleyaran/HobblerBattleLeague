@@ -1,6 +1,9 @@
-﻿using Assets.Resources.Ancible_Tools.Scripts.System;
+﻿using System;
+using System.Linq;
+using Assets.Resources.Ancible_Tools.Scripts.System;
 using MessageBusLib;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Assets.Ancible_Tools.Scripts.Traits
 {
@@ -32,6 +35,39 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                 }
                 MessageFactory.CacheMessage(addTraitToUnitMsg);
             }
+        }
+
+        public override string GetDescription()
+        {
+            var description = StaticMethods.ApplyColorToText($"{_chance * 100f:N}% Chance to Apply", ColorFactoryController.BonusStat);
+            var traitDescriptions = _applyOnSuccess.OrderByDescending(t => t.DescriptionPriority).Select(t => t.GetDescription()).Where(d => !string.IsNullOrEmpty(d)).ToArray();
+            if (traitDescriptions.Length > 0)
+            {
+                for (var i = 0; i < traitDescriptions.Length; i++)
+                {
+                    if (i == 0)
+                    {
+                        description = $"{description} {traitDescriptions[i]}";
+                    }
+                    else if (i < traitDescriptions.Length - 1)
+                    {
+                        description = $"{description}, {traitDescriptions[i]}";
+                    }
+                    else
+                    {
+                        description = $"{description} and {traitDescriptions[i]}";
+                    }
+
+                }
+            }
+            else
+            {
+                description = string.Empty;
+            }
+
+
+
+            return description;
         }
     }
 }

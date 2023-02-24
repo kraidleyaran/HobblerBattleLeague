@@ -37,13 +37,15 @@ namespace Assets.Ancible_Tools.Scripts.Traits
 
         private bool _isBattling = false;
 
+        private GameObject _waitingOnTarget = null;
+
         public override void SetupController(TraitController controller)
         {
             base.SetupController(controller);
-            if (!string.IsNullOrEmpty(SaveId))
-            {
-                _defeated = PlayerDataController.GetTrainerDataById(SaveId) != null;
-            }
+            //if (!string.IsNullOrEmpty(SaveId))
+            //{
+            //    _defeated = PlayerDataController.GetTrainerDataById(SaveId) != null;
+            //}
             SubscribeToMessages();
         }
 
@@ -107,42 +109,35 @@ namespace Assets.Ancible_Tools.Scripts.Traits
 
         private void ForceEncounter(GameObject obj)
         {
-            var playerState = AdventureUnitState.Idle;
-            var queryAdventureUnitStateMsg = MessageFactory.GenerateQueryAdventureUnitStateMsg();
-            queryAdventureUnitStateMsg.DoAfter = state => { playerState = state; };
-            _controller.gameObject.SendMessageTo(queryAdventureUnitStateMsg, WorldAdventureController.Player);
-            MessageFactory.CacheMessage(queryAdventureUnitStateMsg);
+            //var playerState = AdventureUnitState.Idle;
+            //var queryAdventureUnitStateMsg = MessageFactory.GenerateQueryAdventureUnitStateMsg();
+            //queryAdventureUnitStateMsg.DoAfter = state => { playerState = state; };
+            //_controller.gameObject.SendMessageTo(queryAdventureUnitStateMsg, WorldAdventureController.Player);
+            //MessageFactory.CacheMessage(queryAdventureUnitStateMsg);
 
-            if (playerState != AdventureUnitState.Interaction)
+            MapTile playerTile = null;
+            var queryMapTileMsg = MessageFactory.GenerateQueryMapTileMsg();
+            queryMapTileMsg.DoAfter = tile => playerTile = tile;
+            _controller.gameObject.SendMessageTo(queryMapTileMsg, obj);
+            MessageFactory.CacheMessage(queryMapTileMsg);
+
+            if (playerTile != null)
             {
-                MapTile playerTile = null;
-                var queryMapTileMsg = MessageFactory.GenerateQueryMapTileMsg();
-                queryMapTileMsg.DoAfter = tile => playerTile = tile;
-                _controller.gameObject.SendMessageTo(queryMapTileMsg, obj);
-                MessageFactory.CacheMessage(queryMapTileMsg);
 
-                if (playerTile != null)
+                var distance = _currentTile.Position.DistanceTo(playerTile.Position);
+                if (distance > 1)
                 {
-
-                    var distance = _currentTile.Position.DistanceTo(playerTile.Position);
-                    if (distance > 1)
+                    var moveTile = WorldAdventureController.MapController.PlayerPathing.GetTileByPosition(playerTile.Position + _faceDirection * -1);
+                    if (moveTile != null)
                     {
-                        var moveTile = WorldAdventureController.MapController.PlayerPathing.GetTileByPosition(playerTile.Position + _faceDirection * -1);
-                        if (moveTile != null)
+                        var path = WorldAdventureController.MapController.PlayerPathing.GetPath(_currentTile.Position, moveTile.Position);
+                        if (path.Length > 0)
                         {
-                            var path = WorldAdventureController.MapController.PlayerPathing.GetPath(_currentTile.Position, moveTile.Position);
-                            if (path.Length > 0)
-                            {
-                                var setPathMsg = MessageFactory.GenerateSetPathMsg();
-                                setPathMsg.Path = path;
-                                setPathMsg.DoAfter = StartEncounter;
-                                _controller.gameObject.SendMessageTo(setPathMsg, _controller.transform.parent.gameObject);
-                                MessageFactory.CacheMessage(setPathMsg);
-                            }
-                            else
-                            {
-                                StartEncounter();
-                            }
+                            var setPathMsg = MessageFactory.GenerateSetPathMsg();
+                            setPathMsg.Path = path;
+                            setPathMsg.DoAfter = StartEncounter;
+                            _controller.gameObject.SendMessageTo(setPathMsg, _controller.transform.parent.gameObject);
+                            MessageFactory.CacheMessage(setPathMsg);
                         }
                         else
                         {
@@ -153,8 +148,12 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                     {
                         StartEncounter();
                     }
-
                 }
+                else
+                {
+                    StartEncounter();
+                }
+
             }
             
         }
@@ -289,15 +288,29 @@ namespace Assets.Ancible_Tools.Scripts.Traits
 
         private void StartExclamation(GameObject obj)
         {
-            var setUnitStateMsg = MessageFactory.GenerateSetAdventureUnitStateMsg();
-            setUnitStateMsg.State = AdventureUnitState.Interaction;
-            _controller.gameObject.SendMessageTo(setUnitStateMsg, obj);
-            MessageFactory.CacheMessage(setUnitStateMsg);
+            var playerState = AdventureUnitState.Idle;
+            var queryUnitAdventureStateMsg = MessageFactory.GenerateQueryAdventureUnitStateMsg();
+            queryUnitAdventureStateMsg.DoAfter = unitState => playerState = unitState;
+            _controller.gameObject.SendMessageTo(queryUnitAdventureStateMsg, obj);
+            MessageFactory.CacheMessage(queryUnitAdventureStateMsg);
 
-            _exclamationController = Instantiate(FactoryController.BATTLE_EXCLAMATION, _controller.transform);
-            var offset = new Vector2(_exclamationOffset.x * DataController.Interpolation, _exclamationOffset.y * DataController.Interpolation);
-            _exclamationController.transform.SetLocalPosition(offset);
-            _exclamationController.Setup(_exclamationTicks, FinishExclamation, _exclamationColor);
+            if (playerState == AdventureUnitState.Idle)
+            {
+                var setUnitStateMsg = MessageFactory.GenerateSetAdventureUnitStateMsg();
+                setUnitStateMsg.State = AdventureUnitState.Interaction;
+                _controller.gameObject.SendMessageTo(setUnitStateMsg, obj);
+                MessageFactory.CacheMessage(setUnitStateMsg);
+
+                _exclamationController = Instantiate(FactoryController.BATTLE_EXCLAMATION, _controller.transform);
+                var offset = new Vector2(_exclamationOffset.x * DataController.Interpolation, _exclamationOffset.y * DataController.Interpolation);
+                _exclamationController.transform.SetLocalPosition(offset);
+                _exclamationController.Setup(_exclamationTicks, FinishExclamation, _exclamationColor);
+            }
+            else if (!_waitingOnTarget)
+            {
+                _waitingOnTarget = obj;
+            }
+
         }
 
         private void FinishExclamation()
@@ -343,6 +356,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         private void EncounterFinished(EncounterFinishedMessage msg)
         {
             _isBattling = false;
+            _waitingOnTarget = null;
             var setUnitStateMsg = MessageFactory.GenerateSetAdventureUnitStateMsg();
             setUnitStateMsg.State = AdventureUnitState.Idle;
             _controller.gameObject.SendMessageTo(setUnitStateMsg, _controller.transform.parent.gameObject);
@@ -388,7 +402,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             {
                 if (_defeated)
                 {
-                    _isBattling = false;
+                    _controller.gameObject.SubscribeWithFilter<DialogueClosedMessage>(BattleDialogueClosed, _instanceId);
                     var setFacingDirectionMsg = MessageFactory.GenerateSetFaceDirectionMsg();
                     setFacingDirectionMsg.Direction = (WorldAdventureController.Player.transform.position.ToVector2() - _controller.transform.parent.position.ToVector2()).normalized.ToVector2Int();
                     _controller.gameObject.SendMessageTo(setFacingDirectionMsg, _controller.transform.parent.gameObject);
@@ -436,6 +450,14 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                     tile.OnObjectEnteringTile -= StartExclamation;
                 }
                 _subscribedTiles = new MapTile[0];
+            }
+        }
+
+        private void UpdateWorldState(UpdateWorldStateMessage msg)
+        {
+            if (msg.State == WorldState.Adventure && _waitingOnTarget)
+            {
+                StartExclamation(WorldAdventureController.Player);
             }
         }
 

@@ -165,6 +165,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
 
         private void Defeat()
         {
+            _activeDialogue = true;
             _controller.gameObject.SubscribeWithFilter<DialogueClosedMessage>(DefeatDialogueClosed, _instanceId);
             var showDialogueMsg = MessageFactory.GenerateShowCustomDialogueMsg();
             var dialogue = DialogueFactory.DefaultDefeat.ToList();

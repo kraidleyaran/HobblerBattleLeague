@@ -1,0 +1,91 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4dc59aca74a32ef478511896a1bc8f75, type: 3}
+  m_Name: Joel Trainer Battle Encounter
+  m_EditorClassIdentifier: 
+  MaxPlayableMonsters: 3
+  RequiredPoints: 15
+  MaximumRounds: 0
+  VictoryExperiencePerPoint: 2.25
+  DefeatExperiencePerPoint: 0
+  RepeatableLoot: {fileID: 0}
+  Save: 1
+  GoldRemoveOnDefeat: 0
+  Hobblers:
+  - Hobbler: {fileID: 11400000, guid: b00a6be533ab9fa4d84f0872f9e27984, type: 2}
+    LevelRange:
+      Minimum: 2
+      Maximum: 3
+    GeneticsBonusRoll:
+      Minimum: 4
+      Maximum: 8
+    PreferredPositions:
+    - {x: 0, y: 2}
+    - {x: 0, y: 3}
+    - {x: 0, y: 4}
+    - {x: 0, y: 5}
+    - {x: 1, y: 2}
+    - {x: 1, y: 3}
+    - {x: 1, y: 4}
+    - {x: 1, y: 5}
+    Abilties: []
+    WeaponPool:
+    - {fileID: 11400000, guid: 735c2b3a45054504cb77872e1b12e122, type: 2}
+    OtherEquippablesPool:
+    - {fileID: 11400000, guid: 2ea8c3b7b48544841b58f7b34bdf9e65, type: 2}
+  - Hobbler: {fileID: 11400000, guid: b00a6be533ab9fa4d84f0872f9e27984, type: 2}
+    LevelRange:
+      Minimum: 1
+      Maximum: 3
+    GeneticsBonusRoll:
+      Minimum: 4
+      Maximum: 8
+    PreferredPositions:
+    - {x: 0, y: 2}
+    - {x: 0, y: 3}
+    - {x: 0, y: 4}
+    - {x: 0, y: 5}
+    - {x: 1, y: 2}
+    - {x: 1, y: 3}
+    - {x: 1, y: 4}
+    - {x: 1, y: 5}
+    Abilties: []
+    WeaponPool:
+    - {fileID: 11400000, guid: 735c2b3a45054504cb77872e1b12e122, type: 2}
+    - {fileID: 11400000, guid: 6a42b0b7834a9dd46a2d82dc29c07032, type: 2}
+    OtherEquippablesPool: []
+  - Hobbler: {fileID: 11400000, guid: b00a6be533ab9fa4d84f0872f9e27984, type: 2}
+    LevelRange:
+      Minimum: 2
+      Maximum: 3
+    GeneticsBonusRoll:
+      Minimum: 4
+      Maximum: 7
+    PreferredPositions:
+    - {x: 1, y: 2}
+    - {x: 1, y: 3}
+    - {x: 1, y: 4}
+    - {x: 1, y: 5}
+    - {x: 2, y: 2}
+    - {x: 2, y: 3}
+    - {x: 2, y: 4}
+    - {x: 2, y: 5}
+    Abilties: []
+    WeaponPool:
+    - {fileID: 11400000, guid: 735c2b3a45054504cb77872e1b12e122, type: 2}
+    - {fileID: 11400000, guid: 58d60324ac7f8be44bc0863455913712, type: 2}
+    OtherEquippablesPool: []
+  InitialVictoryLoot:
+  - Item: {fileID: 11400000, guid: ee7cbe2a3dd07bd4791f6517be7eba67, type: 2}
+    Stack: 250
+  - Item: {fileID: 11400000, guid: 6a42b0b7834a9dd46a2d82dc29c07032, type: 2}
+    Stack: 1

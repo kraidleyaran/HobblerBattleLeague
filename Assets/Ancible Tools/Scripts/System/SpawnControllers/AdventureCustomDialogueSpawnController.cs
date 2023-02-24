@@ -10,6 +10,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.SpawnControllers
     {
         [SerializeField] [TextArea(3,5)] private string[] _dialogue = new string[0];
         [SerializeField] private SpriteTrait _sprite = null;
+        [SerializeField] private Vector2Int _facingDirection = Vector2Int.zero;
 
         [Header("Editor References")]
         [SerializeField] private SpriteRenderer _spriteRenderer = null;
@@ -68,9 +69,16 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.SpawnControllers
                 gameObject.SendMessageTo(setMapTileMsg, unitController.gameObject);
                 MessageFactory.CacheMessage(setMapTileMsg);
 
+                var setFacingDirectionMsg = MessageFactory.GenerateSetFaceDirectionMsg();
+                setFacingDirectionMsg.Direction = _facingDirection;
+                gameObject.SendMessageTo(setFacingDirectionMsg, unitController.gameObject);
+                MessageFactory.CacheMessage(setFacingDirectionMsg);
+
                 WorldAdventureController.RegisterObject(unitController.gameObject);
                 
             }
+
+            WorldAdventureController.RegisterObject(gameObject);
             
         }
 

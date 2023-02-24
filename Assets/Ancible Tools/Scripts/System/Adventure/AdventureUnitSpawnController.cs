@@ -93,6 +93,8 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Adventure
 
                 WorldAdventureController.RegisterObject(controller.gameObject);
             }
+
+            WorldAdventureController.RegisterObject(gameObject);
             
         }
 

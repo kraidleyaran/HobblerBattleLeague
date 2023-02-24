@@ -49,11 +49,11 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                 }
 
             }
-            else if(_needs.ContainsKey(WorldNodeType.Activity) && percents.Boredom >= 1f)
+            else if(percents.Boredom >= 1f)
             {
                 _needs.Remove(WorldNodeType.Activity);
                 
-                if (_monsterState == MonsterState.Gathering)
+                if (_monsterState == MonsterState.Gathering && _needs.Count > 0)
                 {
                     _fulfillingNeed = false;
                     var setMonsterStateMsg = MessageFactory.GenerateSetMonsterStateMsg();
@@ -75,7 +75,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                 }
 
             }
-            else if (_needs.ContainsKey(WorldNodeType.Bed) && percents.Fatigue >= 1f)
+            else if (percents.Fatigue >= 1f)
             {
                 _needs.Remove(WorldNodeType.Bed);
                 
@@ -102,7 +102,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                 }
 
             }
-            else if (_needs.ContainsKey(WorldNodeType.Book) && percents.Ignorance >= 1f)
+            else if (percents.Ignorance >= 1f)
             {
                 _needs.Remove(WorldNodeType.Book);
                 if (_monsterState == MonsterState.Studying)
@@ -127,12 +127,9 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                 }
 
             }
-            else if (_needs.ContainsKey(WorldNodeType.Food) && percents.Hunger >= 1f)
+            else if (percents.Hunger >= 1f)
             {
-                if(_needs.ContainsKey(WorldNodeType.Food))
-                {
-                    _needs.Remove(WorldNodeType.Food);
-                }
+                _needs.Remove(WorldNodeType.Food);
                 
                 if (_monsterState == MonsterState.Eating)
                 {

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d8a41c4f6e7a5f4c95104dd1ff1ec41, type: 3}
   m_Name: Apprentice Wand Shoot Projectile at Target Trait
   m_EditorClassIdentifier: 
-  MaxStack: 1
+  MaxStack: 0
   _sprite: {fileID: 11400000, guid: 3cc83f7a084f1bf478dd285435188a43, type: 2}
   _applyOnContact:
   - {fileID: 11400000, guid: 9da2484681612a046b77bec30021fae4, type: 2}

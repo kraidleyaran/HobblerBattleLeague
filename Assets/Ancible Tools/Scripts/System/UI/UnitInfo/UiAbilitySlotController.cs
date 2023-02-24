@@ -13,6 +13,7 @@ namespace Assets.Ancible_Tools.Scripts.System.UI.UnitInfo
         [SerializeField] private Image _abilityIcon = null;
         [SerializeField] private Text _abilityName = null;
         [SerializeField] private Text _manaCost = null;
+        [SerializeField] private Text _rankText = null;
         [SerializeField] private GameObject _rankButtonGroup;
         [SerializeField] private Button _upRankButton;
         [SerializeField] private Button _downRankButton;
@@ -46,6 +47,11 @@ namespace Assets.Ancible_Tools.Scripts.System.UI.UnitInfo
                 var index = transform.parent.GetSiblingIndex();
                 _upRankButton.interactable = index > 0;
                 _downRankButton.interactable = index < DataController.MaxHobblerAbilities - 1;
+                if (ability.Rank > 0)
+                {
+                    _rankText.text = ability.RankToString();
+                }
+                _rankText.gameObject.SetActive(ability.Rank > 0);
             }
             else
             {
@@ -54,6 +60,7 @@ namespace Assets.Ancible_Tools.Scripts.System.UI.UnitInfo
                 _manaCost.text = string.Empty;
                 _rankButtonGroup.gameObject.SetActive(false);
                 _forgetButton.gameObject.SetActive(false);
+                _rankText.gameObject.SetActive(false);
             }
 
             if (_hovered)

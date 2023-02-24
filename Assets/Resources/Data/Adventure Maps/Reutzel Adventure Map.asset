@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Reutzel Adventure Map
   m_EditorClassIdentifier: 
   MapController: {fileID: 3949360468494232806, guid: 8256f1d0e0cf5aa4ea16354f560b7398, type: 3}
-  DefaultTile: {x: -4, y: -100}
+  DefaultTile: {x: -4, y: -1}

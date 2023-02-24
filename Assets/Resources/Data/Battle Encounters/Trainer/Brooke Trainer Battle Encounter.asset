@@ -1,0 +1,94 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4dc59aca74a32ef478511896a1bc8f75, type: 3}
+  m_Name: Brooke Trainer Battle Encounter
+  m_EditorClassIdentifier: 
+  MaxPlayableMonsters: 3
+  RequiredPoints: 15
+  MaximumRounds: 0
+  VictoryExperiencePerPoint: 2.25
+  DefeatExperiencePerPoint: 0
+  RepeatableLoot: {fileID: 0}
+  Save: 1
+  GoldRemoveOnDefeat: 0
+  Hobblers:
+  - Hobbler: {fileID: 11400000, guid: b9ca885ec50aa2b46856995f17196636, type: 2}
+    LevelRange:
+      Minimum: 2
+      Maximum: 4
+    GeneticsBonusRoll:
+      Minimum: 5
+      Maximum: 8
+    PreferredPositions:
+    - {x: 0, y: 2}
+    - {x: 0, y: 3}
+    - {x: 0, y: 4}
+    - {x: 0, y: 5}
+    Abilties: []
+    WeaponPool:
+    - {fileID: 11400000, guid: a17816ae4b2f06a43abae70d58e920aa, type: 2}
+    OtherEquippablesPool:
+    - {fileID: 11400000, guid: 0718201bb43693b4e9efe09fb829c4d7, type: 2}
+  - Hobbler: {fileID: 11400000, guid: b00a6be533ab9fa4d84f0872f9e27984, type: 2}
+    LevelRange:
+      Minimum: 1
+      Maximum: 4
+    GeneticsBonusRoll:
+      Minimum: 3
+      Maximum: 8
+    PreferredPositions:
+    - {x: 0, y: 2}
+    - {x: 0, y: 3}
+    - {x: 0, y: 4}
+    - {x: 0, y: 5}
+    Abilties: []
+    WeaponPool:
+    - {fileID: 11400000, guid: 6a42b0b7834a9dd46a2d82dc29c07032, type: 2}
+    OtherEquippablesPool: []
+  - Hobbler: {fileID: 11400000, guid: e3fef1c57ca6c2541b9d27b0014c3f2f, type: 2}
+    LevelRange:
+      Minimum: 2
+      Maximum: 3
+    GeneticsBonusRoll:
+      Minimum: 4
+      Maximum: 8
+    PreferredPositions:
+    - {x: 3, y: 2}
+    - {x: 3, y: 3}
+    - {x: 3, y: 4}
+    - {x: 3, y: 5}
+    Abilties: []
+    WeaponPool:
+    - {fileID: 11400000, guid: b6791503cc12ec041b61d91df5707bac, type: 2}
+    OtherEquippablesPool: []
+  - Hobbler: {fileID: 11400000, guid: a9b67095f3d69a84ebbf6a5ec97c5355, type: 2}
+    LevelRange:
+      Minimum: 2
+      Maximum: 4
+    GeneticsBonusRoll:
+      Minimum: 4
+      Maximum: 7
+    PreferredPositions:
+    - {x: 1, y: 2}
+    - {x: 1, y: 3}
+    - {x: 1, y: 4}
+    - {x: 1, y: 5}
+    Abilties: []
+    WeaponPool:
+    - {fileID: 11400000, guid: 2c5be33a08303814384cc5f2d15446cd, type: 2}
+    OtherEquippablesPool:
+    - {fileID: 11400000, guid: 987166895ab2ecc47bb05f82a7265da6, type: 2}
+  InitialVictoryLoot:
+  - Item: {fileID: 11400000, guid: ee7cbe2a3dd07bd4791f6517be7eba67, type: 2}
+    Stack: 300
+  - Item: {fileID: 11400000, guid: 1bd509c385f6c4a41b57aad3d43de9ca, type: 2}
+    Stack: 30

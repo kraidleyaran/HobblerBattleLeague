@@ -1,5 +1,6 @@
 ﻿using System;
 using Assets.Ancible_Tools.Scripts.System.Items.Crafting;
+using Assets.Resources.Ancible_Tools.Scripts.System.Items;
 using MessageBusLib;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -13,6 +14,9 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.Crafting
 
         [SerializeField] private Image _iconImage;
         [SerializeField] private Image _borderImage;
+        [SerializeField] private Image _qualityIcon;
+        [SerializeField] private Text _abilityRankText = null;
+
 
         private bool _hovered = false;
         private bool _selected = false;
@@ -24,6 +28,28 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.Crafting
             Recipe = recipe;
             _parent = parent;
             _iconImage.sprite = Recipe.Item.Item.Icon;
+            if (recipe.Item.Item.Quality != ItemQuality.Basic)
+            {
+                switch (recipe.Item.Item.Quality)
+                {
+                    case ItemQuality.Improved:
+                        _qualityIcon.sprite = IconFactoryController.ImprovedIcon;
+                        break;
+                    case ItemQuality.Ornate:
+                        _qualityIcon.sprite = IconFactoryController.OrnateIcon;
+                        break;
+                }
+            }
+
+            if (recipe.Item.Item.Type == WorldItemType.Ability && recipe.Item.Item is AbilityItem abilityItem && abilityItem.Ability.Rank > 0)
+            {
+                _abilityRankText.text = abilityItem.Ability.RankToString();
+            }
+            else
+            {
+                _abilityRankText.gameObject.SetActive(false);
+            }
+            _qualityIcon.gameObject.SetActive(recipe.Item.Item.Quality != ItemQuality.Basic);
         }
 
         public void OnPointerEnter(PointerEventData eventData)

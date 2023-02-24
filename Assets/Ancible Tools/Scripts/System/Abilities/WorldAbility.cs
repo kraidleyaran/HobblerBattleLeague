@@ -11,6 +11,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Abilities
     {
         public string DisplayName;
         public Sprite Icon;
+        public int Rank = 0;
         [TextArea(1, 5)] public string Description;
         public int Range = 1;
         public int CastTime = 1;
@@ -59,7 +60,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Abilities
 
         public string GetDescription()
         {
-            var description = $"Range: {Range}";
+            var description = $"{(Rank > 0 ? $"Rank {this.RankToString()}{Environment.NewLine}" : string.Empty)}Range: {Range}";
             description = $"{description}{Environment.NewLine}Cast Time: {(CastTime * TickController.TickRate):F1}s";
             if (ManaCost > 0)
             {

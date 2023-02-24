@@ -5,6 +5,8 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
 {
     public class DataController : MonoBehaviour
     {
+        public const string TAB = "   ";
+
         public static float Interpolation => _instance._interpoliation;
         public static Vector2 TrueZero => new Vector2(Interpolation / 2f, Interpolation / 2f);
         public static int MaxHobblerAbilities => _instance._maxHobblerAbilities;

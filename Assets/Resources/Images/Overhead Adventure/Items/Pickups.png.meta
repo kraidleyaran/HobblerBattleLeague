@@ -10,10 +10,13 @@ TextureImporter:
     second: Mana Icon
   - first:
       213: 1294334034469808618
-    second: Happiness Icon
+    second: Ornate Icon
   - first:
       213: 6505592670093888716
     second: Checkpoint Crystal
+  - first:
+      213: -1719082941112871145
+    second: Improved Icon
   externalObjects: {}
   serializedVersion: 12
   mipmaps:
@@ -191,7 +194,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Happiness Icon
+      name: Ornate Icon
       rect:
         serializedVersion: 2
         x: 0
@@ -220,7 +223,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -228,6 +231,27 @@ TextureImporter:
       bones: []
       spriteID: cccc45ab012884a50800000000000000
       internalID: 6505592670093888716
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Improved Icon
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 65
+        width: 15
+        height: 15
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 71798835c279428e0800000000000000
+      internalID: -1719082941112871145
       vertices: []
       indices: 
       edges: []

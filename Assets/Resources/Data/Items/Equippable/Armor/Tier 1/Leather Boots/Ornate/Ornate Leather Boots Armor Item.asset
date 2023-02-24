@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b634df8c891e4224e92b134952b5562c, type: 3}
+  m_Name: Ornate Leather Boots Armor Item
+  m_EditorClassIdentifier: 
+  DisplayName: Leather Boots
+  Description: 
+  _icon: {fileID: -6201107019143491926, guid: 2b8f0602ca246a843860ad4b1b843b9a, type: 3}
+  MaxStack: 1
+  GoldValue: -1
+  Rarity: 0
+  Quality: 2
+  _applyOnEquip:
+  - {fileID: 11400000, guid: cdf9a0f9f0ce2e14396b03af9dd6c149, type: 2}

@@ -103,6 +103,16 @@ MonoBehaviour:
       Minimum: 1
       Maximum: 1
     ChanceToDrop: 0.075
+  - Item: {fileID: 11400000, guid: 1bd509c385f6c4a41b57aad3d43de9ca, type: 2}
+    Stack:
+      Minimum: 2
+      Maximum: 5
+    ChanceToDrop: 0.75
+  - Item: {fileID: 11400000, guid: 1bd509c385f6c4a41b57aad3d43de9ca, type: 2}
+    Stack:
+      Minimum: 4
+      Maximum: 7
+    ChanceToDrop: 0.4
   _itemRolls:
     Minimum: 5
     Maximum: 9

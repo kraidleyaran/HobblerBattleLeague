@@ -1048,7 +1048,7 @@ TextureImporter:
     second: Item_347
   - first:
       213: 941885155639502026
-    second: Item_348
+    second: Leather Scrap
   - first:
       213: 8031571055081779816
     second: Item_349
@@ -11153,7 +11153,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Item_348
+      name: Leather Scrap
       rect:
         serializedVersion: 2
         x: 656

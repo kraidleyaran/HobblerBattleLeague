@@ -18,10 +18,11 @@ MonoBehaviour:
   MaxStack: 1
   GoldValue: 10
   Rarity: 0
+  Quality: 0
   _applyOnEquip: []
   AttackSetup:
     Range: 1
-    AttackSpeed: 55
+    AttackSpeed: 28
     ApplyToTarget:
     - {fileID: 11400000, guid: 003d30de871ce16498df8445103e05f2, type: 2}
     ApplyToOwner: []

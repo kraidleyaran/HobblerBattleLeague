@@ -22,9 +22,9 @@ MonoBehaviour:
   GoldRemoveOnDefeat: 0
   Monsters:
   - Template: {fileID: 11400000, guid: 6cac1a3319337af4397d6e48b299ec2c, type: 2}
-    Priority: 0
+    Priority: 1
   - Template: {fileID: 11400000, guid: 6cac1a3319337af4397d6e48b299ec2c, type: 2}
-    Priority: 0
+    Priority: 1
   - Template: {fileID: 11400000, guid: 6cac1a3319337af4397d6e48b299ec2c, type: 2}
     Priority: 0
   - Template: {fileID: 11400000, guid: ff056ac3a44ec1046a46f1c0d863a7ca, type: 2}

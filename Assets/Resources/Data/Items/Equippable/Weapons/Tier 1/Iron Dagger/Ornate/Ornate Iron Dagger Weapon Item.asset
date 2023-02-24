@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb989490e2ad970429da941eca189017, type: 3}
+  m_Name: Ornate Iron Dagger Weapon Item
+  m_EditorClassIdentifier: 
+  DisplayName: Iron Dagger
+  Description: Quick and deadly
+  _icon: {fileID: 1755818987577765057, guid: 2b8f0602ca246a843860ad4b1b843b9a, type: 3}
+  MaxStack: 1
+  GoldValue: 10
+  Rarity: 0
+  Quality: 2
+  _applyOnEquip: []
+  AttackSetup:
+    Range: 1
+    AttackSpeed: 45
+    ApplyToTarget:
+    - {fileID: 11400000, guid: fa0ce27f1d8d0d04b899ff2b98cf078f, type: 2}
+    - {fileID: 11400000, guid: eda6e40699ad37a468125521e48172a9, type: 2}
+    ApplyToOwner: []

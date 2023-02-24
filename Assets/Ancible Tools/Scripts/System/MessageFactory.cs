@@ -229,6 +229,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
         private static List<QueryExperiencePoolMessage> _queryExperiencePoolCache = new List<QueryExperiencePoolMessage>();
         private static List<SetDialogueMessage> _setDialogueCache = new List<SetDialogueMessage>();
         private static List<QueryBonusHealMessage> _queryBonusHealCache = new List<QueryBonusHealMessage>();
+        private static List<SetAdventureChestMessage> _setAdventureChestCache = new List<SetAdventureChestMessage>();
 
         public static AddTraitToUnitMessage GenerateAddTraitToUnitMsg()
         {
@@ -2737,6 +2738,18 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
             return new QueryBonusHealMessage();
         }
 
+        public static SetAdventureChestMessage GenerateSetAdventureChestMsg()
+        {
+            if (_setAdventureChestCache.Count > 0)
+            {
+                var message = _setAdventureChestCache[0];
+                _setAdventureChestCache.Remove(message);
+                return message;
+            }
+
+            return new SetAdventureChestMessage();
+        }
+
         //TODO: Start Cache
 
         public static void CacheMessage(AddTraitToUnitMessage msg)
@@ -4055,6 +4068,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
         {
             msg.Experience = 0;
             msg.Level = 0;
+            msg.Pool = 0;
             msg.Sender = null;
             _setHobblerExperienceCache.Add(msg);
         }
@@ -4292,6 +4306,15 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
             msg.Type = DamageType.Physical;
             msg.Sender = null;
             _queryBonusHealCache.Add(msg);
+        }
+
+        public static void CacheMessage(SetAdventureChestMessage msg)
+        {
+            msg.Id = string.Empty;
+            msg.Item = null;
+            msg.OpenSprite = null;
+            msg.Sender = null;
+            _setAdventureChestCache.Add(msg);
         }
     }
 }

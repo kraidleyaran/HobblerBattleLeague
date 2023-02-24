@@ -25,8 +25,23 @@ MonoBehaviour:
   _interactionType: 1
   _nodeSprite: {fileID: 0}
   _unitsPerTile: 1
+  _refillCost: 0
+  _autoRefill: 0
+  _autoRefillCost: 0
+  _destroyOnEmpty: 0
   _startingRecipes:
   - {fileID: 11400000, guid: bf01f0081cd7c1a4694d5c6b536fcadc, type: 2}
+  - {fileID: 11400000, guid: 09af438bc073e9e43b6bf8c23b37c151, type: 2}
+  - {fileID: 11400000, guid: 49a3153a600397b4a84b03aee0bf2833, type: 2}
+  - {fileID: 11400000, guid: cc4ab9beef5dc4a4181721036fd9fc4a, type: 2}
+  - {fileID: 11400000, guid: 6999d3e9fac77254285083ee8e5e5a59, type: 2}
+  - {fileID: 11400000, guid: f18c0652bb5f43e478f1db9832f79e0c, type: 2}
+  - {fileID: 11400000, guid: 1fe66e9f41ed852499104df49dfe86bf, type: 2}
+  - {fileID: 11400000, guid: c2da6c6c2a777fe45b0bd52c5e454d26, type: 2}
+  - {fileID: 11400000, guid: 54ccce9368bd19d478d4c0954d3fc435, type: 2}
+  - {fileID: 11400000, guid: 01eb56c96bf9edb40981fc64d2ffd4df, type: 2}
+  - {fileID: 11400000, guid: 37fcb0b42e662b84082e136decce508a, type: 2}
+  - {fileID: 11400000, guid: 413b26c6e0a4fc24487bfc4f81772238, type: 2}
   _defaultItemScale: {x: 31.25, y: 31.25}
   _itemOffset: {x: 0, y: 0}
   _skill: {fileID: 11400000, guid: fc198a89e4782654eab4b1124cfaa03c, type: 2}

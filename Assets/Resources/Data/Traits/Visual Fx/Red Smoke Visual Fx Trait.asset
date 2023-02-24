@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cf840f3189fbb24da2824f67fa9ccb4, type: 3}
   m_Name: Red Smoke Visual Fx Trait
   m_EditorClassIdentifier: 
-  MaxStack: 1
+  MaxStack: 0
   _runtime: {fileID: 9100000, guid: c475f8557d3adc14ea1d98ea2f303fd4, type: 2}
   _scaling: {x: 31.25, y: 31.25}
   _offset: {x: 0, y: 0}

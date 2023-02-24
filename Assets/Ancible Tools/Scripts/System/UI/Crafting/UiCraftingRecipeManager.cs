@@ -43,7 +43,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.Crafting
 
         private void RefreshRecipes(CraftingRecipe[] recipes)
         {
-            var orderedRecipes = recipes.OrderBy(r => r.Item.Item.DisplayName).ToArray();
+            var orderedRecipes = recipes.OrderBy(r => r.Item.Item.DisplayName).ThenBy(r => r.Item.Item.Quality).ToArray();
             foreach (var recipe in orderedRecipes)
             {
                 if (!_controllers.ContainsKey(recipe))

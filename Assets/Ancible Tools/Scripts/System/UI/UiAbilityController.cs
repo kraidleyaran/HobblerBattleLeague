@@ -9,6 +9,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI
     public class UiAbilityController : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         [SerializeField] private Image _abilityIconImage = null;
+        [SerializeField] private Text _rankText = null;
 
         public WorldAbility Ability { get; private set;  }
 
@@ -18,6 +19,15 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI
         {
             Ability = ability;
             _abilityIconImage.sprite = Ability.Icon;
+            if (Ability.Rank > 0)
+            {
+                _rankText.text = Ability.RankToString();
+            }
+            else
+            {
+                _rankText.gameObject.SetActive(false);
+            }
+
         }
 
         public void OnPointerEnter(PointerEventData eventData)

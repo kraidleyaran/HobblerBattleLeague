@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cf840f3189fbb24da2824f67fa9ccb4, type: 3}
   m_Name: Green Splatter 0 Visual Fx Trait
   m_EditorClassIdentifier: 
-  MaxStack: 1
+  MaxStack: 0
   _runtime: {fileID: 9100000, guid: fa63a9244cb3f044fbed9f829f130f40, type: 2}
   _scaling: {x: 31.25, y: 31.25}
   _offset: {x: 0, y: 0}

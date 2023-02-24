@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ada3ac500a2444348bbf4a44eccadd01, type: 3}
+  m_Name: Summerset Hollow - Entrance NPC - Dialogue Data
+  m_EditorClassIdentifier: 
+  Subject: 
+  Dialogue:
+  - Hey, I'd be careful before going in there
+  - A lot of people looking to fight....
+  - Don't get caught unprepared!
+  ApplyToPlayer: []
+  ApplyToOwner: []
+  Tree:
+    Dialogue: []

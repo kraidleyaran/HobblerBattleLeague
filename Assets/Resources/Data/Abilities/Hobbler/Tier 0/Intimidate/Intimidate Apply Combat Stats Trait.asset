@@ -19,7 +19,7 @@ MonoBehaviour:
     Strength: 0
     Agility: 0
     Magic: 0
-    Faith: 0
-    Defense: 5
+    Faith: -5
+    Defense: -5
     Spirit: 0
   _permanent: 0

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Assets.Ancible_Tools.Scripts.System.Items.Crafting;
+using Assets.Resources.Ancible_Tools.Scripts.System.Items;
 using MessageBusLib;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -15,11 +16,14 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.Crafting
         public RectTransform RectTransform;
         [SerializeField] private Image _iconImage = null;
         [SerializeField] private Image _fillImage = null;
+        [SerializeField] private Image _qualityIconImage = null;
         [SerializeField] private Text _countText = null;
         [SerializeField] private Text _queueIndexText = null;
+        [SerializeField] private Text _abilityRankText = null;
         [SerializeField] private Button _moveUpButton = null;
         [SerializeField] private Button _moveDownButton = null;
         [SerializeField] private Button _cancelButton = null;
+        
 
         private int _index = 0;
         private int _maxIndex = 0;
@@ -34,6 +38,17 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.Crafting
         public void Setup(QueuedCraft craft)
         {
             Craft = craft;
+            _qualityIconImage.sprite = Craft.Recipe.Item.Item.Quality.ToIcon();
+            _qualityIconImage.gameObject.SetActive(Craft.Recipe.Item.Item.Quality != ItemQuality.Basic);
+            if (craft.Recipe.Item.Item.Type == WorldItemType.Ability && craft.Recipe.Item.Item is AbilityItem abilityItem && abilityItem.Ability.Rank > 0)
+            {
+                _abilityRankText.text = abilityItem.Ability.RankToString();
+                _abilityRankText.gameObject.SetActive(true);
+            }
+            else
+            {
+                _abilityRankText.gameObject.SetActive(false);
+            }
             RefreshCraft();
         }
 
@@ -101,6 +116,10 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.Crafting
                 var percent = (float)(Craft.Recipe.CraftingTicks - Craft.RemainingTicks) / Craft.Recipe.CraftingTicks;
                 _fillImage.fillAmount = percent;
                 
+            }
+            else
+            {
+                _qualityIconImage.gameObject.SetActive(false);
             }
             _iconImage.gameObject.SetActive(craft);
             _countText.gameObject.SetActive(craft);

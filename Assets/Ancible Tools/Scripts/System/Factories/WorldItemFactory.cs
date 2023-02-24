@@ -9,10 +9,16 @@ namespace Assets.Ancible_Tools.Scripts.System.Factories
 {
     public class WorldItemFactory : MonoBehaviour
     {
+        public static int MaxArmorSlots => _instance._maxArmorSlots;
+        public static int MaxTrinketSlots => _instance._maxTrinketSlots;
+
         private static WorldItemFactory _instance = null;
 
         [SerializeField] private string[] _itemFolders = new string[0];
         [SerializeField] private string[] _recipeFolders = new string[0];
+
+        [SerializeField] private int _maxArmorSlots = 3;
+        [SerializeField] private int _maxTrinketSlots = 2;
 
         private Dictionary<string, WorldItem> _items = new Dictionary<string, WorldItem>();
         private Dictionary<string, CraftingRecipe> _recipes = new Dictionary<string, CraftingRecipe>();

@@ -12,8 +12,12 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.BattleLeague
     {
         [SerializeField] private Image _hobblerIconImage;
         [SerializeField] private Text _hobblerNameText;
+        [SerializeField] private Text _levelUpText;
         [SerializeField] private UiFillBarController _experienceBarController = null;
         [SerializeField] private int _fillTimePerPercent = 5;
+        [SerializeField] private float _levelUpJumpPower = 1f;
+        [SerializeField] private Vector2 _levelUpJumpOffset = Vector2.up * 5;
+        [SerializeField] private int _levelUpJumpTicks = 30;
 
         private GameObject _hobbler = null;
 
@@ -23,6 +27,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.BattleLeague
         private int _nextLevelXp = 0;
         private float _startingPercent = 0f;
         private Sequence _fillSequence = null;
+        private Tween _levelUpJumpTween = null;
 
         public void Setup(GameObject hobbler, int experienceGained)
         {
@@ -51,22 +56,42 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.BattleLeague
             if (endExperience >= _nextLevelXp)
             {
                 var leftoverExperience = endExperience - _nextLevelXp;
-                _fillSequence = DoExperienceBarFill(1f).OnComplete(() => ProcessLargeExperience(leftoverExperience, _currentLevel + 1));
+                _fillSequence = DoExperienceBarFill(1f, true);
+                _fillSequence.onComplete += () => ProcessLargeExperience(leftoverExperience, _currentLevel + 1);
             }
             else
             {
                 if (endExperience > startingExperience)
                 {
-                    _fillSequence = DoExperienceBarFill((float)endExperience / _nextLevelXp).OnComplete(() =>
+                    _fillSequence = DoExperienceBarFill((float) endExperience / _nextLevelXp, false);
+                    _fillSequence.onComplete += () =>
                     {
                         _fillSequence = null;
-                    });
+                    };
                 }
 
             }
         }
 
-        private Sequence DoExperienceBarFill(float percent)
+        private void ActivateLevelUp()
+        {
+            _levelUpText.gameObject.SetActive(true);
+            if (_levelUpJumpTween != null)
+            {
+                if (_levelUpJumpTween.IsActive())
+                {
+                    _levelUpJumpTween.Complete();
+                }
+
+                _levelUpJumpTween = null;
+            }
+
+            _levelUpJumpTween = _levelUpText.transform.DOLocalJump(_levelUpJumpOffset, _levelUpJumpPower, 1,
+                _levelUpJumpTicks * TickController.TickRate).OnComplete(
+                () => { _levelUpJumpTween = null; });
+        }
+
+        private Sequence DoExperienceBarFill(float percent, bool levelUp)
         {
             var fillPercent = percent - _startingPercent;
             var fillTime = (int) (_fillTimePerPercent * fillPercent);
@@ -76,12 +101,19 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.BattleLeague
             }
 
             var time = fillTime * TickController.TickRate;
-            return DOTween.Sequence().AppendInterval(time).OnUpdate(() =>
+            var sequence = DOTween.Sequence().AppendInterval(time).OnUpdate(() =>
             {
 
                 var setPercent = (_fillSequence.position / time) * (fillPercent);
                 _experienceBarController.Setup(setPercent + _startingPercent, string.Empty, ColorFactoryController.Experience);
             });
+            if (levelUp)
+            {
+                ActivateLevelUp();
+            }
+
+            return sequence;
+
         }
 
         private void UpdateName(string hobblerName)
@@ -117,7 +149,8 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.BattleLeague
             if (experienceAmount >= requiredExperience)
             {
                 var leftoverExperience = experienceAmount - requiredExperience;
-                _fillSequence = DoExperienceBarFill(1f).OnComplete(() => { ProcessLargeExperience(leftoverExperience, level + 1);});
+                _fillSequence = DoExperienceBarFill(1f, true);
+                _fillSequence.onComplete += () => { ProcessLargeExperience(leftoverExperience, level + 1); };
             }
             else
             {
@@ -131,8 +164,8 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.BattleLeague
                 {
                     percent = 1f;
                 }
-                _experienceBarController.Setup(0f, string.Empty, ColorFactoryController.Experience);
-                _fillSequence = DoExperienceBarFill(percent).OnComplete(() => { _fillSequence = null; });
+                _fillSequence = DoExperienceBarFill(percent, false);
+                _fillSequence.onComplete += () => { _fillSequence = null; };
             }
         }
 
@@ -146,6 +179,16 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.BattleLeague
                 }
 
                 _fillSequence = null;
+            }
+
+            if (_levelUpJumpTween != null)
+            {
+                if (_levelUpJumpTween.IsActive())
+                {
+                    _levelUpJumpTween.Kill();
+                }
+
+                _levelUpJumpTween = null;
             }
 
             _hobbler = null;

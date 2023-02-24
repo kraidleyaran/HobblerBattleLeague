@@ -68,7 +68,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
 
         public static void AddHobblerToRoster(GameObject unit)
         {
-            if (All.Contains(unit) && !Roster.Contains(unit) && Roster.Count < _instance._rosterLimit)
+            if (All.Contains(unit) && !Roster.Contains(unit) && Roster.Count < _instance._maxRoster)
             {
                 Roster.Add(unit);
                 _instance._applyRosterStatusMsg.Roster = true;

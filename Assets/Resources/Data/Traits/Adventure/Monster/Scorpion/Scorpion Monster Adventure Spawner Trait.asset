@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c44509396da22f9488d374d2b7100202, type: 3}
+  m_Name: Scorpion Monster Adventure Spawner Trait
+  m_EditorClassIdentifier: 
+  MaxStack: 1
+  _template: {fileID: 0}
+  _additionalTraits:
+  - {fileID: 11400000, guid: 4d7b696287787b24988f4f4c9023292b, type: 2}
+  - {fileID: 11400000, guid: ed07c6b94bbe4964282f656c83542ae3, type: 2}
+  - {fileID: 11400000, guid: a6f457a829cbf8b40bbffdb61abe0472, type: 2}
+  - {fileID: 11400000, guid: 05ebeefe44a37c548bc9a758e01c4a58, type: 2}
+  - {fileID: 11400000, guid: cf39d8c028bce554b8f40dae081359b1, type: 2}
+  - {fileID: 11400000, guid: 482b2e06aca84f640abcb28a8ba4e838, type: 2}
+  - {fileID: 11400000, guid: b32bfd6cbb83ba44f8c5393f06996f47, type: 2}
+  - {fileID: 11400000, guid: 3719262a665b2da47965f0de94703651, type: 2}
+  _spawnCooldown: 18000
+  _chanceToSpawn: 1
+  _spawnCheckCooldown: 0
+  _isMonster: 1
+  _spawnArea: 1

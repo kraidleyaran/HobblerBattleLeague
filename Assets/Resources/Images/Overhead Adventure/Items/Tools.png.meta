@@ -128,9 +128,9 @@ TextureImporter:
       name: Brown Arrow
       rect:
         serializedVersion: 2
-        x: 112
+        x: 114
         y: 48
-        width: 16
+        width: 12
         height: 16
       alignment: 0
       pivot: {x: 0.5, y: 0.5}

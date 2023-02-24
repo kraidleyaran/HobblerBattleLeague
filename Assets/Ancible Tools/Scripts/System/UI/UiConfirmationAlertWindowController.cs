@@ -24,6 +24,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI
             _alertText.text = alert;
             _onConfirm = onConfirm;
             _iconImage.sprite = icon;
+            _iconImage.color = colorMask;
             var textHeight = _alertText.GetHeightOfText(alert);
             _alertText.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, textHeight);
             var height = Mathf.Max(textHeight + _baseHeight, _minimumHeight);

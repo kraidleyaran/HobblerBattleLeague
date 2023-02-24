@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb989490e2ad970429da941eca189017, type: 3}
+  m_Name: Ornate Training Bow Weapon Item
+  m_EditorClassIdentifier: 
+  DisplayName: Training Bow
+  Description: 'The warning label says "Careful: Do not shoot your eye out"'
+  _icon: {fileID: -761887118410055393, guid: fb7e88717a91066448a605d9e8c0ec6b, type: 3}
+  MaxStack: 1
+  GoldValue: 10
+  Rarity: 0
+  Quality: 2
+  _applyOnEquip:
+  - {fileID: 11400000, guid: 954bd393a86934640b34a72f4362c447, type: 2}
+  AttackSetup:
+    Range: 4
+    AttackSpeed: 20
+    ApplyToTarget:
+    - {fileID: 11400000, guid: ea7b0a834e566014198e507c6702537a, type: 2}
+    ApplyToOwner: []

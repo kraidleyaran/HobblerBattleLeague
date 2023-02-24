@@ -16,7 +16,7 @@ MonoBehaviour:
   Description: 
   Sprite: {fileID: 11400000, guid: 9d4428eb93b798449823935c7341977c, type: 2}
   StartingStats:
-    Health: 18
+    Health: 24
     Mana: 8
     Strength: 6
     Agility: 4
@@ -25,7 +25,7 @@ MonoBehaviour:
     Defense: 2
     Spirit: 1
   MinimumGenetics:
-    Health: 2.25
+    Health: 2.65
     Mana: 1.8
     Strength: 1.6
     Agility: 0.85
@@ -34,7 +34,7 @@ MonoBehaviour:
     Armor: 0.65
     Spirit: 0.01
   MaximumGenetics:
-    Health: 3.7
+    Health: 3.85
     Mana: 4.45
     Strength: 3.2
     Agility: 2.4

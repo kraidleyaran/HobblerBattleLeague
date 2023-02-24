@@ -8,11 +8,11 @@ using UnityEngine.UI;
 
 namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.HobblerGenerator
 {
-    public class UiHobblerCardController : MonoBehaviour, IPointerEnterHandler,IPointerExitHandler
+    public class UiHobblerCardController : MonoBehaviour
     {
         [SerializeField] private UiHobblerIconController _hobblerIcon;
-        [SerializeField] private UiHobblerWeaponController _weaponController = null;
         [SerializeField] private UiAbilityController[] _abilityControllers = new UiAbilityController[0];
+        [SerializeField] private Text _nameText = null;
         [SerializeField] private Text _costText = null;
         [SerializeField] private Button _buyButton = null;
 
@@ -28,11 +28,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.HobblerGenerator
             _template = template;
             _slot = slot;
             _hobblerIcon.Setup(template);
-            if (_template.StartingWeapon)
-            {
-                _weaponController.Setup(template.StartingWeapon);
-            }
-
+            _nameText.text = _template.DisplayName;
             for (var i = 0; i < _template.StartingAbilities.Length && i < _abilityControllers.Length; i++)
             {
                 var ability = _template.StartingAbilities[i];
@@ -60,36 +56,6 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.HobblerGenerator
         public void RefreshBuyable()
         {
             _buyButton.interactable = WorldStashController.Gold >= _template.Cost && WorldHobblerManager.AvailablePopulation;
-        }
-
-        public void OnPointerEnter(PointerEventData eventData)
-        {
-            //if (!_hovered)
-            //{
-            //    _hovered = true;
-            //    var showHoverInfoMsg = MessageFactory.GenerateShowHoverInfoMsg();
-            //    showHoverInfoMsg.Title = _template.DisplayName;
-            //    showHoverInfoMsg.Icon = _template.Sprite.Sprite;
-            //    showHoverInfoMsg.Description = _template.GetDescription();
-            //    showHoverInfoMsg.Position = transform.position.ToVector2();
-            //    showHoverInfoMsg.World = false;
-            //    showHoverInfoMsg.Owner = gameObject;
-            //    showHoverInfoMsg.Gold = _template.Cost;
-            //    gameObject.SendMessage(showHoverInfoMsg);
-            //    MessageFactory.CacheMessage(showHoverInfoMsg);
-            //}
-        }
-
-        public void OnPointerExit(PointerEventData eventData)
-        {
-            //if (_hovered)
-            //{
-            //    _hovered = false;
-            //    var removeHoverInfoMsg = MessageFactory.GenerateRemoveHoverInfoMsg();
-            //    removeHoverInfoMsg.Owner = gameObject;
-            //    gameObject.SendMessage(removeHoverInfoMsg);
-            //    MessageFactory.CacheMessage(removeHoverInfoMsg);
-            //}
         }
 
         public void Destroy()

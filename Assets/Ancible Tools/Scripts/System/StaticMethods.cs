@@ -23,6 +23,8 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
 {
     public static class StaticMethods
     {
+        
+
         public static List<T> QueryList<T>(this List<T> list, Predicate<T> query)
         {
             var returnList = new List<T>();
@@ -942,12 +944,68 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
             var perecent = stats.Hunger + stats.Fatigue + stats.Ignorance + stats.Boredom;
             return perecent / 4f;
         }
-    }
+
+        public static string ToColorString(this ItemQuality quality)
+        {
+            switch (quality)
+            {       
+                case ItemQuality.Improved:
+                case ItemQuality.Ornate:
+                    return ApplyColorToText($"{quality}", quality.ToColor());
+                default:
+                    return $"{quality}";
+            }
+            
+        }
+
+        public static Sprite ToIcon(this ItemQuality quality)
+        {
+            switch (quality)
+            {
+                case ItemQuality.Improved:
+                    return IconFactoryController.ImprovedIcon;
+                case ItemQuality.Ornate:
+                    return IconFactoryController.OrnateIcon;
+                default:
+                    return null;
+            }
+        }
+
+        public static Color ToColor(this ItemQuality quality)
+        {
+            return ColorFactoryController.GetColorForItemQuality(quality);
+        }
+
+        public static string RankToString(this WorldAbility ability)
+        {
+            switch (ability.Rank)
+            {
+                case 1:
+                    return "II";
+                case 2:
+                    return "III";
+                case 3:
+                    return "IV";
+                case 4:
+                    return "V";
+                case 5:
+                    return "VI";
+                case 6:
+                    return "VII";
+                case 7:
+                    return "VIII";
+                case 8:
+                    return "IX";
+                case 9:
+                    return "X";
+                default:
+                    return string.Empty;
+            }
+        }
 
 
 
-
-    public struct NullValue<T>
+        public struct NullValue<T>
     {
         public T Value;
         public bool HasValue;
@@ -965,5 +1023,6 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
         }
 
         
+    }
     }
 }

@@ -80,60 +80,46 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Combat
 
         private void UpdateTick(UpdateTickMessage msg)
         {
-            var targetPos = _target.transform.position.ToVector2();
-            var pos = _rigidBody.position;
-            var diff = (targetPos - pos);
-            var speed = TickController.TickRate * (_pixelsPerSecond * DataController.Interpolation);
-            if (diff.magnitude > speed + _detectDistance)
+            if (_target)
             {
-                var direction = diff.normalized;
-                _rigidBody.position = Vector2.Lerp(_rigidBody.position, _rigidBody.position + speed * direction, speed);
-                if (_rotate)
+                var targetPos = _target.transform.position.ToVector2();
+                var pos = _rigidBody.position;
+                var diff = (targetPos - pos);
+                var speed = TickController.TickRate * (_pixelsPerSecond * DataController.Interpolation);
+                if (diff.magnitude > speed + _detectDistance)
                 {
-                    var rotation = direction.ToZRotation() + _rotationOffset;
-                    _spriteRenderer.transform.localRotation = Quaternion.Euler(0f, 0f, rotation);
+                    var direction = diff.normalized;
+                    _rigidBody.position = Vector2.Lerp(_rigidBody.position, _rigidBody.position + speed * direction, speed);
+                    if (_rotate)
+                    {
+                        var rotation = direction.ToZRotation() + _rotationOffset;
+                        _spriteRenderer.transform.localRotation = Quaternion.Euler(0f, 0f, rotation);
+                    }
+                }
+                else
+                {
+                    var addTraitToUnitMsg = MessageFactory.GenerateAddTraitToUnitMsg();
+                    for (var i = 0; i < _applyOnContact.Length; i++)
+                    {
+                        addTraitToUnitMsg.Trait = _applyOnContact[i];
+                        _owner.SendMessageTo(addTraitToUnitMsg, _target);
+                    }
+                    MessageFactory.CacheMessage(addTraitToUnitMsg);
+                    _doAfter?.Invoke();
                 }
             }
             else
             {
-                var addTraitToUnitMsg = MessageFactory.GenerateAddTraitToUnitMsg();
-                for (var i = 0; i < _applyOnContact.Length; i++)
-                {
-                    addTraitToUnitMsg.Trait = _applyOnContact[i];
-                    _owner.SendMessageTo(addTraitToUnitMsg, _target);
-                }
-                MessageFactory.CacheMessage(addTraitToUnitMsg);
-                _doAfter.Invoke();
+                _doAfter?.Invoke();
             }
-        }
-
-        private void FixedUpdateTick(FixedUpdateTickMessage msg)
-        {
-            var targetPos = _target.transform.position.ToVector2();
-            var pos = _rigidBody.position;
-            var diff = (targetPos - pos);
-            var speed = TickController.OneSecond / (_pixelsPerSecond * DataController.Interpolation);
-            if (diff.magnitude > speed + _detectDistance)
-            {
-                _rigidBody.position = Vector2.Lerp(_rigidBody.position, targetPos, DataController.Interpolation);
-            }
-            else
-            {
-                var addTraitToUnitMsg = MessageFactory.GenerateAddTraitToUnitMsg();
-                for (var i = 0; i < _applyOnContact.Length; i++)
-                {
-                    addTraitToUnitMsg.Trait = _applyOnContact[i];
-                    _owner.SendMessageTo(addTraitToUnitMsg, _target);
-                }
-                MessageFactory.CacheMessage(addTraitToUnitMsg);
-                _doAfter.Invoke();
-            }
+           
         }
 
         public void Destroy()
         {
             if (_active)
             {
+                _active = false;
                 _doAfter = null;
                 _owner = null;
                 _target = null;

@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 992dfd0a50edcf0448772bf6f6355dd1, type: 3}
+  m_Name: Level 1 Armorsmith Extended Unit Template
+  m_EditorClassIdentifier: 
+  _traits:
+  - {fileID: 11400000, guid: db5f2e806ec8350499519a7341c8ec77, type: 2}
+  - {fileID: 11400000, guid: 2689dab1a09cbcc4e855b1a661dcb46f, type: 2}
+  - {fileID: 11400000, guid: 392e78d6b33ba834ba8d06fa805be4c5, type: 2}
+  - {fileID: 11400000, guid: 2ffdce79479bb9e41852b3acec275343, type: 2}
+  - {fileID: 11400000, guid: 810dea2d166cf264298fb529caf68990, type: 2}
+  _baseTemplate: {fileID: 11400000, guid: bb4f8d68f6de44542b43b25da2b724a7, type: 2}

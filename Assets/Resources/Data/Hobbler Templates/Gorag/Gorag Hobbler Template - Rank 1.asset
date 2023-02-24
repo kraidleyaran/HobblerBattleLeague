@@ -16,7 +16,7 @@ MonoBehaviour:
   Description: 
   Sprite: {fileID: 11400000, guid: 8f89185b6bb826b4e82e6fa0e2f7034a, type: 2}
   StartingStats:
-    Health: 22
+    Health: 28
     Mana: 10
     Strength: 4
     Agility: 3

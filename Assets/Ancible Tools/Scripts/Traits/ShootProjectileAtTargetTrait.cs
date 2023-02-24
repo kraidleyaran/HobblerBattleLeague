@@ -1,5 +1,7 @@
 ﻿using Assets.Resources.Ancible_Tools.Scripts.System;
+using Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague;
 using Assets.Resources.Ancible_Tools.Scripts.System.Combat;
+using Assets.Resources.Ancible_Tools.Scripts.System.Minigame;
 using MessageBusLib;
 using UnityEngine;
 
@@ -73,6 +75,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                 {
                     _projectile.SetRotation(_rotate, _rotationOffset);
                 }
+                SubscribeToMessages();
             }
             else
             {
@@ -81,6 +84,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                 _controller.gameObject.SendMessageTo(removeTraitFromUnitByControllerMsg, _controller.transform.parent.gameObject);
                 MessageFactory.CacheMessage(removeTraitFromUnitByControllerMsg);
             }
+            
         }
 
         private void TargetReached()
@@ -89,6 +93,34 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             removeTraitFromUnitByControllerMsg.Controller = _controller;
             _controller.gameObject.SendMessageTo(removeTraitFromUnitByControllerMsg, _controller.transform.parent.gameObject);
             MessageFactory.CacheMessage(removeTraitFromUnitByControllerMsg);
+        }
+
+        private void SubscribeToMessages()
+        {
+            _controller.transform.parent.gameObject.SubscribeWithFilter<UpdateUnitBattleStateMessage>(UpdateUnitBattleState, _instanceId);
+            _controller.transform.parent.gameObject.SubscribeWithFilter<UpdateMinigameUnitStateMessage>(UpdateMinigameUnitState, _instanceId);
+        }
+
+        private void UpdateUnitBattleState(UpdateUnitBattleStateMessage msg)
+        {
+            if (msg.State == UnitBattleState.Dead)
+            {
+                var removeTraitFromUnitByControllerMsg = MessageFactory.GenerateRemoveTraitFromUnitByControllerMsg();
+                removeTraitFromUnitByControllerMsg.Controller = _controller;
+                _controller.gameObject.SendMessageTo(removeTraitFromUnitByControllerMsg, _controller.transform.parent.gameObject);
+                MessageFactory.CacheMessage(removeTraitFromUnitByControllerMsg);
+            }
+        }
+
+        private void UpdateMinigameUnitState(UpdateMinigameUnitStateMessage msg)
+        {
+            if (msg.State == MinigameUnitState.Disabled)
+            {
+                var removeTraitFromUnitByControllerMsg = MessageFactory.GenerateRemoveTraitFromUnitByControllerMsg();
+                removeTraitFromUnitByControllerMsg.Controller = _controller;
+                _controller.gameObject.SendMessageTo(removeTraitFromUnitByControllerMsg, _controller.transform.parent.gameObject);
+                MessageFactory.CacheMessage(removeTraitFromUnitByControllerMsg);
+            }
         }
 
         public override void Destroy()

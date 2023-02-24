@@ -20,6 +20,12 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 65daff23e71913c4db72e0c07dd2293f, type: 2}
   - {fileID: 11400000, guid: 788d2452da9770a4ba8122178154c389, type: 2}
   - {fileID: 11400000, guid: 9b0da0b5f3ca7a942874b6b49bb30297, type: 2}
+  - {fileID: 11400000, guid: e84255f14ad9f6840b3ed23b758cbc74, type: 2}
   _exclamationColor: {r: 0.9647059, g: 0.56078434, b: 0.21568628, a: 1}
   _exclamationOffset: {x: 0, y: 20}
   _exclamationTicks: 30
+  _encounterPositions:
+  - {x: 0, y: 1}
+  - {x: 0, y: -1}
+  - {x: -1, y: 0}
+  - {x: 1, y: 0}

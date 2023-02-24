@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d8a41c4f6e7a5f4c95104dd1ff1ec41, type: 3}
   m_Name: Long Bow Shoot Projectile at Target Trait
   m_EditorClassIdentifier: 
-  MaxStack: 1
+  MaxStack: 0
   _sprite: {fileID: 11400000, guid: 88f5dac52e8785642912278d558f15d2, type: 2}
   _applyOnContact:
   - {fileID: 11400000, guid: 81219799feca145469126b973c930aa9, type: 2}

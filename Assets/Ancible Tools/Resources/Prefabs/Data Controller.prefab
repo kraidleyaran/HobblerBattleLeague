@@ -891,7 +891,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _defaultBasicAttackIcon: {fileID: 5624228601591108982, guid: b517b78c34263c74f96c57bab7594846, type: 3}
   _goldIcon: {fileID: 3081139055754718085, guid: 2b8f0602ca246a843860ad4b1b843b9a, type: 3}
-  _defaultAlertIcon: {fileID: 0}
+  _defaultAlertIcon: {fileID: -2067535388042838268, guid: d5a22c983a4f93644b2a95dff79e901e, type: 3}
+  _improvedIcon: {fileID: -1719082941112871145, guid: 8a5c1bfca9fe62d458f7eb2d0ab29848, type: 3}
+  _ornateIcon: {fileID: 1294334034469808618, guid: 8a5c1bfca9fe62d458f7eb2d0ab29848, type: 3}
 --- !u!1 &927397491008855899
 GameObject:
   m_ObjectHideFlags: 0
@@ -2499,6 +2501,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d8b2e415e9297ce42b66b073948bb727, type: 2}
   - {fileID: 11400000, guid: 10c821b16b02a114ab4e6caf826c3e58, type: 2}
   - {fileID: 11400000, guid: 5f65684d1f8eaca43ade034d51203c46, type: 2}
+  - {fileID: 11400000, guid: 1558ce3c1dad97a45a95c981b9cb0357, type: 2}
   _buildingFolder: Data/Buildings
   _sellBackPercentage: 0.33
   _applyOnSell:
@@ -4917,6 +4920,8 @@ MonoBehaviour:
   _itemFolders:
   - Data/Items
   _recipeFolders: []
+  _maxArmorSlots: 3
+  _maxTrinketSlots: 2
 --- !u!1 &5675447503826518558
 GameObject:
   m_ObjectHideFlags: 0
@@ -5252,7 +5257,10 @@ MonoBehaviour:
   _rareColor: {r: 0.007843138, g: 0.2901961, b: 0.7921569, a: 1}
   _epicColor: {r: 0.41568628, g: 0.19215687, b: 0.7921569, a: 1}
   _legendaryColor: {r: 0.9647059, g: 0.56078434, b: 0.21568628, a: 1}
-  _ancientColor: {r: 0.6784314, g: 0.30588236, b: 0.101960786, a: 1}
+  _ancientColor: {r: 0.8117647, g: 0.23529412, b: 0.44313726, a: 1}
+  _basicColor: {r: 1, g: 1, b: 1, a: 1}
+  _improvedColor: {r: 0.07450981, g: 0.6156863, b: 0.03137255, a: 1}
+  _ornateColor: {r: 1, g: 0.73333335, b: 0.19215687, a: 1}
 --- !u!1 &5998134379898019450
 GameObject:
   m_ObjectHideFlags: 0
@@ -5784,13 +5792,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc0890695d2530b4e8e9e0f8d8efe027, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _physicalDamagePerStrength: 0.85
+  _physicalDamagePerStrength: 0.45
   _moveSpeedPerAgility: 0.085
   _attackSpeedPerAgility: 0.33
   _castSpeedPerAgility: 0.25
-  _magicDamagePerMagic: 0.85
-  _physicalResistancePerArmor: 0.0075
-  _magicalResistancePerFaith: 0.01
+  _magicDamagePerMagic: 0.45
+  _physicalResistancePerArmor: 0.24
+  _magicalResistancePerFaith: 0.24
   _magicalHealPerFaith: 0.8
   _maxGeneticRoll: 32
 --- !u!1 &6406441604608009536

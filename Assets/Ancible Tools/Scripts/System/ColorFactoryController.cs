@@ -1,4 +1,5 @@
 ﻿using Assets.Resources.Ancible_Tools.Scripts.System.Combat;
+using Assets.Resources.Ancible_Tools.Scripts.System.Items;
 using UnityEngine;
 
 namespace Assets.Resources.Ancible_Tools.Scripts.System
@@ -27,6 +28,9 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
         public static Color Happiness => _instance._happinessColor;
         public static Color Moderate => _instance._moderateColor;
         public static Color Unhappiness => _instance._unhappinessColor;
+        public static Color BasicQuality => _instance._basicColor;
+        public static Color ImprovedQuality => _instance._improvedColor;
+        public static Color OrnateQuality => _instance._ornateColor;
 
         private static ColorFactoryController _instance = null;
 
@@ -63,6 +67,11 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
         [SerializeField] private Color _legendaryColor = Color.yellow;
         [SerializeField] private Color _ancientColor = Color.yellow;
 
+        [Header("Item Quality Colors")]
+        [SerializeField] private Color _basicColor = Color.white;
+        [SerializeField] private Color _improvedColor = Color.blue;
+        [SerializeField] private Color _ornateColor = Color.yellow;
+
         void Awake()
         {
             if (_instance)
@@ -88,6 +97,19 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
                     return _instance._muteColor;
                 case StatusEffectType.Disarm:
                     return _instance._disarmColor;
+                default:
+                    return Color.white;
+            }
+        }
+
+        public static Color GetColorForItemQuality(ItemQuality quality)
+        {
+            switch (quality)
+            {
+                case ItemQuality.Improved:
+                    return ImprovedQuality;
+                case ItemQuality.Ornate:
+                    return OrnateQuality;
                 default:
                     return Color.white;
             }

@@ -3892,7 +3892,7 @@ MonoBehaviour:
   _unitIconImage: {fileID: 8900169590572207532}
   _unitNameText: {fileID: 8900169590176816351}
   _maxAbilityCount: 8
-  _abilityTransform: {fileID: 496806249354071374}
+  _abilityTransform: {fileID: 8900169589184830575}
   _abilitiesAndAttackInfoGroup: {fileID: 5090438046569587200}
   _equippedItemsGroup: {fileID: 8900169590851935767}
   _basicAttackInfo: {fileID: 3808087183476304327}

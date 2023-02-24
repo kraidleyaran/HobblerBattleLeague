@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Assets.Resources.Ancible_Tools.Scripts.System.Items
 {
@@ -14,10 +15,11 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Items
         public int MaxStack = 1;
         public int GoldValue = -1;
         public ItemRarity Rarity = ItemRarity.Common;
+        public ItemQuality Quality = ItemQuality.Basic;
 
         public virtual string GetDescription()
         {
-            return Description;
+            return $"{(Quality != ItemQuality.Basic ? $"{Quality.ToColorString()}{Environment.NewLine}" : string.Empty)}{Description}";
         }
 
         public void SetIcon(Sprite icon)

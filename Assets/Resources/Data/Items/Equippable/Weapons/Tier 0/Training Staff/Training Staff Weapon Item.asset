@@ -12,16 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb989490e2ad970429da941eca189017, type: 3}
   m_Name: Training Staff Weapon Item
   m_EditorClassIdentifier: 
-  DisplayName: Bo Staff
+  DisplayName: Training Staff
   Description: A big long stick
   _icon: {fileID: 7276692227602403460, guid: 2b8f0602ca246a843860ad4b1b843b9a, type: 3}
   MaxStack: 1
   GoldValue: 10
   Rarity: 0
+  Quality: 0
   _applyOnEquip: []
   AttackSetup:
     Range: 1
-    AttackSpeed: 22
+    AttackSpeed: 15
     ApplyToTarget:
     - {fileID: 11400000, guid: 02602ffa1d2228f49a14fbb571dbe9dd, type: 2}
     ApplyToOwner: []

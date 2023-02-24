@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e9624950190577489acd6589afc3848, type: 3}
+  m_Name: Ornate Leather Boots Crafting Recipe
+  m_EditorClassIdentifier: 
+  Item:
+    Item: {fileID: 11400000, guid: 5e7cd229383d1564cb3c8b681e5404d1, type: 2}
+    Stack: 1
+  RequiredItems:
+  - Item: {fileID: 11400000, guid: 5000ec1abe05e304290ef806a262db58, type: 2}
+    Stack: 5
+  Cost: 240
+  CraftingTicks: 130

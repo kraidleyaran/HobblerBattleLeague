@@ -21,7 +21,7 @@ MonoBehaviour:
   _applyOnEquip: []
   AttackSetup:
     Range: 5
-    AttackSpeed: 50
+    AttackSpeed: 44
     ApplyToTarget:
     - {fileID: 11400000, guid: ed64a5d400030cd4994df73232894c60, type: 2}
     ApplyToOwner: []

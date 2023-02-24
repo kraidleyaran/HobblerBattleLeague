@@ -16,7 +16,7 @@ MonoBehaviour:
   _sprite: {fileID: 11400000, guid: 5962b08687ba3354cb714fa77f31409a, type: 2}
   _applyOnContact:
   - {fileID: 11400000, guid: 3c693bbb78d1108468f5768b51e7208f, type: 2}
-  _pixelsPerSecond: 130
+  _pixelsPerSecond: 125
   _offset: 0
   _rotate: 1
   _rotationOffset: -90

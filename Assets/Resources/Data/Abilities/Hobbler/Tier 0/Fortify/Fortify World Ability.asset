@@ -20,6 +20,7 @@ MonoBehaviour:
   ManaCost: 5
   ApplyToTarget:
   - {fileID: 11400000, guid: f318ae8924c29e94199e7ec34576a81a, type: 2}
+  - {fileID: 11400000, guid: 62116fcd8bb5f8148973afb21b9f6ca3, type: 2}
   Alignment: 0
   Type: 0
   Cooldown: 1000

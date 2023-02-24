@@ -13,4 +13,6 @@ MonoBehaviour:
   m_Name: Shroom Minigame Ai Ability Manager Trait
   m_EditorClassIdentifier: 
   MaxStack: 1
-  _startingAbilities: []
+  _startingAbilities:
+  - Ability: {fileID: 11400000, guid: c2a9513c6982ded4ebd9482f6850c6db, type: 2}
+    Priority: 0

@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb989490e2ad970429da941eca189017, type: 3}
+  m_Name: Ornate Footman Sword Weapon Item
+  m_EditorClassIdentifier: 
+  DisplayName: Footman Sword
+  Description: On the front lines, anything that hurts will work
+  _icon: {fileID: 5601323976189978565, guid: 19377d61da5e5314d9a1d302f93d0b0c, type: 3}
+  MaxStack: 1
+  GoldValue: 10
+  Rarity: 0
+  Quality: 2
+  _applyOnEquip:
+  - {fileID: 11400000, guid: d2e558c2399f5ea4ea191020dba584a0, type: 2}
+  AttackSetup:
+    Range: 1
+    AttackSpeed: 24
+    ApplyToTarget:
+    - {fileID: 11400000, guid: 2aa6e7f432520df42a90d575fb93fc20, type: 2}
+    ApplyToOwner: []

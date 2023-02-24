@@ -102,6 +102,11 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             _data.Abilities = abilities.Where(a => a.Value).Select(a => a.ToData()).ToArray();
         }
 
+        private void ApplyExperiencePoolToData(int pool)
+        {
+            _data.ExperiencePool = pool;
+        }
+
         private void SubscribeToMessages()
         {
             _controller.transform.parent.gameObject.SubscribeWithFilter<SetHobblerTemplateMessage>(SetHobblerTemplate, _instanceId);
@@ -282,6 +287,11 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             _data.Level = _currentLevel;
             _data.Experience = _experience;
 
+            var queryExperiencePoolMsg = MessageFactory.GenerateQueryExperiencePoolMsg();
+            queryExperiencePoolMsg.DoAfter = ApplyExperiencePoolToData;
+            _controller.gameObject.SendMessageTo(queryExperiencePoolMsg, _controller.transform.parent.gameObject);
+            MessageFactory.CacheMessage(queryExperiencePoolMsg);
+
             var queryCombatStatsMsg = MessageFactory.GenerateQueryCombatStatsMsg();
             queryCombatStatsMsg.DoAfter = ApplyCombatStatsToData;
             _controller.gameObject.SendMessageTo(queryCombatStatsMsg, _controller.transform.parent.gameObject);
@@ -359,6 +369,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             var setHobblerExperienceMsg = MessageFactory.GenerateSetHobblerExperienceMsg();
             setHobblerExperienceMsg.Experience = _experience;
             setHobblerExperienceMsg.Level = _currentLevel;
+            setHobblerExperienceMsg.Pool = _data.ExperiencePool;
             _controller.gameObject.SendMessageTo(setHobblerExperienceMsg, _controller.transform.parent.gameObject);
             MessageFactory.CacheMessage(setHobblerExperienceMsg);
 

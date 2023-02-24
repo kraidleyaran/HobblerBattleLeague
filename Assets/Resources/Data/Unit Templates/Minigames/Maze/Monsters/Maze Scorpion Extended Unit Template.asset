@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 992dfd0a50edcf0448772bf6f6355dd1, type: 3}
+  m_Name: Maze Scorpion Extended Unit Template
+  m_EditorClassIdentifier: 
+  _traits:
+  - {fileID: 11400000, guid: 54321aef166c01b4da82dbd420a6e0a6, type: 2}
+  - {fileID: 11400000, guid: 767e8d4871af41b41ab56414c3a8c427, type: 2}
+  - {fileID: 11400000, guid: cf39d8c028bce554b8f40dae081359b1, type: 2}
+  - {fileID: 11400000, guid: c3d0cdeb5a20a9245a681a69d71df3bf, type: 2}
+  - {fileID: 11400000, guid: 186450208e1c3cf4d82d8833942cb222, type: 2}
+  - {fileID: 11400000, guid: b246437d18c931f47be8f875ba70741c, type: 2}
+  - {fileID: 11400000, guid: 25335634f5432924aa00de3286eaa08b, type: 2}
+  - {fileID: 11400000, guid: c4c63995672c3ae429594a24a583b817, type: 2}
+  - {fileID: 11400000, guid: 27ee4d990398af0478954e3e96504bb7, type: 2}
+  _baseTemplate: {fileID: 11400000, guid: 3cde5ed5379d8c54fbb0e536e7cf94b6, type: 2}

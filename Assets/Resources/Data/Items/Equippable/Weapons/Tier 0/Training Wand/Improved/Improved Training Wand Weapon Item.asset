@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb989490e2ad970429da941eca189017, type: 3}
+  m_Name: Improved Training Wand Weapon Item
+  m_EditorClassIdentifier: 
+  DisplayName: Training Wand
+  Description: For basic magic users but gets the job done!
+  _icon: {fileID: 7707165942720557590, guid: 2b8f0602ca246a843860ad4b1b843b9a, type: 3}
+  MaxStack: 1
+  GoldValue: 7
+  Rarity: 0
+  Quality: 1
+  _applyOnEquip: []
+  AttackSetup:
+    Range: 4
+    AttackSpeed: 35
+    ApplyToTarget:
+    - {fileID: 11400000, guid: 8cb0034637fbff04686dc57b83475e9c, type: 2}
+    ApplyToOwner:
+    - {fileID: 11400000, guid: 0f66f8ce2b494a24ba0b89707eac74c2, type: 2}
+    - {fileID: 11400000, guid: 9b22e1ddacfc01740a0232f410c8fc93, type: 2}

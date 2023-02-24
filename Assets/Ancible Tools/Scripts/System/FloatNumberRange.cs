@@ -20,7 +20,12 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
 
         public override string ToString()
         {
+            if (Math.Abs(Maximum - Minimum) < .01f)
+            {
+                return $"{Maximum:N}";
+            }
             return $"{Minimum:N}-{Maximum:N}";
+
         }
     }
 }

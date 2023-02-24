@@ -14,7 +14,9 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.DetailedInfo
         [SerializeField] private Image _emptyIcon;
         [SerializeField] private Image _equippedIcon;
         [SerializeField] private Image _borderImage;
+        [SerializeField] private Image _qualityIcon;
         [SerializeField] private EquipSlot _equipSlot = EquipSlot.Armor;
+        
 
         private EquippableItem _equipped = null;
 
@@ -31,11 +33,14 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.DetailedInfo
                 _emptyIcon.gameObject.SetActive(false);
                 _equippedIcon.gameObject.SetActive(true);
                 _borderImage.color = _equipped.Rarity.ToRarityColor();
+                _qualityIcon.sprite = _equipped.Quality.ToIcon();
+                _qualityIcon.gameObject.SetActive(_equipped.Quality != ItemQuality.Basic);
             }
             else
             {
                 _emptyIcon.gameObject.SetActive(true);
                 _equippedIcon.gameObject.SetActive(false);
+                _qualityIcon.gameObject.SetActive(false);
             }
         }
 

@@ -13,6 +13,8 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.Stash
         [SerializeField] private Image _borderImage = null;
         [SerializeField] private Image _iconImage = null;
         [SerializeField] private Text _stackText = null;
+        [SerializeField] private Image _qualityIcon = null;
+        [SerializeField] private Text _abilityRankText = null;
 
         private ItemStack _stack = null;
 
@@ -26,6 +28,16 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.Stash
             _stackText.text = _stack.Stack > 1 ? $"x{_stack.Stack}" : string.Empty;
             _borderImage.color = _stack.Item.Rarity.ToRarityColor();
             _setHovered = setHovered;
+            _qualityIcon.sprite = stack.Item.Quality.ToIcon();
+            _qualityIcon.gameObject.SetActive(stack.Item.Quality != ItemQuality.Basic);
+            if (stack.Item.Type == WorldItemType.Ability && stack.Item is AbilityItem abilityItem && abilityItem.Ability.Rank > 0)
+            {
+                _abilityRankText.text = abilityItem.Ability.RankToString();
+            }
+            else
+            {
+                _abilityRankText.gameObject.SetActive(false);
+            }
         }
 
         public void OnPointerEnter(PointerEventData eventData)

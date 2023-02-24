@@ -16,17 +16,30 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Items
 
         public override string GetDescription()
         {
-            var description = string.Empty;
-            var traitDescriptions = _applyOnEquip.Select(t => t.GetDescription()).Where(d => !string.IsNullOrWhiteSpace(d)).ToArray();
-            for (var i = 0; i < traitDescriptions.Length; i++)
-            {
-                description = string.IsNullOrEmpty(description) ? $"{traitDescriptions[i]}" : $"{description}{Environment.NewLine}{traitDescriptions[i]}";
-            }
-
+            var description = $"{(Quality != ItemQuality.Basic ? $"{Quality.ToColorString()}{Environment.NewLine}" : string.Empty)}Equippable - {Slot}{Environment.NewLine}";
+            description = GetEquippedDescription(description);
             if (!string.IsNullOrEmpty(Description))
             {
                 description = $"{description}{Environment.NewLine}{Description}";
             }
+            return description;
+        }
+
+        protected internal string GetEquippedDescription(string description)
+        {
+            if (_applyOnEquip.Length > 0)
+            {
+                var traitDescriptions = _applyOnEquip.Select(t => t.GetDescription()).Where(d => !string.IsNullOrWhiteSpace(d)).ToArray();
+                var returnDescription = description;
+                var startDescription = $"{StaticMethods.ApplyColorToText("On Equip:", ColorFactoryController.BonusStat)}";
+                returnDescription = string.IsNullOrEmpty(returnDescription) ? startDescription : $"{returnDescription}{Environment.NewLine}{startDescription}";
+                foreach (var trait in traitDescriptions)
+                {
+                    returnDescription = $"{returnDescription}{Environment.NewLine}{trait}";
+                }
+                return returnDescription;
+            }
+
             return description;
         }
     }

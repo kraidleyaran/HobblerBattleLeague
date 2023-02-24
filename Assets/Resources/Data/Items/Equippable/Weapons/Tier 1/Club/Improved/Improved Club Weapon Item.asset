@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb989490e2ad970429da941eca189017, type: 3}
+  m_Name: Improved Club Weapon Item
+  m_EditorClassIdentifier: 
+  DisplayName: Club
+  Description: 
+  _icon: {fileID: -150671194606510068, guid: 19377d61da5e5314d9a1d302f93d0b0c, type: 3}
+  MaxStack: 1
+  GoldValue: 10
+  Rarity: 0
+  Quality: 1
+  _applyOnEquip: []
+  AttackSetup:
+    Range: 1
+    AttackSpeed: 30
+    ApplyToTarget:
+    - {fileID: 11400000, guid: cb15f4c3094c9154ca00947432fbf9fa, type: 2}
+    - {fileID: 11400000, guid: 042bcbe11880dc94aabbfec8e2fc9deb, type: 2}
+    ApplyToOwner: []

@@ -19,10 +19,12 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.HoverInfo
 
         private float _maxGoldWidth = 0f;
         private float _goldSpacing = 0;
+        private float _baseTitleTextWidth = 0f;
 
         void Awake()
         {
             _maxGoldWidth = _goldGroup.rect.width;
+            _baseTitleTextWidth = _titleText.rectTransform.rect.width;
             var goldGroup = _goldGroup.gameObject.GetComponent<HorizontalLayoutGroup>();
             if (goldGroup)
             {
@@ -51,7 +53,11 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.HoverInfo
             }
             width =  Mathf.Min(_maxWidth, width + _padding.left + _padding.right);
 
-            if (!_iconImage.sprite)
+            if (_iconImage.sprite)
+            {
+                _titleText.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, _baseTitleTextWidth);
+            }
+            else
             {
                 _titleText.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, _iconImage.rectTransform.rect.width + _titleText.rectTransform.rect.width);
             }

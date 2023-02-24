@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85fa4fa321b96274f9fb0e22b56e9414, type: 3}
+  m_Name: Armorsmith Unit Command Trait
+  m_EditorClassIdentifier: 
+  MaxStack: 1
+  _startingCommands:
+  - {fileID: 11400000, guid: b1c3a59f504996446aceec9edac88b22, type: 2}

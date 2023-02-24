@@ -12,11 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cf840f3189fbb24da2824f67fa9ccb4, type: 3}
   m_Name: Blue Cross Slash Visual Fx Trait
   m_EditorClassIdentifier: 
-  MaxStack: 1
+  MaxStack: 0
   _runtime: {fileID: 9100000, guid: 8aadcd56e7ed1624baf14efb407ded66, type: 2}
   _scaling: {x: 31.25, y: 31.25}
   _offset: {x: 0, y: 0}
   _loop: 0
   _spriteLayer: {fileID: 11400000, guid: 4bbdf7457732b6c4084bb82f4a93c387, type: 2}
   _sortingOrder: 0
+  _flipX: 0
+  _flipY: 0
   InstantiateAlone: 0
