@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d8a41c4f6e7a5f4c95104dd1ff1ec41, type: 3}
+  m_Name: Poison Shot Shoot Projectile at Target Trait Rank 3
+  m_EditorClassIdentifier: 
+  MaxStack: 1
+  _sprite: {fileID: 11400000, guid: e7d2fdc4510168c4985a97e8d4d4fc53, type: 2}
+  _applyOnContact:
+  - {fileID: 11400000, guid: 1d07b7706fe270242bd9b48e5a129edb, type: 2}
+  - {fileID: 11400000, guid: 444bad962baee0e4fbb7d29643ca17d8, type: 2}
+  - {fileID: 11400000, guid: f599dbce99a849142b3e3ac3c2db3f22, type: 2}
+  - {fileID: 11400000, guid: 444bad962baee0e4fbb7d29643ca17d8, type: 2}
+  _pixelsPerSecond: 85
+  _offset: 1.25
+  _rotate: 1
+  _rotationOffset: -90

@@ -20,7 +20,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             MessageFactory.CacheMessage(applyManaMsg);
         }
 
-        public override string GetDescription()
+        public override string GetDescription(bool equipment = false)
         {
             return $"Regenerates {_amount} Mana";
         }

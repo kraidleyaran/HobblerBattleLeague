@@ -37,7 +37,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             }
         }
 
-        public override string GetDescription()
+        public override string GetDescription(bool equipment = false)
         {
             var description = StaticMethods.ApplyColorToText($"{_chance * 100f:N}% Chance to Apply", ColorFactoryController.BonusStat);
             var traitDescriptions = _applyOnSuccess.OrderByDescending(t => t.DescriptionPriority).Select(t => t.GetDescription()).Where(d => !string.IsNullOrEmpty(d)).ToArray();

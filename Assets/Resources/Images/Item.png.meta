@@ -3562,7 +3562,7 @@ TextureImporter:
     second: Item_1185
   - first:
       213: 4321247718149823882
-    second: Item_1186
+    second: Blue Mana Shard
   - first:
       213: 2493436077067664318
     second: Item_1187
@@ -3731,6 +3731,9 @@ TextureImporter:
   - first:
       213: 4155099681058498409
     second: Burnt Wand
+  - first:
+      213: 6652419138067881714
+    second: Blue Mana Ore Patch
   externalObjects: {}
   serializedVersion: 12
   mipmaps:
@@ -28751,7 +28754,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Item_1186
+      name: Blue Mana Shard
       rect:
         serializedVersion: 2
         x: 432
@@ -29943,6 +29946,27 @@ TextureImporter:
       bones: []
       spriteID: 967a4df2521e9a930800000000000000
       internalID: 4155099681058498409
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Blue Mana Ore Patch
+      rect:
+        serializedVersion: 2
+        x: 240
+        y: 256
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2fedb85c5f3225c50800000000000000
+      internalID: 6652419138067881714
       vertices: []
       indices: 
       edges: []

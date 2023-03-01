@@ -27,7 +27,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             }
         }
 
-        public override string GetDescription()
+        public override string GetDescription(bool equipment = false)
         {
             var description = $"On";
             var unique = _statusEffects.Distinct().ToArray();

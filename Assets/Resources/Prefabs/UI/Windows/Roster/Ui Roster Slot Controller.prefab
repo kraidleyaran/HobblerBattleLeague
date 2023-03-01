@@ -93,7 +93,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RectTransform: {fileID: 958360744525535807}
-  _hobblerIconImage: {fileID: 958360745815299664}
+  _hobblerIcon: {fileID: 536123536836367263}
   _equippedItemTemplate: {fileID: 7791140407679855180, guid: afbc977ac83e41140bc1cc8a62097bb0, type: 3}
   _equipmentGrid: {fileID: 958360744847777923}
   _abilityTemplate: {fileID: 8033676113623999637, guid: c30f013bb2cc04f45ad62e772ff3dbde, type: 3}
@@ -215,8 +215,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 17}
-  m_SizeDelta: {x: -20, y: -54}
+  m_AnchoredPosition: {x: 0, y: 15}
+  m_SizeDelta: {x: -20, y: -50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &958360745391532682
 MonoBehaviour:
@@ -413,7 +413,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 268, y: 88}
+  m_SizeDelta: {x: 268, y: 96}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &958360745741879668
 MonoBehaviour:
@@ -452,6 +452,7 @@ GameObject:
   - component: {fileID: 958360745815299665}
   - component: {fileID: 958360745815299667}
   - component: {fileID: 958360745815299664}
+  - component: {fileID: 536123536836367263}
   m_Layer: 5
   m_Name: Hobbler Icon Image
   m_TagString: Untagged
@@ -516,6 +517,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &536123536836367263
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 958360745815299630}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 705e652ec0053fc47b155621687e5f87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RectTransform: {fileID: 958360745815299665}
+  Button: {fileID: 0}
+  _iconImage: {fileID: 958360745815299664}
 --- !u!1 &958360746471465202
 GameObject:
   m_ObjectHideFlags: 0
@@ -550,7 +566,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 268, y: 40}
+  m_SizeDelta: {x: 268, y: 52}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &958360746471465204
 MonoBehaviour:

@@ -19,7 +19,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
 
         private ProjectileController _projectile = null;
 
-        public override string GetDescription()
+        public override string GetDescription(bool equipment = false)
         {
             var description = string.Empty;
             var applyDescriptions = _applyOnContact.GetTraitDescriptions();

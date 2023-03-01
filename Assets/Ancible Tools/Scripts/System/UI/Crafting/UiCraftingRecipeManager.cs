@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Assets.Ancible_Tools.Scripts.System.Items.Crafting;
+using Assets.Resources.Ancible_Tools.Scripts.System.Items;
 using MessageBusLib;
 using UnityEngine;
 using UnityEngine.UI;
@@ -41,9 +42,29 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.Crafting
             MessageFactory.CacheMessage(queryCraftingRecipesMsg);
         }
 
-        private void RefreshRecipes(CraftingRecipe[] recipes)
+        private void RefreshRecipes(CraftingRecipe[] recipes, bool isAbility)
         {
-            var orderedRecipes = recipes.OrderBy(r => r.Item.Item.DisplayName).ThenBy(r => r.Item.Item.Quality).ToArray();
+            var orderedRecipes = recipes;
+            if (isAbility)
+            {
+                var abilityRecipes = new List<CraftingRecipe>();
+                var abilityItems = orderedRecipes.Where(r => r.Item.Item.Type == WorldItemType.Ability).Select(r => r.Item.Item as AbilityItem).Where(a => a).OrderBy(a => a.Ability.DisplayName).ThenBy(a => a.Ability.Rank).ToArray();
+                foreach (var item in abilityItems)
+                {
+                    var recipe = recipes.FirstOrDefault(r => r.Item.Item == item);
+                    if (recipe != null)
+                    {
+                        abilityRecipes.Add(recipe);
+                    }
+
+                    
+                }
+                orderedRecipes = abilityRecipes.ToArray();
+            }
+            else
+            {
+                orderedRecipes = recipes.OrderBy(r => r.Item.Item.DisplayName).ThenBy(r => r.Item.Item.Quality).ToArray();
+            }
             foreach (var recipe in orderedRecipes)
             {
                 if (!_controllers.ContainsKey(recipe))

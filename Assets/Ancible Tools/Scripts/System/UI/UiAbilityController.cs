@@ -21,7 +21,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI
             _abilityIconImage.sprite = Ability.Icon;
             if (Ability.Rank > 0)
             {
-                _rankText.text = Ability.RankToString();
+                _rankText.text = StaticMethods.ApplyColorToText(ability.RankToString(), ColorFactoryController.AbilityRank);
             }
             else
             {

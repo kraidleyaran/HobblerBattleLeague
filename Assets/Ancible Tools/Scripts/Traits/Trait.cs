@@ -32,7 +32,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
 
         }
 
-        public virtual string GetDescription()
+        public virtual string GetDescription(bool equipment = false)
         {
             return string.Empty;
         }

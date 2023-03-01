@@ -60,7 +60,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Abilities
 
         public string GetDescription()
         {
-            var description = $"{(Rank > 0 ? $"Rank {this.RankToString()}{Environment.NewLine}" : string.Empty)}Range: {Range}";
+            var description = $"{(Rank > 0 ? StaticMethods.ApplyColorToText($"Rank {this.RankToString()}{Environment.NewLine}", ColorFactoryController.AbilityRank) : string.Empty)}Range: {Range}";
             description = $"{description}{Environment.NewLine}Cast Time: {(CastTime * TickController.TickRate):F1}s";
             if (ManaCost > 0)
             {

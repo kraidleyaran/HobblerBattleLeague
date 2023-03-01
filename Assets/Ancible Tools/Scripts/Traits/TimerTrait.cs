@@ -66,29 +66,167 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             
         }
 
-        private void StartTimer()
+        public override string GetDescription(bool equipment = false)
         {
-            var parent = _controller.transform.parent.gameObject;
-            if (_controller.Sender != null)
+            var description = string.Empty;
+            if (_loops > 0)
             {
-                GameObject possibleOwner = null;
-                var queryOwnerMsg = MessageFactory.GenerateQueryOwnerMsg();
-                queryOwnerMsg.DoAfter = owner => possibleOwner = owner;
-                _controller.gameObject.SendMessageTo(queryOwnerMsg, _controller.Sender);
-                MessageFactory.CacheMessage(queryOwnerMsg);
-                if (possibleOwner)
+                if (_applyOnStart.Length > 0)
                 {
-                    parent = possibleOwner;
-                    _owner = possibleOwner;
+                    var startDescriptions = _applyOnStart.GetTraitDescriptions();
+                    for (var i = 0; i < startDescriptions.Length; i++)
+                    {
+                        if (i == 0)
+                        {
+                            description = $"{description} {startDescriptions[i]}";
+                        }
+                        else if (i < startDescriptions.Length)
+                        {
+                            description = $"{description}, {startDescriptions[i]}";
+                        }
+                        else
+                        {
+                            description = $"{description}, and {startDescriptions[i]}.";
+                        }
+                    }
+                }
+
+
+                description = $"{description}. ";
+                var endDescriptions = _applyOnComplete.GetTraitDescriptions();
+                for (var i = 0; i < endDescriptions.Length; i++)
+                {
+                    if (i == 0)
+                    {
+                        description = $"{description} {endDescriptions[i]}";
+                    }
+                    else if (i < endDescriptions.Length)
+                    {
+                        description = $"{description}, {endDescriptions[i]}";
+                    }
+                    else
+                    {
+                        description = $"{description}, and {endDescriptions[i]}";
+                    }
+                }
+
+                description = $"{description} every {_ticks * TickController.TickRate:N} seconds, {_loops + 1} times";
+            }
+            else
+            {
+                if (_applyOnComplete.Length <= 0)
+                {
+                    description = string.Empty;
+                    var startDescriptions = _applyOnStart.GetTraitDescriptions();
+                    for (var i = 0; i < startDescriptions.Length; i++)
+                    {
+                        if (i == 0)
+                        {
+                            description = $"{startDescriptions[i]}";
+                        }
+                        else if (i < startDescriptions.Length)
+                        {
+                            description = $"{description}, {startDescriptions[i]}";
+                        }
+                        else
+                        {
+                            description = $"{description}, and {startDescriptions[i]}";
+                        }
+                    }
+
+                    description = $"{description} for {_ticks * TickController.TickRate:N} seconds";
+                }
+                else if (_applyOnStart.Length <= 0)
+                {
+                    description = $"After {_ticks * TickController.TickRate:N} seconds, ";
+
+                    var endDescriptions = _applyOnComplete.GetTraitDescriptions();
+                    for (var i = 0; i < endDescriptions.Length; i++)
+                    {
+                        if (i == 0)
+                        {
+                            description = $"{description} {endDescriptions[i]}";
+                        }
+                        else if (i < endDescriptions.Length)
+                        {
+                            description = $"{description}, {endDescriptions[i]}";
+                        }
+                        else
+                        {
+                            description = $"{description}, and {endDescriptions[i]}";
+                        }
+                    }
+                }
+                else
+                {
+                    var startDescriptions = _applyOnStart.GetTraitDescriptions();
+                    for (var i = 0; i < startDescriptions.Length; i++)
+                    {
+                        if (i == 0)
+                        {
+                            description = $"{description} {startDescriptions[i]}";
+                        }
+                        else if (i < startDescriptions.Length)
+                        {
+                            description = $"{description}, {startDescriptions[i]}";
+                        }
+                        else
+                        {
+                            description = $"{description}, and {startDescriptions[i]}.";
+                        }
+                    }
+
+                    description = $"{description}. ";
+                    var endDescriptions = _applyOnComplete.GetTraitDescriptions();
+                    for (var i = 0; i < endDescriptions.Length; i++)
+                    {
+                        if (i == 0)
+                        {
+                            description = $"{description} {endDescriptions[i]}";
+                        }
+                        else if (i < endDescriptions.Length)
+                        {
+                            description = $"{description}, {endDescriptions[i]}";
+                        }
+                        else
+                        {
+                            description = $"{description}, and {endDescriptions[i]}";
+                        }
+                    }
+
+                    description = $"{description} every {_ticks * TickController.TickRate:N} seconds, {_loops + 1} times";
                 }
             }
 
+            return description;
+        }
+
+        private void StartTimer()
+        {
+
+
             if (_applyOnStart.Length > 0)
             {
+                var parent = _controller.transform.parent.gameObject;
+                if (_controller.Sender != null)
+                {
+                    GameObject possibleOwner = null;
+                    var queryOwnerMsg = MessageFactory.GenerateQueryOwnerMsg();
+                    queryOwnerMsg.DoAfter = owner => possibleOwner = owner;
+                    _controller.gameObject.SendMessageTo(queryOwnerMsg, _controller.Sender);
+                    MessageFactory.CacheMessage(queryOwnerMsg);
+                    if (possibleOwner)
+                    {
+                        parent = possibleOwner;
+                        _owner = possibleOwner;
+                    }
+                }
+
                 var addTraitToUnitMsg = MessageFactory.GenerateAddTraitToUnitMsg();
                 var traits = new List<TraitController>();
                 foreach (var trait in _applyOnStart)
                 {
+                    addTraitToUnitMsg.Trait = trait;
                     if (trait.Instant)
                     {
                         addTraitToUnitMsg.DoAfter = null;

@@ -1,4 +1,5 @@
 ﻿using Assets.Ancible_Tools.Scripts.Traits;
+using Assets.Resources.Ancible_Tools.Scripts.System.Combat;
 using MessageBusLib;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -9,6 +10,8 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI
     public class UiHobblerIconController : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         private const string FILTER = "UI_HOBBLER_ICON";
+
+        private const string CLICK_TO_SELECT_THIS_HOBBLER = "Click to select this Hobbler";
 
         public GameObject Hobbler { get; private set; }
 
@@ -23,10 +26,16 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI
 
         private HobblerTemplate _template = null;
 
-        public void Setup(GameObject hobbler)
+        private bool _roster = false;
+        private CombatStats _baseStats = CombatStats.Zero;
+        private CombatStats _bonusStats = CombatStats.Zero;
+        private GeneticCombatStats _genetics = GeneticCombatStats.Zero;
+
+        public void Setup(GameObject hobbler, bool roster = false)
         {
             Hobbler = hobbler;
             _filter = $"{FILTER}{GetInstanceID()}";
+            _roster = roster;
             Hobbler.SubscribeWithFilter<RefreshUnitMessage>(RefreshUnit, _filter);
             RefreshOwner();
         }
@@ -48,6 +57,37 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI
             queryNameMsg.DoAfter = RefreshName;
             gameObject.SendMessageTo(queryNameMsg, Hobbler);
             MessageFactory.CacheMessage(queryNameMsg);
+
+            if (_roster)
+            {
+                var queryCombatStatsMsg = MessageFactory.GenerateQueryCombatStatsMsg();
+                queryCombatStatsMsg.DoAfter = RefreshCombatStats;
+                gameObject.SendMessageTo(queryCombatStatsMsg, Hobbler);
+                MessageFactory.CacheMessage(queryCombatStatsMsg);
+            }
+
+            if (_hovered)
+            {
+                var showHoveredInfoMsg = MessageFactory.GenerateShowHoverInfoMsg();
+                if (Hobbler)
+                {
+                    showHoveredInfoMsg.Title = _name;
+                    showHoveredInfoMsg.Icon = _sprite.Sprite;
+                    showHoveredInfoMsg.Owner = gameObject;
+                    showHoveredInfoMsg.Description = _roster ? (_baseStats + _genetics).GetRosterDescriptions(_bonusStats) : CLICK_TO_SELECT_THIS_HOBBLER;
+                }
+                else
+                {
+                    showHoveredInfoMsg.Title = _template.DisplayName;
+                    showHoveredInfoMsg.Description = _template.GetDescription();
+                    showHoveredInfoMsg.Icon = _template.Sprite.Sprite;
+                    showHoveredInfoMsg.Owner = gameObject;
+                    showHoveredInfoMsg.Gold = _template.Cost;
+
+                }
+                gameObject.SendMessage(showHoveredInfoMsg);
+                MessageFactory.CacheMessage(showHoveredInfoMsg);
+            }
         }
 
         private void RefreshSprite(SpriteTrait sprite)
@@ -59,6 +99,13 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI
         private void RefreshName(string hobblerName)
         {
             _name = hobblerName;
+        }
+
+        private void RefreshCombatStats(CombatStats baseStats, CombatStats bonusStats, GeneticCombatStats genetics)
+        {
+            _baseStats = baseStats;
+            _bonusStats = bonusStats;
+            
         }
 
         private void RefreshUnit(RefreshUnitMessage msg)
@@ -77,8 +124,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI
                     showHoveredInfoMsg.Title = _name;
                     showHoveredInfoMsg.Icon = _sprite.Sprite;
                     showHoveredInfoMsg.Owner = gameObject;
-                    showHoveredInfoMsg.Description = "Click to select this Hobbler";
-                    
+                    showHoveredInfoMsg.Description = _roster ? (_baseStats + _genetics).GetRosterDescriptions(_bonusStats) : CLICK_TO_SELECT_THIS_HOBBLER;
                 }
                 else
                 {
@@ -126,10 +172,13 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI
             {
                 Button.onClick.RemoveAllListeners();
             }
-
             Hobbler = null;
             _sprite = null;
             _name = null;
+            _baseStats = CombatStats.Zero;
+            _bonusStats = CombatStats.Zero;
+            _genetics = GeneticCombatStats.Zero;
+            _roster = false;
         }
 
     }

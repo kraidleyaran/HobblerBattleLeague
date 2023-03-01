@@ -14,10 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DisplayName: Lacerate
   Icon: {fileID: 21300000, guid: 36c52b0c7bcc4e94a9a46210b25efa15, type: 3}
+  Rank: 0
   Description: 
   Range: 1
   CastTime: 45
-  ManaCost: 0
+  ManaCost: 7
   ApplyToTarget:
   - {fileID: 11400000, guid: 35f7b5e78d0ffac40943e3bc06faad5f, type: 2}
   - {fileID: 11400000, guid: 83daf082763eae844b9d82f684fa6e31, type: 2}

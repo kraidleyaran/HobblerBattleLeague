@@ -14,10 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DisplayName: Immolate
   Icon: {fileID: 21300000, guid: 0136366bc3c0719448b3f04a4ba591ac, type: 3}
+  Rank: 0
   Description: 
   Range: 3
   CastTime: 45
-  ManaCost: 2
+  ManaCost: 4
   ApplyToTarget:
   - {fileID: 11400000, guid: 4bcc047a668189142b08329e6bbf543c, type: 2}
   Alignment: 1

@@ -43,7 +43,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             MessageFactory.CacheMessage(healMsg);
         }
 
-        public override string GetDescription()
+        public override string GetDescription(bool equipment = false)
         {
             return $"Heal for {_amount} ({_type})";
         }

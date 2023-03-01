@@ -46,7 +46,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
 
         }
 
-        public override string GetDescription()
+        public override string GetDescription(bool equipment = false)
         {
             return $"{_amount} {_type} Damage";
         }

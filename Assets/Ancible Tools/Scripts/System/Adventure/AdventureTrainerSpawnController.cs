@@ -16,6 +16,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Adventure
         [SerializeField] private BattleEncounter _battleEncounter = null;
         [SerializeField] private DialogueData _preEncounterDialogue = null;
         [SerializeField] private DialogueData _defeatedDialogue = null;
+        [SerializeField] [TextArea(2,5)] private string[] _victoryDialogue = new string[0];
         [SerializeField] private Vector2Int _faceDirection = Vector2Int.down;
         public string SaveId = string.Empty;
 
@@ -71,6 +72,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Adventure
                 setupTrainerMsg.Encounter = _battleEncounter;
                 setupTrainerMsg.PreEncounterDialogue = _preEncounterDialogue;
                 setupTrainerMsg.DefeatedDialogue = _defeatedDialogue;
+                setupTrainerMsg.VictoryDialogue = _victoryDialogue;
                 gameObject.SendMessageTo(setupTrainerMsg, unit.gameObject);
                 MessageFactory.CacheMessage(setupTrainerMsg);
 

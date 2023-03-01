@@ -15,7 +15,7 @@ MonoBehaviour:
   MaxStack: 1
   _attackSetup:
     Range: 1
-    AttackSpeed: 20
+    AttackSpeed: 24
     ApplyToTarget:
     - {fileID: 11400000, guid: 36304174a05bc7b458df5d609470e3c4, type: 2}
     ApplyToOwner: []

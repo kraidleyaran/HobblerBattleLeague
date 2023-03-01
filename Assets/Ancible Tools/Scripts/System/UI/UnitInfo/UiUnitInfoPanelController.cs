@@ -69,6 +69,7 @@ namespace Assets.Ancible_Tools.Scripts.System.UI.UnitInfo
             if (_infoController)
             {
                 Destroy(_infoController);
+                _infoController = null;
             }
 
             if (_selectedUnit)
@@ -103,6 +104,7 @@ namespace Assets.Ancible_Tools.Scripts.System.UI.UnitInfo
                 if (_infoController)
                 {
                     Destroy(_infoController);
+                    _infoController = null;
                 }
                 if (_hovered)
                 {

@@ -65,7 +65,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague
             {
                 if (totalUnits > encounters[i].Value)
                 {
-                    returnUnits.Add(encounters[i].Key, _dataInstances[i]);
+                    returnUnits.Add(encounters[i].Key, _dataInstances[encounters[i].Value]);
                     gameObject.SendMessageTo(EnterBattleMessage.INSTANCE, _encounterPieces[encounters[i].Value]);
                 }
                 

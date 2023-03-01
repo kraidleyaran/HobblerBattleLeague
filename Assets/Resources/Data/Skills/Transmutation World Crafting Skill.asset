@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 008cee0b3f9f73744801bcf53bd7b4dc, type: 3}
+  m_Name: Transmutation World Crafting Skill
+  m_EditorClassIdentifier: 
+  DisplayName: Transmutation
+  Verb: Transmute
+  Description: Craft abilities for Hobblers to use!
+  Icon: {fileID: 6984513114953419391, guid: 9f4036a2f7f19264a9fdc64e40e3b012, type: 3}
+  ExperienceMultiplier: 1
+  LevelExperience: 100
+  Levels:
+  - ApplyOnLevel: []
+    Bonus: 0.04
+  - ApplyOnLevel: []
+    Bonus: 0.04
+  - ApplyOnLevel: []
+    Bonus: 0.04
+  - ApplyOnLevel: []
+    Bonus: 0.04
+  - ApplyOnLevel: []
+    Bonus: 0.04
+  - ApplyOnLevel: []
+    Bonus: 0.04
+  - ApplyOnLevel: []
+    Bonus: 0.04
+  - ApplyOnLevel: []
+    Bonus: 0.04
+  - ApplyOnLevel: []
+    Bonus: 0.04
+  - ApplyOnLevel: []
+    Bonus: 0.04
+  Command: {fileID: 0}

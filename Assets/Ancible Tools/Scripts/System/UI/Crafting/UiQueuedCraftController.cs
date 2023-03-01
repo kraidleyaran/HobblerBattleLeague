@@ -23,7 +23,6 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.Crafting
         [SerializeField] private Button _moveUpButton = null;
         [SerializeField] private Button _moveDownButton = null;
         [SerializeField] private Button _cancelButton = null;
-        
 
         private int _index = 0;
         private int _maxIndex = 0;
@@ -42,7 +41,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.Crafting
             _qualityIconImage.gameObject.SetActive(Craft.Recipe.Item.Item.Quality != ItemQuality.Basic);
             if (craft.Recipe.Item.Item.Type == WorldItemType.Ability && craft.Recipe.Item.Item is AbilityItem abilityItem && abilityItem.Ability.Rank > 0)
             {
-                _abilityRankText.text = abilityItem.Ability.RankToString();
+                _abilityRankText.text = StaticMethods.ApplyColorToText(abilityItem.Ability.RankToString(), ColorFactoryController.AbilityRank);
                 _abilityRankText.gameObject.SetActive(true);
             }
             else
@@ -79,6 +78,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.Crafting
         public void Clear()
         {
             Craft = null;
+            _abilityRankText.gameObject.SetActive(false);
             RefreshCraft();
         }
 
@@ -115,7 +115,22 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.Crafting
                 _countText.text = $"{Craft.Count}";
                 var percent = (float)(Craft.Recipe.CraftingTicks - Craft.RemainingTicks) / Craft.Recipe.CraftingTicks;
                 _fillImage.fillAmount = percent;
-                
+
+                if (_hovered)
+                {
+                    var showHoverInfoMsg = MessageFactory.GenerateShowHoverInfoMsg();
+                    var remainingTicks = Craft.RemainingTicks + Craft.Recipe.CraftingTicks * (Craft.Count - 1);
+                    var description = $"{Craft.Recipe.Item.Item.GetDescription()}{StaticMethods.DoubleNewLine()}Remaining Time: {remainingTicks}";
+
+                    showHoverInfoMsg.Description = description;
+                    showHoverInfoMsg.Icon = Craft.Recipe.Item.Item.Icon;
+                    showHoverInfoMsg.Gold = Craft.Recipe.Cost * Craft.Count;
+                    showHoverInfoMsg.Owner = gameObject;
+
+                    gameObject.SendMessage(showHoverInfoMsg);
+                    MessageFactory.CacheMessage(showHoverInfoMsg);
+                }
+
             }
             else
             {
@@ -125,8 +140,11 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.Crafting
             _countText.gameObject.SetActive(craft);
             _fillImage.gameObject.SetActive(craft);
             _queueIndexText.gameObject.SetActive(!craft);
+            
             _moveDownButton?.gameObject.SetActive(Craft != null);
             _moveUpButton?.gameObject.SetActive(Craft != null);
+
+
         }
 
         public void CancelCraft()
@@ -149,14 +167,13 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.Crafting
                 {
                     
                     showHoverInfoMsg.Title = $"{Craft.Recipe.Item.Item.DisplayName}x{Craft.Count}";
-                    var remainingTicks = Craft.RemainingTicks + (Craft.Recipe.CraftingTicks * Craft.Count - 1);
-                    var description = $"{Craft.Recipe.Item.Item.GetDescription()}{Environment.NewLine}{Environment.NewLine}Remaining Time: {remainingTicks}";
+                    var remainingTicks = Craft.RemainingTicks + Craft.Recipe.CraftingTicks * (Craft.Count - 1);
+                    var description = $"{Craft.Recipe.Item.Item.GetDescription()}{StaticMethods.DoubleNewLine()}Remaining Time: {remainingTicks}";
 
                     showHoverInfoMsg.Description = description;
                     showHoverInfoMsg.Icon = Craft.Recipe.Item.Item.Icon;
                     showHoverInfoMsg.Gold = Craft.Recipe.Cost * Craft.Count;
                     showHoverInfoMsg.Owner = gameObject;
-
 
                     _cancelButton.gameObject.SetActive(true);
                 }

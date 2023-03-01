@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69a7a2b9502754d4eaa56893457b814a, type: 3}
+  m_Name: Level 1 Blue Mana Ore Patch Resource Node Trait
+  m_EditorClassIdentifier: 
+  MaxStack: 1
+  _nodeType: 3
+  _requiredTicks: 280
+  _applyOnFinish:
+  - {fileID: 11400000, guid: f27825539e21dac4fba9056cf527e86e, type: 2}
+  - {fileID: 11400000, guid: f62bff51cdaa1bd40ad762d492387d27, type: 2}
+  _stack: -1
+  _relativeGatheringPositions:
+  - {x: 0, y: 1}
+  - {x: 0, y: -1}
+  - {x: -1, y: 0}
+  - {x: 1, y: 0}
+  - {x: -1, y: 1}
+  - {x: 1, y: 1}
+  - {x: -1, y: -1}
+  - {x: 1, y: -1}
+  _interactionType: 1
+  _nodeSprite: {fileID: 0}
+  _unitsPerTile: 1
+  _refillCost: 0
+  _autoRefill: 0
+  _autoRefillCost: 0
+  _destroyOnEmpty: 0
+  _item:
+    Item: {fileID: 11400000, guid: 71126e3753ede874c9225d2d3f10d410, type: 2}
+    Stack: 1
+  _skill: {fileID: 11400000, guid: 7c2c8a6a5cc026c42a3a4094d8850f2a, type: 2}
+  _skillBonusPercent: 1

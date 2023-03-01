@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7eb9f056721f56d429d681c27c14b4bd, type: 3}
+  m_Name: Bash Ability Item Rank 3
+  m_EditorClassIdentifier: 
+  DisplayName: Bash
+  Description: 
+  _icon: {fileID: 21300000, guid: ec28729bbae993f48a9a0667ca662a0b, type: 3}
+  MaxStack: 1
+  GoldValue: -1
+  Rarity: 0
+  Quality: 0
+  Ability: {fileID: 11400000, guid: e8e5584a721aa0c4a8359d855d76853c, type: 2}
+  RequiredLevel: 0

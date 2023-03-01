@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84c1de61e39cb5d488fe0684e723aceb, type: 3}
+  m_Name: Purple Blue Detailed Ground CarpetBrush
+  m_EditorClassIdentifier: 
+  Tileset: {fileID: 11400000, guid: 1ba7707c4c8ddbd4f9785a956557df3c, type: 2}
+  Params:
+    m_paramList: []
+  m_group: 0
+  m_autotilingMode: 1
+  m_showInPalette: 1
+  TileIds: d9140000d9140000d914000058170000d9140000d91400005812000098130000d91400005a170000d9140000591700005a1200009a13000059120000d9140000
+  InteriorCornerTileIds: da140000d81400001a16000018160000

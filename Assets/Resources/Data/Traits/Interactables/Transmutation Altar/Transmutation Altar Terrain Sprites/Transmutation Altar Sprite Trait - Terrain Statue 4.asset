@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: edbe00d6aa4e3ad499a1bbb3e213a84f, type: 3}
+  m_Name: Transmutation Altar Sprite Trait - Terrain Statue 4
+  m_EditorClassIdentifier: 
+  MaxStack: 1
+  _sprite: {fileID: 2741894310953368383, guid: 9f4036a2f7f19264a9fdc64e40e3b012, type: 3}
+  _runtimeAnimator: {fileID: 0}
+  _scaling: {x: 31.25, y: 31.25}
+  _spriteLayer: {fileID: 0}
+  _sortingOrder: 0
+  _offset: {x: 10, y: -8.4375}
+  _colorMask: {r: 1, g: 1, b: 1, a: 1}
+  _rotation: 0
+  _flipX: 0
+  _flipY: 0
+  _flipSprite: 0
+  _bumpDistance: 1
+  _bumpTicks: 1
+  _animationStates: 0
+  _overrideMapTileSorting: 0
+  _defaultJumpHeight: 1
+  _defaultJumpSpeed: 1

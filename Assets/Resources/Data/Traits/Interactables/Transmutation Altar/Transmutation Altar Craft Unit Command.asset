@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7011a722672d6d946860f89fd32b3fe4, type: 3}
+  m_Name: Transmutation Altar Craft Unit Command
+  m_EditorClassIdentifier: 
+  Command: Show Crafting Window
+  Description: Show information about available recipes, items being crafted, and
+    adding items to the queue
+  Icons:
+  - Sprite: {fileID: 5225831342146474410, guid: 2b8f0602ca246a843860ad4b1b843b9a, type: 3}
+    Offset: {x: 0, y: 0}
+    ColorMask: {r: 1, g: 1, b: 1, a: 1}
+    FlipX: 0
+    FlipY: 0
+  OnCommand:
+  - {fileID: 11400000, guid: 2f8131900d6e3e14aa637b256bac1bc0, type: 2}
+  Tree:
+    SubCommands: []
+  GoldValue: -1

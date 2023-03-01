@@ -14,12 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DisplayName: Foresight
   Icon: {fileID: 21300000, guid: 5bee7f912f84fa14b80c905262a3f0d3, type: 3}
+  Rank: 0
   Description: 
   Range: 1
   CastTime: 15
   ManaCost: 5
   ApplyToTarget:
-  - {fileID: 11400000, guid: b4862a850ce47904393773644afbb9d2, type: 2}
+  - {fileID: 11400000, guid: 8e1f06b8e5645d843bfd85acb64907d9, type: 2}
   - {fileID: 11400000, guid: 80ffeb8b58470fe43ac519cbbd1197b6, type: 2}
   Alignment: 0
   Type: 0

@@ -43,7 +43,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.Crafting
 
             if (recipe.Item.Item.Type == WorldItemType.Ability && recipe.Item.Item is AbilityItem abilityItem && abilityItem.Ability.Rank > 0)
             {
-                _abilityRankText.text = abilityItem.Ability.RankToString();
+                _abilityRankText.text = StaticMethods.ApplyColorToText(abilityItem.Ability.RankToString(), ColorFactoryController.AbilityRank);
             }
             else
             {

@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c92b475d68d234e428a056e65acbd67a, type: 3}
   m_Name: White Moth Monster Battle Encounter - 6
   m_EditorClassIdentifier: 
-  MaxPlayableMonsters: 4
-  RequiredPoints: 12
+  MaxPlayableMonsters: 3
+  RequiredPoints: 9
   MaximumRounds: 3
   VictoryExperiencePerPoint: 1
   DefeatExperiencePerPoint: 0

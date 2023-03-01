@@ -14,10 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DisplayName: Bash
   Icon: {fileID: 21300000, guid: ec28729bbae993f48a9a0667ca662a0b, type: 3}
+  Rank: 0
   Description: 
   Range: 1
   CastTime: 60
-  ManaCost: 1
+  ManaCost: 4
   ApplyToTarget:
   - {fileID: 11400000, guid: 4190d92468346944f839cb47e0cc450b, type: 2}
   - {fileID: 11400000, guid: 424d7b2e69edc634ca566692a3c7d495, type: 2}

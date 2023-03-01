@@ -47,7 +47,7 @@ namespace Assets.Ancible_Tools.Scripts.System.Items.Crafting
 
         public QueuedCraftData GetData()
         {
-            return new QueuedCraftData {Count = 0, Recipe = Recipe.name, RemainingTicks = RemainingTicks};
+            return new QueuedCraftData {Count = Count, Recipe = Recipe.name, RemainingTicks = RemainingTicks};
         }
 
 

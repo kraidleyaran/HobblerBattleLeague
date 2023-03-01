@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 446eae97be27d2148a10ea5bee1b1dc7, type: 3}
   m_Name: Intimidate Timer Trait
   m_EditorClassIdentifier: 
-  MaxStack: 1
+  MaxStack: 2
   _ticks: 300
   _loops: 0
   _applyOnStart:
   - {fileID: 11400000, guid: b04bedf49a55e4644bad0385ee3598f9, type: 2}
   _applyOnComplete: []
-  _refreshTimer: 0
+  _refreshTimer: 1

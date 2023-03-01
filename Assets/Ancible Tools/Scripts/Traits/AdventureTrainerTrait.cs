@@ -441,6 +441,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             _encounter = msg.Encounter;
             _preBattleDialogue = msg.PreEncounterDialogue;
             _defeatedDialogue = msg.DefeatedDialogue;
+            _victoryDialogue = msg.VictoryDialogue;
             SaveId = msg.Id;
             _defeated = PlayerDataController.GetTrainerDataById(SaveId) != null;
             if (_defeated && _subscribedTiles.Length > 0)

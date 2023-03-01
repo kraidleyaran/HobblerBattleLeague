@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91f915509e6e2704988fe6d0a7ab8366, type: 3}
+  m_Name: Scorpion Battle Monster Template
+  m_EditorClassIdentifier: 
+  Data:
+    Name: 
+    Id: 
+    Stats:
+      Health: 7
+      Mana: 0
+      Strength: 3
+      Agility: 3
+      Magic: 3
+      Faith: 3
+      Defense: 0
+      Spirit: 1
+    Abilities:
+    - {fileID: 11400000, guid: 6e747ef8dd4c8cd45926283a0157982a, type: 2}
+    EquippedItems: []
+    Sprite: {fileID: 11400000, guid: cf39d8c028bce554b8f40dae081359b1, type: 2}
+    BasicAttack:
+      Range: 1
+      AttackSpeed: 45
+      ApplyToTarget:
+      - {fileID: 11400000, guid: 454ca8b08d4993c4faeca77c02fda9e5, type: 2}
+      ApplyToOwner: []
+    TotalDamageDone: 0
+    TotalHeals: 0
+    TotalDamageTaken: 0
+    Deaths: 0
+    RoundsPlayed: 0
+  PreferredPositions:
+  - {x: 0, y: 0}
+  - {x: 0, y: 1}
+  - {x: 0, y: 2}
+  - {x: 0, y: 3}
+  - {x: 0, y: 4}
+  - {x: 0, y: 5}
+  - {x: 0, y: 6}
+  - {x: 0, y: 7}
+  - {x: 1, y: 0}
+  - {x: 1, y: 1}
+  - {x: 1, y: 2}
+  - {x: 1, y: 3}
+  - {x: 1, y: 4}
+  - {x: 1, y: 5}
+  - {x: 1, y: 6}
+  - {x: 1, y: 7}
+  MinigameStats: {fileID: 11400000, guid: 767e8d4871af41b41ab56414c3a8c427, type: 2}
+  BasicAttack: {fileID: 11400000, guid: b246437d18c931f47be8f875ba70741c, type: 2}

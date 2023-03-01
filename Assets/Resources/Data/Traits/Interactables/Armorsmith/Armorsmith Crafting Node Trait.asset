@@ -50,6 +50,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ce2b9956b9b8791408696a03b27feaba, type: 2}
   _defaultItemScale: {x: 31.25, y: 31.25}
   _itemOffset: {x: 0, y: 0}
-  _skill: {fileID: 11400000, guid: fc198a89e4782654eab4b1124cfaa03c, type: 2}
+  _skill: {fileID: 11400000, guid: 05bc31893dd9ac2488569192376d412c, type: 2}
   _skillBonusPercent: 1
   _maxQueue: 5
+  _isAbility: 0

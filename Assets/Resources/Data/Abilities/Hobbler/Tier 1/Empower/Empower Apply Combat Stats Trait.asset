@@ -20,6 +20,6 @@ MonoBehaviour:
     Agility: 0
     Magic: 5
     Faith: 0
-    Defense: 0
+    Defense: 3
     Spirit: 0
   _permanent: 0

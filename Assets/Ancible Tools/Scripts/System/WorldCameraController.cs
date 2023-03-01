@@ -97,7 +97,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
 
                         if (pos != movePos)
                         {
-                            transform.SetTransformPosition(movePos.ToPixelPerfect());
+                            transform.SetTransformPosition(WorldCameraZoneController.GetClosestPosition(movePos).ToPixelPerfect());
                         }
                     }
                     //else if (screenMove != Vector2.zero && !UiDragDropManager.Active)

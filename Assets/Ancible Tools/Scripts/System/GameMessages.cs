@@ -1299,6 +1299,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
         public BattleEncounter Encounter;
         public DialogueData PreEncounterDialogue;
         public DialogueData DefeatedDialogue;
+        public string[] VictoryDialogue;
     }
 
     public class MuteMessage : EventMessage
@@ -1446,7 +1447,8 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
 
     public class QueryCraftingRecipesMessage : EventMessage
     {
-        public Action<CraftingRecipe[]> DoAfter;
+        //Recipes, IsAbility
+        public Action<CraftingRecipe[], bool> DoAfter;
     }
 
     public class QueryCraftingQueueMessage : EventMessage

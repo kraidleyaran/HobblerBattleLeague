@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 446eae97be27d2148a10ea5bee1b1dc7, type: 3}
+  m_Name: Flash Of Light Timer Trait Rank 2
+  m_EditorClassIdentifier: 
+  MaxStack: 0
+  _ticks: 15
+  _loops: 0
+  _applyOnStart: []
+  _applyOnComplete:
+  - {fileID: 11400000, guid: 7b7a9abc39219b144bbb5b21063709d8, type: 2}
+  - {fileID: 11400000, guid: 04311437a1f7b634cab6a243a4b6d795, type: 2}
+  _refreshTimer: 0

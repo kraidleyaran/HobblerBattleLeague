@@ -13,4 +13,6 @@ MonoBehaviour:
   m_Name: Scorpion Minigame Ai Ability Manager Trait
   m_EditorClassIdentifier: 
   MaxStack: 1
-  _startingAbilities: []
+  _startingAbilities:
+  - Ability: {fileID: 11400000, guid: 6e747ef8dd4c8cd45926283a0157982a, type: 2}
+    Priority: 0

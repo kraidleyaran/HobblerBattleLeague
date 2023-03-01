@@ -86,7 +86,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.BattleLeague
                 _levelUpJumpTween = null;
             }
 
-            _levelUpJumpTween = _levelUpText.transform.DOLocalJump(_levelUpJumpOffset, _levelUpJumpPower, 1,
+            _levelUpJumpTween = _levelUpText.transform.DOLocalMoveY(_levelUpJumpOffset.y,
                 _levelUpJumpTicks * TickController.TickRate).OnComplete(
                 () => { _levelUpJumpTween = null; });
         }

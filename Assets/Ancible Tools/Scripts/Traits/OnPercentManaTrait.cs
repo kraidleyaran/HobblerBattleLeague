@@ -23,7 +23,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             SubscribeToMessages();
         }
 
-        public override string GetDescription()
+        public override string GetDescription(bool equipment = false)
         {
             var description = $"On {_percent:F} % Mana: ";
             var traitDescription = string.Empty;

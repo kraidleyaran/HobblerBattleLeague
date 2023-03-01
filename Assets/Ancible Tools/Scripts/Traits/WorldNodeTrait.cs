@@ -59,17 +59,22 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         {
             base.SetupController(controller);
             _currentStack = _stack;
-            var refillCommand = Instantiate(WorldNodeManager.RefillCommand, _controller.transform);
-            refillCommand.GoldValue = _refillCost;
-            _refillCommandInstance = refillCommand.GenerateInstance();
-
-            if (_autoRefill)
+            if (!_destroyOnEmpty)
             {
-                var autoRefillOnCommand = Instantiate(WorldNodeManager.AutoRefillCommand_On, _controller.transform);
-                autoRefillOnCommand.GoldValue = _autoRefillCost;
-                _autoRefillOnInstance = autoRefillOnCommand.GenerateInstance();
-                _autoRefillOffInstance = WorldNodeManager.AutoRefillCommand_Off.GenerateInstance();
+                var refillCommand = Instantiate(WorldNodeManager.RefillCommand, _controller.transform);
+                refillCommand.GoldValue = _refillCost;
+                _refillCommandInstance = refillCommand.GenerateInstance();
+
+                if (_autoRefill)
+                {
+                    var autoRefillOnCommand = Instantiate(WorldNodeManager.AutoRefillCommand_On, _controller.transform);
+                    autoRefillOnCommand.GoldValue = _autoRefillCost;
+                    _autoRefillOnInstance = autoRefillOnCommand.GenerateInstance();
+                    _autoRefillOffInstance = WorldNodeManager.AutoRefillCommand_Off.GenerateInstance();
+                }
             }
+
+
 
             _nodeSpriteController = Instantiate(FactoryController.SPRITE_CONTROLLER, _controller.transform.parent);
             RefreshNodeSprite(true);
@@ -124,6 +129,8 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                     stopGatheringMsg.Node = _controller.transform.parent.gameObject;
                     _controller.gameObject.SendMessageTo(stopGatheringMsg, obj);
                     MessageFactory.CacheMessage(stopGatheringMsg);
+
+                    RemoveFromInteractingObjects(obj);
 
                     if (_registeredNode != null)
                     {
@@ -218,7 +225,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                             _controller.gameObject.SendMessageTo(setActiveSelectableStateMsg, obj);
                             MessageFactory.CacheMessage(setActiveSelectableStateMsg);
 
-                            RemoveFromInteractingObjects(obj);
+                            
                         }
                         return;
                     case NodeInteractionType.Bump:
@@ -250,7 +257,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
 
         }
 
-        private void RemoveFromInteractingObjects(GameObject owner)
+        protected internal void RemoveFromInteractingObjects(GameObject owner)
         {
             if (_interactingHobblers.TryGetValue(owner, out var tile))
             {
@@ -286,16 +293,20 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             {
                 _controller.transform.parent.gameObject.SubscribeWithFilter<UpdateBuildingIdMessage>(UpdateBuildingId, _instanceId);
                 _controller.transform.parent.gameObject.SubscribeWithFilter<QueryBuildingParamterDataMessage>(QueryBuildingParameterData, _instanceId);
-                _controller.transform.parent.gameObject.SubscribeWithFilter<QueryCommandsMessage>(QueryCommands, _instanceId);
-                if (_autoRefill)
+                if (!_destroyOnEmpty)
                 {
-                    _controller.transform.parent.gameObject.SubscribeWithFilter<SetNodeAutoRefillStateMessage>(SetNodeAutoRefillState, _instanceId);
+                    _controller.transform.parent.gameObject.SubscribeWithFilter<RefillNodeStacksMessage>(RefillNodeStacks, _instanceId);
+                    _controller.transform.parent.gameObject.SubscribeWithFilter<QueryCommandsMessage>(QueryCommands, _instanceId);
+                    if (_autoRefill)
+                    {
+                        _controller.transform.parent.gameObject.SubscribeWithFilter<SetNodeAutoRefillStateMessage>(SetNodeAutoRefillState, _instanceId);
+                    }
                 }
             }
+
             _controller.transform.parent.gameObject.SubscribeWithFilter<QueryNodeMessage>(QueryNode, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<UpdateMapTileMessage>(UpdateMapTile, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<InteractMessage>(Interact, _instanceId);
-            _controller.transform.parent.gameObject.SubscribeWithFilter<RefillNodeStacksMessage>(RefillNodeStacks, _instanceId);
             _controller.transform.parent.gameObject.SubscribeWithFilter<UnregisterFromGatheringNodeMessage>(UnregisterFromNode, _instanceId);
 
         }

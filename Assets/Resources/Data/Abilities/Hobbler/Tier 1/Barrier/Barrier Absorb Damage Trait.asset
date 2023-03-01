@@ -15,4 +15,5 @@ MonoBehaviour:
   MaxStack: 1
   _amount: 20
   _type: 2
-  _applyOnEffect: []
+  _applyOnEffect:
+  - {fileID: 11400000, guid: e8d89d7e6bd92cb4ea7aa6674449c318, type: 2}

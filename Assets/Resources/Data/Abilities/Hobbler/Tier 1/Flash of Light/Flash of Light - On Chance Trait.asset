@@ -15,4 +15,4 @@ MonoBehaviour:
   MaxStack: 1
   _chance: 0.5
   _applyOnSuccess:
-  - {fileID: 11400000, guid: 7b7a9abc39219b144bbb5b21063709d8, type: 2}
+  - {fileID: 11400000, guid: 42ea4ae525cfc5b4ba619688e9773c6d, type: 2}

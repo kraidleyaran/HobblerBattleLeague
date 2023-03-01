@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7eb9f056721f56d429d681c27c14b4bd, type: 3}
+  m_Name: Cross-Slash Ability Item Rank 3
+  m_EditorClassIdentifier: 
+  DisplayName: Slash
+  Description: 
+  _icon: {fileID: 21300000, guid: 291ac57d225e90b4da5fc6acc50ca4b0, type: 3}
+  MaxStack: 1
+  GoldValue: -1
+  Rarity: 0
+  Quality: 0
+  Ability: {fileID: 11400000, guid: 878601bf2ff725646a4ca5189b4300b5, type: 2}
+  RequiredLevel: 0

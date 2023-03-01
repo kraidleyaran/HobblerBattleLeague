@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MaxStack: 1
   _amount:
-    Minimum: 4
-    Maximum: 9
+    Minimum: 12
+    Maximum: 16
   _type: 1

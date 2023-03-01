@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b3d15982fb18c14e9bdd1d622fdff43, type: 3}
+  m_Name: Finesse Apply Combat Stats Trait Rank 2
+  m_EditorClassIdentifier: 
+  MaxStack: 1
+  _stats:
+    Health: 0
+    Mana: 0
+    Strength: 5
+    Agility: 8
+    Magic: 5
+    Faith: 0
+    Defense: 0
+    Spirit: 0
+  _permanent: 0

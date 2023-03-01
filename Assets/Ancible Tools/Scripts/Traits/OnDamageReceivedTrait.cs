@@ -72,7 +72,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             }
         }
 
-        public override string GetDescription()
+        public override string GetDescription(bool equipment = false)
         {
             var description = $"On {_requiredAmount} damage received:{Environment.NewLine}";
             var traitDescriptions = _applyOnAmount.GetTraitDescriptions();

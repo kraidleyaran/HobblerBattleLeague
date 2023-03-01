@@ -160,6 +160,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
 
         private void SkillCheck(SkillCheckMessage msg)
         {
+            var skillFound = false;
             for (var i = 0; i < _prioritizedSkills.Count; i++)
             {
                 var skill = _prioritizedSkills[i];
@@ -173,21 +174,31 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                         var item = items.Where(it => it.RequiredLevel == highestLevel).ToArray().GetRandom();
                         var searchForResourceNodeMsg = MessageFactory.GenerateSearchForResourceNodeMsg();
                         searchForResourceNodeMsg.Item = item;
-                        searchForResourceNodeMsg.DoAfter = msg.DoAfter;
+                        searchForResourceNodeMsg.DoAfter = () =>
+                        {
+                            skillFound = true;
+                            msg.DoAfter?.Invoke();
+                        };
                         _controller.gameObject.SendMessageTo(searchForResourceNodeMsg, _controller.transform.parent.gameObject);
                         MessageFactory.CacheMessage(searchForResourceNodeMsg);
-                        //msg.DoAfter?.Invoke();
-                        break;
                     }
                 }
                 else if (skill.Instance.SkillType == WorldSkillType.Crafting)
                 {
                     var searchForCraftingNodeMsg = MessageFactory.GenerateSearchForCraftingNodeMsg();
                     searchForCraftingNodeMsg.Skill = skill.Instance;
-                    searchForCraftingNodeMsg.DoAfter = msg.DoAfter;
+                    searchForCraftingNodeMsg.DoAfter = () =>
+                    {
+                        skillFound = true;
+                        msg.DoAfter?.Invoke();
+                    };
                     _controller.gameObject.SendMessageTo(searchForCraftingNodeMsg, _controller.transform.parent.gameObject);
                     MessageFactory.CacheMessage(searchForCraftingNodeMsg);
-                    //msg.DoAfter?.Invoke();
+                }
+
+                if (skillFound)
+                {
+                    break;
                 }
 
             }

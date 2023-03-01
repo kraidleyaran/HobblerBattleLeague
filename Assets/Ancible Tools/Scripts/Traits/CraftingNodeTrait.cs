@@ -23,6 +23,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
         [SerializeField] private WorldCraftingSkill _skill = null;
         [SerializeField] private float _skillBonusPercent = 1f;
         [SerializeField] private int _maxQueue = 5;
+        [SerializeField] private bool _isAbility = false;
         
 
         private List<QueuedCraft> _craftingQueue = new List<QueuedCraft>();
@@ -65,6 +66,8 @@ namespace Assets.Ancible_Tools.Scripts.Traits
                 stopGatheringMsg.Node = _controller.transform.parent.gameObject;
                 _controller.gameObject.SendMessageTo(stopGatheringMsg, obj);
                 MessageFactory.CacheMessage(stopGatheringMsg);
+
+                RemoveFromInteractingObjects(obj);
 
                 if (_registeredNode != null)
                 {
@@ -220,7 +223,7 @@ namespace Assets.Ancible_Tools.Scripts.Traits
 
         private void QueryCraftingRecipes(QueryCraftingRecipesMessage msg)
         {
-            msg.DoAfter.Invoke(_recipes.ToArray());
+            msg.DoAfter.Invoke(_recipes.ToArray(), _isAbility);
         }
 
         private void SetCraftingIndex(SetCraftingIndexMessage msg)

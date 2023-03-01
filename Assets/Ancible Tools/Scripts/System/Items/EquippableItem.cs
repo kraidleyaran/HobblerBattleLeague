@@ -29,7 +29,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Items
         {
             if (_applyOnEquip.Length > 0)
             {
-                var traitDescriptions = _applyOnEquip.Select(t => t.GetDescription()).Where(d => !string.IsNullOrWhiteSpace(d)).ToArray();
+                var traitDescriptions = _applyOnEquip.Select(t => t.GetDescription(true)).Where(d => !string.IsNullOrWhiteSpace(d)).ToArray();
                 var returnDescription = description;
                 var startDescription = $"{StaticMethods.ApplyColorToText("On Equip:", ColorFactoryController.BonusStat)}";
                 returnDescription = string.IsNullOrEmpty(returnDescription) ? startDescription : $"{returnDescription}{Environment.NewLine}{startDescription}";

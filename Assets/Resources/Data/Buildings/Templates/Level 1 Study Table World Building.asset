@@ -30,7 +30,7 @@ MonoBehaviour:
   BlockingTiles:
   - {x: 0, y: 0}
   Template: {fileID: 11400000, guid: 3f928774bd4a25840a74249d8413b8a3, type: 2}
-  Cost: 25
+  Cost: 50
   Upgrades:
     Buildings: []
   UnitInfoTemplate: {fileID: 5921139191069282072, guid: d672da69bb6026244983229187f0a4d7, type: 3}

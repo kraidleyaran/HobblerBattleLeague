@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Scorpion Minigame Ai Wander Trait
   m_EditorClassIdentifier: 
   MaxStack: 1
-  _wanderArea: 3
+  _wanderArea: 4
   _anchor: 1
-  _diagonal: 0
+  _diagonalCost: -1

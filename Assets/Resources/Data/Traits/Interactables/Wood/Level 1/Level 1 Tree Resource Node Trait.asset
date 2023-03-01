@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MaxStack: 1
   _nodeType: 3
-  _requiredTicks: 90
+  _requiredTicks: 110
   _applyOnFinish:
   - {fileID: 11400000, guid: dd9b05cf94aaa8d46bf0fa165277deba, type: 2}
   - {fileID: 11400000, guid: 1488422d2242d0f4596f6ea325911734, type: 2}
-  _stack: 1000
+  _stack: 2000
   _relativeGatheringPositions:
   - {x: 0, y: 1}
   - {x: 0, y: -1}
@@ -34,7 +34,7 @@ MonoBehaviour:
   _refillCost: 0
   _autoRefill: 0
   _autoRefillCost: 0
-  _destroyOnEmpty: 0
+  _destroyOnEmpty: 1
   _item:
     Item: {fileID: 11400000, guid: dd77740cff36adf45998ecf87b1743a9, type: 2}
     Stack: 1

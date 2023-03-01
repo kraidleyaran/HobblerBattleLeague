@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7eb9f056721f56d429d681c27c14b4bd, type: 3}
+  m_Name: Fortify Ability Item Rank 2
+  m_EditorClassIdentifier: 
+  DisplayName: Fortify
+  Description: 
+  _icon: {fileID: 21300000, guid: b10bfd094aed2db4e8950324027c424c, type: 3}
+  MaxStack: 1
+  GoldValue: -1
+  Rarity: 0
+  Quality: 0
+  Ability: {fileID: 11400000, guid: edf7c057a8dd8d544b8d4f5851bb2e5b, type: 2}
+  RequiredLevel: 0

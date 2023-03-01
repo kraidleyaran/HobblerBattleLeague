@@ -14,10 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DisplayName: Fireball
   Icon: {fileID: 21300000, guid: e3596d866573eda4ca34b624b0840ed7, type: 3}
+  Rank: 0
   Description: 
   Range: 3
   CastTime: 60
-  ManaCost: 0
+  ManaCost: 10
   ApplyToTarget:
   - {fileID: 11400000, guid: 243bf0550b5b2bb4bbed1c80577db2d4, type: 2}
   Alignment: 1

@@ -9,5 +9,11 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Items
         public override WorldItemType Type => WorldItemType.Ability;
         public WorldAbility Ability;
         public int RequiredLevel = 0;
+        public override Sprite Icon => Ability.Icon;
+
+        public override string GetDescription()
+        {
+            return Ability.GetDescription();
+        }
     }
 }

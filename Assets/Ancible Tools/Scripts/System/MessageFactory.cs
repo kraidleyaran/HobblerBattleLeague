@@ -3993,6 +3993,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
             msg.Encounter = null;
             msg.PreEncounterDialogue = null;
             msg.DefeatedDialogue = null;
+            msg.VictoryDialogue = null;
             msg.Sender = null;
             _setupTrainerCache.Add(msg);
         }

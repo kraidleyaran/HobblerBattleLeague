@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ad3fddeec03bef47a7b6e49beb70cd7, type: 3}
+  m_Name: Level 1 Transmutation Altar World Building
+  m_EditorClassIdentifier: 
+  DisplayName: Transmutation Altar
+  Description: Craft and upgrade abilities for Hobblers to use in combat
+  Icon: {fileID: 21300000, guid: 834618e86707b354387da4cb15382e1c, type: 3}
+  Sprites:
+  - {fileID: 11400000, guid: 056e32233b7abfd4baf9e0b45ba67528, type: 2}
+  - {fileID: 11400000, guid: a39d51690c7553143a5889c1e5119ea8, type: 2}
+  - {fileID: 11400000, guid: c8067a57b89ca0e4db95a8faaca1c49e, type: 2}
+  - {fileID: 11400000, guid: 8c13a1286a624524abed4307535bb4be, type: 2}
+  - {fileID: 11400000, guid: dee8f3f5362351a4cbd69a6a32ebac64, type: 2}
+  RequiredTiles:
+  - {x: 0, y: 1}
+  - {x: 0, y: -1}
+  - {x: -1, y: 0}
+  - {x: 1, y: 0}
+  - {x: -1, y: 1}
+  - {x: 1, y: 1}
+  - {x: -1, y: -1}
+  - {x: 1, y: -1}
+  - {x: -1, y: 2}
+  - {x: 0, y: 2}
+  - {x: 1, y: 2}
+  - {x: -1, y: -2}
+  - {x: 0, y: -2}
+  - {x: 1, y: -2}
+  - {x: -2, y: 1}
+  - {x: -2, y: 0}
+  - {x: -2, y: -1}
+  - {x: 2, y: 1}
+  - {x: 2, y: 0}
+  - {x: 2, y: -1}
+  BlockingTiles:
+  - {x: 0, y: 0}
+  - {x: 2, y: 2}
+  - {x: -2, y: 2}
+  - {x: 2, y: -2}
+  - {x: -2, y: -2}
+  Template: {fileID: 11400000, guid: 0c87497c30b716744b3d61f70394b5d8, type: 2}
+  Cost: 200
+  Upgrades:
+    Buildings: []
+  UnitInfoTemplate: {fileID: 1820557890110346249, guid: 4f89674d1b18b1e4b85fe33a121acb80, type: 3}

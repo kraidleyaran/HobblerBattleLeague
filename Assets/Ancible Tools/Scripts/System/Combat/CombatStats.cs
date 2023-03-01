@@ -38,31 +38,31 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Combat
             Spirit = allStats;
         }
 
-        public string GetDescription(bool unitDescription = false)
+        public string GetDescription(bool unitDescription = false, bool equipment = false)
         {
             var description = string.Empty;
-            description = ApplyStatValueToDescription(description, HEALTH, Health, unitDescription);
-            description = ApplyStatValueToDescription(description, MANA, Mana, unitDescription);
-            description = ApplyStatValueToDescription(description, STRENGTH, Strength, unitDescription);
-            description = ApplyStatValueToDescription(description, AGILITY, Agility, unitDescription);
-            description = ApplyStatValueToDescription(description, MAGIC, Magic, unitDescription);
-            description = ApplyStatValueToDescription(description, FAITH, Faith, unitDescription);
-            description = ApplyStatValueToDescription(description, DEFENSE, Defense, unitDescription);
-            description = ApplyStatValueToDescription(description, SPIRIT, Spirit, unitDescription);
+            description = ApplyStatValueToDescription(description, HEALTH, Health, unitDescription, equipment);
+            description = ApplyStatValueToDescription(description, MANA, Mana, unitDescription, equipment);
+            description = ApplyStatValueToDescription(description, STRENGTH, Strength, unitDescription, equipment);
+            description = ApplyStatValueToDescription(description, AGILITY, Agility, unitDescription, equipment);
+            description = ApplyStatValueToDescription(description, MAGIC, Magic, unitDescription, equipment);
+            description = ApplyStatValueToDescription(description, FAITH, Faith, unitDescription, equipment);
+            description = ApplyStatValueToDescription(description, DEFENSE, Defense, unitDescription, equipment);
+            description = ApplyStatValueToDescription(description, SPIRIT, Spirit, unitDescription, equipment);
             return description;
         }
 
         public string GetRosterDescriptions(CombatStats bonus)
         {
             var description = string.Empty;
-            description = $"{ApplyStatValueToDescription(description, HEALTH, Health, false)}{StaticMethods.ApplyColorToText(GetStat(bonus.Health), bonus.Health >= 0 ? ColorFactoryController.BonusStat : ColorFactoryController.NegativeStatColor)}";
-            description = $"{ApplyStatValueToDescription(description, MANA, Mana, false )}{StaticMethods.ApplyColorToText(GetStat(bonus.Mana), bonus.Mana >= 0 ? ColorFactoryController.BonusStat : ColorFactoryController.NegativeStatColor)}";
-            description = $"{ApplyStatValueToDescription(description, STRENGTH, Strength, false)}{StaticMethods.ApplyColorToText(GetStat(bonus.Strength), bonus.Strength >= 0 ? ColorFactoryController.BonusStat : ColorFactoryController.NegativeStatColor)};";
-            description = $"{ApplyStatValueToDescription(description, AGILITY, Agility, false)}{StaticMethods.ApplyColorToText(GetStat(bonus.Agility), bonus.Agility >= 0 ? ColorFactoryController.BonusStat : ColorFactoryController.NegativeStatColor)}";
-            description = $"{ApplyStatValueToDescription(description, MAGIC, Magic, false)}{StaticMethods.ApplyColorToText(GetStat(bonus.Magic), bonus.Magic >= 0 ? ColorFactoryController.BonusStat : ColorFactoryController.NegativeStatColor)}";
-            description = $"{ApplyStatValueToDescription(description, FAITH, Faith, false)}{StaticMethods.ApplyColorToText(GetStat(bonus.Faith), bonus.Faith >= 0 ? ColorFactoryController.BonusStat : ColorFactoryController.NegativeStatColor)}";
-            description = $"{ApplyStatValueToDescription(description, DEFENSE, Defense, false)}{StaticMethods.ApplyColorToText(GetStat(bonus.Defense), bonus.Defense >= 0 ? ColorFactoryController.BonusStat : ColorFactoryController.NegativeStatColor)}";
-            description = $"{ApplyStatValueToDescription(description, SPIRIT, Spirit, false)}{StaticMethods.ApplyColorToText(GetStat(bonus.Spirit), bonus.Spirit >= 0 ? ColorFactoryController.BonusStat : ColorFactoryController.NegativeStatColor)}";
+            description = $"{ApplyStatValueToDescription(description, HEALTH, Health, true, false)}{StaticMethods.ApplyColorToText(GetStat(bonus.Health), bonus.Health >= 0 ? ColorFactoryController.BonusStat : ColorFactoryController.NegativeStatColor)}";
+            description = $"{ApplyStatValueToDescription(description, MANA, Mana, true, false)}{StaticMethods.ApplyColorToText(GetStat(bonus.Mana), bonus.Mana >= 0 ? ColorFactoryController.BonusStat : ColorFactoryController.NegativeStatColor)}";
+            description = $"{ApplyStatValueToDescription(description, STRENGTH, Strength, true, false)}{StaticMethods.ApplyColorToText(GetStat(bonus.Strength), bonus.Strength >= 0 ? ColorFactoryController.BonusStat : ColorFactoryController.NegativeStatColor)}";
+            description = $"{ApplyStatValueToDescription(description, AGILITY, Agility, true, false)}{StaticMethods.ApplyColorToText(GetStat(bonus.Agility), bonus.Agility >= 0 ? ColorFactoryController.BonusStat : ColorFactoryController.NegativeStatColor)}";
+            description = $"{ApplyStatValueToDescription(description, MAGIC, Magic, true, false)}{StaticMethods.ApplyColorToText(GetStat(bonus.Magic), bonus.Magic >= 0 ? ColorFactoryController.BonusStat : ColorFactoryController.NegativeStatColor)}";
+            description = $"{ApplyStatValueToDescription(description, FAITH, Faith, true, false)}{StaticMethods.ApplyColorToText(GetStat(bonus.Faith), bonus.Faith >= 0 ? ColorFactoryController.BonusStat : ColorFactoryController.NegativeStatColor)}";
+            description = $"{ApplyStatValueToDescription(description, DEFENSE, Defense, true, false)}{StaticMethods.ApplyColorToText(GetStat(bonus.Defense), bonus.Defense >= 0 ? ColorFactoryController.BonusStat : ColorFactoryController.NegativeStatColor)}";
+            description = $"{ApplyStatValueToDescription(description, SPIRIT, Spirit, true, false)}{StaticMethods.ApplyColorToText(GetStat(bonus.Spirit), bonus.Spirit >= 0 ? ColorFactoryController.BonusStat : ColorFactoryController.NegativeStatColor)}";
             return description;
         }
 
@@ -81,7 +81,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Combat
             return string.Empty;
         }
 
-        private string ApplyStatValueToDescription(string description, string stat, int value, bool unitDescription)
+        private string ApplyStatValueToDescription(string description, string stat, int value, bool unitDescription, bool equipment)
         {
             if (unitDescription)
             {
@@ -89,7 +89,14 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.Combat
             }
             else if (value > 0 || value < 0)
             {
-                description = string.IsNullOrWhiteSpace(description) ? $"{GetStat(value)} {stat}" : $"{description}{Environment.NewLine}{GetStat(value)} {stat}";
+                if (equipment)
+                {
+                    description = string.IsNullOrWhiteSpace(description) ? $"{GetStat(value)} {stat}" : $"{description}{Environment.NewLine}{GetStat(value)} {stat}";
+                }
+                else
+                {
+                    description = string.IsNullOrEmpty(description) ? $"{GetStat(value)} {stat}" : $"{description}, {GetStat(value)} {stat}";
+                }
             }
             return description;
 

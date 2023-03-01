@@ -32,7 +32,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.Stash
             _qualityIcon.gameObject.SetActive(stack.Item.Quality != ItemQuality.Basic);
             if (stack.Item.Type == WorldItemType.Ability && stack.Item is AbilityItem abilityItem && abilityItem.Ability.Rank > 0)
             {
-                _abilityRankText.text = abilityItem.Ability.RankToString();
+                _abilityRankText.text = StaticMethods.ApplyColorToText(abilityItem.Ability.RankToString(), ColorFactoryController.AbilityRank);
             }
             else
             {

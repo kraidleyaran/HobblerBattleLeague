@@ -23,9 +23,9 @@ namespace Assets.Ancible_Tools.Scripts.Traits
             MessageFactory.CacheMessage(applyCombatStatsMsg);
         }
 
-        public override string GetDescription()
+        public override string GetDescription(bool equipment = false)
         {
-            return _stats.GetDescription();
+            return _stats.GetDescription(false, equipment);
         }
 
         public override void Destroy()

@@ -13,7 +13,7 @@ using UnityEngine.UI;
 
 namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.Roster
 {
-    public class UiRosterSlotController : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+    public class UiRosterSlotController : MonoBehaviour
     {
         private const string FILTER = "UI_ROSTER_SLOT_CONTROLLER";
 
@@ -21,7 +21,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.Roster
         public string Name => _name;
 
         public RectTransform RectTransform;
-        [SerializeField] private Image _hobblerIconImage;
+        [SerializeField] private UiHobblerIconController _hobblerIcon;
         [SerializeField] private UiEquippedItemController _equippedItemTemplate;
         [SerializeField] private RectTransform _equipmentGrid;
         [SerializeField] private UiAbilityController _abilityTemplate;
@@ -54,6 +54,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.Roster
             _buttonImage.sprite = type == RosterType.Bench ? _benchButtonSprite : _rosterButtonSprite;
             _buttonImage.color = type == RosterType.Bench ? _benchButtonColor : _rosterButtonColor;
             _hobbler = hobbler;
+            _hobblerIcon.Setup(_hobbler, true);
             RefreshInfo();
 
             var queryEquipmentMsg = MessageFactory.GenerateQueryHobblerEquipmentMsg();
@@ -207,7 +208,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.Roster
         private void RefreshSprite(SpriteTrait trait)
         {
             _sprite = trait;
-            _hobblerIconImage.sprite = _sprite.Sprite;
+            
         }
 
         private void RefreshHappiness(HappinessState state)
@@ -248,6 +249,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System.UI.Roster
         public void Destroy()
         {
             _hobbler.UnsubscribeFromAllMessagesWithFilter(FILTER);
+            _hobblerIcon.Destroy();
             _hobbler = null;
             _name = null;
             _baseStats = CombatStats.Zero;

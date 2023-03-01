@@ -31,6 +31,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
         public static Color BasicQuality => _instance._basicColor;
         public static Color ImprovedQuality => _instance._improvedColor;
         public static Color OrnateQuality => _instance._ornateColor;
+        public static Color AbilityRank => _instance._abilityRankColor;
 
         private static ColorFactoryController _instance = null;
 
@@ -50,6 +51,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
         [SerializeField] private Color _happinessColor = Color.green;
         [SerializeField] private Color _moderateColor = Color.yellow;
         [SerializeField] private Color _unhappinessColor = Color.red;
+        [SerializeField] private Color _abilityRankColor = Color.yellow;
         
 
         [Header("Status Effect Colors")]

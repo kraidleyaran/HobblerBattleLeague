@@ -14,12 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DisplayName: Intimidate
   Icon: {fileID: 21300000, guid: 85eadfdcfeb1bb740aa11a8c8a4e1baf, type: 3}
+  Rank: 0
   Description: 
   Range: 1
   CastTime: 30
   ManaCost: 5
   ApplyToTarget:
-  - {fileID: 11400000, guid: b04bedf49a55e4644bad0385ee3598f9, type: 2}
+  - {fileID: 11400000, guid: 5dd7acfbe396bc14aad231974374b3ed, type: 2}
   - {fileID: 11400000, guid: dde5ee893bf8f41458c31c77e480ab8d, type: 2}
   Alignment: 1
   Type: 1

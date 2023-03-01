@@ -1,4 +1,5 @@
-﻿using Assets.Resources.Ancible_Tools.Scripts.System.Adventure;
+﻿using System.Linq;
+using Assets.Resources.Ancible_Tools.Scripts.System.Adventure;
 using Assets.Resources.Ancible_Tools.Scripts.System.BattleLeague;
 using Assets.Resources.Ancible_Tools.Scripts.System.Minigame;
 using Assets.Resources.Ancible_Tools.Scripts.System.Pathing;
@@ -17,6 +18,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
         private static UpdateWorldStateMessage _updateWorldStateMsg = new UpdateWorldStateMessage();
 
         [SerializeField] private PathingGridController _pathing;
+        [SerializeField] private WorldCameraZoneController _cameraZone;
 
         void Awake()
         {
@@ -28,6 +30,7 @@ namespace Assets.Resources.Ancible_Tools.Scripts.System
 
             _instance = this;
             _pathing.Setup();
+            _cameraZone.Setup(_pathing.GetAllMapTiles().Select(t => t.Position).ToArray());
             SubscribeToMessages();
         }
 

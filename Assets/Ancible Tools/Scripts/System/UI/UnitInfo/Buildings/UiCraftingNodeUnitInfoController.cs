@@ -79,6 +79,7 @@ namespace Assets.Ancible_Tools.Scripts.System.UI.UnitInfo.Buildings
             var removedHobblers = _hobblers.Where(kv => Array.IndexOf(hobblers, kv.Key) < 0).ToArray();
             foreach (var hobbler in removedHobblers)
             {
+                _hobblers.Remove(hobbler.Key);
                 hobbler.Value.Destroy();
                 Destroy(hobbler.Value.gameObject);
             }

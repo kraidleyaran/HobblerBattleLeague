@@ -49,7 +49,7 @@ namespace Assets.Ancible_Tools.Scripts.System.UI.UnitInfo
                 _downRankButton.interactable = index < DataController.MaxHobblerAbilities - 1;
                 if (ability.Rank > 0)
                 {
-                    _rankText.text = ability.RankToString();
+                    _rankText.text = StaticMethods.ApplyColorToText(ability.RankToString(), ColorFactoryController.AbilityRank);
                 }
                 _rankText.gameObject.SetActive(ability.Rank > 0);
             }
